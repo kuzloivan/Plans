@@ -9,12 +9,14 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/sa_text_txtv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_settings" />
 
     <Button
+        android:id="@+id/sa_ret_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings activity" />
+        android:text="Back to start"/>
 </LinearLayout>

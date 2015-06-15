@@ -3,6 +3,7 @@ package chisw.com.plans.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import chisw.com.plans.R;
 
