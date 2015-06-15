@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Plans</string>
+    <string name="title_activity_planner">PlannerActivity</string>
+
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="title_activity_net_managment">NetManagment</string>
+
+    <string name="title_activity_media">Media</string>
+    <string name="hello_world">Hello word</string>
 </resources>
