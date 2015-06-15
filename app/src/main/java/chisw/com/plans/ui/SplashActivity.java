@@ -28,8 +28,9 @@ public class SplashActivity extends Activity {
         btnOpenPlannerActivity.setOnClickListener(clicker);
 
         mediaBt = (Button) findViewById(R.id.mediaBt);
-        netMngtBtn = (Button) findViewById(R.id.netMngtStart_btn);
 
+        netMngtBtn = (Button) findViewById(R.id.netMngtStart_btn);
+        netMngtBtn.setOnClickListener(clicker);
 
         alarmBt = (Button) findViewById(R.id.alarmBt);
         alarmBt.setOnClickListener(clicker);
@@ -43,7 +44,9 @@ public class SplashActivity extends Activity {
                 case R.id.alarmBt:
                     AlarmActivity.start(SplashActivity.this);
                     break;
-
+                case R.id.netMngtStart_btn:
+                    NetManagmentActivity.start(SplashActivity.this);
+                    break;
                 case R.id.btnOpenPlannerActivity:
                     PlannerActivity.start(SplashActivity.this);
                     break;
