@@ -16,6 +16,7 @@
         android:text="NetManagment" />
 
     <Button
+        android:id="@+id/btnOpenPlannerActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Open Planner activity"/>
@@ -23,7 +24,8 @@
     <Button
         android:id="@+id/mediaBt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"  />
+        android:layout_height="wrap_content"
+        android:text="Media Activity"/>
 
     <Button
 
