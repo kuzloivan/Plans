@@ -1,6 +1,7 @@
 package chisw.com.plans.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import chisw.com.plans.R;
@@ -14,6 +15,10 @@ public class AlarmActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_main );
+        setContentView(R.layout.activity_alarm );
+    }
+
+    public static void start(Activity activity) {
+        activity.startActivity(new Intent(activity, AlarmActivity.class));
     }
 }
