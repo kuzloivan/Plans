@@ -3,17 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button"/>
+        android:text="SettingsActivity"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NetManagment" />
 
     <Button
+        android:id="@+id/btnOpenPlannerActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Open Planner activity"/>
@@ -22,11 +25,11 @@
         android:id="@+id/mediaBt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         />
+        android:text="Media Activity"/>
 
     <Button
 
-        android:id="@+id/button"
+        android:id="@+id/alarmBt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alarm" />
