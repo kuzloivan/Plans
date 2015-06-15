@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import chisw.com.plans.R;
 
-/**
- * Created by Оксана on 15.06.2015.
- */
 public class SettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -27,6 +27,9 @@
 
         <activity android:name=".ui.PlannerActivity"/>
 
+
+        <activity android:name=".ui.AlarmActivity"/>
+
     </application>
 
 </manifest>
