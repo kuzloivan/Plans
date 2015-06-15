@@ -8,11 +8,13 @@ import android.widget.Button;
 import chisw.com.plans.R;
 
 public class SplashActivity extends Activity {
+
     private Button mediaBt;
     private Button alarmBt;
     private Button plannerBt;
     private Button settingBt;
     private Button net_managerBt;
+    private Button btnOpenPlannerActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,8 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.splash_main);
 
         Clicker clicker = new Clicker();
+
+        btnOpenPlannerActivity = (Button)findViewById(R.id.btnOpenPlannerActivity);
 
         mediaBt = (Button) findViewById(R.id.mediaBt);
         alarmBt = (Button) findViewById(R.id.alarmBt);
@@ -36,7 +40,5 @@ public class SplashActivity extends Activity {
             }
         }
     }
-
-
 
 }
