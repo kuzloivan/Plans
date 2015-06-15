@@ -12,9 +12,10 @@
         android:text="SettingsActivity"
         android:id="@+id/button_settings"/>
     <Button
+        android:id="@+id/netMngtStart_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NetManagment" />
+        android:text="NetManagment!" />
 
     <Button
         android:id="@+id/btnOpenPlannerActivity"
