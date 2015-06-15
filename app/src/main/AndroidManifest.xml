@@ -24,6 +24,9 @@
             android:name=".ui.MediaActivity"
             android:label="@string/title_activity_media" >
         </activity>
+
+        <activity android:name=".ui.PlannerActivity"/>
+
     </application>
 
 </manifest>

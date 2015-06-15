@@ -24,6 +24,7 @@ public class SplashActivity extends Activity {
         Clicker clicker = new Clicker();
 
         btnOpenPlannerActivity = (Button)findViewById(R.id.btnOpenPlannerActivity);
+        btnOpenPlannerActivity.setOnClickListener(clicker);
 
         mediaBt = (Button) findViewById(R.id.mediaBt);
 
@@ -34,6 +35,9 @@ public class SplashActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
+                case R.id.btnOpenPlannerActivity:
+                    PlannerActivity.start(SplashActivity.this);
+                    break;
             }
         }
     }
