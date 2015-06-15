@@ -3,36 +3,34 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SettingsActivity"
-        android:id="@+id/settingsBt"/>
+        android:id="@+id/sa_settings_btn"/>
 
     <Button
-        android:id="@+id/netMngtStart_btn"
+        android:id="@+id/sa_net_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NetManagment!" />
 
     <Button
-        android:id="@+id/btnOpenPlannerActivity"
+        android:id="@+id/sa_planner_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Open Planner activity"/>
+        android:text="Open Planner"/>
 
     <Button
-        android:id="@+id/mediaBt"
+        android:id="@+id/sa_media_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Media Activity"/>
 
     <Button
-
-        android:id="@+id/alarmBt"
+        android:id="@+id/sa_alarm_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alarm" />
