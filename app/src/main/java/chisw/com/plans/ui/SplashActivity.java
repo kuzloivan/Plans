@@ -26,16 +26,20 @@ public class SplashActivity extends Activity {
         btnOpenPlannerActivity = (Button)findViewById(R.id.btnOpenPlannerActivity);
 
         mediaBt = (Button) findViewById(R.id.mediaBt);
-        alarmBt = (Button) findViewById(R.id.alarmBt);
-        
-    }
 
+
+        alarmBt = (Button) findViewById(R.id.alarmBt);
+        alarmBt.setOnClickListener(clicker);
+    }
 
     public final class Clicker implements View.OnClickListener{
 
         @Override
         public void onClick(View v) {
             switch (v.getId()){
+                case R.id.alarmBt:
+                    AlarmActivity.start(SplashActivity.this);
+                    break;
 
             }
         }

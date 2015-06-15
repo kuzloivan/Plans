@@ -13,6 +13,7 @@
                 <category android:name="ANDROID.INTENT.CATEGORY.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".ui.NetManagmentActivity"
             android:label="@string/title_activity_net_managment" >
