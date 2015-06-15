@@ -27,9 +27,6 @@ public class SplashActivity extends Activity {
 
         mediaBt = (Button) findViewById(R.id.mediaBt);
 
-
-        alarmBt = (Button) findViewById(R.id.button);
-        alarmBt.setOnClickListener(clicker);
     }
 
     public final class Clicker implements View.OnClickListener{
@@ -37,10 +34,6 @@ public class SplashActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.button:
-                    AlarmActivity.start(SplashActivity.this);
-                    break;
-
             }
         }
     }
