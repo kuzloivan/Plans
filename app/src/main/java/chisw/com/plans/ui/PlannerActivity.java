@@ -1,6 +1,7 @@
 package chisw.com.plans.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import chisw.com.plans.R;
@@ -14,5 +15,10 @@ public class PlannerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planner);
+    }
+
+    public static void start(Activity activity){
+        Intent intent = new Intent(activity, PlannerActivity.class);
+        activity.startActivity(intent);
     }
 }
