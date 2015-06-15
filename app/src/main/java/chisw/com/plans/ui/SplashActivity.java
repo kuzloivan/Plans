@@ -8,13 +8,15 @@ import chisw.com.plans.R;
 
 public class SplashActivity extends Activity {
     private Button mediaBt;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_main);
         mediaBt = (Button) findViewById(R.id.mediaBt);
     }
+
+
+
 
 
 
