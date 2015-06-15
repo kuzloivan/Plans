@@ -15,7 +15,7 @@
         android:id="@+id/sa_net_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NetManagment!" />
+        android:text="NetManagement!" />
 
     <Button
         android:id="@+id/sa_planner_btn"

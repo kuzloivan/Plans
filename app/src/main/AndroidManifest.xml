@@ -16,8 +16,8 @@
         </activity>
         
         <activity
-            android:name=".ui.NetManagmentActivity"
-            android:label="@string/title_activity_net_managment" >
+            android:name=".ui.NetManagementActivity"
+            android:label="@string/title_activity_net_management" >
         </activity>
 
         <activity

@@ -33,7 +33,7 @@ public class SplashActivity extends Activity {
                     break;
 
                 case R.id.sa_net_btn:
-                    NetManagmentActivity.start(SplashActivity.this);
+                    NetManagementActivity.start(SplashActivity.this);
                     break;
 
                 case R.id.sa_planner_btn:
