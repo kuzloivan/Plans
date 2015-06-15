@@ -6,10 +6,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="chisw.com.plans.ui.SettingsActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TextView android:text="@string/settings_act" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings activity"/>
+        android:text="Back to start"
+        android:id="@+id/button_back"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="55dp" />
 </RelativeLayout>
