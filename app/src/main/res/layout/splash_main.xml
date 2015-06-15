@@ -9,3 +9,24 @@
         android:layout_height="wrap_content"
         android:text="Button"/>
 </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NetManagment" />
+
+    <Button
+        android:id="@+id/mediaBt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="" />
+
+    <Button
+
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick=""
+        android:text="Alarm" />
+
+</LinearLayout>
+

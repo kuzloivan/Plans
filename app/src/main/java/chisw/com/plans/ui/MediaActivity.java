@@ -1,21 +1,19 @@
 package chisw.com.plans.ui;
 
 import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import chisw.com.plans.R;
 
-public class SplashActivity extends Activity {
-    private Button mediaBt;
+public class MediaActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_main);
-        mediaBt = (Button) findViewById(R.id.mediaBt);
+        setContentView(R.layout.activity_media);
     }
-
-
 
 }
