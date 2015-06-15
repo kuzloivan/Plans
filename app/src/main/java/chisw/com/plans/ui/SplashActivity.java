@@ -2,6 +2,7 @@ package chisw.com.plans.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import chisw.com.plans.R;
@@ -17,13 +18,24 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_main);
+
+        Clicker clicker = new Clicker();
+
         mediaBt = (Button) findViewById(R.id.mediaBt);
         alarmBt = (Button) findViewById(R.id.alarmBt);
         
     }
 
 
+    public final class Clicker implements View.OnClickListener{
 
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+
+            }
+        }
+    }
 
 
 
