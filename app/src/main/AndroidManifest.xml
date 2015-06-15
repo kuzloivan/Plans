@@ -25,8 +25,11 @@
             android:label="@string/title_activity_media" >
         </activity>
 
-        <activity android:name=".ui.PlannerActivity"/>
-
+        <activity
+            android:name=".ui.PlannerActivity"
+            android:parentActivityName=".ui.SplashActivity"
+            android:label="@string/title_activity_planner">
+        </activity>
 
         <activity android:name=".ui.AlarmActivity"/>
         <activity android:name=".ui.SettingsActivity"/>
