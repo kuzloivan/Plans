@@ -9,15 +9,14 @@ import chisw.com.plans.R;
 /**
  * Created by Оксана on 15.06.2015.
  */
-public class SettingActivity extends Activity {
+public class SettingsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
     }
 
-    public static void Start(Activity activity)
-    {
+    public static void start(Activity activity) {
         Intent intent = new Intent(activity, SettingsActivity.class);
         activity.startActivity(intent);
     }

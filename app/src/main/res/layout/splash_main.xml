@@ -9,7 +9,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SettingsActivity"/>
+        android:text="SettingsActivity"
+        android:id="@+id/settingsBt"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
