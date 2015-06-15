@@ -22,7 +22,7 @@
         android:id="@+id/mediaBt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-<<<<<<< Updated upstream
+
          />
 
     <Button
@@ -32,10 +32,8 @@
         android:layout_height="wrap_content"
         android:text="Alarm" />
 
+
+
+
 </LinearLayout>
 
-=======
-        android:onClick=""
-        android:text="Media activity" />
-</LinearLayout>
->>>>>>> Stashed changes
