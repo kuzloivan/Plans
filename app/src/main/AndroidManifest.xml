@@ -25,6 +25,9 @@
             android:label="@string/title_activity_media" >
         </activity>
 
+        <activity android:name=".ui.PlannerActivity"/>
+
+
         <activity android:name=".ui.AlarmActivity"/>
 
     </application>
