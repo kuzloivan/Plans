@@ -17,7 +17,7 @@ public class MediaActivity extends Activity {
         goBack = (Button) findViewById(R.id.ma_goback_btn);
     }
 
-    public static void Start(Activity activity) {
+    public static void start(Activity activity) {
         Intent intnt = new Intent(activity, MediaActivity.class);
         activity.startActivity(intnt);
     }
