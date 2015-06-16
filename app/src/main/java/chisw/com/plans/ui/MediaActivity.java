@@ -13,6 +13,8 @@ import chisw.com.plans.R;
 
 public class MediaActivity extends Activity {
 
+    private TextView pathToAudio;
+
     static final int REQUEST_AUDIO_GET = 1;
 
     @Override
@@ -22,6 +24,10 @@ public class MediaActivity extends Activity {
         Clicker clicker = new Clicker();
         findViewById(R.id.ma_goback_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
+        findViewById(R.id.ma_play_btn).setOnClickListener(clicker);
+        findViewById(R.id.ma_stop_btn).setOnClickListener(clicker);
+
+        pathToAudio = (TextView) findViewById(R.id.ma_res_tv);
     }
 
     public static void start(Activity activity) {
@@ -32,10 +38,13 @@ public class MediaActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_AUDIO_GET && resultCode == RESULT_OK) {
-            String path = data.getDataString();
-            TextView tv = (TextView) findViewById(R.id.ma_res_tv);
-            tv.setText(path);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_AUDIO_GET:
+                pathToAudio.setText(data.getDataString());
+                break;
         }
     }
 
@@ -49,7 +58,12 @@ public class MediaActivity extends Activity {
                 case R.id.ma_choose_btn:
                     chooseAudio();
                     break;
+                case R.id.ma_play_btn:
 
+                    break;
+                case R.id.ma_stop_btn:
+
+                    break;
             }
         }
 
@@ -61,5 +75,4 @@ public class MediaActivity extends Activity {
             }
         }
     }
-
 }

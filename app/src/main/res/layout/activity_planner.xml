@@ -3,6 +3,8 @@
     android:layout_height="match_parent"
     tools:context="chisw.com.plans.ui.PlannerActivity">
 
+    <include layout="@layout/toolbar" />
+
     <Button
         android:id="@+id/pa_goBack_btn"
         android:layout_alignParentBottom="true"
