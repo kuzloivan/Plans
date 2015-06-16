@@ -62,6 +62,12 @@ public class MediaActivity extends ToolbarActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopPlayer();
+    }
+
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -73,7 +79,7 @@ public class MediaActivity extends ToolbarActivity {
                     startPlayer();
                     break;
                 case R.id.ma_stop_btn:
-                    player.stop();
+                    stopPlayer();
                     break;
             }
         }
@@ -100,5 +106,10 @@ public class MediaActivity extends ToolbarActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void stopPlayer() {
+        player.stop();
+        player.reset();
     }
 }
