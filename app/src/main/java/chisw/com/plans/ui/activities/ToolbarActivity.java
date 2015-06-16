@@ -41,10 +41,6 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     protected abstract int contentViewResId();
 
-    protected void showToast(String text){
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void setContentView(int layoutResID) {
 

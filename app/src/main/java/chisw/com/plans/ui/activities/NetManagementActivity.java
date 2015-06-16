@@ -21,6 +21,8 @@ public class NetManagementActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_management);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         ClickerNet clickerNet = new ClickerNet();
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);

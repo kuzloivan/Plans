@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">Plans</string>
     <string name="title_activity_planner">Planner</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings Activity</string>
     <string name="title_activity_net_management">NetManagement</string>
     <string name="title_activity_media">Media</string>
     <string name="hello_world">Hello word</string>
-    <string name="settings_act">settings activity</string>
+    <string name="settings_act">Settings activity</string>
     <string name="login">User login</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
-    <string name="Sign_up">Sign_up</string>
+    <string name="Sign_up">Sign up</string>
     <string name="back">Back</string>
 
     <string name="bt_notif">Show Notification</string>
