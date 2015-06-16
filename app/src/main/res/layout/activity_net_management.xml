@@ -36,7 +36,8 @@
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
                 android:background="@color/color_login_pass"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textSize="@dimen/text_size_changed_text"/>
 
             <TextView
                 android:id="@+id/tv_net_password"
@@ -54,7 +55,8 @@
                 android:layout_marginLeft="@dimen/margin"
                 android:layout_marginRight="@dimen/margin"
                 android:background="@color/color_login_pass"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="@dimen/text_size_changed_text"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
