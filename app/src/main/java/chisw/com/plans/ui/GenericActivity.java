@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import chisw.com.plans.R;
 
@@ -41,6 +42,10 @@ public abstract class GenericActivity extends AppCompatActivity {
     }
 
     protected abstract int contentViewResId();
+
+    protected void showToast(String text){
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void setContentView(int layoutResID) {
