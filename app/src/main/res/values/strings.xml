@@ -11,4 +11,6 @@
     <string name="log_in">Log in</string>
     <string name="Sign_up">Sign_up</string>
     <string name="back">Back</string>
+
+    <string name="bt_notif">Show Notification</string>
 </resources>

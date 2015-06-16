@@ -9,13 +9,12 @@
 
     </style>
 
-    <style name="PlannerToolbar" parent="Widget.AppCompat.Toolbar">
+    <style name="PlannerToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbar_background_color</item>
     </style>
 
     <style name="ToolbarTitle" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">#ffffff</item>
-        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
 </resources>
