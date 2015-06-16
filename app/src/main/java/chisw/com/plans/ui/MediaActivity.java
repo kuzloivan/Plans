@@ -24,6 +24,9 @@ public class MediaActivity extends Activity {
         Clicker clicker = new Clicker();
         findViewById(R.id.ma_goback_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
+        findViewById(R.id.ma_play_btn).setOnClickListener(clicker);
+        findViewById(R.id.ma_stop_btn).setOnClickListener(clicker);
+
         pathToAudio = (TextView) findViewById(R.id.ma_res_tv);
     }
 
@@ -54,6 +57,12 @@ public class MediaActivity extends Activity {
                     break;
                 case R.id.ma_choose_btn:
                     chooseAudio();
+                    break;
+                case R.id.ma_play_btn:
+
+                    break;
+                case R.id.ma_stop_btn:
+
                     break;
             }
         }
