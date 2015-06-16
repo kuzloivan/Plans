@@ -3,6 +3,7 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
 
@@ -43,6 +44,13 @@ public class PlannerActivity extends ToolbarActivity {
 
         lvPlanner.deferNotifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_planner, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

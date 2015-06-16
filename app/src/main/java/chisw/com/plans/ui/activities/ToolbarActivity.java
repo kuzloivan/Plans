@@ -2,6 +2,7 @@ package chisw.com.plans.ui.activities;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -20,7 +21,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
     private void initToolbar() {
-        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
     }
 
     @Override
