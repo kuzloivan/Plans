@@ -7,6 +7,9 @@ import android.widget.Toast;
 
 import chisw.com.plans.R;
 
+/**
+ * Created by Alexander on 16.06.2015.
+ */
 public abstract class ToolbarActivity extends BaseActivity {
 
     private Toolbar toolbar;
