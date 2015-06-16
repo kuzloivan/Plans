@@ -14,34 +14,26 @@ import chisw.com.plans.R;
 /**
  * Created by Alexander on 15.06.2015.
  */
-public class PlannerActivity extends AppCompatActivity {
-
-    private Toolbar toolbar;
+public class PlannerActivity extends GenericActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_planner);
-
-        initToolbar();
-
-        Clicker clicker = new Clicker();
-
-
-
-        findViewById(R.id.pa_goBack_btn).setOnClickListener(clicker);
-
-        //getActionBar().setDisplayHomeAsUpEnabled(false);
-    }
-
-    private void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(R.string.title_activity_planner);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+
+        Clicker clicker = new Clicker();
+
+        findViewById(R.id.pa_goBack_btn).setOnClickListener(clicker);
     }
+
+    @Override
+    protected int contentViewResId() {
+        return R.layout.activity_planner;
+    }
+
 
     public static void start(Activity activity){
         Intent intent = new Intent(activity, PlannerActivity.class);

@@ -1,15 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="AppTheme.PlannerTheme">
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="PlannerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.PlannerTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
     </style>
 
     <style name="PlannerToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/toolbar_background_color</item>
     </style>
+
+    <style name="ToolbarTitle" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
 </resources>
