@@ -5,5 +5,7 @@
     <color name="color_log_sign">#01579B</color>
     <color name="color_text_log_sign">#FFFFFF</color>
     <color name="color_list_item_text_view_text">#FFFFFF</color>
+    <color name="color_ma_play_stop">#01579B</color>
+    <color name="color_text_ma_play_stop">#FFFFFF</color>
 
 </resources>
