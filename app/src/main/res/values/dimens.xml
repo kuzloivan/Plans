@@ -7,4 +7,5 @@
     <dimen name="padding8">8dp</dimen>
     <dimen name="text_size_log_sign">22sp</dimen>
     <dimen name="text_size_changed_text">18sp</dimen>
+    <dimen name="text_size_names">25sp</dimen>
 </resources>
