@@ -25,6 +25,9 @@ public class NetManagementActivity extends ToolbarActivity {
         ClickerNet clickerNet = new ClickerNet();
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
+
+        /* For testing */
+        findViewById(R.id.btn_sph_tst).setOnClickListener(clickerNet);
     }
 
     @Override
@@ -34,38 +37,45 @@ public class NetManagementActivity extends ToolbarActivity {
 
     public final class ClickerNet implements View.OnClickListener {
 
+        String login;
+        String password;
+
         @Override
         public void onClick(View v) {
+            login = ((EditText)findViewById(R.id.net_user_login)).getText().toString();
+            password = ((EditText)findViewById(R.id.net_user_password)).getText().toString();
+
             switch(v.getId()) {
                 case R.id.btn_sign_up:
-                    netManager.registerUser(((EditText)findViewById(R.id.net_user_login)).getText().toString(),
-                            ((EditText)findViewById(R.id.net_user_password)).getText().toString(),
-                            new SignUpCallback() {
+                    netManager.registerUser(login, password, new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e != null) {
-                                Toast.makeText(NetManagementActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                showToast(e.getMessage());
                             } else {
-                                Toast.makeText(NetManagementActivity.this, "successful", Toast.LENGTH_SHORT).show();
+                                showToast("Successful");
                             }
                         }
                     });
                     break;
                 case R.id.btn_log_in:
-                    netManager.loginUser(((EditText)findViewById(R.id.net_user_login)).getText().toString(),
-                            ((EditText)findViewById(R.id.net_user_password)).getText().toString(),
-                            new LogInCallback() {
+                    netManager.loginUser(login, password, new LogInCallback() {
                         @Override
                         public void done(ParseUser parseUser, ParseException e) {
                             if(e != null) {
-                                Toast.makeText(NetManagementActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                showToast(e.getMessage());
                             } else {
-                                Toast.makeText(NetManagementActivity.this, "login was successful", Toast.LENGTH_SHORT).show();
-
+                                showToast("Login was successful");
                                 SplashActivity.start(NetManagementActivity.this);
                             }
                         }
                     });
+                    break;
+                /*
+                 * For testing!!!
+                 */
+                case R.id.btn_sph_tst:
+                    SplashActivity.start(NetManagementActivity.this);
                     break;
             }
         }
