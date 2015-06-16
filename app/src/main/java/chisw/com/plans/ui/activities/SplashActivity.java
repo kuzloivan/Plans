@@ -19,7 +19,6 @@ public class SplashActivity extends BaseActivity {
 
         findViewById(R.id.sa_planner_btn).setOnClickListener(clicker);
         findViewById(R.id.sa_media_btn).setOnClickListener(clicker);
-        findViewById(R.id.sa_net_btn).setOnClickListener(clicker);
         findViewById(R.id.sa_alarm_btn).setOnClickListener(clicker);
         findViewById(R.id.sa_settings_btn).setOnClickListener(clicker);
     }
@@ -36,10 +35,6 @@ public class SplashActivity extends BaseActivity {
             switch (v.getId()) {
                 case R.id.sa_alarm_btn:
                     AlarmActivity.start(SplashActivity.this);
-                    break;
-
-                case R.id.sa_net_btn:
-                    NetManagementActivity.start(SplashActivity.this);
                     break;
 
                 case R.id.sa_planner_btn:
