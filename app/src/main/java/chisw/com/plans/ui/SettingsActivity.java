@@ -13,6 +13,7 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
         Clicker clicker = new Clicker();
         findViewById(R.id.sa_ret_btn).setOnClickListener(clicker);
     }
@@ -21,6 +22,7 @@ public class SettingsActivity extends Activity {
         Intent intent = new Intent(activity, SettingsActivity.class);
         activity.startActivity(intent);
     }
+
     public final class Clicker implements View.OnClickListener{
         @Override
         public void onClick(View view){
