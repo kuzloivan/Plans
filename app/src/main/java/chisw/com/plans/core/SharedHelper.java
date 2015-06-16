@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 
 public class SharedHelper {
 
-    public static final String appPreferences = "this is settings";
-    public static final String APP_PREFERENCE_MEDIA_WAY = "default way";
-    public static final String APP_PREFERENCE_LOGIN = "default login";
+    public static final String appPreferences = "plans";
+    public static final String APP_PREFERENCE_MEDIA_WAY = "path";
+    public static final String APP_PREFERENCE_LOGIN = "login";
 
     private SharedPreferences sharedPreferences;
 
@@ -17,7 +17,7 @@ public class SharedHelper {
     }
 
     public String getDefaultMediaWay () {
-        return sharedPreferences.getString(APP_PREFERENCE_MEDIA_WAY, "String");
+        return sharedPreferences.getString(APP_PREFERENCE_MEDIA_WAY, "");
     }
 
     public void setDefaultMediaWay (String appPreferencesMediaWay) {
@@ -25,7 +25,7 @@ public class SharedHelper {
     }
 
     public String getDefaultLogin() {
-        return sharedPreferences.getString(APP_PREFERENCE_LOGIN, "String");
+        return sharedPreferences.getString(APP_PREFERENCE_LOGIN, "");
     }
 
     public void setDefaultLogin(String appPreferencesLogin) {

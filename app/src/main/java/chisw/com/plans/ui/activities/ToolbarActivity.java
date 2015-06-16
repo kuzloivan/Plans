@@ -7,9 +7,6 @@ import android.widget.Toast;
 
 import chisw.com.plans.R;
 
-/**
- * Created by Alexander on 16.06.2015.
- */
 public abstract class ToolbarActivity extends BaseActivity {
 
     private Toolbar toolbar;
@@ -23,9 +20,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
     private void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
     }
 
     @Override
