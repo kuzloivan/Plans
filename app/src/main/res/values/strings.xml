@@ -4,7 +4,6 @@
     <string name="title_activity_settings">Settings Activity</string>
     <string name="title_activity_net_management">Net Management</string>
     <string name="title_activity_media">Media</string>
-    <string name="hello_world">Hello word</string>
     <string name="settings_act">Settings activity</string>
     <string name="login">User login</string>
     <string name="password">Password</string>

@@ -3,4 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
+    <item android:title="Settings"
+        app:showAsAction="always"></item>
+
 </menu>
