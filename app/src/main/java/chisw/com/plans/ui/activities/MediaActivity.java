@@ -1,13 +1,10 @@
-package chisw.com.plans.ui;
+package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +12,7 @@ import java.io.IOException;
 
 import chisw.com.plans.R;
 
-public class MediaActivity extends GenericActivity {
+public class MediaActivity extends ToolbarActivity {
 
     private TextView message;
     private MediaPlayer player;
