@@ -7,20 +7,20 @@ import android.view.View;
 
 import chisw.com.plans.R;
 
-public class SettingsActivity extends GenericActivity {
+public class SettingsActivity extends ToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         Clicker clicker = new Clicker();
         findViewById(R.id.sa_ret_btn).setOnClickListener(clicker);
     }
 
     @Override
     protected int contentViewResId() {
-       return R.layout.activity_settings;
+        return R.layout.activity_settings;
     }
 
     public static void start(Activity activity) {
@@ -28,9 +28,9 @@ public class SettingsActivity extends GenericActivity {
         activity.startActivity(intent);
     }
 
-    public final class Clicker implements View.OnClickListener{
+    public final class Clicker implements View.OnClickListener {
         @Override
-        public void onClick(View view){
+        public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.sa_ret_btn:
                     finish();
