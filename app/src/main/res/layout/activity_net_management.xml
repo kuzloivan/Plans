@@ -8,6 +8,8 @@
     android:background="@android:color/holo_purple"
     tools:context="chisw.com.plans.ui.activities.NetManagementActivity">
 
+    <include layout="@layout/toolbar" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,11 +19,19 @@
         android:gravity="center"/>
 
     <Button
-        android:id="@+id/nm_ret_btn"
+        android:id="@+id/nm_reg_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_red_dark"
-        android:text="Return"
+        android:text="Register"
+        android:textColor="@android:color/background_light"/>
+
+    <Button
+        android:id="@+id/nm_log_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_dark"
+        android:text="Login"
         android:textColor="@android:color/background_light"/>
 
 </LinearLayout>
