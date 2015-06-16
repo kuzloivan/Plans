@@ -31,6 +31,7 @@
 
         <activity
             android:name=".ui.PlannerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PlannerTheme"
             android:label="@string/title_activity_planner">
         </activity>

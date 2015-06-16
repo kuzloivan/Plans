@@ -23,7 +23,7 @@ public class PlannerActivity extends GenericActivity {
         getSupportActionBar().setTitle(R.string.title_activity_planner);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+
 
         Clicker clicker = new Clicker();
 

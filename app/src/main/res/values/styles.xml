@@ -9,7 +9,7 @@
 
     </style>
 
-    <style name="PlannerToolbar" parent="Widget.AppCompat.Toolbar">
+    <style name="PlannerToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbar_background_color</item>
     </style>
 
