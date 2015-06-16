@@ -6,4 +6,9 @@
     <string name="title_activity_media">Media</string>
     <string name="hello_world">Hello word</string>
     <string name="settings_act">settings activity</string>
+    <string name="login">User login</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="Sign_up">Sign_up</string>
+    <string name="back">Back</string>
 </resources>

@@ -14,21 +14,9 @@ public class NetManagementActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_management);
 
-        ClickerNet clickerNet = new ClickerNet();
-        findViewById(R.id.nm_ret_btn).setOnClickListener(clickerNet);
     }
 
-    public final class ClickerNet implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch(v.getId()) {
-                case R.id.nm_ret_btn:
-                    finish();
-                    break;
-            }
-        }
-    }
+    
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, NetManagementActivity.class);

@@ -1,27 +1,78 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/holo_purple"
-    tools:context="chisw.com.plans.ui.NetManagementActivity">
+    android:background="@color/color_background"
+    tools:context="chisw.com.plans.ui.NetManagementActivity"
+    android:gravity="center">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is NetManagementActivity"
-        android:textSize="19pt"
-        android:textColor="@android:color/background_light"
-        android:gravity="center"/>
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/nm_ret_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_dark"
-        android:text="Return"
-        android:textColor="@android:color/background_light"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_net_login"
+            android:text="@string/login"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/net_user_login"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:inputType="text"
+            android:background="@color/color_login_pass"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_net_password"
+            android:text="@string/password"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/net_user_password"
+            android:inputType="textPassword"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:background="@color/color_login_pass"
+            />
+
+        <Button
+            android:id="@+id/btn_lsign_up"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Sign_up"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginTop="@dimen/padding16"
+            android:background="@color/color_log_sign"
+            android:textColor="@color/color_text_log_sign"
+            />
+
+        <Button
+            android:id="@+id/btn_log_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginTop="@dimen/padding8"
+            android:background="@color/color_log_sign"
+            android:textColor="@color/color_text_log_sign"
+            />
+    </LinearLayout>
 </LinearLayout>
