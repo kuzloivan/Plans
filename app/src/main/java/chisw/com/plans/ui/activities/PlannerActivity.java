@@ -1,20 +1,19 @@
-package chisw.com.plans.ui;
+package chisw.com.plans.ui.activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import chisw.com.plans.R;
 
 /**
  * Created by Alexander on 15.06.2015.
  */
-public class PlannerActivity extends GenericActivity {
+public class PlannerActivity extends ToolbarActivity {
+
+    ListView lvPlanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +23,10 @@ public class PlannerActivity extends GenericActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
         Clicker clicker = new Clicker();
 
-        findViewById(R.id.pa_goBack_btn).setOnClickListener(clicker);
+        lvPlanner = (ListView)findViewById(R.id.pa_planner_listview);
+
     }
 
 
@@ -48,10 +47,7 @@ public class PlannerActivity extends GenericActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.pa_goBack_btn:
-                    Toast.makeText(getApplicationContext(), "We are gone...", Toast.LENGTH_SHORT).show();
-                    PlannerActivity.this.finish();
-                    break;
+
             }
         }
     }

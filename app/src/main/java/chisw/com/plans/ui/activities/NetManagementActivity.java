@@ -1,4 +1,4 @@
-package chisw.com.plans.ui;
+package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
