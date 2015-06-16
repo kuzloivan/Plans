@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/pa_tv_title"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:textStyle="bold"
+        android:textColor="#ff525252"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/pa_tv_time"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pa_tv_title"
+        android:text="18.50"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pa_tv_title"
+        android:layout_alignParentRight="true"
+        android:text="2015.06.12"/>
+
+</RelativeLayout>

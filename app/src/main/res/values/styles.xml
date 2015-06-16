@@ -9,13 +9,19 @@
 
     </style>
 
-    <style name="PlannerToolbar" parent="Widget.AppCompat.Toolbar">
+    <style name="AppTheme.Fullscreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="PlannerToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbar_background_color</item>
     </style>
 
     <style name="ToolbarTitle" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">#ffffff</item>
-        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
 </resources>

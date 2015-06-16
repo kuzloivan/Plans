@@ -1,28 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="chisw.com.plans.ui.PlannerActivity">
+    tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
     <include layout="@layout/toolbar" />
 
-    <Button
-        android:id="@+id/pa_goBack_btn"
-        android:layout_alignParentBottom="true"
+    <ListView
+        android:id="@+id/pa_planner_listview"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:background="#1c72c0"
-        android:text="Go back"/>
-
-    <TextView
-        android:id="@+id/pa_tv"
-        android:textColor="#2e8de8"
-        android:layout_centerVertical="true"
-        android:layout_above="@id/pa_goBack_btn"
-        android:gravity="center"
-        android:text="WELCOME TO\nPLANNER ACTIVITY"
-        android:textSize="40dp"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"></ListView>
 
 </RelativeLayout>
