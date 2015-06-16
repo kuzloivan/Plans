@@ -13,6 +13,8 @@ import chisw.com.plans.R;
 
 public class MediaActivity extends Activity {
 
+    private TextView tv;
+
     static final int REQUEST_AUDIO_GET = 1;
 
     @Override
@@ -34,7 +36,7 @@ public class MediaActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_AUDIO_GET && resultCode == RESULT_OK) {
             String path = data.getDataString();
-            TextView tv = (TextView) findViewById(R.id.ma_res_tv);
+            tv = (TextView) findViewById(R.id.ma_res_tv);
             tv.setText(path);
         }
     }
@@ -61,5 +63,4 @@ public class MediaActivity extends Activity {
             }
         }
     }
-
 }
