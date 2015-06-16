@@ -12,30 +12,30 @@ public class SplashActivity extends Activity {
     private Button mediaBt;
     private Button alarmBt;
     private Button plannerBt;
-    private Button settingBt;
+    private Button settingsBt;
     private Button net_managerBt;
     private Button btnOpenPlannerActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_main);
+        setContentView(R.layout.activity_splash);
 
         Clicker clicker = new Clicker();
 
-        btnOpenPlannerActivity = (Button)findViewById(R.id.btnOpenPlannerActivity);
+        btnOpenPlannerActivity = (Button)findViewById(R.id.sa_planner_btn);
         btnOpenPlannerActivity.setOnClickListener(clicker);
 
-        mediaBt = (Button) findViewById(R.id.mediaBt);
+        mediaBt = (Button) findViewById(R.id.sa_media_btn);
         mediaBt.setOnClickListener(clicker);
 
-        netMngtBtn = (Button) findViewById(R.id.netMngtStart_btn);
-        netMngtBtn.setOnClickListener(clicker);
+        net_managerBt = (Button) findViewById(R.id.sa_net_btn);
+        net_managerBt.setOnClickListener(clicker);
 
-        alarmBt = (Button) findViewById(R.id.alarmBt);
+        alarmBt = (Button) findViewById(R.id.sa_alarm_btn);
         alarmBt.setOnClickListener(clicker);
 
-        settingsBt = (Button) findViewById(R.id.settingsBt);
+        settingsBt = (Button) findViewById(R.id.sa_settings_btn);
         settingsBt.setOnClickListener(clicker);
     }
 
@@ -44,19 +44,23 @@ public class SplashActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.alarmBt:
+                case R.id.sa_alarm_btn:
                     AlarmActivity.start(SplashActivity.this);
                     break;
-                case R.id.netMngtStart_btn:
-                    NetManagmentActivity.start(SplashActivity.this);
+
+                case R.id.sa_net_btn:
+                    NetManagementActivity.start(SplashActivity.this);
                     break;
-                case R.id.btnOpenPlannerActivity:
+
+                case R.id.sa_planner_btn:
                     PlannerActivity.start(SplashActivity.this);
                     break;
-                case R.id.settingsBt:
+
+                case R.id.sa_settings_btn:
                     SettingsActivity.start(SplashActivity.this);
                     break;
-                case R.id.mediaBt:
+
+                case R.id.sa_media_btn:
                     MediaActivity.start(SplashActivity.this);
                     break;
             }
