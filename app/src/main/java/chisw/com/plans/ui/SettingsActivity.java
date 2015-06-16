@@ -7,7 +7,7 @@ import android.view.View;
 
 import chisw.com.plans.R;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends GenericActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +16,11 @@ public class SettingsActivity extends Activity {
 
         Clicker clicker = new Clicker();
         findViewById(R.id.sa_ret_btn).setOnClickListener(clicker);
+    }
+
+    @Override
+    protected int contentViewResId() {
+       return R.layout.activity_settings;
     }
 
     public static void start(Activity activity) {
@@ -33,6 +38,7 @@ public class SettingsActivity extends Activity {
             }
         }
     }
+
 
 }
 
