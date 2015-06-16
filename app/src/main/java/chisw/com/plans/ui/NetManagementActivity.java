@@ -4,21 +4,28 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.net.NetManager;
 
-public class NetManagementActivity extends Activity {
+public class NetManagementActivity extends GenericActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_net_management);
 
         ClickerNet clickerNet = new ClickerNet();
-        findViewById(R.id.nm_ret_btn).setOnClickListener(clickerNet);
+        findViewById(R.id.nm_reg_btn).setOnClickListener(clickerNet);
+        findViewById(R.id.nm_log_btn).setOnClickListener(clickerNet);
+    }
+
+    @Override
+    protected int contentViewResId() {
+        return R.layout.activity_net_management;
     }
 
     public final class ClickerNet implements View.OnClickListener {
@@ -26,13 +33,11 @@ public class NetManagementActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch(v.getId()) {
-                case R.id.nm_ret_btn:
-                    NetManager netManager = new NetManager();
-                    try {
-                        netManager.registerUser("vlad", "123456");
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                case R.id.nm_reg_btn:
+
+                    break;
+                case R.id.nm_log_btn:
+
                     break;
             }
         }

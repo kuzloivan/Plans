@@ -21,6 +21,6 @@ public class NetManager implements NetBridge{
 
     @Override
     public void loginUser(String pName, String pPassword) {
-
+        ParseUser.logInInBackground(pName, pPassword);
     }
 }
