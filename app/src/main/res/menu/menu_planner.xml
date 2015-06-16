@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
-    <item android:title="Settings"
-        app:showAsAction="always"></item>
+    <item
+        android:title="@string/add_new_reminder"
+        android:icon="@drawable/ic_add_circle_white_24dp"
+        app:showAsAction="always">
+
+    </item>
 
 </menu>

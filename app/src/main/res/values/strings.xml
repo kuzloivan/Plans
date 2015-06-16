@@ -2,7 +2,7 @@
     <string name="app_name">Plans</string>
     <string name="title_activity_planner">Planner</string>
     <string name="title_activity_settings">Settings Activity</string>
-    <string name="title_activity_net_management">NetManagement</string>
+    <string name="title_activity_net_management">Net Management</string>
     <string name="title_activity_media">Media</string>
     <string name="settings_act">Settings activity</string>
     <string name="login">User login</string>
@@ -10,6 +10,7 @@
     <string name="log_in">Log in</string>
     <string name="Sign_up">Sign up</string>
     <string name="back">Back</string>
+    <string name="add_new_reminder">Add reminder</string>
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
     <string name="sa_notification_loud">Notification loud</string>
