@@ -29,4 +29,9 @@
         android:layout_height="wrap_content"
         android:text="Choose audio" />
 
+    <TextView
+        android:id="@+id/ma_res_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="chisw.com.plans">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +32,7 @@
         <activity
             android:name=".ui.PlannerActivity"
             android:parentActivityName=".ui.SplashActivity"
+            android:theme="@style/AppTheme.PlannerTheme"
             android:label="@string/title_activity_planner">
         </activity>
 

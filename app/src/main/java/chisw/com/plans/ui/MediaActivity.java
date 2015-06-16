@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import chisw.com.plans.R;
 
 public class MediaActivity extends Activity {
+
+    private TextView pathToAudio;
 
     static final int REQUEST_AUDIO_GET = 1;
 
@@ -20,6 +24,7 @@ public class MediaActivity extends Activity {
         Clicker clicker = new Clicker();
         findViewById(R.id.ma_goback_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
+        pathToAudio = (TextView) findViewById(R.id.ma_res_tv);
     }
 
     public static void start(Activity activity) {
@@ -30,7 +35,14 @@ public class MediaActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_AUDIO_GET:
+                pathToAudio.setText(data.getDataString());
+                break;
+        }
     }
 
     public final class Clicker implements View.OnClickListener {
@@ -41,13 +53,16 @@ public class MediaActivity extends Activity {
                     MediaActivity.this.finish();
                     break;
                 case R.id.ma_choose_btn:
-                    Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
-                    chooseAudio.setType("audio/*");
-                    if (chooseAudio.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
-                    }
+                    chooseAudio();
                     break;
+            }
+        }
 
+        private void chooseAudio() {
+            Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
+            chooseAudio.setType("audio/*");
+            if (chooseAudio.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
             }
         }
     }
