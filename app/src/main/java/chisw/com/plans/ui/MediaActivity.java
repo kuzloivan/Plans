@@ -13,7 +13,7 @@ import chisw.com.plans.R;
 
 public class MediaActivity extends Activity {
 
-    private TextView tv;
+    private TextView pathToAudio;
 
     static final int REQUEST_AUDIO_GET = 1;
 
@@ -24,6 +24,7 @@ public class MediaActivity extends Activity {
         Clicker clicker = new Clicker();
         findViewById(R.id.ma_goback_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
+        pathToAudio = (TextView) findViewById(R.id.ma_res_tv);
     }
 
     public static void start(Activity activity) {
@@ -34,12 +35,14 @@ public class MediaActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode != REQUEST_AUDIO_GET || resultCode != RESULT_OK) {
+        if (resultCode != RESULT_OK) {
             return;
         }
-        String path = data.getDataString();
-        tv = (TextView) findViewById(R.id.ma_res_tv);
-        tv.setText(path);
+        switch (requestCode) {
+            case REQUEST_AUDIO_GET:
+                pathToAudio.setText(data.getDataString());
+                break;
+        }
     }
 
     public final class Clicker implements View.OnClickListener {
@@ -52,7 +55,6 @@ public class MediaActivity extends Activity {
                 case R.id.ma_choose_btn:
                     chooseAudio();
                     break;
-
             }
         }
 
