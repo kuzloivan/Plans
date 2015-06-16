@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.parse.ParseException;
+
 import chisw.com.plans.R;
+import chisw.com.plans.net.NetManager;
 
 public class NetManagementActivity extends Activity {
 
@@ -24,7 +27,12 @@ public class NetManagementActivity extends Activity {
         public void onClick(View v) {
             switch(v.getId()) {
                 case R.id.nm_ret_btn:
-                    finish();
+                    NetManager netManager = new NetManager();
+                    try {
+                        netManager.registerUser("vlad", "123456");
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
