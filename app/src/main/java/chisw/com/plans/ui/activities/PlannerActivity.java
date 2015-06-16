@@ -6,7 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import chisw.com.plans.R;
+import chisw.com.plans.core.PApplication;
+import chisw.com.plans.ui.adapters.PlannerArrayAdapter;
 
 /**
  * Created by Alexander on 15.06.2015.
@@ -14,6 +19,8 @@ import chisw.com.plans.R;
 public class PlannerActivity extends ToolbarActivity {
 
     ListView lvPlanner;
+    PlannerArrayAdapter plannerArrayAdapter;
+    List<String[]> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,15 @@ public class PlannerActivity extends ToolbarActivity {
         Clicker clicker = new Clicker();
 
         lvPlanner = (ListView)findViewById(R.id.pa_planner_listview);
+
+        arrayList = new ArrayList<>();
+        plannerArrayAdapter = new PlannerArrayAdapter(this, arrayList);
+        lvPlanner.setAdapter(plannerArrayAdapter);
+
+        arrayList.add(new String[]{"Make tea", "16.00", "Tomorrow"});
+        arrayList.add(new String[] {"Make coffee", "15.00", "Today"});
+
+        lvPlanner.deferNotifyDataSetChanged();
 
     }
 
