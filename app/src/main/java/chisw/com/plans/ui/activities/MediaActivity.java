@@ -103,6 +103,9 @@ public class MediaActivity extends ToolbarActivity {
 
         private void startPlayer() {
             try {
+                if(player.isPlaying()){
+                    return;
+                }
                 if (path == null) {
                     message.setText("File wasn't chosen");
                     return;
