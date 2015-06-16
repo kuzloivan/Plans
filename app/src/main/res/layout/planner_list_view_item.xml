@@ -4,42 +4,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/itemTvName"
-        android:textSize="23dp"
+        android:id="@+id/pa_tv_title"
+        android:textSize="@dimen/abc_text_size_large_material"
         android:textStyle="bold"
         android:textColor="#ff525252"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"/>
+        android:text="Title"/>
 
     <TextView
-        android:id="@+id/itemTvId"
+        android:layout_width="wrap_content"
+        android:id="@+id/pa_tv_time"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pa_tv_title"
+        android:text="18.50"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pa_tv_title"
         android:layout_alignParentRight="true"
-        android:textSize="18dp"
-        android:textColor="#ff525252"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ID"/>
-
-    <TextView
-        android:id="@+id/itemTvCountry"
-        android:textColor="#ff979797"
-        android:textStyle="italic"
-        android:layout_below="@id/itemTvName"
-        android:textSize="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Country"/>
-
-    <TextView
-        android:id="@+id/itemTvBirth"
-        android:textColor="#ff979797"
-        android:textStyle="italic"
-        android:layout_below="@id/itemTvName"
-        android:layout_alignParentRight="true"
-        android:textSize="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Birth"/>
+        android:text="2015.06.12"/>
 
 </RelativeLayout>

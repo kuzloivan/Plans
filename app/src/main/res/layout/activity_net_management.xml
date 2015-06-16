@@ -7,6 +7,8 @@
     tools:context="chisw.com.plans.ui.NetManagementActivity"
     android:gravity="center">
 
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
