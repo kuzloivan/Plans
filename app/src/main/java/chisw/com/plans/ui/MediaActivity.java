@@ -34,11 +34,12 @@ public class MediaActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_AUDIO_GET && resultCode == RESULT_OK) {
-            String path = data.getDataString();
-            tv = (TextView) findViewById(R.id.ma_res_tv);
-            tv.setText(path);
+        if (requestCode != REQUEST_AUDIO_GET || resultCode != RESULT_OK) {
+            return;
         }
+        String path = data.getDataString();
+        tv = (TextView) findViewById(R.id.ma_res_tv);
+        tv.setText(path);
     }
 
     public final class Clicker implements View.OnClickListener {
