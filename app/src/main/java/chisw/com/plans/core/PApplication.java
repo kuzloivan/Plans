@@ -11,6 +11,7 @@ public class PApplication extends Application {
     private NetManager netManager;
     private static final String APP_KEY = "fYItmKEFfg4ZxDEB1SrwVMUx82sw91XMyTeZJ0fC";
     private static final String CLNT_KEY = "QVWnE2OAOKVt5yv3KRt830rguZv22wkk8ySkLA4K";
+    private SharedHelper sharedHelper;
 
     public void onCreate() {
         super.onCreate();
@@ -18,15 +19,15 @@ public class PApplication extends Application {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, APP_KEY, CLNT_KEY);
 
-        setNetManager();
+        netManager = new NetManager();
+        sharedHelper = new SharedHelper(this);
     }
 
     public NetManager getNetManager() {
         return netManager;
     }
 
-    public void setNetManager() {
-        this.netManager = new NetManager();
+    public SharedHelper getSharedHelper() {
+        return sharedHelper;
     }
-
 }

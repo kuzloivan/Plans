@@ -5,4 +5,5 @@
     <dimen name="margin">16dp</dimen>
     <dimen name="padding16">16dp</dimen>
     <dimen name="padding8">8dp</dimen>
+    <dimen name="text_size_log_sign">15sp</dimen>
 </resources>
