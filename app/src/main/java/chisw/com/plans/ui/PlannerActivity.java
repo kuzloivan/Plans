@@ -22,12 +22,15 @@ public class PlannerActivity extends GenericActivity {
 
         getSupportActionBar().setTitle(R.string.title_activity_planner);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
 
         Clicker clicker = new Clicker();
 
         findViewById(R.id.pa_goBack_btn).setOnClickListener(clicker);
     }
+
+
 
     @Override
     protected int contentViewResId() {

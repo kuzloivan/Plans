@@ -5,4 +5,6 @@
     <string name="title_activity_net_management">NetManagement</string>
     <string name="title_activity_media">Media</string>
     <string name="hello_world">Hello word</string>
+
+    <string name="bt_notif">Show Notification</string>
 </resources>
