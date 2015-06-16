@@ -12,5 +12,4 @@
     <style name="PlannerToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/toolbar_background_color</item>
     </style>
-
 </resources>
