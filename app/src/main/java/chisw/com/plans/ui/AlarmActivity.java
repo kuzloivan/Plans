@@ -16,10 +16,25 @@ public class AlarmActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm );
+        setContentView(R.layout.activity_alarm);
+        Clicker c = new Clicker();
+        findViewById(R.id.bt_ret).setOnClickListener(c);
     }
 
-    public static void start(Activity activity) {
-        activity.startActivity(new Intent(activity, AlarmActivity.class));
+    public static void start(Activity a) {
+        Intent i = new Intent(a, AlarmActivity.class);
+        a.startActivity(i);
+        //activity.startActivity(new Intent(activity, AlarmActivity.class));
+    }
+
+    public final class Clicker implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()) {
+                case R.id.bt_ret:
+                    finish();
+                    break;
+            }
+        }
     }
 }
