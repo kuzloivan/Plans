@@ -24,7 +24,7 @@ public class SplashActivity extends BaseActivity {
         findViewById(R.id.sa_settings_btn).setOnClickListener(clicker);
     }
 
-    public static void start(Activity activity){
+    public static void start(Activity activity) {
         Intent intent = new Intent(activity, SplashActivity.class);
         activity.startActivity(intent);
     }

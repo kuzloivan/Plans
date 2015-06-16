@@ -11,6 +11,9 @@
     <string name="Sign_up">Sign up</string>
     <string name="back">Back</string>
     <string name="add_new_reminder">Add reminder</string>
+    <string name="sa_vibration">Vibration</string>
+    <string name="sa_notification_enable">Notification enable</string>
+    <string name="sa_notification_loud">Notification loud</string>
 
     <string name="go_to_sph">Go to Splash</string>
 

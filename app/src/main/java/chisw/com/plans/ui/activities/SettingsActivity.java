@@ -14,8 +14,6 @@ public class SettingsActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        Clicker clicker = new Clicker();
-        findViewById(R.id.sa_ret_btn).setOnClickListener(clicker);
     }
 
     @Override
@@ -27,18 +25,5 @@ public class SettingsActivity extends ToolbarActivity {
         Intent intent = new Intent(activity, SettingsActivity.class);
         activity.startActivity(intent);
     }
-
-    public final class Clicker implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.sa_ret_btn:
-                    finish();
-                    break;
-            }
-        }
-    }
-
-
 }
 
