@@ -12,12 +12,6 @@
     <include layout="@layout/toolbar" />
 
     <Button
-        android:id="@+id/ma_goback_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Go back" />
-
-    <Button
         android:id="@+id/ma_choose_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -28,11 +28,10 @@ public class MediaActivity extends GenericActivity {
         super.onCreate(savedInstanceState);
         Clicker clicker = new Clicker();
 
-        getSupportActionBar().setTitle(R.string.title_activity_planner);
+        getSupportActionBar().setTitle(R.string.title_activity_media);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
-        findViewById(R.id.ma_goback_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_play_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_stop_btn).setOnClickListener(clicker);
@@ -69,30 +68,16 @@ public class MediaActivity extends GenericActivity {
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            try {
-                switch (view.getId()) {
-                    case R.id.ma_goback_btn:
-                        MediaActivity.this.finish();
-                        break;
-                    case R.id.ma_choose_btn:
-                        chooseAudio();
-                        break;
-                    case R.id.ma_play_btn:
-                        if (path == null) {
-                            message.setText("File wasn't chosen");
-                            return;
-                        }
-                        player.setDataSource(path);
-                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                        player.prepare();
-                        player.start();
-                        break;
-                    case R.id.ma_stop_btn:
-                        player.stop();
-                        break;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            switch (view.getId()) {
+                case R.id.ma_choose_btn:
+                    chooseAudio();
+                    break;
+                case R.id.ma_play_btn:
+                    startPlayer();
+                    break;
+                case R.id.ma_stop_btn:
+                    player.stop();
+                    break;
             }
         }
 
@@ -101,6 +86,21 @@ public class MediaActivity extends GenericActivity {
             chooseAudio.setType("audio/*");
             if (chooseAudio.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
+            }
+        }
+
+        private void startPlayer() {
+            try {
+                if (path == null) {
+                    message.setText("File wasn't chosen");
+                    return;
+                }
+                player.setDataSource(path);
+                player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                player.prepare();
+                player.start();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
