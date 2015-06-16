@@ -41,6 +41,8 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
+
+       <receiver android:name="chisw.com.plans.core.Receiver"/>
     </application>
 
 </manifest>
