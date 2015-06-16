@@ -11,6 +11,7 @@ import chisw.com.plans.core.SharedHelper;
  * Created by Alexander on 16.06.2015.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    protected NetManager netManager;
 
     protected SharedHelper sharedHelper;
 
@@ -23,5 +24,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void showToast(String text){
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        netManager = ((PApplication)getApplication()).getNetManager();
     }
 }

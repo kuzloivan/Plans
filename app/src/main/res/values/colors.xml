@@ -1,7 +1,7 @@
 <resources>
     <color name="toolbar_background_color">#01579B</color>
-    <color name="color_background">#8A2BE2</color>
-    <color name="color_login_pass">#E6E6FA</color>
-    <color name="color_log_sign">#87CEFA</color>
-    <color name="color_text_log_sign">#2F4F4F</color>
+    <color name="color_background">#FFFFFF</color>
+    <color name="color_login_pass">#FFFFFF</color>
+    <color name="color_log_sign">#01579B</color>
+    <color name="color_text_log_sign">#FFFFFF</color>
 </resources>
