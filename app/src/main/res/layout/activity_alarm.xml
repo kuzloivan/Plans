@@ -9,11 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alarm activity"
-        android:layout_weight="0.55"
+        android:layout_weight="0.09"
         android:gravity="center" />
 
     <Button
+        android:id="@+id/bt_ret"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Alarm_NEW"/>
+        android:background="@android:color/holo_green_dark"
+        android:text="Return"
+        android:layout_gravity="bottom" />
+
 </LinearLayout>
