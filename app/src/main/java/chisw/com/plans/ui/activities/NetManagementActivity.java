@@ -21,9 +21,6 @@ public class NetManagementActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_net_management);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         ClickerNet clickerNet = new ClickerNet();
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
@@ -64,6 +61,8 @@ public class NetManagementActivity extends ToolbarActivity {
                                 Toast.makeText(NetManagementActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(NetManagementActivity.this, "login was successful", Toast.LENGTH_SHORT).show();
+
+                                SplashActivity.start(NetManagementActivity.this);
                             }
                         }
                     });

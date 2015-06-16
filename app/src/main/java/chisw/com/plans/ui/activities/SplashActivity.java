@@ -1,5 +1,7 @@
 package chisw.com.plans.ui.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,6 +24,10 @@ public class SplashActivity extends BaseActivity {
         findViewById(R.id.sa_settings_btn).setOnClickListener(clicker);
     }
 
+    public static void start(Activity activity){
+        Intent intent = new Intent(activity, SplashActivity.class);
+        activity.startActivity(intent);
+    }
 
     public final class Clicker implements View.OnClickListener {
 

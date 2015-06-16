@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.SharedHelper;
+import chisw.com.plans.net.NetManager;
 
 /**
  * Created by Alexander on 16.06.2015.
@@ -20,14 +21,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         PApplication pApplication = (PApplication) getApplication();
         sharedHelper = pApplication.getSharedHelper();
+
+        netManager = pApplication.getNetManager();
     }
 
     protected void showToast(String text){
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        netManager = ((PApplication)getApplication()).getNetManager();
     }
 }
