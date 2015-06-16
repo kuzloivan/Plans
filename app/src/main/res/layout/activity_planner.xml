@@ -6,7 +6,7 @@
     <include layout="@layout/toolbar" />
 
     <ListView
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        style="@style/AppTheme.PlannerTheme.ListView"
         android:id="@+id/pa_planner_listview"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
