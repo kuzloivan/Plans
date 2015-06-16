@@ -3,6 +3,8 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -41,8 +43,35 @@ public class PlannerActivity extends ToolbarActivity {
         arrayList.add(new String[]{"Make tea", "16.00", "Tomorrow"});
         arrayList.add(new String[] {"Make coffee", "15.00", "Today"});
 
+        for (int i = 0; i < 10; i++){
+            arrayList.add(new String[] {"Item " + i, "15.00", "Today"});
+        }
+
         lvPlanner.deferNotifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_planner, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.pa_menu_add_reminder:
+
+
+
+                lvPlanner.deferNotifyDataSetChanged();
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

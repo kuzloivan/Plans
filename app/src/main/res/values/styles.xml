@@ -18,10 +18,21 @@
 
     <style name="PlannerToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbar_background_color</item>
+
     </style>
 
     <style name="ToolbarTitle" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.PlannerTheme.ListView" >
+        <item name="android:dividerHeight">6dp</item>
+        <item name="android:divider">#00ffffff</item>
+        <item name="android:layout_margin">6dp</item>
+    </style>
+
+    <style name="AppTheme.PlannerTheme.ListView.Item">
+        <item name="android:background">@drawable/planner_list_item</item>
     </style>
 
 </resources>

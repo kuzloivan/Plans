@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Vibration" />
+            android:text="@string/sa_vibration" />
 
         <Switch
             android:id="@+id/sa_vibration_switch"
@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Notification" />
+            android:text="@string/sa_notification_enable" />
 
         <Switch
             android:id="@+id/sa_nitification_switch"
@@ -51,20 +51,18 @@
             android:textOn="ON" />
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="horizontal">
 
-
         <TextView
             android:id="@+id/sa_loud_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:text="Notification loud" />
+            android:text="@string/sa_notification_loud" />
 
         <SeekBar
             android:id="@+id/sa_loud_seekbar"
@@ -72,22 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:max="100" />
-
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/sa_ret_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Back" />
-    </LinearLayout>
-
 
 </LinearLayout>
 
