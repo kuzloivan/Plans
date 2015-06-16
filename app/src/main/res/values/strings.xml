@@ -12,5 +12,7 @@
     <string name="Sign_up">Sign up</string>
     <string name="back">Back</string>
 
+    <string name="go_to_sph">Go to Splash</string>
+
     <string name="bt_notif">Show Notification</string>
 </resources>
