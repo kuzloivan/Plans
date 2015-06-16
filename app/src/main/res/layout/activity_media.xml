@@ -7,27 +7,52 @@
 
     <include layout="@layout/toolbar" />
 
-    <Button
-        android:id="@+id/ma_choose_btn"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Choose audio" />
+        android:layout_marginTop="@dimen/margin"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding8">
 
-    <TextView
-        android:id="@+id/ma_res_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/ma_choose_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose audio" />
 
-    <Button
-        android:id="@+id/ma_play_btn"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/ma_res_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Play" />
+        android:layout_marginTop="@dimen/margin"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding8">
 
-    <Button
-        android:id="@+id/ma_stop_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop" />
+        <Button
+            android:id="@+id/ma_play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_weight="0.5"
+            android:background="@color/color_ma_play_stop"
+            android:text="Play"
+            android:textColor="@color/color_text_ma_play_stop" />
 
+        <Button
+            android:id="@+id/ma_stop_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_weight="0.5"
+            android:background="@color/color_ma_play_stop"
+            android:text="Stop"
+            android:textColor="@color/color_text_ma_play_stop" />
+    </LinearLayout>
 </LinearLayout>
