@@ -17,6 +17,7 @@ public class MediaActivity extends ToolbarActivity {
     private TextView message;
     private MediaPlayer player;
     private String path;
+    private audioEnd aEnd;
 
     static final int REQUEST_AUDIO_GET = 1;
 
@@ -24,6 +25,7 @@ public class MediaActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Clicker clicker = new Clicker();
+        aEnd = new audioEnd();
 
         getSupportActionBar().setTitle(R.string.title_activity_media);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,6 +70,13 @@ public class MediaActivity extends ToolbarActivity {
         stopPlayer();
     }
 
+    public final class audioEnd implements MediaPlayer.OnCompletionListener {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            stopPlayer();
+        }
+    }
+
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -102,6 +111,7 @@ public class MediaActivity extends ToolbarActivity {
                 player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 player.prepare();
                 player.start();
+                player.setOnCompletionListener(aEnd);
             } catch (IOException e) {
                 e.printStackTrace();
             }
