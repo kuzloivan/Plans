@@ -4,27 +4,22 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
+    <include layout="@layout/toolbar" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alarm activity"
-        android:layout_weight="0.09"
-        android:gravity="center" />
-
-    <Button
-        android:id="@+id/bt_ret"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#CDDC39"
-        android:text="Return"
-        android:layout_gravity="bottom" />
+        android:layout_weight="1.00"
+        android:textSize="20pt"
+        android:gravity="center"
+        android:textColor="#039be5"/>
 
     <Button
         android:id="@+id/bt_notif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Show Notification"
-        android:background="#CDDC39" />
+        android:background="#ffea00" />
 
 </LinearLayout>
