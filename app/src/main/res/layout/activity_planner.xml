@@ -3,12 +3,11 @@
     android:layout_height="match_parent"
     tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
-    <include layout="@layout/toolbar"
-        android:id="@+id/pa_toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <ListView
         android:id="@+id/pa_planner_listview"
-        android:layout_below="@id/pa_toolbar"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"></ListView>
 
