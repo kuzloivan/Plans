@@ -5,4 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="PlannerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
+    <style name="PlannerToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/toolbar_background_color</item>
+    </style>
+
 </resources>

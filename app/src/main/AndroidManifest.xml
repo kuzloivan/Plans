@@ -28,6 +28,7 @@
         <activity
             android:name=".ui.PlannerActivity"
             android:parentActivityName=".ui.SplashActivity"
+            android:theme="@style/PlannerTheme"
             android:label="@string/title_activity_planner">
         </activity>
 
