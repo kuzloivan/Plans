@@ -3,6 +3,13 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import java.util.TooManyListenersException;
 
@@ -15,6 +22,9 @@ public class NetManagementActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_net_management);
 
+        ClickerNet clickerNet = new ClickerNet();
+        findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
+        findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
     }
 
     @Override
@@ -22,9 +32,43 @@ public class NetManagementActivity extends ToolbarActivity {
         return R.layout.activity_net_management;
     }
 
+    public final class ClickerNet implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()) {
+                case R.id.btn_sign_up:
+                    netManager.registerUser("vlad", "123456", new SignUpCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Toast.makeText(NetManagementActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(NetManagementActivity.this, "successful", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    break;
+                case R.id.btn_log_in:
+                    netManager.loginUser("vlad", "123456", new LogInCallback() {
+                        @Override
+                        public void done(ParseUser parseUser, ParseException e) {
+                            if(e != null) {
+                                Toast.makeText(NetManagementActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(NetManagementActivity.this, "login was successful", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    break;
+            }
+        }
+    }
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, NetManagementActivity.class);
         a.startActivity(intent);
     }
+
+
 }
