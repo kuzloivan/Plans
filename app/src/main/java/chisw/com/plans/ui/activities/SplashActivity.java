@@ -1,12 +1,11 @@
-package chisw.com.plans.ui;
+package chisw.com.plans.ui.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
 import chisw.com.plans.R;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
 
     @Override
@@ -22,6 +21,7 @@ public class SplashActivity extends Activity {
         findViewById(R.id.sa_alarm_btn).setOnClickListener(clicker);
         findViewById(R.id.sa_settings_btn).setOnClickListener(clicker);
     }
+
 
     public final class Clicker implements View.OnClickListener {
 

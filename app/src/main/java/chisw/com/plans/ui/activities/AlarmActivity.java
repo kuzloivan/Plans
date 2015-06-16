@@ -1,4 +1,4 @@
-package chisw.com.plans.ui;
+package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;

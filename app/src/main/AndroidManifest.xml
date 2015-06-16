@@ -11,7 +11,8 @@
         android:theme="@style/AppTheme"
         android:name=".core.PApplication">
 
-        <activity android:name=".ui.SplashActivity"
+        <activity android:name=".ui.activities.SplashActivity"
+            android:theme="@style/AppTheme.Fullscreen"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,24 +21,24 @@
         </activity>
         
         <activity
-            android:name=".ui.NetManagementActivity"
+            android:name=".ui.activities.NetManagementActivity"
             android:label="@string/title_activity_net_management" >
         </activity>
 
         <activity
-            android:name=".ui.MediaActivity"
+            android:name=".ui.activities.MediaActivity"
             android:label="@string/title_activity_media" >
         </activity>
 
         <activity
-            android:name=".ui.PlannerActivity"
+            android:name=".ui.activities.PlannerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.PlannerTheme"
             android:label="@string/title_activity_planner">
         </activity>
 
-        <activity android:name=".ui.AlarmActivity"/>
-        <activity android:name=".ui.SettingsActivity"/>
+        <activity android:name=".ui.activities.AlarmActivity"/>
+        <activity android:name=".ui.activities.SettingsActivity"/>
     </application>
 
 </manifest>

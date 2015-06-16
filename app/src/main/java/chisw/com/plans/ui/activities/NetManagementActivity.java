@@ -1,4 +1,4 @@
-package chisw.com.plans.ui;
+package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,11 +8,13 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 
+import java.util.TooManyListenersException;
+
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.net.NetManager;
 
-public class NetManagementActivity extends GenericActivity {
+public class NetManagementActivity extends ToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
