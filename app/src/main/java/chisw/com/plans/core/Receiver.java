@@ -8,11 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import java.util.Date;
-
-import chisw.com.plans.R;
-import chisw.com.plans.ui.activities.AlarmActivity;
-
 import chisw.com.plans.R;
 import chisw.com.plans.ui.activities.AlarmActivity;
 
@@ -28,21 +23,7 @@ public class Receiver extends BroadcastReceiver {
         Log.d(LOG_TAG, "onReceive");
         Log.d(LOG_TAG, "action = " + intent.getAction());
         Log.d(LOG_TAG, "extra = " + intent.getStringExtra("extra"));
-        //AlarmActivity.start(ctx);
 
-
-        NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
-        Intent pShowNotifIntent = new Intent(ctx,Receiver.class);
-        final PendingIntent pPendIntent1 = PendingIntent.getBroadcast(ctx, 0, pShowNotifIntent, 0);
-        sendNotif(1,pPendIntent1,nm,ctx);
-
-
-    }
-    private void sendNotif(int id, PendingIntent pIntent, NotificationManager nm,Context context) {
-        final String wakeUpStr = "Wake up!!!";
-        Date currentTime = new Date();
-
-        Notification.Builder g = new Notification.Builder(context);
         pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
 
         sendNotif(1, pIntent1, ctx);

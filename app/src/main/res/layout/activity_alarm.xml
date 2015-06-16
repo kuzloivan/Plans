@@ -10,32 +10,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alarm activity"
-        android:layout_weight="1.00"
         android:textSize="20pt"
         android:gravity="center"
         android:textColor="#039be5"/>
 
-    <Button
-        android:id="@+id/bt_ret"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#0D47A1"
-        android:text="Return"
-        android:layout_gravity="bottom" />
+
+
 
     <Button
         android:id="@+id/bt_notif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Show Notification"
-        android:background="#FFEA00" />
+        android:background="#ff00ddff"
+        android:layout_column="0" />
 
-    <TimePicker
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/bt_cancel_alarm"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/timePicker"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0.09" />
-        android:background="#ffea00" />
+        android:text="Cancel alarm"
+        android:background="#ffff4c51"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="right"
+        android:layout_column="1" />
+
+
+
 
 </LinearLayout>
