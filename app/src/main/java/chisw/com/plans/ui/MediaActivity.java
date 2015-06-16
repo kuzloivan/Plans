@@ -30,6 +30,7 @@ public class MediaActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public final class Clicker implements View.OnClickListener {
