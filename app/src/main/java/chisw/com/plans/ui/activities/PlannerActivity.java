@@ -45,8 +45,6 @@ public class PlannerActivity extends ToolbarActivity {
 
     }
 
-
-
     @Override
     protected int contentViewResId() {
         return R.layout.activity_planner;
