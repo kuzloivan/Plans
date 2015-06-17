@@ -15,5 +15,5 @@ public interface DbBridge {
     Cursor getPlans();
 
     void saveMe(ParseUser pParseUser);
-    ParseUser getMe();
+    Cursor getMe(String id);
 }
