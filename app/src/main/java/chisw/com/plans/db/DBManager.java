@@ -41,10 +41,14 @@ public class DBManager implements DbBridge {
     }
 
     @Override
+    public void clearPlans() {
+
+    }
+
+
+    @Override
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
-
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
 
         sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
     }

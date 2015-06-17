@@ -13,6 +13,7 @@ public interface DbBridge {
     void saveNewPlan(Plan pPlan);
     List<Plan> getAllPlans();
     Cursor getPlans();
+    void clearPlans();
 
     void saveMe(ParseUser pParseUser);
     ParseUser getMe();
