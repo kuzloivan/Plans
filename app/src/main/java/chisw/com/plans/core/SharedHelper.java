@@ -9,6 +9,7 @@ public class SharedHelper {
     public static final String APP_PREFERENCES = "plans";
     public static final String APP_PREFERENCE_MEDIA_WAY = "path";
     public static final String APP_PREFERENCE_LOGIN = "login";
+    public static final String APP_PREFERENCE_PASSWORD = "pass";
 
     private SharedPreferences sharedPreferences;
 
@@ -30,5 +31,13 @@ public class SharedHelper {
 
     public void setDefaultLogin(String appPreferencesLogin) {
         sharedPreferences.edit().putString(APP_PREFERENCE_LOGIN, appPreferencesLogin).apply();
+    }
+    //pass
+    public String getDefaultPass() {
+        return sharedPreferences.getString(APP_PREFERENCE_PASSWORD, "");
+    }
+
+    public void setDefaultPass(String appPreferencesPassword) {
+        sharedPreferences.edit().putString(APP_PREFERENCE_PASSWORD, appPreferencesPassword).apply();
     }
 }
