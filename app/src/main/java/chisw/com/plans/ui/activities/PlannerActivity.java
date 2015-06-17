@@ -104,6 +104,7 @@ public class PlannerActivity extends ToolbarActivity {
             }
             dbManager.clearPlans();
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
+            sharedHelper.clearData();
             hideProgressDialog();
             showToast("Successful");
         }
