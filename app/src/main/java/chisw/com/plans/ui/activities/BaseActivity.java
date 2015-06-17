@@ -12,16 +12,16 @@ import chisw.com.plans.net.NetManager;
  * Created by Alexander on 16.06.2015.
  */
 public abstract class BaseActivity extends AppCompatActivity {
-    protected NetManager netManager;
 
+    protected NetManager netManager;
     protected SharedHelper sharedHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PApplication pApplication = (PApplication) getApplication();
-        sharedHelper = pApplication.getSharedHelper();
 
+        sharedHelper = pApplication.getSharedHelper();
         netManager = pApplication.getNetManager();
     }
 

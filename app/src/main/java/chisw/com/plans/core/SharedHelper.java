@@ -6,14 +6,14 @@ import android.content.SharedPreferences;
 
 public class SharedHelper {
 
-    public static final String appPreferences = "plans";
+    public static final String APP_PREFERENCES = "plans";
     public static final String APP_PREFERENCE_MEDIA_WAY = "path";
     public static final String APP_PREFERENCE_LOGIN = "login";
 
     private SharedPreferences sharedPreferences;
 
     public SharedHelper(Context context) {
-        sharedPreferences = context.getSharedPreferences(appPreferences, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     public String getDefaultMediaWay () {

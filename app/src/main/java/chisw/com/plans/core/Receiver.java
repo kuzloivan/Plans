@@ -30,6 +30,8 @@ public class Receiver extends BroadcastReceiver {
     }
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {
+
+        // todo create notification by Notification.Builder http://developer.android.com/training/notify-user/build-notification.html
         NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
         Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!"
                 , System.currentTimeMillis());

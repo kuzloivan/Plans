@@ -5,3 +5,12 @@
 .DS_Store
 /build
 /captures
+
+
+local.properties
+Plans.iml
+gradlew
+gradlew.bat
+.idea
+app/proguard-rules.pro
+app/app.iml

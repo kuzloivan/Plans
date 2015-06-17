@@ -24,7 +24,8 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
     private void initToolbar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        toolbar  = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -40,8 +41,8 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     protected abstract int contentViewResId();
 
-    @Override
-    public void setContentView(int layoutResID) {
-
+    protected void initBackButton(){
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 }

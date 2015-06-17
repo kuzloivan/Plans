@@ -18,13 +18,11 @@ import chisw.com.plans.R;
 public class PlannerArrayAdapter extends ArrayAdapter<String[]> {
 
     Context context;
-    List<String[]> values;
     LayoutInflater inflater;
 
     public PlannerArrayAdapter(Context context,List<String[]> values) {
         super(context, R.layout.planner_list_view_item, values);
         this.context = context;
-        this.values = values;
 
         inflater = LayoutInflater.from(context);
     }
@@ -33,7 +31,7 @@ public class PlannerArrayAdapter extends ArrayAdapter<String[]> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder;
-        String[] currentValues = values.get(position);
+        String[] currentValues = getItem(position);
 
         if(convertView == null) {
 

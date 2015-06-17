@@ -28,9 +28,8 @@ public class PlannerActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_activity_planner);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle(R.string.title_activity_planner);//todo set title in manifest
+        initBackButton();
 
         Clicker clicker = new Clicker();
 
@@ -54,20 +53,14 @@ public class PlannerActivity extends ToolbarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_planner, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
             case R.id.pa_menu_add_reminder:
-
-
-
                 lvPlanner.deferNotifyDataSetChanged();
-
                 break;
         }
 

@@ -14,23 +14,23 @@ import chisw.com.plans.R;
 
 public class MediaActivity extends ToolbarActivity {
 
+    private static final int REQUEST_AUDIO_GET = 1;
+
     private TextView message;
     private MediaPlayer player;
     private String path;
-    private audioEnd aEnd;
 
-    static final int REQUEST_AUDIO_GET = 1;
+    private AudioEnd aEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        aEnd = new AudioEnd();
+
+        getSupportActionBar().setTitle(R.string.title_activity_media); //todo set title in manifest
+        initBackButton();
+
         Clicker clicker = new Clicker();
-        aEnd = new audioEnd();
-
-        getSupportActionBar().setTitle(R.string.title_activity_media);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_play_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_stop_btn).setOnClickListener(clicker);
@@ -70,7 +70,7 @@ public class MediaActivity extends ToolbarActivity {
         stopPlayer();
     }
 
-    public final class audioEnd implements MediaPlayer.OnCompletionListener {
+    public final class AudioEnd implements MediaPlayer.OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mp) {
             stopPlayer();

@@ -23,14 +23,15 @@ import chisw.com.plans.core.Receiver;
 
 public class AlarmActivity extends ToolbarActivity{
 
-    final String LOG_TAG = "myLogs";
+    private static final String LOG = AlarmActivity.class.getSimpleName();
 
-    NotificationManager nm;
+    private static final int DIALOG_TIME = 1; //id диалога //
+
+    //NotificationManager nm;
+
     AlarmManager am;
-    Intent intent1;
-    PendingIntent pAlarmIntent;
 
-    int DIALOG_TIME = 1; //id диалога
+    PendingIntent pAlarmIntent;
     int myHour = 0;
     int myMinute = 0;
     TextView tvTime;
@@ -40,9 +41,8 @@ public class AlarmActivity extends ToolbarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle("Alarm");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Alarm");//todo set title in manifest
+        initBackButton();
 
         setContentView(R.layout.activity_alarm);
         Clicker c = new Clicker();
@@ -50,7 +50,7 @@ public class AlarmActivity extends ToolbarActivity{
         findViewById(R.id.bt_notif).setOnClickListener(c);
         findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
         findViewById(R.id.bt_add_time).setOnClickListener(c);
-        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         tvTime = (TextView) findViewById(R.id.tv_alarm_time);
@@ -78,8 +78,8 @@ public class AlarmActivity extends ToolbarActivity{
     }
 
     public void showNotification() {
-        intent1 = createIntent("action 1", "extra 1");
-        pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent1, 0);
+        Intent intent = createIntent("action 1", "extra 1");
+        pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -95,24 +95,16 @@ public class AlarmActivity extends ToolbarActivity{
 
     public void setAlarmTime(){
         showDialog(DIALOG_TIME);
-    }
+    }  // todo remove deprecated method
 
-    protected Dialog onCreateDialog(int id) {
+    protected Dialog onCreateDialog(int id) {// todo remove deprecated method
         if (id == DIALOG_TIME) {
-            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
+            TimePickerDialog tpd = new TimePickerDialog(this, new TimerCallbacks(), myHour, myMinute, true);
             return tpd;
         }
         return super.onCreateDialog(id);
     }
 
-
-    TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            myHour = hourOfDay;
-            myMinute = minute;
-            tvTime.setText("Alarm in  " + myHour + " : " + myMinute + " ");
-        }
-    };
 
     public void cancelAlarm(){
         am.cancel(pAlarmIntent);
@@ -124,7 +116,6 @@ public class AlarmActivity extends ToolbarActivity{
             switch(v.getId()) {
                 case R.id.bt_notif:
                     showNotification();
-
                     break;
                 case R.id.bt_cancel_alarm:
                     cancelAlarm();
@@ -133,6 +124,16 @@ public class AlarmActivity extends ToolbarActivity{
                     setAlarmTime();
                     break;
             }
+        }
+    }
+
+    private class TimerCallbacks implements TimePickerDialog.OnTimeSetListener{
+
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            myHour = hourOfDay;
+            myMinute = minute;
+            tvTime.setText("Alarm in  " + myHour + " : " + myMinute + " ");
         }
     }
 }
