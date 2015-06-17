@@ -16,6 +16,7 @@ import java.util.Calendar;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
+import chisw.com.plans.model.Plan;
 
 /**
  * Created by Yuriy on 15.06.2015.
@@ -26,6 +27,7 @@ public class AlarmActivity extends ToolbarActivity{
     private static final String LOG = AlarmActivity.class.getSimpleName();
 
     private static final int DIALOG_TIME = 1;
+
 
     //NotificationManager nm;
 
