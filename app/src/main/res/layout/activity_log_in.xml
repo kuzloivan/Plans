@@ -99,6 +99,16 @@
                 android:text="@string/go_to_sph"
                 android:textColor="@color/color_nm_button_text_login_signup" />
 
+            <Button
+                android:id="@+id/btn_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginRight="@dimen/margin"
+                android:layout_marginTop="@dimen/padding8"
+                android:background="@color/color_nm_button_background_login_signup"
+                android:text="@string/add_plan_tst"
+                android:textColor="@color/color_nm_button_text_login_signup" />
 
         </LinearLayout>
     </LinearLayout>

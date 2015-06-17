@@ -4,7 +4,7 @@
     android:minHeight="?attr/actionBarSize"
     android:id="@+id/toolbar"
     app:theme="@style/PlannerToolbar"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+
 import java.util.Calendar;
 
 import chisw.com.plans.R;
@@ -66,6 +69,23 @@ public class PlannerActivity extends ToolbarActivity {
         switch (item.getItemId()){
             case R.id.pa_menu_add_reminder:
                 AlarmActivity.start(PlannerActivity.this);
+                break;
+            case R.id.pa_menu_settings:
+                SettingsActivity.start(PlannerActivity.this);
+                break;
+            case R.id.pa_menu_log_off:
+
+                // Log off!
+
+                dbManager.clearPlans();
+                netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new LogOutCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        showProgressDialog("Logging out", "Please, wait...");
+                    }
+                });
+
+                LogInActivity.start(PlannerActivity.this);
                 break;
         }
 

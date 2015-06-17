@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -16,51 +17,41 @@ import chisw.com.plans.core.SharedHelper;
 public class Multimedia {
     private int PLAYING_AUDIO_TIME = 15;
 
-    private SharedHelper sharedHelper;
     private MediaPlayer player;
-    private AudioEnd aEnd;
-    private String path;
-    private int seconds;
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-        sharedHelper.setDefaultMediaWay(path);
-    }
+    private SharedHelper mSharedHelper;
 
     public Multimedia(SharedHelper sharedHelper) {
-        this.sharedHelper = sharedHelper;
-        if(player == null){
-            player = new MediaPlayer();
-        }
-        aEnd = new AudioEnd();
-        path = sharedHelper.getDefaultMediaWay();
-        seconds = PLAYING_AUDIO_TIME;
+        mSharedHelper = sharedHelper;
     }
 
     public void startPlayer() {
+
+        String path = mSharedHelper.getDefaultMediaWay();
+
         try {
-            if (player.isPlaying()) {
+
+            if(player == null){
+                player = new MediaPlayer();
+            }
+
+            if (player.isPlaying() || TextUtils.isEmpty(path)) {
                 return;
             }
-            if (pathCheck()) {
-                return;
-            }
+
             player.setDataSource(path);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.prepare();
             player.start();
-            player.setOnCompletionListener(aEnd);
+            player.setOnCompletionListener(new AudioEndCallback());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void alarmNontification(Context context) {
-        if (pathCheck()) {
+        String path = mSharedHelper.getDefaultMediaWay();
+
+        if (TextUtils.isEmpty(path)) {
             Toast.makeText(context, "Audio wans't changed", Toast.LENGTH_SHORT);
         }
         startPlayer();
@@ -72,7 +63,7 @@ public class Multimedia {
                 player = null;
             }
         };
-        h.postDelayed(stopPlaybackRun, seconds * 1000);
+        h.postDelayed(stopPlaybackRun, PLAYING_AUDIO_TIME * 1000);
     }
 
     public void stopPlayer() {
@@ -80,19 +71,12 @@ public class Multimedia {
         player.reset();
     }
 
-    public final class AudioEnd implements MediaPlayer.OnCompletionListener {
+    private final class AudioEndCallback implements MediaPlayer.OnCompletionListener {
         @Override
         public void onCompletion(MediaPlayer mp) {
             stopPlayer();
         }
     }
 
-    private boolean pathCheck() {
-        if (path == null || path == "") {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 
