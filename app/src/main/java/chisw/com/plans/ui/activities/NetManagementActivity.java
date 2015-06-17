@@ -60,9 +60,11 @@ public class NetManagementActivity extends ToolbarActivity {
 
             switch(v.getId()) {
                 case R.id.btn_sign_up:
+                    showProgressDialog("Signing Up", "Please, wait...");
                     netManager.registerUser(login, password, callbackSignUp);
                     break;
                 case R.id.btn_log_in:
+                    showProgressDialog("Loging In", "Please, wait...");
                     netManager.loginUser(login, password, callbackLogIn);
                     break;
                 /* For testing!!! */
@@ -79,9 +81,11 @@ public class NetManagementActivity extends ToolbarActivity {
         public void done(ParseException e) {
             if (e != null) {
                 showToast(e.getMessage());
-            } else {
-                showToast("Successful");
+                hideProgressDialog();
+                return;
             }
+            showToast("Successful");
+            hideProgressDialog();
         }
     }
 
@@ -96,6 +100,7 @@ public class NetManagementActivity extends ToolbarActivity {
                 SplashActivity.start(NetManagementActivity.this);
                 wasSplhStart = true;
             }
+            hideProgressDialog();
         }
     }
 
