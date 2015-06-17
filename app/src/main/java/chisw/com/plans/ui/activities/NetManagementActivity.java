@@ -19,12 +19,17 @@ import chisw.com.plans.R;
 public class NetManagementActivity extends ToolbarActivity {
 
     private Boolean wasSplhStart = false;
+    private CallbackSignUp callbackSignUp;
+    private CallbackLogIn callbackLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ClickerNet clickerNet = new ClickerNet();
+        callbackSignUp = new CallbackSignUp();
+        callbackLogIn = new CallbackLogIn();
+
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
 
@@ -55,37 +60,41 @@ public class NetManagementActivity extends ToolbarActivity {
 
             switch(v.getId()) {
                 case R.id.btn_sign_up:
-                    netManager.registerUser(login, password, new SignUpCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                showToast(e.getMessage());
-                            } else {
-                                showToast("Successful");
-                            }
-                        }
-                    });
+                    netManager.registerUser(login, password, callbackSignUp);
                     break;
                 case R.id.btn_log_in:
-                    netManager.loginUser(login, password, new LogInCallback() {
-                        @Override
-                        public void done(ParseUser parseUser, ParseException e) {
-                            if(e != null) {
-                                showToast(e.getMessage());
-                            } else if (!wasSplhStart) {
-                                showToast("Login was successful");
-                                SplashActivity.start(NetManagementActivity.this);
-                                wasSplhStart = true;
-                            }
-                        }
-                    });
+                    netManager.loginUser(login, password, callbackLogIn);
                     break;
-                /*
-                 * For testing!!!
-                 */
+                /* For testing!!! */
                 case R.id.btn_sph_tst:
                     SplashActivity.start(NetManagementActivity.this);
                     break;
+            }
+        }
+    }
+
+    public final class CallbackSignUp implements SignUpCallback {
+
+        @Override
+        public void done(ParseException e) {
+            if (e != null) {
+                showToast(e.getMessage());
+                return;
+            }
+            showToast("Successful");
+        }
+    }
+
+    public final class CallbackLogIn implements LogInCallback {
+
+        @Override
+        public void done(ParseUser parseUser, ParseException e) {
+            if (e != null) {
+                showToast(e.getMessage());
+            } else if (!wasSplhStart) {
+                showToast("Login was successful");
+                SplashActivity.start(NetManagementActivity.this);
+                wasSplhStart = true;
             }
         }
     }

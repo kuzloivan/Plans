@@ -1,26 +1,37 @@
 <resources>
     <string name="app_name">Plans</string>
+    <!---->
     <string name="title_activity_planner">Planner</string>
     <string name="title_activity_settings">Settings Activity</string>
     <string name="title_activity_net_management">Net Management</string>
     <string name="title_activity_media">Media</string>
     <string name="settings_act">Settings activity</string>
+
+    <!-- net activity -->
     <string name="login">User login</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
     <string name="Sign_up">Sign up</string>
+    <string name="go_to_sph">Go to Splash</string>
+
     <string name="back">Back</string>
     <string name="add_new_reminder">Add reminder</string>
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
     <string name="sa_notification_loud">Notification loud</string>
     <string name="wakeUp">Wake up !!!</string>
-    <string name="go_to_sph">Go to Splash</string>
-    <string name="bt_notif">Show Notification</string>
 
-    //names of buttons from main menu
+    <string name="bt_notif">Show Notification</string>
+    <string name="title_activity_alarm">Alarm</string>
+
+    <!--names of buttons from main menu-->
     <string name="s_planner_act">Open Planner</string>
     <string name="s_media_act">Media Activity</string>
     <string name="s_alarm_act">Alarm</string>
     <string name="s_settings_act">Settings Activity</string>
+
+    <!-- audio-->
+    <string name="stop_playing">Stop</string>
+    <string name="start_playing">Play</string>
+    <string name="choose_audio">Choose audio</string>
 </resources>
