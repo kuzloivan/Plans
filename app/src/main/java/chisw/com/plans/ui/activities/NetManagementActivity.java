@@ -79,9 +79,9 @@ public class NetManagementActivity extends ToolbarActivity {
         public void done(ParseException e) {
             if (e != null) {
                 showToast(e.getMessage());
-            } else {
-                showToast("Successful");
+                return;
             }
+            showToast("Successful");
         }
     }
 
