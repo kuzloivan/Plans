@@ -14,4 +14,5 @@ public class UserEntity {
             PARSE_ID + " TEXT, " +
             NAME + " TEXT " +
             ")";
+
 }
