@@ -16,6 +16,7 @@ import java.util.Calendar;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
+import chisw.com.plans.model.Plan;
 
 /**
  * Created by Yuriy on 15.06.2015.
