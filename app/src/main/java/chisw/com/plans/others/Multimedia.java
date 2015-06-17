@@ -1,8 +1,10 @@
 package chisw.com.plans.others;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -12,6 +14,7 @@ import chisw.com.plans.core.SharedHelper;
  * Created by Kos on 17.06.2015.
  */
 public class Multimedia {
+    private int PLAYING_AUDIO_TIME = 15;
 
     private SharedHelper sharedHelper;
     private MediaPlayer player;
@@ -33,6 +36,7 @@ public class Multimedia {
         player = new MediaPlayer();
         aEnd = new AudioEnd();
         path = sharedHelper.getDefaultMediaWay();
+        seconds = PLAYING_AUDIO_TIME;
     }
 
     public void startPlayer() {
@@ -40,8 +44,7 @@ public class Multimedia {
             if (player.isPlaying()) {
                 return;
             }
-            if (path == null || path == "") {
-                // message.setText("File wasn't chosen");
+            if (pathCheck()) {
                 return;
             }
             player.setDataSource(path);
@@ -54,7 +57,10 @@ public class Multimedia {
         }
     }
 
-    public void alarmNontification() {
+    public void alarmNontification(Context context) {
+        if (pathCheck()) {
+            Toast.makeText(context, "Audio wans't changed", Toast.LENGTH_SHORT);
+        }
         startPlayer();
         Handler h = new Handler();
         Runnable stopPlaybackRun = new Runnable() {
@@ -63,9 +69,7 @@ public class Multimedia {
                 player.reset();
             }
         };
-        h.postDelayed(stopPlaybackRun, 15 * 1000);
-        //h.postDelayed(stopPlaybackRun, seconds * 1000);
-
+        h.postDelayed(stopPlaybackRun, seconds * 1000);
     }
 
     public void stopPlayer() {
@@ -79,4 +83,13 @@ public class Multimedia {
             stopPlayer();
         }
     }
+
+    private boolean pathCheck() {
+        if (path == null || path == "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+

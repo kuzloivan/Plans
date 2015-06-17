@@ -29,7 +29,7 @@ public class Receiver extends BroadcastReceiver {
 
         sendNotif(1, pIntent1, ctx);
         Multimedia multimedia = ((PApplication)ctx.getApplicationContext()).getMultimedia();
-        multimedia.alarmNontification();
+        multimedia.alarmNontification(ctx);
     }
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {
