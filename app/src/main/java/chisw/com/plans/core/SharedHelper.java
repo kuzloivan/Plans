@@ -40,4 +40,8 @@ public class SharedHelper {
     public void setDefaultPass(String appPreferencesPassword) {
         sharedPreferences.edit().putString(APP_PREFERENCE_PASSWORD, appPreferencesPassword).apply();
     }
+
+    public void clearData() {
+        sharedPreferences.edit().clear();
+    }
 }

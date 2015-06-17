@@ -2,8 +2,6 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.DialogFragment;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -19,7 +17,6 @@ import java.util.Calendar;
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
 import chisw.com.plans.ui.Dialog.MyDialog;
-import chisw.com.plans.model.Plan;
 
 /**
  * Created by Yuriy on 15.06.2015.

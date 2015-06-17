@@ -2,6 +2,7 @@ package chisw.com.plans.net;
 
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -28,6 +29,11 @@ public class NetManager implements NetBridge {
     @Override
     public void loginUser(String pName, String pPassword, LogInCallback logInCallback) {
         ParseUser.logInInBackground(pName, pPassword, logInCallback);
+    }
+
+    public void logoutUser(String pName, String pPassword, LogOutCallback logoutCallback) {
+        ParseUser.logOutInBackground(logoutCallback);
+
     }
 
     @Override

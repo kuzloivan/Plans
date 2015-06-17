@@ -6,7 +6,12 @@
     <string name="title_activity_net_management">Net Management</string>
     <string name="title_activity_media">Media</string>
     <string name="settings_act">Settings activity</string>
-
+    
+    <!--alarm activity-->
+    <string name="set_date">Choose date</string>
+    <string name="set_time">Choose time</string>
+    
+    
     <!-- net activity -->
     <string name="login">User login</string>
     <string name="password">Password</string>

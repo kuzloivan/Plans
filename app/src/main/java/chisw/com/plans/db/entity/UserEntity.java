@@ -1,7 +1,7 @@
 package chisw.com.plans.db.entity;
 
 /**
- * Created by Оксана on 17.06.2015.
+ * Created by Oksana on 17.06.2015.
  */
 public class UserEntity {
     public static final String TABLE_NAME = "User";
@@ -14,4 +14,5 @@ public class UserEntity {
             PARSE_ID + " TEXT, " +
             NAME + " TEXT " +
             ")";
+
 }
