@@ -2,6 +2,7 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.DialogFragment;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -12,17 +13,19 @@ import android.app.Dialog;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
+import chisw.com.plans.ui.Dialog.MyDialog;
 import chisw.com.plans.model.Plan;
 
 /**
  * Created by Yuriy on 15.06.2015.
  */
 
-public class AlarmActivity extends ToolbarActivity{
+public class AlarmActivity extends ToolbarActivity {
 
     private static final String LOG = AlarmActivity.class.getSimpleName();
 
@@ -67,7 +70,7 @@ public class AlarmActivity extends ToolbarActivity{
     protected int contentViewResId() {
         return R.layout.activity_alarm;
     }
-
+    //===============================================================
 
 
     private Intent createIntent(String action, String extra) {
@@ -88,13 +91,17 @@ public class AlarmActivity extends ToolbarActivity{
 
         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
 
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-mm-yyyy");
+        showToast(formatter.format(calendar.getTimeInMillis()) + "");
+
         //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
 
         //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, 5000, pAlarmIntent);
     }
 
-    public void setAlarmTime(){
-        showDialog(DIALOG_TIME);
+    public void setAlarmTime() {
+        MyDialog md = new MyDialog(this);
+        md.show();
     }  // todo remove deprecated method
 
     protected Dialog onCreateDialog(int id) {// todo remove deprecated method
@@ -106,14 +113,15 @@ public class AlarmActivity extends ToolbarActivity{
     }
 
 
-    public void cancelAlarm(){
+    public void cancelAlarm() {
+        tvTime.setText(R.string.s_alarm_act);
         am.cancel(pAlarmIntent);
     }
 
-    public final class Clicker implements View.OnClickListener{
+    public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            switch(v.getId()) {
+            switch (v.getId()) {
                 case R.id.bt_notif:
                     showNotification();
                     break;
@@ -127,13 +135,22 @@ public class AlarmActivity extends ToolbarActivity{
         }
     }
 
-    private class TimerCallbacks implements TimePickerDialog.OnTimeSetListener{
+    private class TimerCallbacks implements TimePickerDialog.OnTimeSetListener {
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            myHour = hourOfDay;
-            myMinute = minute;
-            tvTime.setText("Alarm in  " + myHour + " : " + myMinute + " ");
+            String strHour = hourOfDay + "";
+            String strMinute = minute + "";
+
+            if (hourOfDay < 10) {
+                strHour = "0" + hourOfDay;
+            }
+            if (minute < 10) {
+                strMinute = "0" + minute;
+            }
+
+            tvTime.setText("Alarm in " + strHour + " : " + strMinute + " ");
+
         }
     }
 }
