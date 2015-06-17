@@ -85,7 +85,9 @@ public class PlannerActivity extends ToolbarActivity {
                 //Log off!
                 showProgressDialog("Loging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
-                
+                dbManager.clearPlans();
+                dbManager.eraseMe(sharedHelper.getDefaultLogin());
+                sharedHelper.clearData();
                 LogInActivity.start(PlannerActivity.this);
                 break;
         }
@@ -96,7 +98,8 @@ public class PlannerActivity extends ToolbarActivity {
     public final class CallbackLogOut implements LogOutCallback
     {
         @Override
-        public void done(ParseException e) {
+        public void done(ParseException e)
+        {
             if (e != null) {
                 showToast(e.getMessage());
                 hideProgressDialog();
@@ -105,6 +108,9 @@ public class PlannerActivity extends ToolbarActivity {
             dbManager.clearPlans();
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
             sharedHelper.clearData();
+            //need to extend stack cleaner
+            PlannerActivity.this.finish();
+            //
             hideProgressDialog();
             showToast("Successful");
         }
