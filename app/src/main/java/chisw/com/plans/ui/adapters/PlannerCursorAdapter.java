@@ -29,12 +29,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
         View view = layoutInflater.inflate(R.layout.planner_list_view_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder();
-
-        viewHolder.tvDate = (TextView)view.findViewById(R.id.pa_tv_date);
-        viewHolder.tvTime = (TextView)view.findViewById(R.id.pa_tv_time);
-        viewHolder.tvTitle = (TextView)view.findViewById(R.id.pa_tv_title);
-
+        ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
 
         return view;
@@ -46,6 +41,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
+
         long timeStamp = cursor.getLong(timeStampIndex);
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
@@ -57,5 +53,11 @@ public class PlannerCursorAdapter extends CursorAdapter {
         public TextView tvTitle;
         public TextView tvTime;
         public TextView tvDate;
+
+        public  ViewHolder (View view) {
+            tvDate = (TextView)view.findViewById(R.id.pa_tv_date);
+            tvTime = (TextView)view.findViewById(R.id.pa_tv_time);
+            tvTitle = (TextView)view.findViewById(R.id.pa_tv_title);
+        }
     }
 }
