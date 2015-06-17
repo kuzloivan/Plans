@@ -27,6 +27,7 @@ public class AlarmActivity extends ToolbarActivity{
 
     private static final int DIALOG_TIME = 1;
 
+
     //NotificationManager nm;
 
     AlarmManager am;
