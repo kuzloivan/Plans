@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import chisw.com.plans.db.entity.PlansEntity;
+import chisw.com.plans.db.entity.UserEntity;
 
 /**
  * Created by Darina on 17.06.2015.
@@ -22,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(PlansEntity.CREATE_SCRIPT);
+        sqLiteDatabase.execSQL(UserEntity.CREATE_SCRIPT);
     }
 
     @Override

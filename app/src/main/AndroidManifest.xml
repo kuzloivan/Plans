@@ -20,7 +20,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.NetManagementActivity"
+            android:name=".ui.activities.LogInActivity"
             android:label="@string/title_activity_net_management">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,12 +30,12 @@
 
         <activity
             android:name=".ui.activities.MediaActivity"
-            android:label="@string/title_activity_media"></activity>
+            android:label="@string/title_activity_media"/>
 
         <activity
             android:name=".ui.activities.PlannerActivity"
             android:label="@string/title_activity_planner"
-            android:theme="@style/AppTheme.PlannerTheme"></activity>
+            android:theme="@style/AppTheme.PlannerTheme"/>
 
         <activity android:name=".ui.activities.AlarmActivity"
             android:label="@string/title_activity_alarm"

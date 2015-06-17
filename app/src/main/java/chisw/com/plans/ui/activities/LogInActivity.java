@@ -6,18 +6,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-import java.util.TooManyListenersException;
-
 import chisw.com.plans.R;
 
-public class NetManagementActivity extends ToolbarActivity {
+public class LogInActivity extends ToolbarActivity {
 
     private EditText mLogin;
     private EditText mPassword;
@@ -49,7 +46,7 @@ public class NetManagementActivity extends ToolbarActivity {
 
     @Override
     protected int contentViewResId() {
-        return R.layout.activity_net_management;
+        return R.layout.activity_log_in;
     }
 
     public final class ClickerNet implements View.OnClickListener {
@@ -71,7 +68,7 @@ public class NetManagementActivity extends ToolbarActivity {
                     break;
                 /* For testing!!! */
                 case R.id.btn_sph_tst:
-                    SplashActivity.start(NetManagementActivity.this);
+                    SplashActivity.start(LogInActivity.this);
                     break;
             }
         }
@@ -104,13 +101,13 @@ public class NetManagementActivity extends ToolbarActivity {
             }
         
             showToast("Login was successful");
-            SplashActivity.start(NetManagementActivity.this);
+            SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
         }
     }
 
     public static void start(Activity a) {
-        Intent intent = new Intent(a, NetManagementActivity.class);
+        Intent intent = new Intent(a, LogInActivity.class);
         a.startActivity(intent);
     }
 

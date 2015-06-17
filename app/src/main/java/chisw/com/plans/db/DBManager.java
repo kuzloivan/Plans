@@ -2,6 +2,7 @@ package chisw.com.plans.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.parse.ParseUser;
@@ -30,6 +31,11 @@ public class DBManager implements DbBridge {
     @Override
     public List<Plan> getAllPlans() {
         return plansArray;
+    }
+
+    @Override
+    public Cursor getPlans() {
+        return null;
     }
 
     @Override
