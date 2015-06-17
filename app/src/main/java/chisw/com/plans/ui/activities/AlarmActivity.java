@@ -12,6 +12,8 @@ import android.app.Dialog;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
 
@@ -29,9 +31,10 @@ public class AlarmActivity extends ToolbarActivity{
     PendingIntent pAlarmIntent;
 
     int DIALOG_TIME = 1; //id диалога
-    int myHour = 14;
-    int myMinute = 35;
+    int myHour = 0;
+    int myMinute = 0;
     TextView tvTime;
+    TextView tvInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class AlarmActivity extends ToolbarActivity{
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         tvTime = (TextView) findViewById(R.id.tv_alarm_time);
+        tvInfo = (TextView) findViewById(R.id.tv_alarm_info);
 
     }
 
@@ -77,7 +81,14 @@ public class AlarmActivity extends ToolbarActivity{
         intent1 = createIntent("action 1", "extra 1");
         pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent1, 0);
 
-        am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, myHour);
+        calendar.set(Calendar.MINUTE, myMinute);
+
+        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+
+        //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
 
         //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, 5000, pAlarmIntent);
     }
@@ -99,7 +110,7 @@ public class AlarmActivity extends ToolbarActivity{
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             myHour = hourOfDay;
             myMinute = minute;
-            tvTime.setText("Time is " + myHour + " hours " + myMinute + " minutes");
+            tvTime.setText("Alarm in  " + myHour + " : " + myMinute + " ");
         }
     };
 
@@ -113,6 +124,7 @@ public class AlarmActivity extends ToolbarActivity{
             switch(v.getId()) {
                 case R.id.bt_notif:
                     showNotification();
+
                     break;
                 case R.id.bt_cancel_alarm:
                     cancelAlarm();
