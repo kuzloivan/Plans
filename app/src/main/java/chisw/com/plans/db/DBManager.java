@@ -38,14 +38,11 @@ public class DBManager implements DbBridge {
 
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
 
-        ContentValues contentValues = new ContentValues();
-
-        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, contentValues);
+        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
     }
 
     @Override
     public void saveMe(ParseUser pParseUser) {
-
     }
 
     @Override
