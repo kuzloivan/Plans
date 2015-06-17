@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:text="@string/sa_notification_loud" />
+            android:text="@string/sa_notification_volume" />
 
         <SeekBar
             android:id="@+id/sa_loud_seekbar"

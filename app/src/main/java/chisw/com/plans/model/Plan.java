@@ -1,5 +1,7 @@
 package chisw.com.plans.model;
 
+import java.util.Date;
+
 /**
  * Created by Alexander on 17.06.2015.
  */
@@ -16,11 +18,11 @@ public class Plan {
         this.parseId = parseId;
     }
 
-    public String getName() {
+    public String getTitle() {
         return title;
     }
 
-    public void setName(String name) {
+    public void setTitle(String name) {
         this.title = name;
     }
 

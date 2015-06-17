@@ -18,7 +18,7 @@
     <string name="add_new_reminder">Add reminder</string>
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
-    <string name="sa_notification_loud">Notification loud</string>
+    <string name="sa_notification_volume">Notification volume</string>
     <string name="wakeUp">Wake up !!!</string>
 
     <string name="bt_notif">Show Notification</string>

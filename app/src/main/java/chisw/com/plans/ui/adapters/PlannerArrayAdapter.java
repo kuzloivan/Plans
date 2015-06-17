@@ -7,22 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import chisw.com.plans.R;
+import chisw.com.plans.model.Plan;
+import chisw.com.plans.utils.DataUtils;
 
 /**
  * Created by Alexander on 16.06.2015.
  */
-public class PlannerArrayAdapter extends ArrayAdapter<String[]> {
+public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
 
-    Context context;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
-    public PlannerArrayAdapter(Context context,List<String[]> values) {
+    public PlannerArrayAdapter(Context context, List<Plan> values) {
         super(context, R.layout.planner_list_view_item, values);
-        this.context = context;
 
         inflater = LayoutInflater.from(context);
     }
@@ -31,16 +30,16 @@ public class PlannerArrayAdapter extends ArrayAdapter<String[]> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder;
-        String[] currentValues = getItem(position);
+        Plan currentPlan = getItem(position);
 
         if(convertView == null) {
 
             convertView = inflater.inflate(R.layout.planner_list_view_item, parent, false);
             viewHolder = new ViewHolder();
 
-            viewHolder.itemTvCountry = (TextView)convertView.findViewById(R.id.pa_tv_date);
-            viewHolder.itemTvId = (TextView)convertView.findViewById(R.id.pa_tv_time);
-            viewHolder.itemTvName = (TextView)convertView.findViewById(R.id.pa_tv_title);
+            viewHolder.tvDate = (TextView)convertView.findViewById(R.id.pa_tv_date);
+            viewHolder.tvTime = (TextView)convertView.findViewById(R.id.pa_tv_time);
+            viewHolder.tvTitle = (TextView)convertView.findViewById(R.id.pa_tv_title);
 
             convertView.setTag(viewHolder);
         }
@@ -48,23 +47,17 @@ public class PlannerArrayAdapter extends ArrayAdapter<String[]> {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.itemTvName.setText(currentValues[0]);
-
-        viewHolder.itemTvId.setText(currentValues[1]);
-
-        viewHolder.itemTvCountry.setText(currentValues[2]);
+        viewHolder.tvTitle.setText(currentPlan.getTitle());
+        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(currentPlan.getTimeStamp()));
+        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(currentPlan.getTimeStamp()));
 
         return convertView;
     }
 
     private static class ViewHolder{
-
-        public TextView itemTvName;
-
-        public TextView itemTvId;
-
-        public TextView itemTvCountry;
-
+        public TextView tvTitle;
+        public TextView tvTime;
+        public TextView tvDate;
     }
 
 }

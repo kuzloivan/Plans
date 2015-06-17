@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.SharedHelper;
+import chisw.com.plans.db.DBManager;
 import chisw.com.plans.net.NetManager;
 import chisw.com.plans.others.Multimedia;
 
@@ -19,6 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected NetManager netManager;
     protected SharedHelper sharedHelper;
     protected Multimedia multimedia;
+    protected DBManager dbManager;
     private ProgressDialog progressDialog;
 
     @Override
@@ -28,10 +30,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         sharedHelper = pApplication.getSharedHelper();
         netManager = pApplication.getNetManager();
+        dbManager = pApplication.getDbManager();
         multimedia = pApplication.getMultimedia();
     }
 
-    protected void showToast(String text) {
+    protected void showToast(String text){
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
