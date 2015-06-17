@@ -43,7 +43,7 @@ public class LogInActivity extends ToolbarActivity {
         if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
-            ////updated insta-login
+            ////updated insta-loginn
             if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
             {
                 mPassword.setText(sharedHelper.getDefaultPass());
