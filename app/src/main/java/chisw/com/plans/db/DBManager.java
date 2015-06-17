@@ -20,11 +20,11 @@ public class DBManager implements DbBridge {
 
     @Override
     public void saveNewPlan(Plan pPlan) {
-
+        plansArray.add(pPlan);
     }
 
     @Override
     public List<Plan> getAllPlans() {
-        return null;
+        return plansArray;
     }
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.SharedHelper;
+import chisw.com.plans.db.DBManager;
 import chisw.com.plans.net.NetManager;
 
 /**
@@ -15,6 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected NetManager netManager;
     protected SharedHelper sharedHelper;
+    protected DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         sharedHelper = pApplication.getSharedHelper();
         netManager = pApplication.getNetManager();
+        dbManager = pApplication.getDbManager();
     }
 
     protected void showToast(String text){
