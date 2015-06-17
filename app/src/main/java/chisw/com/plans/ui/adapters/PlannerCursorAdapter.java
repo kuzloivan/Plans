@@ -46,7 +46,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
-        int timeStamp = cursor.getInt(timeStampIndex);
+        long timeStamp = cursor.getLong(timeStampIndex);
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));

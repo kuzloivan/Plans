@@ -12,6 +12,6 @@ public class UserEntity {
             " ( " +
             "_id INT PRIMARY KEY, " +
             PARSE_ID + " TEXT, " +
-            NAME + " TEXT, " +
+            NAME + " TEXT " +
             ")";
 }
