@@ -46,7 +46,7 @@ public class LogInActivity extends ToolbarActivity {
 
     @Override
     protected int contentViewResId() {
-        return R.layout.activity_login;
+        return R.layout.activity_log_in;
     }
 
     public final class ClickerNet implements View.OnClickListener {
