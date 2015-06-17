@@ -7,7 +7,7 @@
 
         <TextView
             android:id="@+id/pa_tv_title"
-            android:textColor="@color/color_list_item_text_view_text"
+            android:textColor="@color/color_pa_list_item_text_view_text"
             android:textSize="@dimen/abc_text_size_large_material"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:textColor="@color/color_list_item_text_view_text"
+            android:textColor="@color/color_pa_list_item_text_view_text"
             android:id="@+id/pa_tv_time"
             android:textSize="@dimen/abc_text_size_small_material"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textSize="@dimen/abc_text_size_small_material"
             android:textStyle="italic"
             android:id="@+id/pa_tv_date"
-            android:textColor="@color/color_list_item_text_view_text"
+            android:textColor="@color/color_pa_list_item_text_view_text"
             android:layout_height="wrap_content"
             android:layout_below="@id/pa_tv_title"
             android:layout_alignParentRight="true"

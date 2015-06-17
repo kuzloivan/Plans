@@ -40,9 +40,9 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
             android:layout_weight="0.5"
-            android:background="@color/color_ma_play_stop"
+            android:background="@color/color_ma_button_background_play_stop"
             android:text="Play"
-            android:textColor="@color/color_text_ma_play_stop" />
+            android:textColor="@color/color_ma_button_text_play_stop" />
 
         <Button
             android:id="@+id/ma_stop_btn"
@@ -51,8 +51,8 @@
             android:layout_marginLeft="@dimen/margin"
             android:layout_marginRight="@dimen/margin"
             android:layout_weight="0.5"
-            android:background="@color/color_ma_play_stop"
+            android:background="@color/color_ma_button_background_play_stop"
             android:text="Stop"
-            android:textColor="@color/color_text_ma_play_stop" />
+            android:textColor="@color/color_ma_button_text_play_stop" />
     </LinearLayout>
 </LinearLayout>

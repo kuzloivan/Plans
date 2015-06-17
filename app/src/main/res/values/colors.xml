@@ -1,11 +1,20 @@
 <resources>
+    <!-- Common colors -->
     <color name="toolbar_background_color">#01579B</color>
-    <color name="color_background">#FFFFFF</color>
-    <color name="color_login_pass">#FFFFFF</color>
-    <color name="color_log_sign">#01579B</color>
-    <color name="color_text_log_sign">#FFFFFF</color>
-    <color name="color_list_item_text_view_text">#FFFFFF</color>
-    <color name="color_ma_play_stop">#01579B</color>
-    <color name="color_text_ma_play_stop">#FFFFFF</color>
+
+    <!-- Net Management activity colors -->
+    <color name="color_nm_background">#FFFFFF</color>
+    <color name="color_nm_edit_text_login_password">#FFFFFF</color>
+    <color name="color_nm_button_background_login_signup">#01579B</color>
+    <color name="color_nm_button_text_login_signup">#FFFFFF</color>
+
+    <!-- Media activity colors -->
+    <color name="color_ma_button_background_play_stop">#01579B</color>
+    <color name="color_ma_button_text_play_stop">#FFFFFF</color>
+
+    <!-- Planner list view colors -->
+    <color name="color_pa_list_item_normal">#D84315</color>
+    <color name="color_pa_list_item_pressed">#F4511E</color>
+    <color name="color_pa_list_item_text_view_text">#FFFFFF</color>
 
 </resources>
