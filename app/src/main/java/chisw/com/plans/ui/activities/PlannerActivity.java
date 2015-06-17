@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import chisw.com.plans.R;
@@ -39,7 +40,7 @@ public class PlannerActivity extends ToolbarActivity {
 
         Plan p = new Plan();
         p.setTitle("Make it!");
-        p.setTimeStamp(1234123);
+        p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
         dbManager.saveNewPlan(p);
 
         plannerArrayAdapter.notifyDataSetChanged();
