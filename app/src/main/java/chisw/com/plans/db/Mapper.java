@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.parse.ParseUser;
+
 import chisw.com.plans.db.entity.PlansEntity;
+import chisw.com.plans.db.entity.UserEntity;
 import chisw.com.plans.model.Plan;
 
 /**
@@ -22,4 +25,12 @@ public class Mapper {
         return CV;
     }
 
+    public static ContentValues parseUser(ParseUser user) {
+        ContentValues CV = new ContentValues();
+
+        CV.put(UserEntity.NAME, user.getUsername());
+        CV.put(UserEntity.PARSE_ID, user.getObjectId());
+
+        return CV;
+    }
 }
