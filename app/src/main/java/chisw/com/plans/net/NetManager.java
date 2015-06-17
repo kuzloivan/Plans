@@ -52,6 +52,7 @@ public class NetManager implements NetBridge {
     @Override
     public void getPlan(String pId, FindCallback findCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.whereEqualTo("objectId", pId).findInBackground(findCallback);
+        query.whereEqualTo("objectId", pId);
+        query.findInBackground(findCallback);
     }
 }
