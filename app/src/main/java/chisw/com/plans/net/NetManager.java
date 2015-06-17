@@ -33,9 +33,8 @@ public class NetManager implements NetBridge {
     @Override
     public void addPlan(Plan plan, SaveCallback saveCallback) {
         ParseObject pPlan = new ParseObject("Plans");
-        pPlan.add("id", plan.getParseId());
-        pPlan.add("name", plan.getTitle());
-        pPlan.add("timeStamp", plan.getTimeStamp());
+        pPlan.put("name", plan.getTitle());
+        pPlan.put("timeStamp", plan.getTimeStamp());
         pPlan.saveInBackground(saveCallback);
     }
 
@@ -46,7 +45,7 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public void getPlan(Integer pId, FindCallback findCallback) {
+    public void getPlan(String pId, FindCallback findCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
         query.whereEqualTo("objectId", pId).findInBackground(findCallback);
     }

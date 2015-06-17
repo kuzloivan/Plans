@@ -18,6 +18,6 @@ public interface NetBridge {
     /* Plan */
     void addPlan(Plan plan, SaveCallback saveCallback);
     void getAllPlans(FindCallback findCallback);
-    void getPlan(Integer pId, FindCallback findCallback);
+    void getPlan(String pId, FindCallback findCallback);
 
 }

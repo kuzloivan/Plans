@@ -100,7 +100,7 @@
                 android:textColor="@color/color_nm_button_text_login_signup" />
 
             <Button
-                android:id="@+id/btn_add_plan"
+                android:id="@+id/btn_plan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin"
