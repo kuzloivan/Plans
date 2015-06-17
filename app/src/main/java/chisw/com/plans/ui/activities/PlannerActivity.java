@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.Calendar;
 
@@ -18,9 +19,6 @@ import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 
-/**
- * Created by Alexander on 15.06.2015.
- */
 public class PlannerActivity extends ToolbarActivity {
 
     ListView lvPlanner;
@@ -74,22 +72,30 @@ public class PlannerActivity extends ToolbarActivity {
                 SettingsActivity.start(PlannerActivity.this);
                 break;
             case R.id.pa_menu_log_off:
-
-                // Log off!
-
-                dbManager.clearPlans();
-                netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new LogOutCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        showProgressDialog("Logging out", "Please, wait...");
-                    }
-                });
-
+                //Log off!
+                showProgressDialog("Loging Off", "Please, wait...");
+                netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
                 LogInActivity.start(PlannerActivity.this);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public final class CallbackLogOut implements LogOutCallback
+    {
+        @Override
+        public void done(ParseException e) {
+            if (e != null) {
+                showToast(e.getMessage());
+                hideProgressDialog();
+                return;
+            }
+            dbManager.clearPlans();
+            dbManager.eraseMe(sharedHelper.getDefaultLogin());
+            hideProgressDialog();
+            showToast("Successful");
+        }
     }
 
     @Override

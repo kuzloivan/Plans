@@ -39,24 +39,18 @@ public class LogInActivity extends ToolbarActivity {
 
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
-
+        //auto-insert user credentials
         if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
-            ////updated insta-loginn
             if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
             {
                 mPassword.setText(sharedHelper.getDefaultPass());
-                netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
+                //move to main activity
                 showProgressDialog("Loging In", "Please, wait...");
+                netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
             }
-            ////
         }
-
-        //if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
-        //{
-        //    mPassword.setText(sharedHelper.getDefaultPass());
-        //}
     }
 
     @Override
@@ -73,13 +67,13 @@ public class LogInActivity extends ToolbarActivity {
 
             switch (v.getId()) {
                 case R.id.btn_sign_up:
-                    netManager.registerUser(login, password, new CallbackSignUp());
                     showProgressDialog("Signing Up", "Please, wait...");
+                    netManager.registerUser(login, password, new CallbackSignUp());
                     break;
 
                 case R.id.btn_log_in:
-                    netManager.loginUser(login, password, new CallbackLogIn());
                     showProgressDialog("Loging In", "Please, wait...");
+                    netManager.loginUser(login, password, new CallbackLogIn());
                     break;
                 /* For testing!!! */
                 case R.id.btn_sph_tst:
@@ -132,8 +126,8 @@ public class LogInActivity extends ToolbarActivity {
             }
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
-            showToast("Successful");
             hideProgressDialog();
+            showToast("Successful");
         }
     }
 
@@ -150,9 +144,9 @@ public class LogInActivity extends ToolbarActivity {
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
             ////
-            showToast("Login was successful");
-            SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
+            SplashActivity.start(LogInActivity.this);
+            showToast("Login was successful");
         }
     }
 
