@@ -18,6 +18,18 @@
     </item>
 
     <item
+        android:id="@+id/pa_menu_splash"
+        app:showAsAction="never"
+        android:title="@string/pa_splash">
+    </item>
+
+    <item
+        android:id="@+id/pa_menu_media"
+        app:showAsAction="never"
+        android:title="Go to media...">
+    </item>
+
+    <item
         android:id="@+id/pa_menu_log_off"
         app:showAsAction="never"
         android:icon="@drawable/ic_settings_white_24dp"

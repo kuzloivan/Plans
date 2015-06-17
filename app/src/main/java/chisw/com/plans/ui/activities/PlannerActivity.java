@@ -67,16 +67,24 @@ public class PlannerActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.pa_menu_splash:
+                SplashActivity.start(PlannerActivity.this);
+                break;
+
             case R.id.pa_menu_add_reminder:
                 AlarmActivity.start(PlannerActivity.this);
                 break;
+
             case R.id.pa_menu_settings:
                 SettingsActivity.start(PlannerActivity.this);
                 break;
+
+            case R.id.pa_menu_media:
+                MediaActivity.start(PlannerActivity.this);
+                break;
+
             case R.id.pa_menu_log_off:
-
-                // Log off!
-
+                // Log off
                 dbManager.clearPlans();
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new LogOutCallback() {
                     @Override

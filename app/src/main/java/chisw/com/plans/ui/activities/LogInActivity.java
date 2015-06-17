@@ -121,8 +121,10 @@ public class LogInActivity extends ToolbarActivity {
             sharedHelper.setDefaultPass(mPassword.getText().toString());
             ////
             showToast("Login was successful");
-            SplashActivity.start(LogInActivity.this);
+            //SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
+
+            PlannerActivity.start(LogInActivity.this);
         }
     }
 
@@ -142,7 +144,7 @@ public class LogInActivity extends ToolbarActivity {
 
         @Override
         public void done(List<ParseObject> list, ParseException e) {
-            if(e == null) {
+            if (e == null) {
                 showToast("I got it");
                 return;
             }
@@ -154,7 +156,7 @@ public class LogInActivity extends ToolbarActivity {
 
         @Override
         public void done(List<ParseObject> list, ParseException e) {
-            if(e == null) {
+            if (e == null) {
                 showToast("I got it");
                 return;
             }
