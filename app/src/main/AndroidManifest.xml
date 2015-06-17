@@ -36,15 +36,15 @@
             android:label="@string/title_activity_planner"
             android:theme="@style/AppTheme.PlannerTheme"></activity>
 
-        <activity android:name=".ui.activities.AlarmActivity" />
+        <activity android:name=".ui.activities.AlarmActivity"
+            android:label="@string/title_activity_alarm"
+            android:theme="@style/AppTheme.PlannerTheme"
+            />
 
         <activity android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"/>
 
         <receiver android:name=".core.Receiver"/>
-        <activity
-            android:name=".ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings" />
 
        <receiver android:name="chisw.com.plans.core.Receiver"/>
     </application>

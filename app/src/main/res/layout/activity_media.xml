@@ -41,7 +41,7 @@
             android:layout_marginRight="@dimen/margin"
             android:layout_weight="0.5"
             android:background="@color/color_ma_button_background_play_stop"
-            android:text="Play"
+            android:text="@string/start_playing"
             android:textColor="@color/color_ma_button_text_play_stop" />
 
         <Button
@@ -52,7 +52,7 @@
             android:layout_marginRight="@dimen/margin"
             android:layout_weight="0.5"
             android:background="@color/color_ma_button_background_play_stop"
-            android:text="Stop"
+            android:text="@string/stop_playing"
             android:textColor="@color/color_ma_button_text_play_stop" />
     </LinearLayout>
 </LinearLayout>

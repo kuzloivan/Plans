@@ -28,7 +28,6 @@ public class PlannerActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle(R.string.title_activity_planner);//todo set title in manifest
         initBackButton();
 
         Clicker clicker = new Clicker();
@@ -40,14 +39,9 @@ public class PlannerActivity extends ToolbarActivity {
         lvPlanner.setAdapter(plannerArrayAdapter);
 
         arrayList.add(new String[]{"Make tea", "16.00", "Tomorrow"});
-        arrayList.add(new String[] {"Make coffee", "15.00", "Today"});
+        arrayList.add(new String[]{"Make coffee", "15.00", "Today"});
 
-        for (int i = 0; i < 10; i++){
-            arrayList.add(new String[] {"Item " + i, "15.00", "Today"});
-        }
-
-        lvPlanner.deferNotifyDataSetChanged();
-
+        plannerArrayAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -56,11 +50,13 @@ public class PlannerActivity extends ToolbarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    int counter = 0;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.pa_menu_add_reminder:
-                lvPlanner.deferNotifyDataSetChanged();
+                AlarmActivity.start(PlannerActivity.this);
                 break;
         }
 
