@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".core.PApplication"
@@ -30,12 +31,12 @@
 
         <activity
             android:name=".ui.activities.MediaActivity"
-            android:label="@string/title_activity_media"/>
+            android:label="@string/title_activity_media"></activity>
 
         <activity
             android:name=".ui.activities.PlannerActivity"
             android:label="@string/title_activity_planner"
-            android:theme="@style/AppTheme.PlannerTheme"/>
+            android:theme="@style/AppTheme.PlannerTheme"></activity>
 
         <activity android:name=".ui.activities.AlarmActivity"
             android:label="@string/title_activity_alarm"
