@@ -2,6 +2,10 @@ package chisw.com.plans.db;
 
 import android.content.Context;
 
+import com.parse.ParseUser;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import chisw.com.plans.core.bridge.DbBridge;
@@ -19,13 +23,30 @@ public class DBManager implements DbBridge {
 
     }
 
+
+    private List<Plan> plansArray;
+
+    public DBManager(){
+        plansArray = new ArrayList<>();
+    }
+
     @Override
     public void saveNewPlan(Plan pPlan) {
-
+        plansArray.add(pPlan);
     }
 
     @Override
     public List<Plan> getAllPlans() {
+        return plansArray;
+    }
+
+    @Override
+    public void saveMe(ParseUser pParseUser) {
+
+    }
+
+    @Override
+    public ParseUser getMe() {
         return null;
     }
 }

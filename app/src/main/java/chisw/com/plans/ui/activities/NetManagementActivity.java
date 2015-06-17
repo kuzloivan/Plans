@@ -3,6 +3,7 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,29 +19,31 @@ import chisw.com.plans.R;
 
 public class NetManagementActivity extends ToolbarActivity {
 
-    private Boolean wasSplhStart = false;
-    private CallbackSignUp callbackSignUp;
-    private CallbackLogIn callbackLogIn;
+    private EditText mLogin;
+    private EditText mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ClickerNet clickerNet = new ClickerNet();
-        callbackSignUp = new CallbackSignUp();
-        callbackLogIn = new CallbackLogIn();
-
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
 
         /* For testing */
         findViewById(R.id.btn_sph_tst).setOnClickListener(clickerNet);
-    }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        wasSplhStart = false;
+        mLogin = (EditText) findViewById(R.id.net_user_login);
+        mPassword = (EditText) findViewById(R.id.net_user_password);
+
+        if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin())) {
+            mLogin.setText(sharedHelper.getDefaultLogin());
+        }
+
+        if (!TextUtils.isEmpty((sharedHelper.getDefaultPass())))
+        {
+            mPassword.setText(sharedHelper.getDefaultPass());
+        }
     }
 
     @Override
@@ -50,20 +53,20 @@ public class NetManagementActivity extends ToolbarActivity {
 
     public final class ClickerNet implements View.OnClickListener {
 
-        private String login;
-        private String password;
-
         @Override
         public void onClick(View v) {
-            login = ((EditText)findViewById(R.id.net_user_login)).getText().toString();
-            password = ((EditText)findViewById(R.id.net_user_password)).getText().toString();
+            String login = mLogin.getText().toString();
+            String password = mPassword.getText().toString();
 
-            switch(v.getId()) {
+            switch (v.getId()) {
                 case R.id.btn_sign_up:
-                    netManager.registerUser(login, password, callbackSignUp);
+                    netManager.registerUser(login, password, new CallbackSignUp());
+                    showProgressDialog("Signing Up", "Please, wait...");
                     break;
+
                 case R.id.btn_log_in:
-                    netManager.loginUser(login, password, callbackLogIn);
+                    netManager.loginUser(login, password, new CallbackLogIn());
+                    showProgressDialog("Loging In", "Please, wait...");
                     break;
                 /* For testing!!! */
                 case R.id.btn_sph_tst:
@@ -78,10 +81,14 @@ public class NetManagementActivity extends ToolbarActivity {
         @Override
         public void done(ParseException e) {
             if (e != null) {
-                showToast(e.getMessage());
-            } else {
-                showToast("Successful");
+                showToast(e.getMessage());                
+                hideProgressDialog();
+                return;
             }
+            sharedHelper.setDefaultLogin(mLogin.getText().toString());
+            sharedHelper.setDefaultPass(mPassword.getText().toString());
+            showToast("Successful");
+            hideProgressDialog();
         }
     }
 
@@ -91,11 +98,13 @@ public class NetManagementActivity extends ToolbarActivity {
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
                 showToast(e.getMessage());
-            } else if (!wasSplhStart) {
-                showToast("Login was successful");
-                SplashActivity.start(NetManagementActivity.this);
-                wasSplhStart = true;
+                hideProgressDialog();
+                return;
             }
+        
+            showToast("Login was successful");
+            SplashActivity.start(NetManagementActivity.this);
+            hideProgressDialog();
         }
     }
 

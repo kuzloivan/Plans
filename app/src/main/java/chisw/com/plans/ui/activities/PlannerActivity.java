@@ -13,6 +13,7 @@ import java.util.List;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
+import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerArrayAdapter;
 
 /**
@@ -22,7 +23,6 @@ public class PlannerActivity extends ToolbarActivity {
 
     ListView lvPlanner;
     PlannerArrayAdapter plannerArrayAdapter;
-    List<String[]> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +34,13 @@ public class PlannerActivity extends ToolbarActivity {
 
         lvPlanner = (ListView)findViewById(R.id.pa_planner_listview);
 
-        arrayList = new ArrayList<>();
-        plannerArrayAdapter = new PlannerArrayAdapter(this, arrayList);
+        plannerArrayAdapter = new PlannerArrayAdapter(this, dbManager.getAllPlans());
         lvPlanner.setAdapter(plannerArrayAdapter);
 
-        arrayList.add(new String[]{"Make tea", "16.00", "Tomorrow"});
-        arrayList.add(new String[]{"Make coffee", "15.00", "Today"});
+        Plan p = new Plan();
+        p.setTitle("Make it!");
+        p.setTimeStamp(1234123);
+        dbManager.saveNewPlan(p);
 
         plannerArrayAdapter.notifyDataSetChanged();
     }
