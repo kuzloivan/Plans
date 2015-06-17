@@ -11,8 +11,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.bridge.DbBridge;
 import chisw.com.plans.db.entity.PlansEntity;
+import chisw.com.plans.db.entity.UserEntity;
 import chisw.com.plans.model.Plan;
 
 /**
@@ -41,10 +43,14 @@ public class DBManager implements DbBridge {
     }
 
     @Override
+    public void clearPlans() {
+
+    }
+
+
+    @Override
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
-
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
 
         sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
     }
@@ -52,10 +58,15 @@ public class DBManager implements DbBridge {
     @Override
     public void saveMe(ParseUser pParseUser) {
 
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        sqLiteDatabase.insert(UserEntity.TABLE_NAME, null, Mapper.parseUser(pParseUser));
     }
 
     @Override
-    public ParseUser getMe() {
-        return null;
+    public Cursor getMe(String id) {
+        String selection = UserEntity.PARSE_ID + "=?";
+        String[] selectionaArgs=new String[]{id};
+        return sqLiteDatabase.query(UserEntity.TABLE_NAME,null,selection,selectionaArgs,null,null,null);
     }
 }
