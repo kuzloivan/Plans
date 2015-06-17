@@ -36,11 +36,12 @@ public class NetManagementActivity extends ToolbarActivity {
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
 
-        if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin())) {
+        if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
+        {
             mLogin.setText(sharedHelper.getDefaultLogin());
         }
 
-        if (!TextUtils.isEmpty((sharedHelper.getDefaultPass())))
+        if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
         {
             mPassword.setText(sharedHelper.getDefaultPass());
         }
