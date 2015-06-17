@@ -33,7 +33,6 @@ public class NetManager implements NetBridge {
 
     public void logoutUser(String pName, String pPassword, LogOutCallback logoutCallback) {
         ParseUser.logOutInBackground(logoutCallback);
-
     }
 
     @Override
