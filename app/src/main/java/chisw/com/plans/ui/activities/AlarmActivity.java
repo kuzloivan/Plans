@@ -25,7 +25,7 @@ public class AlarmActivity extends ToolbarActivity{
 
     private static final String LOG = AlarmActivity.class.getSimpleName();
 
-    private static final int DIALOG_TIME = 1; //id диалога //
+    private static final int DIALOG_TIME = 1;
 
     //NotificationManager nm;
 
@@ -41,10 +41,8 @@ public class AlarmActivity extends ToolbarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportActionBar().setTitle("Alarm");//todo set title in manifest
         initBackButton();
 
-        setContentView(R.layout.activity_alarm);
         Clicker c = new Clicker();
         //Clicker d = new Clicker();
         findViewById(R.id.bt_notif).setOnClickListener(c);
