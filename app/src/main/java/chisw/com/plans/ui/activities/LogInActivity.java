@@ -115,8 +115,9 @@ public class LogInActivity extends ToolbarActivity {
             sharedHelper.setDefaultPass(mPassword.getText().toString());
 
             showToast("Login was successful");
-            SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
+
+            PlannerActivity.start(LogInActivity.this);
             LogInActivity.this.finish();
         }
     }
