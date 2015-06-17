@@ -14,9 +14,8 @@
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
     <string name="sa_notification_loud">Notification loud</string>
-
+    <string name="wakeUp">Wake up !!!</string>
     <string name="go_to_sph">Go to Splash</string>
-
     <string name="bt_notif">Show Notification</string>
 
     //names of buttons from main menu

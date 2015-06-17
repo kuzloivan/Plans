@@ -38,6 +38,10 @@
 
         <activity android:name=".ui.activities.AlarmActivity" />
 
+        <activity android:name=".ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings"/>
+
+        <receiver android:name=".core.Receiver"/>
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings" />

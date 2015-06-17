@@ -18,6 +18,8 @@ import chisw.com.plans.R;
 
 public class NetManagementActivity extends ToolbarActivity {
 
+    private Boolean wasSplhStart = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +33,20 @@ public class NetManagementActivity extends ToolbarActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        wasSplhStart = false;
+    }
+
+    @Override
     protected int contentViewResId() {
         return R.layout.activity_net_management;
     }
 
     public final class ClickerNet implements View.OnClickListener {
 
-        String login;
-        String password;
+        private String login;
+        private String password;
 
         @Override
         public void onClick(View v) {
@@ -64,9 +72,10 @@ public class NetManagementActivity extends ToolbarActivity {
                         public void done(ParseUser parseUser, ParseException e) {
                             if(e != null) {
                                 showToast(e.getMessage());
-                            } else {
+                            } else if (!wasSplhStart) {
                                 showToast("Login was successful");
                                 SplashActivity.start(NetManagementActivity.this);
+                                wasSplhStart = true;
                             }
                         }
                     });
