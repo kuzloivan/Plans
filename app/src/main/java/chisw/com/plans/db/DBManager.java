@@ -1,5 +1,7 @@
 package chisw.com.plans.db;
 
+import com.parse.ParseUser;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,5 +28,15 @@ public class DBManager implements DbBridge {
     @Override
     public List<Plan> getAllPlans() {
         return plansArray;
+    }
+
+    @Override
+    public void saveMe(ParseUser pParseUser) {
+
+    }
+
+    @Override
+    public ParseUser getMe() {
+        return null;
     }
 }
