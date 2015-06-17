@@ -7,12 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.utils.DataUtils;
 
 /**
  * Created by Alexander on 16.06.2015.
@@ -49,8 +48,8 @@ public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
         }
 
         viewHolder.tvTitle.setText(currentPlan.getTitle());
-        viewHolder.tvTime.setText("Date");
-        viewHolder.tvDate.setText("12:32");
+        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(currentPlan.getTimeStamp()));
+        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(currentPlan.getTimeStamp()));
 
         return convertView;
     }
