@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import chisw.com.plans.R;
 public class MyDialog extends Dialog {
     private Context context;
     private Button button;
+    private DatePicker datePicker;
+
 
     public MyDialog(Context context) {
         super(context);
@@ -32,7 +35,8 @@ public class MyDialog extends Dialog {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_dialog);
-        button = (Button) findViewById(R.id.bt_ok);
+
+        button = (Button) findViewById(R.id.setDateTine_btn);
 
     }
 }
