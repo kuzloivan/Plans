@@ -17,6 +17,7 @@
     <string name="wakeUp">Wake up !!!</string>
     <string name="go_to_sph">Go to Splash</string>
     <string name="bt_notif">Show Notification</string>
+    <string name="title_activity_alarm">Alarm</string>
 
     //names of buttons from main menu
     <string name="s_planner_act">Open Planner</string>
