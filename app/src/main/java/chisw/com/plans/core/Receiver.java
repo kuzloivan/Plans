@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import chisw.com.plans.R;
+import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.ui.activities.AlarmActivity;
 
 /**
@@ -27,6 +28,8 @@ public class Receiver extends BroadcastReceiver {
         pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
 
         sendNotif(1, pIntent1, ctx);
+        Multimedia multimedia = ((PApplication)ctx.getApplicationContext()).getMultimedia();
+        multimedia.alarmNontification();
     }
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {

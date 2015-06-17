@@ -17,6 +17,8 @@ import android.widget.TextView;
 import java.io.IOException;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.SharedHelper;
+import chisw.com.plans.others.Multimedia;
 
 public class MediaActivity extends ToolbarActivity {
 
@@ -24,20 +26,19 @@ public class MediaActivity extends ToolbarActivity {
     final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
     private TextView message;
-    private MediaPlayer player;
     private String path;
-    private AudioEnd aEnd;
     private boolean isChAudioExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        aEnd = new AudioEnd();
         Clicker clicker = new Clicker();
         findViewById(R.id.ma_choose_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_play_btn).setOnClickListener(clicker);
         findViewById(R.id.ma_stop_btn).setOnClickListener(clicker);
-        player = new MediaPlayer();
+        if (sharedHelper.getDefaultMediaWay() != null) {
+            path = sharedHelper.getDefaultMediaWay();
+        }
 
         getSupportActionBar().setTitle(R.string.title_activity_media); //todo set title in manifest
         initBackButton();
@@ -65,6 +66,7 @@ public class MediaActivity extends ToolbarActivity {
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 path = getPath(data);
+                multimedia.setPath(path);
                 message.setText(path);
                 isChAudioExist = false;
                 break;
@@ -74,14 +76,7 @@ public class MediaActivity extends ToolbarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        stopPlayer();
-    }
-
-    public final class AudioEnd implements MediaPlayer.OnCompletionListener {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            stopPlayer();
-        }
+        multimedia.stopPlayer();
     }
 
     public final class Clicker implements View.OnClickListener {
@@ -92,53 +87,29 @@ public class MediaActivity extends ToolbarActivity {
                     chooseAudio();
                     break;
                 case R.id.ma_play_btn:
-                    startPlayer();
+                    multimedia.startPlayer();
                     break;
                 case R.id.ma_stop_btn:
-                    stopPlayer();
+                    multimedia.stopPlayer();
                     break;
             }
         }
-
-        private void chooseAudio() {
-            if (isChAudioExist) {
-                return;
-            }
-            isChAudioExist = true;
-            Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
-            chooseAudio.setType("audio/*");
-            if (chooseAudio.resolveActivity(getPackageManager()) == null) {
-                isChAudioExist = false;
-            }
-            startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
-        }
-
-        private void startPlayer() {
-            try {
-                if (player.isPlaying()) {
-                    return;
-                }
-                if (path == null) {
-                    message.setText("File wasn't chosen");
-                    return;
-                }
-                player.setDataSource(path);
-                player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                player.prepare();
-                player.start();
-                player.setOnCompletionListener(aEnd);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
-    private void stopPlayer() {
-        player.stop();
-        player.reset();
+    private void chooseAudio() {
+        if (isChAudioExist) {
+            return;
+        }
+        isChAudioExist = true;
+        Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseAudio.setType("audio/*");
+        if (chooseAudio.resolveActivity(getPackageManager()) == null) {
+            isChAudioExist = false;
+        }
+        startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
     }
 
-    public String getPath(Intent str) {
+    private String getPath(Intent str) {
         if (isKitKat) {
             Uri data = str.getData();
             final String docId = DocumentsContract.getDocumentId(data);
@@ -157,10 +128,10 @@ public class MediaActivity extends ToolbarActivity {
         }
     }
 
-    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
-        final String[] projection = { column };
+        final String[] projection = {column};
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
