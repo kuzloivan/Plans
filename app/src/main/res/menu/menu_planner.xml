@@ -1,6 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="chisw.com.plans.ui.PlannerActivity">
+    tools:context="chisw.com.plans.ui.activities.PlannerActivity">
+
+    <item
+        android:id="@+id/pa_menu_add_reminder"
+        android:title="@string/add_new_reminder"
+        android:icon="@drawable/ic_add_circle_white_24dp"
+        app:showAsAction="always">
+
+    </item>
 
 </menu>

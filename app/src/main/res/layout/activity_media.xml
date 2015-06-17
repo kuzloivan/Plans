@@ -1,17 +1,58 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="chisw.com.plans.ui.MediaActivity">
+    android:orientation="vertical"
+    tools:context="chisw.com.plans.ui.activities.MediaActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"/>
+        android:layout_marginTop="@dimen/margin"
+        android:orientation="vertical"
+        android:padding="@dimen/padding8">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/ma_choose_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose audio" />
+
+        <TextView
+            android:id="@+id/ma_res_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding8">
+
+        <Button
+            android:id="@+id/ma_play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_weight="0.5"
+            android:background="@color/color_ma_button_background_play_stop"
+            android:text="Play"
+            android:textColor="@color/color_ma_button_text_play_stop" />
+
+        <Button
+            android:id="@+id/ma_stop_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_weight="0.5"
+            android:background="@color/color_ma_button_background_play_stop"
+            android:text="Stop"
+            android:textColor="@color/color_ma_button_text_play_stop" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,12 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="chisw.com.plans.ui.PlannerActivity">
+    tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
-    <TextView
-        android:text="Planner activity"
-        android:textSize="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <include layout="@layout/toolbar" />
 
-</LinearLayout>
+    <ListView
+        style="@style/AppTheme.PlannerTheme.ListView"
+        android:id="@+id/pa_planner_listview"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"></ListView>
+
+</RelativeLayout>
