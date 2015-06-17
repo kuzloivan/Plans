@@ -11,11 +11,10 @@ public class PlansEntity {
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
-            "_id INT, " +
-            "PRIMARY KEY _id, " +
+            "_id INT PRIMARY KEY, " +
             PARSE_ID + " TEXT, " +
             NAME + " TEXT, " +
-            TIMESTAMP + " TEXT, " +
+            TIMESTAMP + " TEXT " +
             ")";
 
 }

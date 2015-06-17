@@ -24,7 +24,7 @@ public class PApplication extends Application {
 
         netManager = new NetManager();
         sharedHelper = new SharedHelper(this);
-        dbManager = new DBManager();
+        dbManager = new DBManager(this);
     }
 
     public NetManager getNetManager() {

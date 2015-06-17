@@ -16,7 +16,6 @@ public class DBHelper extends SQLiteOpenHelper{
     private static final String NAME = "plans.db";
 
     public DBHelper(Context context) {
-
         super(context, NAME, null, VERSION);
     }
 

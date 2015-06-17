@@ -16,28 +16,22 @@ import chisw.com.plans.model.Plan;
  */
 public class DBManager implements DbBridge {
 
-    DBHelper dbHelper;
+    private List<Plan> plansArray;
+    private DBHelper dbHelper;
 
     public DBManager (Context context)    {
         dbHelper = new DBHelper(context);
-
-    }
-
-
-    private List<Plan> plansArray;
-
-    public DBManager(){
         plansArray = new ArrayList<>();
-    }
-
-    @Override
-    public void saveNewPlan(Plan pPlan) {
-        plansArray.add(pPlan);
     }
 
     @Override
     public List<Plan> getAllPlans() {
         return plansArray;
+    }
+
+    @Override
+    public void saveNewPlan(Plan pPlan) {
+        plansArray.add(pPlan);
     }
 
     @Override
