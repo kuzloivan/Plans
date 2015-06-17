@@ -33,7 +33,9 @@ public class Multimedia {
 
     public Multimedia(SharedHelper sharedHelper) {
         this.sharedHelper = sharedHelper;
-        player = new MediaPlayer();
+        if(player == null){
+            player = new MediaPlayer();
+        }
         aEnd = new AudioEnd();
         path = sharedHelper.getDefaultMediaWay();
         seconds = PLAYING_AUDIO_TIME;
@@ -67,6 +69,7 @@ public class Multimedia {
             public void run() {
                 player.stop();
                 player.reset();
+                player = null;
             }
         };
         h.postDelayed(stopPlaybackRun, seconds * 1000);

@@ -14,11 +14,11 @@ public class PApplication extends Application {
     private NetManager netManager;
     private DBManager dbManager;
     private SharedHelper sharedHelper;
+    private Multimedia multimedia;
 
     private static final String APP_KEY = "fYItmKEFfg4ZxDEB1SrwVMUx82sw91XMyTeZJ0fC";
     private static final String CLNT_KEY = "QVWnE2OAOKVt5yv3KRt830rguZv22wkk8ySkLA4K";
-    private SharedHelper sharedHelper;
-    private Multimedia multimedia;
+
 
     public void onCreate() {
         super.onCreate();

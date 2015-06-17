@@ -16,7 +16,7 @@ import java.util.Calendar;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
-import chisw.com.plans.ui.dialog.MyDialog;
+import chisw.com.plans.ui.Dialog.MyDialog;
 
 /**
  * Created by Yuriy on 15.06.2015.
