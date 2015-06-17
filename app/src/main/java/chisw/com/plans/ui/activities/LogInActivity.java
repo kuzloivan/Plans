@@ -44,20 +44,14 @@ public class LogInActivity extends ToolbarActivity {
         if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
-            ////updated insta-loginn
+
             if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
             {
                 mPassword.setText(sharedHelper.getDefaultPass());
                 netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
                 showProgressDialog("Loging In", "Please, wait...");
             }
-            ////
         }
-
-        //if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
-        //{
-        //    mPassword.setText(sharedHelper.getDefaultPass());
-        //}
     }
 
     @Override
@@ -116,13 +110,14 @@ public class LogInActivity extends ToolbarActivity {
                 hideProgressDialog();
                 return;
             }
-            ////under login sharedpreferences registration
+            //under login sharedpreferences registration
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
-            ////
+
             showToast("Login was successful");
             SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
+            LogInActivity.this.finish();
         }
     }
 
@@ -143,7 +138,7 @@ public class LogInActivity extends ToolbarActivity {
         @Override
         public void done(List<ParseObject> list, ParseException e) {
             if(e == null) {
-                showToast("I got it");
+                showToast("I've got it");
                 return;
             }
             showToast(e.getMessage());
@@ -155,7 +150,7 @@ public class LogInActivity extends ToolbarActivity {
         @Override
         public void done(List<ParseObject> list, ParseException e) {
             if(e == null) {
-                showToast("I got it");
+                showToast("I've got it");
                 return;
             }
             showToast(e.getMessage());
