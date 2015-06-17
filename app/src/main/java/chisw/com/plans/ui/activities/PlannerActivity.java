@@ -2,6 +2,7 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,15 @@ public class PlannerActivity extends ToolbarActivity {
         p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
         dbManager.saveNewPlan(p);
 
-        plannerCursorAdapter.notifyDataSetChanged();
+        Cursor cursor = dbManager.getPlans();
+
+        if(cursor.moveToFirst()){
+            plannerCursorAdapter.swapCursor(cursor);
+        }
+        else {
+            showToast("Error moving cursor to first element");
+        }
+
     }
 
     @Override

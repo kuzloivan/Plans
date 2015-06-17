@@ -27,6 +27,7 @@ public class DBManager implements DbBridge {
     public DBManager (Context context)    {
         dbHelper = new DBHelper(context);
         plansArray = new ArrayList<>();
+        sqLiteDatabase = dbHelper.getWritableDatabase();
     }
 
     @Override
@@ -36,14 +37,12 @@ public class DBManager implements DbBridge {
 
     @Override
     public Cursor getPlans() {
-        return null;
+        return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
     }
 
     @Override
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
-
-        sqLiteDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
 
