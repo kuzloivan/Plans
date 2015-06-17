@@ -8,14 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.PApplication;
 import chisw.com.plans.model.Plan;
-import chisw.com.plans.ui.adapters.PlannerArrayAdapter;
+import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 
 /**
  * Created by Alexander on 15.06.2015.
@@ -23,7 +20,7 @@ import chisw.com.plans.ui.adapters.PlannerArrayAdapter;
 public class PlannerActivity extends ToolbarActivity {
 
     ListView lvPlanner;
-    PlannerArrayAdapter plannerArrayAdapter;
+    PlannerCursorAdapter plannerCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +32,16 @@ public class PlannerActivity extends ToolbarActivity {
 
         lvPlanner = (ListView)findViewById(R.id.pa_planner_listview);
 
-        plannerArrayAdapter = new PlannerArrayAdapter(this, dbManager.getAllPlans());
-        lvPlanner.setAdapter(plannerArrayAdapter);
+        plannerCursorAdapter = new PlannerCursorAdapter(this);
+
+        lvPlanner.setAdapter(plannerCursorAdapter);
 
         Plan p = new Plan();
         p.setTitle("Make it!");
         p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
         dbManager.saveNewPlan(p);
 
-        plannerArrayAdapter.notifyDataSetChanged();
+        plannerCursorAdapter.notifyDataSetChanged();
     }
 
     @Override

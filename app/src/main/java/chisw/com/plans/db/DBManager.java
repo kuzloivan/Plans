@@ -22,6 +22,7 @@ public class DBManager implements DbBridge {
 
     private List<Plan> plansArray;
     private DBHelper dbHelper;
+    SQLiteDatabase sqLiteDatabase;
 
     public DBManager (Context context)    {
         dbHelper = new DBHelper(context);
@@ -42,7 +43,7 @@ public class DBManager implements DbBridge {
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
 
-        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        sqLiteDatabase = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
 
