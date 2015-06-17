@@ -36,7 +36,6 @@ public class NetManager implements NetBridge {
 
     }
 
-
     @Override
     public void addPlan(Plan plan, SaveCallback saveCallback) {
         ParseObject pPlan = new ParseObject("Plans");

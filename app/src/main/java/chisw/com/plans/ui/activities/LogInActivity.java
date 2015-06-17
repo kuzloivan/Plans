@@ -110,6 +110,4 @@ public class LogInActivity extends ToolbarActivity {
         Intent intent = new Intent(a, LogInActivity.class);
         a.startActivity(intent);
     }
-
-
 }

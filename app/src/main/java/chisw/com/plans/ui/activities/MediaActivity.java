@@ -66,7 +66,7 @@ public class MediaActivity extends ToolbarActivity {
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 path = getPath(data);
-                multimedia.setPath(path);
+                sharedHelper.setDefaultMediaWay(path);
                 message.setText(path);
                 isChAudioExist = false;
                 break;
