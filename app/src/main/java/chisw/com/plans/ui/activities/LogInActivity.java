@@ -44,12 +44,20 @@ public class LogInActivity extends ToolbarActivity {
         if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
+            ////updated insta-loginn
+            if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
+            {
+                mPassword.setText(sharedHelper.getDefaultPass());
+                netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
+                showProgressDialog("Loging In", "Please, wait...");
+            }
+            ////
         }
 
-        if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
-        {
-            mPassword.setText(sharedHelper.getDefaultPass());
-        }
+        //if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
+        //{
+        //    mPassword.setText(sharedHelper.getDefaultPass());
+        //}
     }
 
     @Override
@@ -108,6 +116,10 @@ public class LogInActivity extends ToolbarActivity {
                 hideProgressDialog();
                 return;
             }
+            ////under login sharedpreferences registration
+            sharedHelper.setDefaultLogin(mLogin.getText().toString());
+            sharedHelper.setDefaultPass(mPassword.getText().toString());
+            ////
             showToast("Login was successful");
             SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
