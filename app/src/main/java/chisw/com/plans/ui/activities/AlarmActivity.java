@@ -2,14 +2,15 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
+import android.app.Dialog;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receiver;
@@ -25,8 +26,12 @@ public class AlarmActivity extends ToolbarActivity{
     NotificationManager nm;
     AlarmManager am;
     Intent intent1;
-    PendingIntent pIntent1;
+    PendingIntent pAlarmIntent;
 
+    int DIALOG_TIME = 1; //id диалога
+    int myHour = 14;
+    int myMinute = 35;
+    TextView tvTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +43,14 @@ public class AlarmActivity extends ToolbarActivity{
 
         setContentView(R.layout.activity_alarm);
         Clicker c = new Clicker();
+        //Clicker d = new Clicker();
         findViewById(R.id.bt_notif).setOnClickListener(c);
         findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
+        findViewById(R.id.bt_add_time).setOnClickListener(c);
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        tvTime = (TextView) findViewById(R.id.tv_alarm_time);
 
     }
 
@@ -66,15 +75,36 @@ public class AlarmActivity extends ToolbarActivity{
 
     public void showNotification() {
         intent1 = createIntent("action 1", "extra 1");
-        pIntent1 = PendingIntent.getBroadcast(this, 0, intent1, 0);
+        pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent1, 0);
 
-        am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pIntent1);
+        am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
 
-        //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, 5000, pIntent1);
+        //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, 5000, pAlarmIntent);
     }
 
+    public void setAlarmTime(){
+        showDialog(DIALOG_TIME);
+    }
+
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_TIME) {
+            TimePickerDialog tpd = new TimePickerDialog(this, myCallBack, myHour, myMinute, true);
+            return tpd;
+        }
+        return super.onCreateDialog(id);
+    }
+
+
+    TimePickerDialog.OnTimeSetListener myCallBack = new TimePickerDialog.OnTimeSetListener() {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            myHour = hourOfDay;
+            myMinute = minute;
+            tvTime.setText("Time is " + myHour + " hours " + myMinute + " minutes");
+        }
+    };
+
     public void cancelAlarm(){
-        am.cancel(pIntent1);
+        am.cancel(pAlarmIntent);
     }
 
     public final class Clicker implements View.OnClickListener{
@@ -86,6 +116,9 @@ public class AlarmActivity extends ToolbarActivity{
                     break;
                 case R.id.bt_cancel_alarm:
                     cancelAlarm();
+                    break;
+                case R.id.bt_add_time:
+                    setAlarmTime();
                     break;
             }
         }

@@ -7,15 +7,13 @@
     <include layout="@layout/toolbar" />
 
     <TextView
+        android:id="@+id/tv_alarm_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Alarm activity"
         android:textSize="20pt"
         android:gravity="center"
         android:textColor="#039be5"/>
-
-
-
 
     <Button
         android:id="@+id/bt_notif"
@@ -24,6 +22,16 @@
         android:text="Show Notification"
         android:background="#ff00ddff"
         android:layout_column="0" />
+
+    <Button
+        android:id="@+id/bt_add_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add time in dialog"
+        android:background="#ff00ddff"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="right"
+        android:layout_column="1" />
 
     <Button
         android:id="@+id/bt_cancel_alarm"
