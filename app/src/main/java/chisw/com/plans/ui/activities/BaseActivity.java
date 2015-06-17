@@ -1,6 +1,8 @@
 package chisw.com.plans.ui.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected NetManager netManager;
     protected SharedHelper sharedHelper;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         netManager = pApplication.getNetManager();
     }
 
-    protected void showToast(String text){
+    protected void showToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void showProgressDialog(String title, String message) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    protected void hideProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 }
