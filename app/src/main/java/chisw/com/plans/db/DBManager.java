@@ -106,7 +106,8 @@ public class DBManager implements DbBridge {
 
     @Override
     public int getLastPlanID() {
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP}, null, null, null, null, null);
+       Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP,PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        //Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID}, null, null, null, null, null);
         int val;
         if (cursor.getCount() == 0) {
             val = 0;
@@ -114,16 +115,23 @@ public class DBManager implements DbBridge {
             cursor.moveToLast();
             val = cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID));
         }
-        Log.d("LAST_ID", Integer.toString(val));
         cursor.close();
         return val;
     }
 
     @Override
     public String getTitleByID(int id) {
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP}, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
         cursor.moveToPosition(id - 1);
         String title = cursor.getString(cursor.getColumnIndex(PlansEntity.TITLE));
         return title;
+    }
+
+    @Override
+    public String getAudioPathByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP,PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        cursor.moveToPosition(id - 1);
+        String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
+        return path;
     }
 }

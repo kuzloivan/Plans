@@ -30,8 +30,9 @@ import chisw.com.plans.utils.ValidData;
  */
 
 public class AlarmActivity extends ToolbarActivity {
-
+    //Probably can be deleted
     private static final String LOG = AlarmActivity.class.getSimpleName();
+    //===================================================
 
     private static final int REQUEST_AUDIO_GET = 1;
     private String path;
@@ -40,7 +41,6 @@ public class AlarmActivity extends ToolbarActivity {
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
-
     TimePicker tp;
     DatePicker dp;
     EditText et;
@@ -221,6 +221,7 @@ public class AlarmActivity extends ToolbarActivity {
         Plan p = new Plan();
         p.setTitle(et.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
+        p.setAudioPath(path);
         dbManager.saveNewPlan(p);
     }
 }
