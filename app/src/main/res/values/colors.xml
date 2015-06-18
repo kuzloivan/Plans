@@ -4,24 +4,26 @@
 
     <color name="color_white">#ffffff</color>
     <color name="color_linearlayout">#ffffff</color>
+
     <!-- Planner list view colors -->
-    <color name="color_pa_list_item_normal">#FF5252</color>
-    <color name="color_pa_list_item_pressed">#FF5238</color>
+    <color name="color_pa_list_item_normal">#F44336</color>
+    <color name="color_pa_list_item_pressed">#E57373</color>
     <color name="color_pa_list_item_text_view_text">#ffffff</color>
 
     <!-- Net Management activity colors -->
-    <color name="color_reg_btn_normal">#FF5252</color>
-    <color name="color_reg_btn_pressed">#FF5238</color>
+    <color name="color_reg_btn_normal">#F44336</color>
+    <color name="color_reg_btn_pressed">#E57373</color>
     <color name="color_reg_btn_text">#ffffff</color>
     <color name="color_reg_et_normal">#ffffff</color>
     <color name="color_reg_et_focused">#21986F</color>
 
     <!-- Media activity colors -->
-    <color name="color_ma_btn_normal">#FF5252</color>
-    <color name="color_ma_btn_pressed">#FF5238</color>
+    <color name="color_ma_btn_normal">#F44336</color>
+    <color name="color_ma_btn_pressed">#E57373</color>
     <color name="color_ma_btn_text">#ffffff</color>
 
-    <color name="color_aa_btn_normal">#FF5252</color>
-    <color name="color_aa_btn_pressed">#FF5238</color>
+    <!-- Alarm activity colors -->
+    <color name="color_aa_btn_normal">#F44336</color>
+    <color name="color_aa_btn_pressed">#E57373</color>
     <color name="color_aa_btn_text">#ffffff</color>
 </resources>
