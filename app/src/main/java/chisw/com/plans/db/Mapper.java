@@ -13,6 +13,7 @@ import chisw.com.plans.model.Plan;
 /**
  * Created by andrey on 17.06.15.
  */
+
 public class Mapper {
 
     public static ContentValues parsePlan(Plan model) {
