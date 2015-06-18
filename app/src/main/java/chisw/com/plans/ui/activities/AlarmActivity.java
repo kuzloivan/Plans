@@ -244,7 +244,7 @@ public class AlarmActivity extends ToolbarActivity {
             final String docId = DocumentsContract.getDocumentId(data);
             final String[] split = docId.split(":");
             Uri contentUri = null;
-            if ("com.android.providers.media.documents".equals(data.getAuthority()) && "audio/*".equals(getContentResolver().getType(data))) {
+            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
                 contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
             }
             final String selection = "_id=?";
