@@ -67,9 +67,9 @@ public class PlannerActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.pa_menu_splash:
-                SplashActivity.start(PlannerActivity.this);
-                break;
+//            case R.id.pa_menu_splash:
+//                SplashActivity.start(PlannerActivity.this);
+//                break;
 
             case R.id.pa_menu_add_reminder:
                 AlarmActivity.start(PlannerActivity.this);
