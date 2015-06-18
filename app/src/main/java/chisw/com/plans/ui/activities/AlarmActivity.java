@@ -4,8 +4,14 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -24,6 +30,11 @@ import android.widget.Toast;
 public class AlarmActivity extends ToolbarActivity {
 
     private static final String LOG = AlarmActivity.class.getSimpleName();
+
+    private static final int REQUEST_AUDIO_GET = 1;
+    final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    private String path;
+    private boolean isChAudioExist;
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
@@ -49,6 +60,7 @@ public class AlarmActivity extends ToolbarActivity {
         Clicker c = new Clicker();
         findViewById(R.id.bt_start_alarm).setOnClickListener(c);
         findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
+        findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
         dp = (DatePicker) findViewById(R.id.datePicker);
@@ -56,6 +68,12 @@ public class AlarmActivity extends ToolbarActivity {
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvTime = (TextView) findViewById(R.id.tv_alarm_time);
         tvDate = (TextView) findViewById(R.id.tv_alarm_date);
+
+        //delete later
+        if (sharedHelper.getDefaultMediaWay() != null) {
+            path = sharedHelper.getDefaultMediaWay();
+        }
+
 
     }
 
@@ -106,7 +124,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
 
-        showToast(formatter.format(calendar.getTime()) + "");//показывает текущее время, пока что
+        showToast(formatter.format(calendar.getTime()) + "");//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
         //showToast(formatter.format(calendar.getTimeInMillis()) + "");
 
         //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
@@ -129,7 +147,9 @@ public class AlarmActivity extends ToolbarActivity {
                 case R.id.bt_cancel_alarm:
                     cancelAlarm();
                     break;
-
+                case R.id.aa_setAudio_btn:
+                    chooseAudio();
+                    break;
             }
         }
     }
@@ -151,5 +171,71 @@ public class AlarmActivity extends ToolbarActivity {
             tvTime.setText("Alarm in " + strHour + " : " + strMinute + " ");
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            isChAudioExist = false;
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_AUDIO_GET:
+                path = getPath(data);
+                sharedHelper.setDefaultMediaWay(path);
+                isChAudioExist = false;
+                break;
+        }
+    }
+
+    private void chooseAudio() {
+        if (isChAudioExist) {
+            return;
+        }
+        isChAudioExist = true;
+        Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseAudio.setType("audio/*");
+        if (chooseAudio.resolveActivity(getPackageManager()) == null) {
+            isChAudioExist = false;
+        }
+        startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
+    }
+
+    private String getPath(Intent str) {
+        if (isKitKat) {
+            Uri data = str.getData();
+            final String docId = DocumentsContract.getDocumentId(data);
+            final String[] split = docId.split(":");
+            Uri contentUri = null;
+            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
+                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            }
+            final String selection = "_id=?";
+            final String[] selectionArgs = new String[]{
+                    split[1]
+            };
+            return getDataColumn(this, contentUri, selection, selectionArgs);
+        } else {
+            return str.getDataString();
+        }
+    }
+
+    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
     }
 }

@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,11 +12,10 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.IOException;
+
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.SharedHelper;
-import chisw.com.plans.others.Multimedia;
+
 
 public class MediaActivity extends ToolbarActivity {
 
@@ -73,11 +70,11 @@ public class MediaActivity extends ToolbarActivity {
         }
     }
 
-    @Override
+   /* @Override
     protected void onStop() {
         super.onStop();
         multimedia.stopPlayer();
-    }
+    }*/
 
     public final class Clicker implements View.OnClickListener {
         @Override
