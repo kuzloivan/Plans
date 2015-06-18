@@ -47,6 +47,10 @@ public class PlannerActivity extends ToolbarActivity {
 //        dbManager.saveNewPlan(p);
         // ------------ For test only ------------ //
 
+    }
+
+    @Override
+    protected void onResume() {
         Cursor cursor = dbManager.getPlans();
 
         if(cursor.moveToFirst()){
@@ -56,6 +60,7 @@ public class PlannerActivity extends ToolbarActivity {
             showToast("Error moving cursor to first element. DB is empty.");
         }
 
+        super.onResume();
     }
 
     @Override
