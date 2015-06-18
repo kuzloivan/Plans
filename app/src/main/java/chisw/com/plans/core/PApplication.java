@@ -8,10 +8,12 @@ import com.parse.Parse;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.net.NetManager;
 import chisw.com.plans.others.Multimedia;
+import chisw.com.plans.utils.SystemUtils;
 
 public class PApplication extends Application {
 
     private NetManager netManager;
+    private SystemUtils systemUtils;
     private DBManager dbManager;
     private SharedHelper sharedHelper;
     private Multimedia multimedia;
@@ -27,6 +29,7 @@ public class PApplication extends Application {
         Parse.initialize(this, APP_KEY, CLNT_KEY);
 
         netManager = new NetManager();
+        systemUtils = new SystemUtils();
         sharedHelper = new SharedHelper(this);
         multimedia = new Multimedia(sharedHelper);
         dbManager = new DBManager(this);
@@ -34,6 +37,10 @@ public class PApplication extends Application {
 
     public NetManager getNetManager() {
         return netManager;
+    }
+
+    public SystemUtils getSystemUtils() {
+        return systemUtils;
     }
 
     public SharedHelper getSharedHelper() {

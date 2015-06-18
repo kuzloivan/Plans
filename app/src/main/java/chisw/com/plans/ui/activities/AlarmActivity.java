@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
+import chisw.com.plans.utils.SystemUtils;
+
 import android.widget.Toast;
 
 
@@ -32,7 +34,6 @@ public class AlarmActivity extends ToolbarActivity {
     private static final String LOG = AlarmActivity.class.getSimpleName();
 
     private static final int REQUEST_AUDIO_GET = 1;
-    final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     private String path;
     private boolean isChAudioExist;
 
@@ -125,13 +126,9 @@ public class AlarmActivity extends ToolbarActivity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
 
-        showToast(formatter.format(calendar.getTime()) + "");//now it's show current time
-        showToast(formatter.format(calendar.getTime()) + "");//?????????? ??????? ?????, ???? ???
-        //showToast(formatter.format(calendar.getTimeInMillis()) + "");
+        showToast(formatter.format(calendar.getTime()) + "");
 
-        //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
-
-        //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, 5000, pAlarmIntent);
+        PlannerActivity.start(this);
     }
 
     public void cancelAlarm() {
@@ -205,7 +202,7 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     private String getPath(Intent str) {
-        if (isKitKat) {
+        if (SystemUtils.isKitKatHigher()) {
             Uri data = str.getData();
             final String docId = DocumentsContract.getDocumentId(data);
             final String[] split = docId.split(":");
