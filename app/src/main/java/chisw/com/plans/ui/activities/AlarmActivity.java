@@ -3,24 +3,19 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.audiofx.BassBoost;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-
-import java.text.DateFormat;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
@@ -67,8 +62,6 @@ public class AlarmActivity extends ToolbarActivity {
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        tvTime = (TextView) findViewById(R.id.tv_alarm_time);
-        tvDate = (TextView) findViewById(R.id.tv_alarm_date);
     }
 
     @Override
@@ -110,9 +103,6 @@ public class AlarmActivity extends ToolbarActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-
-        tvTime.setText(new StringBuilder().append(tp.getCurrentHour()).append(":").append(tp.getCurrentMinute()));
-        tvDate.setText(new StringBuilder().append(dp.getDayOfMonth()).append(".").append(dp.getMonth()).append(":").append(dp.getYear()));
 
         calendar.set(Calendar.HOUR_OF_DAY, tp.getCurrentHour());
         calendar.set(Calendar.MINUTE, tp.getCurrentMinute());
