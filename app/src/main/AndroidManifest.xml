@@ -4,7 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
     <application
         android:name=".core.PApplication"
@@ -38,17 +39,25 @@
             android:label="@string/title_activity_planner"
             android:theme="@style/AppTheme.PlannerTheme"></activity>
 
-        <activity android:name=".ui.activities.AlarmActivity"
+        <activity
+            android:name=".ui.activities.AlarmActivity"
             android:label="@string/title_activity_alarm"
-            android:theme="@style/AppTheme.PlannerTheme"
-            />
+            android:theme="@style/AppTheme.PlannerTheme" />
 
-        <activity android:name=".ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"/>
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:label="@string/title_activity_settings" />
 
-        <receiver android:name=".core.Receiver"/>
+        <receiver android:name=".core.Receivers.Receiver" />
 
-       <receiver android:name="chisw.com.plans.core.Receiver"/>
+        <receiver
+            android:name=".core.Receivers.RebootReceiver"
+            android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

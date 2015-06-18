@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,28 +15,32 @@
         android:id="@+id/tv_alarm_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Alarm activity"
+        android:text="Time --:--"
         android:textSize="20pt"
         android:gravity="center"
         android:textColor="#039be5"/>
 
-    <Button
-        android:id="@+id/bt_notif"
+    <TextView
+        android:id="@+id/tv_alarm_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show Notification"
-        android:background="#ff00ddff"
-        android:layout_column="0" />
+        android:text="Date --/--/--"
+        android:textSize="20pt"
+        android:gravity="center"
+        android:textColor="#039be5" />
+
+    <TimePicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker" />
 
     <Button
-        android:id="@+id/bt_add_time"
+        android:id="@+id/bt_start_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add time in dialog"
+        android:text="Start Alarm"
         android:background="#ff00ddff"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="right"
-        android:layout_column="1" />
+        android:layout_column="0" />
 
     <Button
         android:id="@+id/bt_cancel_alarm"
@@ -43,16 +52,12 @@
         android:layout_gravity="right"
         android:layout_column="1" />
 
-    <TextView
-        android:id="@+id/tv_alarm_info"
+    <DatePicker
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Alarm info here"
-        android:textSize="20pt"
-        android:gravity="center"
-        android:textColor="#039be5"/>
-
-
+        android:id="@+id/datePicker"
+        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>
+</ScrollView>
