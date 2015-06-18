@@ -42,12 +42,8 @@ public class Receiver extends BroadcastReceiver {
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {
 
-        // todo create notification by Notification.Builder http://developer.android.com/training/notify-user/build-notification.html
-
-
-
         if (SystemUtils.isICSHigher()){
-        Intent notificationIntent = new Intent(ctx, AlarmActivity.class);
+        Intent notificationIntent = new Intent();
         PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         Resources res = ctx.getResources();
         Notification.Builder builder = new Notification.Builder(ctx);
@@ -56,9 +52,7 @@ public class Receiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle("Alarm " + id)
                 .setContentText("Wake up !!!");
-
         Notification notification = builder.build();
-
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFY_ID, notification);
         }
