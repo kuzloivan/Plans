@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.internal.widget.AdapterViewCompat;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +21,7 @@ import java.util.Calendar;
 
 import chisw.com.plans.R;
 import chisw.com.plans.db.Mapper;
+import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 import chisw.com.plans.utils.DataUtils;
@@ -32,13 +36,18 @@ public class PlannerActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
 
         Clicker clicker = new Clicker();
+
         ItemClicker itemClicker = new ItemClicker();
+        ItemLongClicker itemLongClicker = new ItemLongClicker();
 
         lvPlanner = (ListView)findViewById(R.id.pa_planner_listview);
         plannerCursorAdapter = new PlannerCursorAdapter(this);
         lvPlanner.setAdapter(plannerCursorAdapter);
 
         lvPlanner.setOnItemClickListener(itemClicker);
+        lvPlanner.setOnItemLongClickListener(itemLongClicker);
+
+        registerForContextMenu(lvPlanner);
 
         // ------------ For test only ------------ //
 //        Plan p = new Plan();
@@ -61,6 +70,23 @@ public class PlannerActivity extends ToolbarActivity {
         }
 
         super.onResume();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        getMenuInflater().inflate(R.menu.menu_planner, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterViewCompat.AdapterContextMenuInfo info = (AdapterViewCompat.AdapterContextMenuInfo) item.getMenuInfo();
+
+        showToast(String.valueOf(info.id));
+
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -148,14 +174,16 @@ public class PlannerActivity extends ToolbarActivity {
             Cursor cursor = plannerCursorAdapter.getCursor();
             cursor.moveToPosition(position);
 
+            int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
+
             // todo: add detailed activity
 
-            Plan plan = Mapper.parseCursor(cursor);
+            //showToast("Deleted: " + dbManager.deletePlanById(cursor.getInt(idIndex)) + "plan");
 
-            showToast("Position " + position + "\nTitle: " + plan.getTitle() +
+            /*showToast("Position " + position + "\nTitle: " + plan.getTitle() +
                     "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
-                    "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
-                    "\nParseId: " + plan.getParseId());
+                    "\nTime: " + DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
+                    "\nParseId: " + plan.getParseId());*/
 
             return false;
         }
