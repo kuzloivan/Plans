@@ -108,7 +108,7 @@ public class LogInActivity extends ToolbarActivity {
                         error = "Username is already taken";
                         break;
                 }
-                showToast(error);
+                showToast(error); //test
                 hideProgressDialog();
                 return;
             }
@@ -122,13 +122,10 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackLogIn implements LogInCallback {
 
-        String error = "";
-
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
-                error = "error";
-                showToast(error);
+                showToast("error"); //test
                 hideProgressDialog();
                 return;
             }
