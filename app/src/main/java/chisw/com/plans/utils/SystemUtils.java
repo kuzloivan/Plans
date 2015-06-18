@@ -1,29 +1,62 @@
 package chisw.com.plans.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.telecom.TelecomManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public class SystemUtils {
-    public boolean checkNetworkStatus(Context context)
+
+    private static final int KITKAT_VERSION = 19;
+    private static final int ICS_VERSION = 16;
+
+    public static boolean checkNetworkStatus(Context pContext)
     {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        //TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) pContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo bluetooth = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_BLUETOOTH);
+        NetworkInfo wimax = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIMAX);
 
-        NetworkInfo wifi = connectivityManager.getActiveNetworkInfo();
-        NetworkInfo mobile = connectivityManager.getActiveNetworkInfo();
+        if (wifi == null && mobile == null && bluetooth == null
+                && wimax == null) {
+            return false;
+        }
 
-        return wifi.isConnected() || mobile.isConnected();
+        if (wifi != null && wifi.isConnected()) {
+            return true;
+        }
+
+        if (mobile != null && mobile.isConnected()) {
+            return true;
+        }
+
+        if (bluetooth != null && bluetooth.isConnected()) {
+            return true;
+        }
+
+        if (wimax != null && wimax.isConnected()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void hideKeyboard(Activity activity, View view){
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public static boolean isKitKatHigher(){
-        return Build.VERSION.SDK_INT >= 19;
+        return Build.VERSION.SDK_INT >= KITKAT_VERSION;
     }
 
     public static boolean isICSHigher(){
-        return Build.VERSION.SDK_INT >= 16;
+        return Build.VERSION.SDK_INT >= ICS_VERSION;
     }
 
 }

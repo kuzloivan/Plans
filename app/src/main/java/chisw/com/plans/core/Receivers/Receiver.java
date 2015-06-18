@@ -54,8 +54,8 @@ public class Receiver extends BroadcastReceiver {
 
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_alarm)
-                .setContentTitle("NOTIF")
-                .setContentText("Some text");
+                .setContentTitle("Alarm " + id)
+                .setContentText("Wake up !!!");
 
         Notification notification = builder.build();
 
