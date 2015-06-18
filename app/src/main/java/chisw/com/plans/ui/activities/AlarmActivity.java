@@ -7,20 +7,20 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.audiofx.BassBoost;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
@@ -28,8 +28,6 @@ import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
-
-import android.widget.Toast;
 
 
 /**
@@ -54,8 +52,6 @@ public class AlarmActivity extends ToolbarActivity {
     int myMonth = 1;
     int myYear = 1999;
 
-    TextView tvTime;
-    TextView tvDate;
     TimePicker tp;
     DatePicker dp;
     EditText et;
@@ -72,13 +68,11 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
-        tp.setIs24HourView(true);
+        tp.setIs24HourView(android.text.format.DateFormat.is24HourFormat(this));
         dp = (DatePicker) findViewById(R.id.datePicker);
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        tvTime = (TextView) findViewById(R.id.tv_alarm_time);
-        tvDate = (TextView) findViewById(R.id.tv_alarm_date);
 
         //delete later
         if (sharedHelper.getDefaultMediaWay() != null) {
@@ -129,9 +123,6 @@ public class AlarmActivity extends ToolbarActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        tvTime.setText(new StringBuilder().append(tp.getCurrentHour()).append(":").append(tp.getCurrentMinute()));
-        tvDate.setText(new StringBuilder().append(dp.getDayOfMonth()).append(".").append(dp.getMonth()).append(":").append(dp.getYear()));
-
         myHour = tp.getCurrentHour();
         myMinute = tp.getCurrentMinute();
 
@@ -160,7 +151,6 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     public void cancelAlarm() {
-        tvTime.setText(R.string.s_alarm_act);
         am.cancel(pAlarmIntent);
     }
 
@@ -178,25 +168,6 @@ public class AlarmActivity extends ToolbarActivity {
                     chooseAudio();
                     break;
             }
-        }
-    }
-
-    private class TimerCallbacks implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String strHour = hourOfDay + "";
-            String strMinute = minute + "";
-
-            if (hourOfDay < 10) {
-                strHour = "0" + hourOfDay;
-            }
-            if (minute < 10) {
-                strMinute = "0" + minute;
-            }
-
-            tvTime.setText("Alarm in " + strHour + " : " + strMinute + " ");
-
         }
     }
 

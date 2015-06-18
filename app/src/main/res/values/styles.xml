@@ -82,10 +82,4 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_margin">8sp</item>
     </style>
-    <style name="style_aa_tv">
-        <item name="android:layout_margin">8sp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/color_aa_tv</item>
-    </style>
 </resources>
