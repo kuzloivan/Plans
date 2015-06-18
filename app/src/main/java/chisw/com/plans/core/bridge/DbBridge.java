@@ -21,4 +21,5 @@ public interface DbBridge {
     Cursor getMe(String id);
     int getLastPlanID();
     String getTitleByID(int id);
+    String getAudioPathByID(int id);
 }

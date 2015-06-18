@@ -1,14 +1,9 @@
 package chisw.com.plans.others;
 
-import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.text.TextUtils;
-import android.widget.Toast;
-
 import java.io.IOException;
-
 import chisw.com.plans.core.SharedHelper;
 
 /**
@@ -24,20 +19,14 @@ public class Multimedia {
         mSharedHelper = sharedHelper;
     }
 
-    public void startPlayer() {
-
-        String path = mSharedHelper.getDefaultMediaWay();
-
+    public void startPlayer(String path) {
         try {
-
             if(player == null){
                 player = new MediaPlayer();
             }
-
-            if (player.isPlaying() || TextUtils.isEmpty(path)) {
+            if (player.isPlaying()) {
                 return;
             }
-
             player.setDataSource(path);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.prepare();
@@ -48,14 +37,8 @@ public class Multimedia {
         }
     }
 
-    public void alarmNontification(Context context) {
-        String path = mSharedHelper.getDefaultMediaWay();
-
-        if (TextUtils.isEmpty(path)) {
-            Toast.makeText(context, "Audio wasn't chosen", Toast.LENGTH_SHORT);
-            return;
-        }
-        startPlayer();
+    public void alarmNontification(String path) {
+        startPlayer(path);
         Handler h = new Handler();
         Runnable stopPlaybackRun = new Runnable() {
             public void run() {
@@ -78,6 +61,5 @@ public class Multimedia {
             stopPlayer();
         }
     }
-
 }
 

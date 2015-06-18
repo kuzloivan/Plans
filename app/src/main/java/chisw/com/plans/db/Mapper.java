@@ -22,6 +22,7 @@ public class Mapper {
         CV.put(PlansEntity.PARSE_ID, model.getParseId());
         CV.put(PlansEntity.TITLE, model.getTitle());
         CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());
+        CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
 
         return CV;
     }
