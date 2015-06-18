@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.telecom.TelecomManager;
 
 public class SystemUtils {
-    public static boolean cheackNetworkStatus(Context context)
+    public static boolean checkNetworkStatus(Context context)
     {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
@@ -14,9 +14,6 @@ public class SystemUtils {
         NetworkInfo wifi = connectivityManager.getActiveNetworkInfo();
         NetworkInfo mobile = connectivityManager.getActiveNetworkInfo();
 
-        if (wifi.isConnected() || mobile.isConnected())
-            return true;
-        else
-            return false;
+        return wifi.isConnected() || mobile.isConnected();
     }
 }
