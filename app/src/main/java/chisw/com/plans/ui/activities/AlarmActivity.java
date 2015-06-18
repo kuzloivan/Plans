@@ -17,8 +17,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
@@ -213,17 +215,19 @@ public class AlarmActivity extends ToolbarActivity {
 
     private String getPath(Intent str) {
         if (SystemUtils.isKitKatHigher()) {
+
             Uri data = str.getData();
             final String docId = DocumentsContract.getDocumentId(data);
             final String[] split = docId.split(":");
             Uri contentUri = null;
-            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
+            if ("com.android.providers.media.documents".equals(data.getAuthority()) && "audio/*".equals(getContentResolver().getType(data))) {
                 contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
             }
             final String selection = "_id=?";
             final String[] selectionArgs = new String[]{
                     split[1]
             };
+
             return getDataColumn(this, contentUri, selection, selectionArgs);
         } else {
             return str.getDataString();
