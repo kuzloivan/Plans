@@ -3,6 +3,7 @@ package chisw.com.plans.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.telecom.TelecomManager;
 
 public class SystemUtils {
@@ -16,4 +17,13 @@ public class SystemUtils {
 
         return wifi.isConnected() || mobile.isConnected();
     }
+
+    public static boolean isKitKatHigher(){
+        return Build.VERSION.SDK_INT >= 19;
+    }
+
+    public static boolean isICSHigher(){
+        return Build.VERSION.SDK_INT >= 16;
+    }
+
 }
