@@ -144,9 +144,13 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            plannerCursorAdapter.getCursor();
+            Cursor cursor = plannerCursorAdapter.getCursor();
+            cursor.moveToPosition(position);
 
-            Plan plan = Mapper.parseCursor(plannerCursorAdapter.getCursor());
+            // awda,shdlaijfh
+
+
+            Plan plan = Mapper.parseCursor(cursor);
 
             showToast("Position " + position + "\nTitle" + plan.getTitle() +
                     "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
