@@ -41,16 +41,10 @@ public class AlarmActivity extends ToolbarActivity {
     private static final int REQUEST_AUDIO_GET = 1;
     private String path;
     private boolean isChAudioExist;
+    private boolean isAudioSelected;
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
-
-    int myHour = 0;
-    int myMinute = 0;
-
-    int myDay = 1;
-    int myMonth = 1;
-    int myYear = 1999;
 
     TimePicker tp;
     DatePicker dp;
@@ -73,13 +67,8 @@ public class AlarmActivity extends ToolbarActivity {
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        //delete later
-        if (sharedHelper.getDefaultMediaWay() != null) {
-            path = sharedHelper.getDefaultMediaWay();
-        }
-
-
+        tvTime = (TextView) findViewById(R.id.tv_alarm_time);
+        tvDate = (TextView) findViewById(R.id.tv_alarm_date);
     }
 
     @Override
@@ -119,32 +108,29 @@ public class AlarmActivity extends ToolbarActivity {
 
     public void startAlarm() {
 
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        myHour = tp.getCurrentHour();
-        myMinute = tp.getCurrentMinute();
+        tvTime.setText(new StringBuilder().append(tp.getCurrentHour()).append(":").append(tp.getCurrentMinute()));
+        tvDate.setText(new StringBuilder().append(dp.getDayOfMonth()).append(".").append(dp.getMonth()).append(":").append(dp.getYear()));
 
-        myDay = dp.getDayOfMonth();
-        myMonth = dp.getMonth();
-        myYear = dp.getYear();
-
-        calendar.set(Calendar.HOUR_OF_DAY, myHour);
-        calendar.set(Calendar.MINUTE, myMinute);
-
-        calendar.set(Calendar.DAY_OF_MONTH, myDay);
-        calendar.set(Calendar.MONTH, myMonth);
-        calendar.set(Calendar.YEAR, myYear);
+        calendar.set(Calendar.HOUR_OF_DAY, tp.getCurrentHour());
+        calendar.set(Calendar.MINUTE, tp.getCurrentMinute());
+        calendar.set(Calendar.DAY_OF_MONTH, dp.getDayOfMonth());
+        calendar.set(Calendar.MONTH, dp.getMonth());
+        calendar.set(Calendar.YEAR, dp.getYear());
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            Intent intent = createIntent("action" + dbManager.getLastPlanID(), "extra");
-            pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
-            writeToDB(calendar);
-            finish();
-        }
-        else{
+            if (isAudioSelected) {
+                Intent intent = createIntent("action" + dbManager.getLastPlanID(), "extra");
+                pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+                writeToDB(calendar);
+                finish();
+            } else {
+                showToast("Choose audio for notification.");
+            }
+        } else {
             showToast("Field is empty");
         }
         //PlannerActivity.start(this);
@@ -182,6 +168,7 @@ public class AlarmActivity extends ToolbarActivity {
             case REQUEST_AUDIO_GET:
                 path = getPath(data);
                 sharedHelper.setDefaultMediaWay(path);
+                isAudioSelected = true;
                 isChAudioExist = false;
                 break;
         }
