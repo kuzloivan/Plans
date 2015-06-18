@@ -58,7 +58,7 @@ public class AlarmActivity extends ToolbarActivity {
         initBackButton();
 
         Clicker c = new Clicker();
-        findViewById(R.id.bt_start_alarm).setOnClickListener(c);
+        findViewById(R.id.bt_save_alarm).setOnClickListener(c);
         findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
@@ -143,7 +143,7 @@ public class AlarmActivity extends ToolbarActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.bt_start_alarm:
+                case R.id.bt_save_alarm:
                     startAlarm();
                     break;
                 case R.id.bt_cancel_alarm:
