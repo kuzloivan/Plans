@@ -11,6 +11,9 @@ public class Plan {
     private long timeStamp;
     private String audioPath;
 
+    // todo: add field for plan status.
+    // todo: add details field for plan.
+
     public String getParseId() {
         return parseId;
     }

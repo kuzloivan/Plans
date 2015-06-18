@@ -57,8 +57,7 @@ public class PlannerActivity extends ToolbarActivity {
 
     }
 
-    @Override
-    protected void onResume() {
+    private void updateListView(){
         Cursor cursor = dbManager.getPlans();
 
         if(cursor.moveToFirst()){
@@ -67,7 +66,11 @@ public class PlannerActivity extends ToolbarActivity {
         else {
             showToast("Your plans list is empty");
         }
+    }
 
+    @Override
+    protected void onResume() {
+        updateListView();
         super.onResume();
     }
 
@@ -86,21 +89,30 @@ public class PlannerActivity extends ToolbarActivity {
         switch (item.getItemId()){
             case R.id.pa_context_edit:
 
+                showToast("Edit selected plan");
+                // todo: implement edit activity.
+
                 break;
 
             case R.id.pa_context_delete:
 
+                // // FIXME: 18.06.2015 incorrect deleting
+
                 Cursor cursor = plannerCursorAdapter.getCursor();
-                cursor.moveToPosition((int)(info.id - 1));
+                boolean result = cursor.moveToPosition((int)(info.id - 1));
 
                 int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
 
+                if(dbManager.deletePlanById(cursor.getInt(idIndex)) == 1){
+                    showToast("Plan deleted");
+                } else{
+                    showToast("Unexpected error occurred");
+                }
 
+                updateListView();
 
                 break;
         }
-
-        showToast(String.valueOf(info.id));
 
         return super.onContextItemSelected(item);
     }
@@ -114,9 +126,6 @@ public class PlannerActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-//            case R.id.pa_menu_splash:
-//                SplashActivity.start(PlannerActivity.this);
-//                break;
 
             case R.id.pa_menu_add_reminder:
                 AlarmActivity.start(PlannerActivity.this);
@@ -164,11 +173,11 @@ public class PlannerActivity extends ToolbarActivity {
             dbManager.clearPlans();
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
             sharedHelper.clearData();
-            //need to extend stack cleaner
+
             PlannerActivity.this.finish();
-            //
+
             hideProgressDialog();
-            showToast("Successful");
+            showToast("Logged out");
         }
     }
 
@@ -187,14 +196,7 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-            // todo: add detailed activity
-
-            //showToast("Deleted: " + dbManager.deletePlanById(cursor.getInt(idIndex)) + "plan");
-
-            /*showToast("Position " + position + "\nTitle: " + plan.getTitle() +
-                    "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
-                    "\nTime: " + DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
-                    "\nParseId: " + plan.getParseId());*/
+            // todo: add some code?
 
             return false;
         }
@@ -205,17 +207,8 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//            Cursor cursor = plannerCursorAdapter.getCursor();
-//            cursor.moveToPosition(position);
-//
-//            // todo: add detailed activity
-//
-//            Plan plan = Mapper.parseCursor(cursor);
-//
-//            showToast("Position " + position + "\nTitle: " + plan.getTitle() +
-//                    "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
-//                    "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
-//                    "\nParseId: " + plan.getParseId());
+            // todo: go to edit activity
+
         }
     }
 }
