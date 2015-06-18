@@ -41,10 +41,10 @@ public class PlannerActivity extends ToolbarActivity {
         lvPlanner.setOnItemClickListener(itemClicker);
 
         // ------------ For test only ------------ //
-        Plan p = new Plan();
-        p.setTitle("Make it!");
-        p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
-        dbManager.saveNewPlan(p);
+//        Plan p = new Plan();
+//        p.setTitle("Make it!");
+//        p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
+//        dbManager.saveNewPlan(p);
         // ------------ For test only ------------ //
 
         Cursor cursor = dbManager.getPlans();
