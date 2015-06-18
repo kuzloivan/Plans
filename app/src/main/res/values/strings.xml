@@ -14,6 +14,7 @@
     <string name="title_activity_alarm">Alarm</string>
     <string name="wakeUp">Wake up !!!</string>
     <string name="alarmTitle_hint">Alarm title</string>
+    <string name="aa_save_alarm">Save alarm</string>
 
     <!-- Net activity -->
     <string name="login">User login</string>

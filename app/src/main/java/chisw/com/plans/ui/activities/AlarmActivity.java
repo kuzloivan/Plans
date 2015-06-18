@@ -12,13 +12,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
@@ -81,6 +85,22 @@ public class AlarmActivity extends ToolbarActivity {
         }
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_alarm, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.aa_save_alarm:
+                startAlarm();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void start(Activity a) {
