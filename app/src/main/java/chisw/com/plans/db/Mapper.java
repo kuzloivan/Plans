@@ -25,6 +25,22 @@ public class Mapper {
         return CV;
     }
 
+    public static Plan parseCursor(Cursor cursor){
+        Plan plan = new Plan();
+
+        int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
+        int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
+        int parseIdIndex = cursor.getColumnIndex(PlansEntity.PARSE_ID);
+
+        long timeStamp = cursor.getLong(timeStampIndex);
+
+        plan.setParseId(cursor.getString(parseIdIndex));
+        plan.setTimeStamp(timeStamp);
+        plan.setTitle(cursor.getString(titleIndex));
+
+        return plan;
+    }
+
     public static ContentValues parseUser(ParseUser user) {
         ContentValues CV = new ContentValues();
 

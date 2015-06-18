@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.LogOutCallback;
@@ -16,8 +17,10 @@ import com.parse.ParseUser;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
+import chisw.com.plans.db.Mapper;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
+import chisw.com.plans.utils.DataUtils;
 
 public class PlannerActivity extends ToolbarActivity {
 
@@ -28,20 +31,21 @@ public class PlannerActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initBackButton();
-
         Clicker clicker = new Clicker();
+        ItemClicker itemClicker = new ItemClicker();
 
         lvPlanner = (ListView)findViewById(R.id.pa_planner_listview);
-
         plannerCursorAdapter = new PlannerCursorAdapter(this);
-
         lvPlanner.setAdapter(plannerCursorAdapter);
 
+        lvPlanner.setOnItemClickListener(itemClicker);
+
+        // ------------ For test only ------------ //
         Plan p = new Plan();
         p.setTitle("Make it!");
         p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
         dbManager.saveNewPlan(p);
+        // ------------ For test only ------------ //
 
         Cursor cursor = dbManager.getPlans();
 
@@ -59,8 +63,6 @@ public class PlannerActivity extends ToolbarActivity {
         getMenuInflater().inflate(R.menu.menu_planner, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-    int counter = 0;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -95,6 +97,17 @@ public class PlannerActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public static void start(Activity activity){
+        Intent intent = new Intent(activity, PlannerActivity.class);
+        activity.startActivity(intent);
+    }
+
+    @Override
+    protected int contentViewResId() {
+        return R.layout.activity_planner;
+    }
+
     public final class CallbackLogOut implements LogOutCallback
     {
         @Override
@@ -116,17 +129,6 @@ public class PlannerActivity extends ToolbarActivity {
         }
     }
 
-    @Override
-    protected int contentViewResId() {
-        return R.layout.activity_planner;
-    }
-
-
-    public static void start(Activity activity){
-        Intent intent = new Intent(activity, PlannerActivity.class);
-        activity.startActivity(intent);
-    }
-
     public final class Clicker implements View.OnClickListener{
 
         @Override
@@ -134,6 +136,20 @@ public class PlannerActivity extends ToolbarActivity {
             switch (v.getId()){
 
             }
+        }
+    }
+
+    public final class ItemClicker implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Plan plan = Mapper.parseCursor(plannerCursorAdapter.getCursor());
+
+            showToast("Position " + position + "\nTitle" + plan.getTitle() +
+                    "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
+                    "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
+                    "\nParseId: " + plan.getParseId());
         }
     }
 }
