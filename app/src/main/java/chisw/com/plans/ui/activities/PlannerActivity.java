@@ -41,10 +41,10 @@ public class PlannerActivity extends ToolbarActivity {
         lvPlanner.setOnItemClickListener(itemClicker);
 
         // ------------ For test only ------------ //
-        Plan p = new Plan();
-        p.setTitle("Make it!");
-        p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
-        dbManager.saveNewPlan(p);
+//        Plan p = new Plan();
+//        p.setTitle("Make it!");
+//        p.setTimeStamp(Calendar.getInstance().getTimeInMillis());
+//        dbManager.saveNewPlan(p);
         // ------------ For test only ------------ //
 
         Cursor cursor = dbManager.getPlans();
@@ -67,9 +67,9 @@ public class PlannerActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.pa_menu_splash:
-                SplashActivity.start(PlannerActivity.this);
-                break;
+//            case R.id.pa_menu_splash:
+//                SplashActivity.start(PlannerActivity.this);
+//                break;
 
             case R.id.pa_menu_add_reminder:
                 AlarmActivity.start(PlannerActivity.this);

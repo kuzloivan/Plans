@@ -8,61 +8,47 @@
     <include layout="@layout/toolbar" />
 
     <LinearLayout
+        style="@style/style_linearlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content">
 
-        >
-
-        <LinearLayout
+        <EditText
+            android:id="@+id/net_user_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="User name"
+            android:inputType="text" />
+
+
+        <EditText
+            android:id="@+id/net_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+
+        <LinearLayout
             style="@style/style_linearlayout"
-            >
-
-            <EditText
-                android:id="@+id/net_user_login"
-                android:hint="User name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-
-
-            <EditText
-                android:id="@+id/net_user_password"
-                android:layout_width="match_parent"
-                android:hint="Password"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/style_linearlayout"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_sign_up"
-                    style="@style/style_registration_btns"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Sign_up" />
-
-
-                <Button
-                    android:id="@+id/btn_log_in"
-                    style="@style/style_registration_btns"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/log_in" />
-            </LinearLayout>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_sph_tst"
+                android:id="@+id/btn_sign_up"
                 style="@style/style_registration_btns"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/go_to_sph" />
+                android:text="@string/Sign_up" />
 
+
+            <Button
+                android:id="@+id/btn_log_in"
+                style="@style/style_registration_btns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/log_in" />
         </LinearLayout>
+        
     </LinearLayout>
 </LinearLayout>

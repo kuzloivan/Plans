@@ -37,7 +37,6 @@ public class LogInActivity extends ToolbarActivity {
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
 
         /* For testing */
-        findViewById(R.id.btn_sph_tst).setOnClickListener(clickerNet);
 
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
@@ -89,10 +88,7 @@ public class LogInActivity extends ToolbarActivity {
                     netManager.loginUser(login, password, new CallbackLogIn());
                     break;
 
-                /* For testing!!! */
-                case R.id.btn_sph_tst:
-                    SplashActivity.start(LogInActivity.this);
-                    break;
+
             }
         }
     }
