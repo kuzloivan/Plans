@@ -47,11 +47,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/set_audio" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
                 <Button
                     android:id="@+id/bt_save_alarm"
                     style="@style/style_aa_btns"
@@ -59,14 +54,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/save_alarm" />
 
-                <Button
-                    android:id="@+id/bt_cancel_alarm"
-                    style="@style/style_aa_btns"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Cancel" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

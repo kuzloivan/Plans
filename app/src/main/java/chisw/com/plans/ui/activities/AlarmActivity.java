@@ -53,7 +53,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         Clicker c = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
-        findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
+        //findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
@@ -131,6 +131,7 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     public void cancelAlarm() {
+        // deprecated
         am.cancel(pAlarmIntent);
     }
 
@@ -141,9 +142,9 @@ public class AlarmActivity extends ToolbarActivity {
                 case R.id.bt_save_alarm:
                     startAlarm();
                     break;
-                case R.id.bt_cancel_alarm:
-                    cancelAlarm();
-                    break;
+//                case R.id.bt_cancel_alarm:
+//                    cancelAlarm();
+//                    break;
                 case R.id.aa_setAudio_btn:
                     chooseAudio();
                     break;
