@@ -14,12 +14,14 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
+import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
 
 import android.widget.Toast;
@@ -51,6 +53,7 @@ public class AlarmActivity extends ToolbarActivity {
     TextView tvDate;
     TimePicker tp;
     DatePicker dp;
+    EditText et;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,7 @@ public class AlarmActivity extends ToolbarActivity {
         tp = (TimePicker) findViewById(R.id.timePicker);
         dp = (DatePicker) findViewById(R.id.datePicker);
         dp.setMinDate(System.currentTimeMillis() - 1000);
-
+        et = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvTime = (TextView) findViewById(R.id.tv_alarm_time);
         tvDate = (TextView) findViewById(R.id.tv_alarm_date);
@@ -129,6 +132,13 @@ public class AlarmActivity extends ToolbarActivity {
         showToast(formatter.format(calendar.getTime()) + "");
 
         PlannerActivity.start(this);
+
+        Plan p = new Plan();
+        p.setTitle(et.getText().toString());
+        p.setTimeStamp(calendar.getTimeInMillis());
+        dbManager.saveNewPlan(p);
+
+        finish();
     }
 
     public void cancelAlarm() {
