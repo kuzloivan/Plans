@@ -111,14 +111,18 @@ public class AlarmActivity extends ToolbarActivity {
         calendar.set(Calendar.YEAR, dp.getYear());
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            if (isAudioSelected) {
+            if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis()> 0)) {
                 writeToDB(calendar);
                 Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
                 am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
                 //writeToDB(calendar);
                 finish();
-            } else {
+            }
+            else if (calendar.getTimeInMillis() - System.currentTimeMillis() <= 0) {
+                showToast("Time is incorrect.");
+            }
+            else {
                 showToast("Choose audio for notification.");
             }
         } else {
