@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
+import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
 
 import android.widget.Toast;
@@ -129,6 +130,13 @@ public class AlarmActivity extends ToolbarActivity {
         showToast(formatter.format(calendar.getTime()) + "");
 
         PlannerActivity.start(this);
+
+        Plan p = new Plan();
+        p.setTitle("Make it!");
+        p.setTimeStamp(calendar.getTimeInMillis());
+        dbManager.saveNewPlan(p);
+
+        finish();
     }
 
     public void cancelAlarm() {
