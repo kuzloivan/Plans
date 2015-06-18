@@ -10,29 +10,28 @@
     <!-- Alarm activity -->
     <string name="set_date">Choose date</string>
     <string name="set_time">Choose time</string>
-    
-    
+    <string name="bt_notif">Show Notification</string>
+    <string name="title_activity_alarm">Alarm</string>
+    <string name="wakeUp">Wake up !!!</string>
+
     <!-- Net activity -->
     <string name="login">User login</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
     <string name="Sign_up">Sign up</string>
     <string name="go_to_sph">Go to Splash</string>
-    <string name="add_plan_tst">Add plan test</string>
 
     <string name="back">Back</string>
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
     <string name="sa_notification_volume">Notification volume</string>
-    <string name="wakeUp">Wake up !!!</string>
 
     <!-- Planner activity -->
     <string name="pa_add_new_reminder">Add reminder</string>
     <string name="pa_settings">Settings</string>
     <string name="pa_log_out">Log out</string>
-
-    <string name="bt_notif">Show Notification</string>
-    <string name="title_activity_alarm">Alarm</string>
+    <string name="pa_splash">Go to splash...</string>
+    <string name="pa_media">Go to media...</string>
 
     <!-- Names of buttons from main menu -->
     <string name="s_planner_act">Open Planner</string>

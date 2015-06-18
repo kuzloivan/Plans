@@ -2,6 +2,7 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageStats;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -32,31 +34,25 @@ public class LogInActivity extends ToolbarActivity {
         ClickerNet clickerNet = new ClickerNet();
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
-        findViewById(R.id.btn_plan).setOnClickListener(clickerNet);
 
         /* For testing */
         findViewById(R.id.btn_sph_tst).setOnClickListener(clickerNet);
 
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
-
+        //auto-insert user credentials
         if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
-            ////updated insta-loginn
+
             if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
             {
                 mPassword.setText(sharedHelper.getDefaultPass());
-                netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
+                //move to main activity
                 showProgressDialog("Loging In", "Please, wait...");
+                netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
             }
-            ////
         }
-
-        //if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
-        //{
-        //    mPassword.setText(sharedHelper.getDefaultPass());
-        //}
     }
 
     @Override
@@ -73,49 +69,18 @@ public class LogInActivity extends ToolbarActivity {
 
             switch (v.getId()) {
                 case R.id.btn_sign_up:
-                    netManager.registerUser(login, password, new CallbackSignUp());
                     showProgressDialog("Signing Up", "Please, wait...");
+                    netManager.registerUser(login, password, new CallbackSignUp());
                     break;
 
                 case R.id.btn_log_in:
-                    netManager.loginUser(login, password, new CallbackLogIn());
                     showProgressDialog("Loging In", "Please, wait...");
+                    netManager.loginUser(login, password, new CallbackLogIn());
                     break;
+
                 /* For testing!!! */
                 case R.id.btn_sph_tst:
                     SplashActivity.start(LogInActivity.this);
-                    break;
-                case R.id.btn_plan:
-                    /* Add Plan testing!!! */
-                    /*Plan plan = new Plan();
-                    plan.setTitle("test");
-                    plan.setTimeStamp(111);
-                    netManager.addPlan(plan, new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if(e == null) {
-                                showToast("Plan was added");
-                                return;
-                            }
-                            showToast(e.getMessage());
-                        }
-                    });*/
-                    netManager.getPlan("8j4TGE9QPU", new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List list, ParseException e) {
-                            if(e == null) {
-                                showToast("I got it");
-                                String testPlan = "";
-                                for (int i = 0; i < 5; i++) {
-                                    testPlan += list.get(i);
-                                }
-                                ((EditText)findViewById(R.id.net_user_login)).setText(testPlan);
-                                return;
-                            }
-                            showToast(e.getMessage());
-                        }
-
-                    });
                     break;
             }
         }
@@ -132,8 +97,8 @@ public class LogInActivity extends ToolbarActivity {
             }
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
-            showToast("Successful");
             hideProgressDialog();
+            showToast("Successful");
         }
     }
 
@@ -146,13 +111,51 @@ public class LogInActivity extends ToolbarActivity {
                 hideProgressDialog();
                 return;
             }
-            ////under login sharedpreferences registration
+            //under login sharedpreferences registration
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
-            ////
+
             showToast("Login was successful");
-            SplashActivity.start(LogInActivity.this);
             hideProgressDialog();
+
+            PlannerActivity.start(LogInActivity.this);
+            LogInActivity.this.finish();
+        }
+    }
+
+    public final class CallbackAddPlan implements SaveCallback {
+
+        @Override
+        public void done(ParseException e) {
+            if(e == null) {
+                showToast("Plan was added");
+                return;
+            }
+            showToast(e.getMessage());
+        }
+    }
+
+    public final class CallbackGetPlan implements FindCallback<ParseObject> {
+
+        @Override
+        public void done(List<ParseObject> list, ParseException e) {
+            if(e == null) {
+                showToast("I've got it");
+                return;
+            }
+            showToast(e.getMessage());
+        }
+    }
+
+    public final class CallbackGetPlans implements FindCallback<ParseObject> {
+
+        @Override
+        public void done(List<ParseObject> list, ParseException e) {
+            if(e == null) {
+                showToast("I've got it");
+                return;
+            }
+            showToast(e.getMessage());
         }
     }
 

@@ -42,6 +42,6 @@ public class SharedHelper {
     }
 
     public void clearData() {
-        sharedPreferences.edit().clear();
+        sharedPreferences.edit().clear().apply();
     }
 }

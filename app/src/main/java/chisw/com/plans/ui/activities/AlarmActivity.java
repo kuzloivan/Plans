@@ -7,16 +7,15 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.app.Dialog;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import chisw.com.plans.R;
-import chisw.com.plans.core.Receiver;
-import chisw.com.plans.ui.Dialog.MyDialog;
+import chisw.com.plans.core.Receivers.Receiver;
+import android.widget.Toast;
+
 
 /**
  * Created by Yuriy on 15.06.2015.
@@ -26,18 +25,20 @@ public class AlarmActivity extends ToolbarActivity {
 
     private static final String LOG = AlarmActivity.class.getSimpleName();
 
-    private static final int DIALOG_TIME = 1;
-
-
-    //NotificationManager nm;
-
     AlarmManager am;
-
     PendingIntent pAlarmIntent;
+
     int myHour = 0;
     int myMinute = 0;
+
+    int myDay = 1;
+    int myMonth = 1;
+    int myYear = 1999;
+
     TextView tvTime;
-    TextView tvInfo;
+    TextView tvDate;
+    TimePicker tp;
+    DatePicker dp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +47,15 @@ public class AlarmActivity extends ToolbarActivity {
         initBackButton();
 
         Clicker c = new Clicker();
-        //Clicker d = new Clicker();
-        findViewById(R.id.bt_notif).setOnClickListener(c);
+        findViewById(R.id.bt_start_alarm).setOnClickListener(c);
         findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
-        findViewById(R.id.bt_add_time).setOnClickListener(c);
-        //nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        tp = (TimePicker) findViewById(R.id.timePicker);
+        dp = (DatePicker) findViewById(R.id.datePicker);
+
+        am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvTime = (TextView) findViewById(R.id.tv_alarm_time);
-        tvInfo = (TextView) findViewById(R.id.tv_alarm_info);
+        tvDate = (TextView) findViewById(R.id.tv_alarm_date);
 
     }
 
@@ -67,8 +68,8 @@ public class AlarmActivity extends ToolbarActivity {
     protected int contentViewResId() {
         return R.layout.activity_alarm;
     }
-    //===============================================================
 
+    //========================ALARM=================================
 
     private Intent createIntent(String action, String extra) {
         Intent intent = new Intent(this, Receiver.class);
@@ -77,38 +78,41 @@ public class AlarmActivity extends ToolbarActivity {
         return intent;
     }
 
-    public void showNotification() {
+    public void startAlarm() {
         Intent intent = createIntent("action 1", "extra 1");
         pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
+
+        tvTime.setText(new StringBuilder().append(tp.getCurrentHour()).append(":").append(tp.getCurrentMinute()));
+        tvDate.setText(new StringBuilder().append(dp.getDayOfMonth()).append(".").append(dp.getMonth()).append(":").append(dp.getYear()));
+
+        myHour = tp.getCurrentHour();
+        myMinute = tp.getCurrentMinute();
+
+        myDay = dp.getDayOfMonth();
+        myMonth = dp.getMonth();
+        myYear = dp.getYear();
+
         calendar.set(Calendar.HOUR_OF_DAY, myHour);
         calendar.set(Calendar.MINUTE, myMinute);
 
+        calendar.set(Calendar.DAY_OF_MONTH, myDay);
+        calendar.set(Calendar.MONTH, myMonth);
+        calendar.set(Calendar.YEAR, myYear);
+
         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-mm-yyyy");
-        showToast(formatter.format(calendar.getTimeInMillis()) + "");
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
+
+        showToast(formatter.format(calendar.getTime()) + "");//показывает текущее время, пока что
+        //showToast(formatter.format(calendar.getTimeInMillis()) + "");
 
         //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);
 
         //am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, 5000, pAlarmIntent);
     }
-
-    public void setAlarmTime() {
-        MyDialog md = new MyDialog(this);
-        md.show();
-    }  // todo remove deprecated method
-
-    protected Dialog onCreateDialog(int id) {// todo remove deprecated method
-        if (id == DIALOG_TIME) {
-            TimePickerDialog tpd = new TimePickerDialog(this, new TimerCallbacks(), myHour, myMinute, true);
-            return tpd;
-        }
-        return super.onCreateDialog(id);
-    }
-
 
     public void cancelAlarm() {
         tvTime.setText(R.string.s_alarm_act);
@@ -119,15 +123,13 @@ public class AlarmActivity extends ToolbarActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.bt_notif:
-                    showNotification();
+                case R.id.bt_start_alarm:
+                    startAlarm();
                     break;
                 case R.id.bt_cancel_alarm:
                     cancelAlarm();
                     break;
-                case R.id.bt_add_time:
-                    setAlarmTime();
-                    break;
+
             }
         }
     }
