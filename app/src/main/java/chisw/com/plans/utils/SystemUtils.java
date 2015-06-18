@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.telecom.TelecomManager;
 
 public class SystemUtils {
-    public static boolean checkNetworkStatus(Context context)
+    public boolean checkNetworkStatus(Context context)
     {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
