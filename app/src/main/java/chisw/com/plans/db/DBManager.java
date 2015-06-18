@@ -84,7 +84,7 @@ public class DBManager implements DbBridge {
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
 
-        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan, getLastPlanCursor()));
+        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan, getLastPlanID()));
     }
 
     //insert new user into user_database SQL
@@ -105,7 +105,7 @@ public class DBManager implements DbBridge {
     }
 
     @Override
-    public int getLastPlanCursor() {
+    public int getLastPlanID() {
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP}, null, null, null, null, null);
         int val;
         if (cursor.getCount() == 0) {

@@ -147,26 +147,16 @@ public class AlarmActivity extends ToolbarActivity {
         calendar.set(Calendar.YEAR, myYear);
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            Intent intent = createIntent("action 1", "extra 1");
+            Intent intent = createIntent("action" + dbManager.getLastPlanID(), "extra");
             pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
             writeToDB(calendar);
             finish();
-            //+++++++++++++Delete later+++++++++++++++++++++++++++++++++++++++
-            SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
-            showToast(formatter.format(calendar.getTime()) + "");
-            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         }
         else{
             showToast("Field is empty");
         }
         //PlannerActivity.start(this);
-        /*ValidData.isTextValid(et.getText().toString());
-        Plan p = new Plan();
-        p.setTitle(et.getText().toString());
-        p.setTimeStamp(calendar.getTimeInMillis());
-        dbManager.saveNewPlan(p);
-        */
     }
 
     public void cancelAlarm() {
