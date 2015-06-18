@@ -40,4 +40,37 @@
         <item name="android:background">@drawable/planner_list_item</item>
     </style>
 
+    <!-- layout -->
+    <style name="style_linearlayout">
+        <item name="android:layout_marginTop">@dimen/margin</item>
+        <item name="android:padding">8sp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+
+    <!-- buttons -->
+    <style name="style_btns">
+        <item name="android:layout_margin">8sp</item>
+        <item name="android:layout_weight">0.5</item>
+    </style>
+
+    <!--registration-->
+    <style name="style_registration_btns" parent="style_btns">
+        <item name="android:background">@drawable/reg_btns_selector</item>
+        <item name="android:textColor">@color/color_reg_btn_text</item>
+    </style>
+
+    <style name="style_reg_edittext">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_margin">4sp</item>
+        <item name="android:background">@drawable/reg_btns_et_selector</item>
+    </style>
+
+    <style name="style_reg_textview">
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_marginLeft">8sp</item>
+        <item name="android:layout_marginRight">8sp</item>
+    </style>
+    <!-- ********************************* -->
+
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageStats;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -36,7 +37,6 @@ public class LogInActivity extends ToolbarActivity {
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
 
         /* For testing */
-        findViewById(R.id.btn_sph_tst).setOnClickListener(clickerNet);
 
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
@@ -45,12 +45,17 @@ public class LogInActivity extends ToolbarActivity {
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
 
-            if (!TextUtils.isEmpty(sharedHelper.getDefaultPass()))
-            {
+            if (!TextUtils.isEmpty(sharedHelper.getDefaultPass())) {
                 mPassword.setText(sharedHelper.getDefaultPass());
                 //move to main activity
-                showProgressDialog("Loging In", "Please, wait...");
-                netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
+                if (!systemUtils.checkNetworkStatus(getApplicationContext())) {
+                    showToast("No internet connection");
+                }
+                else
+                {
+                    showProgressDialog("Loging In", "Please, wait...");
+                    netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
+                }
             }
         }
     }
@@ -64,6 +69,11 @@ public class LogInActivity extends ToolbarActivity {
 
         @Override
         public void onClick(View v) {
+            if(!systemUtils.checkNetworkStatus(getApplicationContext()))
+            {
+                showToast("No internet connection");
+                return;
+            }
             String login = mLogin.getText().toString();
             String password = mPassword.getText().toString();
 
@@ -78,10 +88,7 @@ public class LogInActivity extends ToolbarActivity {
                     netManager.loginUser(login, password, new CallbackLogIn());
                     break;
 
-                /* For testing!!! */
-                case R.id.btn_sph_tst:
-                    SplashActivity.start(LogInActivity.this);
-                    break;
+
             }
         }
     }
