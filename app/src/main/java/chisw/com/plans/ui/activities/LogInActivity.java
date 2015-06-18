@@ -119,10 +119,13 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackLogIn implements LogInCallback {
 
+        String error = "";
+
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
-                showToast("Log In error");
+                error = "error";
+                showToast(error);
                 hideProgressDialog();
                 return;
             }
