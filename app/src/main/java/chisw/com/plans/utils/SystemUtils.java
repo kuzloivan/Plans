@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.telecom.TelecomManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
