@@ -64,6 +64,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         tp = (TimePicker) findViewById(R.id.timePicker);
         dp = (DatePicker) findViewById(R.id.datePicker);
+        dp.setMinDate(System.currentTimeMillis() - 1000);
 
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvTime = (TextView) findViewById(R.id.tv_alarm_time);
@@ -124,7 +125,8 @@ public class AlarmActivity extends ToolbarActivity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
 
-        showToast(formatter.format(calendar.getTime()) + "");//���������� ������� �����, ���� ���
+        showToast(formatter.format(calendar.getTime()) + "");//now it's show current time
+        showToast(formatter.format(calendar.getTime()) + "");//?????????? ??????? ?????, ???? ???
         //showToast(formatter.format(calendar.getTimeInMillis()) + "");
 
         //am.set(AlarmManager.RTC, System.currentTimeMillis() + 4000, pAlarmIntent);

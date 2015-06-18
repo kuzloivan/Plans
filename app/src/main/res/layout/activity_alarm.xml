@@ -18,7 +18,13 @@
         android:text="Time --:--"
         android:textSize="20pt"
         android:gravity="center"
-        android:textColor="#039be5"/>
+        android:textColor="#039be5"
+        android:layout_margin="@dimen/margin"/>
+
+    <TimePicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker" />
 
     <TextView
         android:id="@+id/tv_alarm_date"
@@ -27,12 +33,15 @@
         android:text="Date --/--/--"
         android:textSize="20pt"
         android:gravity="center"
-        android:textColor="#039be5" />
+        android:textColor="#039be5"
+        android:layout_margin="@dimen/margin"/>
 
-    <TimePicker
+    <DatePicker
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/timePicker" />
+        android:id="@+id/datePicker"
+        android:layout_gravity="center_horizontal"
+        android:calendarViewShown="false"/>
 
     <Button
         android:id="@+id/bt_start_alarm"
@@ -40,7 +49,8 @@
         android:layout_height="wrap_content"
         android:text="Start Alarm"
         android:background="#ff00ddff"
-        android:layout_column="0" />
+        android:layout_column="0"
+        android:layout_margin="@dimen/margin"/>
 
     <Button
         android:id="@+id/bt_cancel_alarm"
@@ -50,13 +60,10 @@
         android:background="#ffff4c51"
         android:layout_marginTop="10dp"
         android:layout_gravity="right"
-        android:layout_column="1" />
+        android:layout_column="1"
+        android:layout_margin="@dimen/margin"/>
 
-    <DatePicker
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/datePicker"
-        android:layout_gravity="center_horizontal" />
+
 
     <Button
         android:layout_width="match_parent"
