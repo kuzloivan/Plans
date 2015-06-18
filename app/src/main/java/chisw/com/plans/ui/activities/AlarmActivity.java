@@ -131,7 +131,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         showToast(formatter.format(calendar.getTime()) + "");
 
-        PlannerActivity.start(this);
+        //PlannerActivity.start(this);
 
         Plan p = new Plan();
         p.setTitle(et.getText().toString());

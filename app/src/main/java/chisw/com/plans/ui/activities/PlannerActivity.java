@@ -79,10 +79,6 @@ public class PlannerActivity extends ToolbarActivity {
                 SettingsActivity.start(PlannerActivity.this);
                 break;
 
-            case R.id.pa_menu_media:
-                MediaActivity.start(PlannerActivity.this);
-                break;            
-
             case R.id.pa_menu_log_off:
                 //Log off!
                 showProgressDialog("Loging Off", "Please, wait...");
