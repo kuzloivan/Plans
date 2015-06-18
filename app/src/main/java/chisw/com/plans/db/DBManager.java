@@ -31,23 +31,43 @@ public class DBManager implements DbBridge {
         plansArray = new ArrayList<>();
         sqLiteDatabase = dbHelper.getWritableDatabase();
     }
+
     //returns list of plans
     @Override
     public List<Plan> getAllPlans()
     {
         return plansArray;
     }
+
     //returns every plan from plans_database SQL
     @Override
     public Cursor getPlans() {
         return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
     }
+
     //clears all writtings in plans_database SQL
     @Override
     public void clearPlans()
     {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, null, null);
     }
+
+    @Override
+    public Plan selectPlanById(int id) {
+
+        Plan plan = null;
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + " = ?",
+                new String[] { String.valueOf(id)}, null, null, null);
+
+        if(cursor != null){
+
+            plan = Mapper.parseCursor(cursor);
+
+            cursor.close();
+        }
+        return plan;
+    }
+
     //erase 1 user by id in user_database SQL
     public void eraseMe(String id)
     {
@@ -62,6 +82,7 @@ public class DBManager implements DbBridge {
 
         sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
     }
+
     //insert new user into user_database SQL
     @Override
     public void saveMe(ParseUser pParseUser) {
@@ -70,6 +91,7 @@ public class DBManager implements DbBridge {
 
         sqLiteDatabase.insert(UserEntity.TABLE_NAME, null, Mapper.parseUser(pParseUser));
     }
+
     //returns user from user_databese SQL
     @Override
     public Cursor getMe(String id) {

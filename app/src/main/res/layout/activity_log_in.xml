@@ -49,13 +49,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/log_in" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_sph_tst"
-            style="@style/style_registration_btns"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/go_to_sph" />
-
+        
     </LinearLayout>
 </LinearLayout>
