@@ -68,13 +68,13 @@ public class LogInActivity extends ToolbarActivity {
             }
             String login = mLogin.getText().toString();
             String password = mPassword.getText().toString();
-            /* Checking of network connection */
+            /* Checking of valid data */
             if(!ValidData.isTextValid(login,password))
             {
-                showToast("Process failed: empty string");
+                showToast("You haven't filled all fields!");
                 return;
             }
-            /* Buttons listener */
+            /* Button's listener */
             switch (v.getId()) {
                 case R.id.btn_sign_up:
                     showProgressDialog("Signing Up", "Please, wait...");
@@ -90,7 +90,7 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackSignUp implements SignUpCallback {
 
-        String error = "";
+        String error = "Error";
 
         @Override
         public void done(ParseException e) {
@@ -118,10 +118,18 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackLogIn implements LogInCallback {
 
+        String error = "Error";
+
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
-                showToast("error"); //test
+                /* Is username already exist */
+                switch(e.getCode()) {
+                    case ParseException.OBJECT_NOT_FOUND:
+                        error = "Unable to log in. Check your username and password";
+                        break;
+                }
+                showToast(error); //test
                 hideProgressDialog();
                 return;
             }
