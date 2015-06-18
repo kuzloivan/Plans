@@ -27,6 +27,7 @@ import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
+import chisw.com.plans.utils.ValidData;
 
 import android.widget.Toast;
 
@@ -123,8 +124,7 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     public void startAlarm() {
-        Intent intent = createIntent("action 1", "extra 1");
-        pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -146,19 +146,24 @@ public class AlarmActivity extends ToolbarActivity {
         calendar.set(Calendar.MONTH, myMonth);
         calendar.set(Calendar.YEAR, myYear);
 
-        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+        if (ValidData.isTextValid(et.getText().toString())) {
+            Intent intent = createIntent("action 1", "extra 1");
+            pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+            writeToDB(calendar);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
-
-        showToast(formatter.format(calendar.getTime()) + "");
-
+            //+++++++++++++Delete later+++++++++++++++++++++++++++++++++++++++
+            SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
+            showToast(formatter.format(calendar.getTime()) + "");
+            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        }
         //PlannerActivity.start(this);
-
+        /*ValidData.isTextValid(et.getText().toString());
         Plan p = new Plan();
         p.setTitle(et.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         dbManager.saveNewPlan(p);
-
+        */
         finish();
     }
 
@@ -239,7 +244,7 @@ public class AlarmActivity extends ToolbarActivity {
             final String docId = DocumentsContract.getDocumentId(data);
             final String[] split = docId.split(":");
             Uri contentUri = null;
-            if ("com.android.providers.media.documents".equals(data.getAuthority()) && "audio/*".equals(getContentResolver().getType(data))) {
+            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
                 contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
             }
             final String selection = "_id=?";
@@ -269,5 +274,12 @@ public class AlarmActivity extends ToolbarActivity {
                 cursor.close();
         }
         return null;
+    }
+
+    private void writeToDB(Calendar calendar) {
+        Plan p = new Plan();
+        p.setTitle(et.getText().toString());
+        p.setTimeStamp(calendar.getTimeInMillis());
+        dbManager.saveNewPlan(p);
     }
 }
