@@ -67,6 +67,7 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
+        tp.setIs24HourView(true);
         dp = (DatePicker) findViewById(R.id.datePicker);
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
