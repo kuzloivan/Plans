@@ -22,21 +22,17 @@
 
             <EditText
                 android:id="@+id/setTitle_textview"
+                style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin"
                 android:hint="@string/alarmTitle_hint"/>
 
             <TextView
                 android:id="@+id/tv_alarm_time"
+                style="@style/style_aa_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:gravity="center"
-                android:text="Time --:--"
-                android:textColor="#039be5"
-                android:textSize="20pt" />
+                android:text="Time --:--" />
 
             <TimePicker
                 android:id="@+id/timePicker"
@@ -46,13 +42,10 @@
 
             <TextView
                 android:id="@+id/tv_alarm_date"
+                style="@style/style_aa_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:gravity="center"
-                android:text="Date --/--/--"
-                android:textColor="#039be5"
-                android:textSize="20pt" />
+                android:text="Date --/--/--"/>
 
             <DatePicker
                 android:id="@+id/datePicker"
@@ -64,10 +57,10 @@
 
             <Button
                 android:id="@+id/aa_setAudio_btn"
+                style="@style/style_aa_btns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:text="Set audio" />
+                android:text="@string/set_audio" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,18 +69,16 @@
 
                 <Button
                     android:id="@+id/bt_save_alarm"
+                    style="@style/style_aa_btns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_weight="50"
-                    android:text="Save alarm" />
+                    android:text="@string/save_alarm" />
 
                 <Button
                     android:id="@+id/bt_cancel_alarm"
+                    style="@style/style_aa_btns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_weight="50"
                     android:text="Cancel" />
 
             </LinearLayout>

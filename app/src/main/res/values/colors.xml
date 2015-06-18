@@ -21,4 +21,8 @@
     <color name="color_ma_btn_pressed">#F8FF14</color>
     <color name="color_ma_btn_text">#ffffff</color>
 
+    <color name="color_aa_btn_text">#ffffff</color>
+    <color name="color_aa_btn_pressed">#FFFA41</color>
+    <color name="color_aa_btn_normal">#FFFD00</color>
+    <color name="color_aa_tv">#1E2223</color>
 </resources>
