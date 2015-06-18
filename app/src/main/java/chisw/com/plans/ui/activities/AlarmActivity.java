@@ -12,13 +12,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
@@ -67,6 +71,7 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
+        tp.setIs24HourView(true);
         dp = (DatePicker) findViewById(R.id.datePicker);
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
@@ -80,6 +85,22 @@ public class AlarmActivity extends ToolbarActivity {
         }
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_alarm, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.aa_save_alarm:
+                startAlarm();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void start(Activity a) {
@@ -131,7 +152,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         showToast(formatter.format(calendar.getTime()) + "");
 
-        PlannerActivity.start(this);
+        //PlannerActivity.start(this);
 
         Plan p = new Plan();
         p.setTitle(et.getText().toString());

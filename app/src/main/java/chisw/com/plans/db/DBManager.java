@@ -62,7 +62,6 @@ public class DBManager implements DbBridge {
         if(cursor != null){
 
             plan = Mapper.parseCursor(cursor);
-
             cursor.close();
         }
         return plan;
