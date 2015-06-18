@@ -69,9 +69,8 @@ public class DBManager implements DbBridge {
     }
 
     @Override
-    public int deletePlanById(int id) {
-        //sqLiteDatabase.delete(PlansEntity)
-        return 0;
+    public int deletePlanById(long id) {
+        return sqLiteDatabase.delete(PlansEntity.TABLE_NAME, PlansEntity.LOCAL_ID + "=?",new String[] { String.valueOf(id)});
     }
 
     //erase 1 user by id in user_database SQL
@@ -104,6 +103,14 @@ public class DBManager implements DbBridge {
         String selection = UserEntity.PARSE_ID + "=?";
         String[] selectionaArgs=new String[]{id};
         return sqLiteDatabase.query(UserEntity.TABLE_NAME,null,selection,selectionaArgs,null,null,null);
+    }
+
+    @Override
+    public Cursor getLastPlanCursor() {
+        // todo ????
+        //Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
+
+        return null;
     }
 
 }
