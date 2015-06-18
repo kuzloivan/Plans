@@ -18,6 +18,7 @@ import com.parse.SignUpCallback;
 import java.util.List;
 
 import chisw.com.plans.R;
+import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
 public class LogInActivity extends ToolbarActivity {
@@ -38,21 +39,15 @@ public class LogInActivity extends ToolbarActivity {
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
         //auto-insert user credentials
-        if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
+        if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
 
-            if (!TextUtils.isEmpty(sharedHelper.getDefaultPass())) {
+            if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
                 mPassword.setText(sharedHelper.getDefaultPass());
                 //move to main activity
-                if (!systemUtils.checkNetworkStatus(getApplicationContext())) {
-                    showToast("No internet connection");
-                }
-                else
-                {
-                    showProgressDialog("Loging In", "Please, wait...");
-                    netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
-                }
+                PlannerActivity.start(LogInActivity.this);
+                LogInActivity.this.finish();
             }
         }
     }
@@ -66,7 +61,7 @@ public class LogInActivity extends ToolbarActivity {
 
         @Override
         public void onClick(View v) {
-            if(!systemUtils.checkNetworkStatus(getApplicationContext()))
+            if(!SystemUtils.checkNetworkStatus(getApplicationContext()))
             {
                 showToast("No internet connection");
                 return;

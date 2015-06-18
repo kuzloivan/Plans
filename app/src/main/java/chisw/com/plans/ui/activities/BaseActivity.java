@@ -10,7 +10,6 @@ import chisw.com.plans.core.SharedHelper;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.net.NetManager;
 import chisw.com.plans.others.Multimedia;
-import chisw.com.plans.utils.SystemUtils;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -18,7 +17,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SharedHelper sharedHelper;
     protected Multimedia multimedia;
     protected DBManager dbManager;
-    protected SystemUtils systemUtils;
     private ProgressDialog progressDialog;
 
     @Override
@@ -30,7 +28,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         netManager = pApplication.getNetManager();
         dbManager = pApplication.getDbManager();
         multimedia = pApplication.getMultimedia();
-        systemUtils = pApplication.getSystemUtils();
     }
 
     protected void showToast(String text){
