@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,13 +75,30 @@ public class PlannerActivity extends ToolbarActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        getMenuInflater().inflate(R.menu.menu_planner, menu);
+        getMenuInflater().inflate(R.menu.context_menu_planner, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        AdapterViewCompat.AdapterContextMenuInfo info = (AdapterViewCompat.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.pa_context_edit:
+
+                break;
+
+            case R.id.pa_context_delete:
+
+                Cursor cursor = plannerCursorAdapter.getCursor();
+                cursor.moveToPosition((int)(info.id - 1));
+
+                int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
+
+
+
+                break;
+        }
 
         showToast(String.valueOf(info.id));
 
@@ -170,11 +186,6 @@ public class PlannerActivity extends ToolbarActivity {
 
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-            Cursor cursor = plannerCursorAdapter.getCursor();
-            cursor.moveToPosition(position);
-
-            int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
 
             // todo: add detailed activity
 
