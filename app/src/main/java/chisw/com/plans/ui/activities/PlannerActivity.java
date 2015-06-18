@@ -153,7 +153,7 @@ public class PlannerActivity extends ToolbarActivity {
 
             Plan plan = Mapper.parseCursor(cursor);
 
-            showToast("Position " + position + "\nTitle" + plan.getTitle() +
+            showToast("Position " + position + "\nTitle: " + plan.getTitle() +
                     "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
                     "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
                     "\nParseId: " + plan.getParseId());
