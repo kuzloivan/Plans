@@ -111,7 +111,7 @@ public class AlarmActivity extends ToolbarActivity {
         calendar.set(Calendar.YEAR, dp.getYear());
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis()> 0)) {
+            if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writeToDB(calendar);
                 Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
@@ -128,7 +128,6 @@ public class AlarmActivity extends ToolbarActivity {
         } else {
             showToast("Field is empty");
         }
-        //PlannerActivity.start(this);
     }
 
     public void cancelAlarm() {
