@@ -151,11 +151,14 @@ public class AlarmActivity extends ToolbarActivity {
             pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
             writeToDB(calendar);
-
+            finish();
             //+++++++++++++Delete later+++++++++++++++++++++++++++++++++++++++
             SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
             showToast(formatter.format(calendar.getTime()) + "");
             //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        }
+        else{
+            showToast("Field is empty");
         }
         //PlannerActivity.start(this);
         /*ValidData.isTextValid(et.getText().toString());
@@ -164,7 +167,6 @@ public class AlarmActivity extends ToolbarActivity {
         p.setTimeStamp(calendar.getTimeInMillis());
         dbManager.saveNewPlan(p);
         */
-        finish();
     }
 
     public void cancelAlarm() {
