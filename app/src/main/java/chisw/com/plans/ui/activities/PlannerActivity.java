@@ -144,6 +144,8 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            plannerCursorAdapter.getCursor();
+
             Plan plan = Mapper.parseCursor(plannerCursorAdapter.getCursor());
 
             showToast("Position " + position + "\nTitle" + plan.getTitle() +

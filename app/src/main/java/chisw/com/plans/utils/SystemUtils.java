@@ -10,7 +10,7 @@ public class SystemUtils {
     public boolean checkNetworkStatus(Context context)
     {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        //TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
 
         NetworkInfo wifi = connectivityManager.getActiveNetworkInfo();
         NetworkInfo mobile = connectivityManager.getActiveNetworkInfo();
