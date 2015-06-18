@@ -95,15 +95,23 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackSignUp implements SignUpCallback {
 
+        String error = "";
+
         @Override
         public void done(ParseException e) {
             if (e != null) {
-                showToast(e.getMessage());                
+                switch(e.getCode()) {
+                    case ParseException.USERNAME_TAKEN:
+                        error = "Username is already taken";
+                        break;
+                }
+                showToast(error);
                 hideProgressDialog();
                 return;
             }
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
+            netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
             hideProgressDialog();
             showToast("Successful");
         }
@@ -111,10 +119,13 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackLogIn implements LogInCallback {
 
+        String error = "";
+
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
-                showToast(e.getMessage());
+                error = "error";
+                showToast(error);
                 hideProgressDialog();
                 return;
             }
@@ -122,7 +133,7 @@ public class LogInActivity extends ToolbarActivity {
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
 
-            showToast("Login was successful");
+            showToast("LogIn was successful");
             hideProgressDialog();
 
             PlannerActivity.start(LogInActivity.this);
