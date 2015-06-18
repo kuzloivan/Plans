@@ -118,4 +118,12 @@ public class DBManager implements DbBridge {
         cursor.close();
         return val;
     }
+
+    @Override
+    public String getTitleByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP}, null, null, null, null, null);
+        cursor.moveToPosition(id - 1);
+        String title = cursor.getString(cursor.getColumnIndex(PlansEntity.TITLE));
+        return title;
+    }
 }

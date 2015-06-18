@@ -20,4 +20,5 @@ public interface DbBridge {
     void saveMe(ParseUser pParseUser);
     Cursor getMe(String id);
     int getLastPlanID();
+    String getTitleByID(int id);
 }

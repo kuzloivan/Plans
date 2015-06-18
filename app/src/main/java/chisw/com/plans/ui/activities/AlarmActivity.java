@@ -112,10 +112,11 @@ public class AlarmActivity extends ToolbarActivity {
 
         if (ValidData.isTextValid(et.getText().toString())) {
             if (isAudioSelected) {
-                Intent intent = createIntent("action" + dbManager.getLastPlanID(), "extra");
+                writeToDB(calendar);
+                Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
                 am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
-                writeToDB(calendar);
+                //writeToDB(calendar);
                 finish();
             } else {
                 showToast("Choose audio for notification.");

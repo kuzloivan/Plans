@@ -11,6 +11,7 @@ import android.util.Log;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
+import chisw.com.plans.db.DBManager;
 import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.utils.SystemUtils;
@@ -31,8 +32,7 @@ public class Receiver extends BroadcastReceiver {
         Log.d(LOG_TAG, "extra = " + intent.getStringExtra("extra"));
 
         pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
-
-        sendNotif(1, pIntent1, ctx);
+        sendNotif(Integer.parseInt(intent.getAction()), pIntent1, ctx);
 
 
         Multimedia multimedia = ((PApplication)ctx.getApplicationContext()).getMultimedia();
@@ -41,7 +41,6 @@ public class Receiver extends BroadcastReceiver {
     }
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {
-
         if (SystemUtils.isICSHigher()){
         Intent notificationIntent = new Intent();
         PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -50,7 +49,7 @@ public class Receiver extends BroadcastReceiver {
 
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_alarm)
-                .setContentTitle("Alarm " + id)
+                .setContentTitle(((PApplication)ctx.getApplicationContext()).getDbManager().getTitleByID(id))
                 .setContentText("Wake up !!!");
         Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -60,7 +59,7 @@ public class Receiver extends BroadcastReceiver {
             NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
             Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
             notif.flags |= Notification.FLAG_AUTO_CANCEL;
-            notif.setLatestEventInfo(ctx, "Alarm " + id, "Wake up !!!", pIntent);
+            notif.setLatestEventInfo(ctx, ((PApplication)ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
             nm.notify(id, notif);
         }
     }
