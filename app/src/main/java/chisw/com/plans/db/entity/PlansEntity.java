@@ -8,10 +8,11 @@ public class PlansEntity {
     public static final String PARSE_ID = "parseId";
     public static final String TITLE = "title";
     public static final String TIMESTAMP = "timeStamp";
+    public static final String LOCAL_ID = "_id";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
-            "_id INT PRIMARY KEY, " +
+            LOCAL_ID + " INT PRIMARY KEY, " +
             PARSE_ID + " TEXT, " +
             TITLE + " TEXT, " +
             TIMESTAMP + " INT " +
