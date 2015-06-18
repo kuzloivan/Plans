@@ -7,6 +7,9 @@ import android.os.Build;
 import android.telecom.TelecomManager;
 
 public class SystemUtils {
+
+    private static final int KITKAT_VERSION = 19;
+    private static final int ICS_VERSION = 16;
     public boolean checkNetworkStatus(Context context)
     {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -19,11 +22,11 @@ public class SystemUtils {
     }
 
     public static boolean isKitKatHigher(){
-        return Build.VERSION.SDK_INT >= 19;
+        return Build.VERSION.SDK_INT >= KITKAT_VERSION;
     }
 
     public static boolean isICSHigher(){
-        return Build.VERSION.SDK_INT >= 16;
+        return Build.VERSION.SDK_INT >= ICS_VERSION;
     }
 
 }
