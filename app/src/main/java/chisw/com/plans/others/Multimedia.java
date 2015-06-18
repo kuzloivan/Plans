@@ -52,7 +52,8 @@ public class Multimedia {
         String path = mSharedHelper.getDefaultMediaWay();
 
         if (TextUtils.isEmpty(path)) {
-            Toast.makeText(context, "Audio wans't changed", Toast.LENGTH_SHORT);
+            Toast.makeText(context, "Audio wasn't chosen", Toast.LENGTH_SHORT);
+            return;
         }
         startPlayer();
         Handler h = new Handler();

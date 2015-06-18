@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_nm_background"
     android:orientation="vertical"
     tools:context="chisw.com.plans.ui.NetManagementActivity">
 
@@ -11,93 +10,58 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top"
-        android:orientation="vertical"
-        android:padding="@dimen/padding8">
+
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_net_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin"
-                android:text="@string/login"
-                android:textSize="@dimen/text_size_log_sign" />
+            style="@style/style_linearlayout"
+            >
 
             <EditText
                 android:id="@+id/net_user_login"
+                android:hint="User name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin"
-                android:background="@color/color_nm_edit_text_login_password"
-                android:inputType="text"
-                android:textSize="@dimen/text_size_changed_text"/>
+                android:inputType="text" />
 
-            <TextView
-                android:id="@+id/tv_net_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin"
-                android:text="@string/password"
-                android:textSize="@dimen/text_size_log_sign" />
 
             <EditText
                 android:id="@+id/net_user_password"
                 android:layout_width="match_parent"
+                android:hint="Password"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin"
-                android:background="@color/color_nm_edit_text_login_password"
-                android:inputType="textPassword"
-                android:textSize="@dimen/text_size_changed_text"/>
+                android:inputType="textPassword" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/padding16" >
+                style="@style/style_linearlayout"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_sign_up"
+                    style="@style/style_registration_btns"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin"
-                    android:layout_marginRight="@dimen/margin"
-                    android:background="@color/color_nm_button_background_login_signup"
-                    android:text="@string/Sign_up"
-                    android:textColor="@color/color_nm_button_text_login_signup"
-                    android:layout_weight="0.5"/>
+                    android:text="@string/Sign_up" />
 
 
                 <Button
                     android:id="@+id/btn_log_in"
+                    style="@style/style_registration_btns"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin"
-                    android:layout_marginRight="@dimen/margin"
-                    android:background="@color/color_nm_button_background_login_signup"
-                    android:text="@string/log_in"
-                    android:textColor="@color/color_nm_button_text_login_signup"
-                    android:layout_weight="0.5"/>
+                    android:text="@string/log_in" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_sph_tst"
+                style="@style/style_registration_btns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin"
-                android:layout_marginTop="@dimen/padding8"
-                android:background="@color/color_nm_button_background_login_signup"
-                android:text="@string/go_to_sph"
-                android:textColor="@color/color_nm_button_text_login_signup" />
+                android:text="@string/go_to_sph" />
 
         </LinearLayout>
     </LinearLayout>
