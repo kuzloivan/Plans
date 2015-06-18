@@ -52,6 +52,7 @@ public class DBManager implements DbBridge {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, null, null);
     }
 
+
     @Override
     public Plan selectPlanById(int id) {
 
@@ -65,6 +66,11 @@ public class DBManager implements DbBridge {
             cursor.close();
         }
         return plan;
+    }
+
+    @Override
+    public int deletePlanById(int id) {
+        return 0;
     }
 
     //erase 1 user by id in user_database SQL
