@@ -57,7 +57,7 @@ public class PlannerActivity extends ToolbarActivity {
             plannerCursorAdapter.swapCursor(cursor);
         }
         else {
-            showToast("Error moving cursor to first element. DB is empty.");
+            showToast("Your plans list is empty");
         }
 
         super.onResume();

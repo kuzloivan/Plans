@@ -71,7 +71,7 @@ public class LogInActivity extends ToolbarActivity {
 
             if(!ValidData.isTextValid(login,password))
             {
-                showToast("login failed empty string");
+                showToast("Process failed: empty string");
                 return;
             }
 
@@ -82,7 +82,7 @@ public class LogInActivity extends ToolbarActivity {
                     break;
 
                 case R.id.btn_log_in:
-                    showProgressDialog("Loging In", "Please, wait...");
+                    showProgressDialog("Logging In", "Please, wait...");
                     netManager.loginUser(login, password, new CallbackLogIn());
                     break;
 
