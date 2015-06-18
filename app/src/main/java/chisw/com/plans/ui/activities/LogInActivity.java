@@ -2,16 +2,13 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageStats;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -21,7 +18,8 @@ import com.parse.SignUpCallback;
 import java.util.List;
 
 import chisw.com.plans.R;
-import chisw.com.plans.model.Plan;
+import chisw.com.plans.utils.SystemUtils;
+import chisw.com.plans.utils.ValidData;
 
 public class LogInActivity extends ToolbarActivity {
 
@@ -41,21 +39,15 @@ public class LogInActivity extends ToolbarActivity {
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
         //auto-insert user credentials
-        if (!TextUtils.isEmpty(sharedHelper.getDefaultLogin()))
+        if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
 
-            if (!TextUtils.isEmpty(sharedHelper.getDefaultPass())) {
+            if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
                 mPassword.setText(sharedHelper.getDefaultPass());
                 //move to main activity
-                if (!systemUtils.checkNetworkStatus(getApplicationContext())) {
-                    showToast("No internet connection");
-                }
-                else
-                {
-                    showProgressDialog("Loging In", "Please, wait...");
-                    netManager.loginUser(mLogin.getText().toString(), mPassword.getText().toString(), new CallbackLogIn());
-                }
+                PlannerActivity.start(LogInActivity.this);
+                LogInActivity.this.finish();
             }
         }
     }
@@ -69,13 +61,19 @@ public class LogInActivity extends ToolbarActivity {
 
         @Override
         public void onClick(View v) {
-            if(!systemUtils.checkNetworkStatus(getApplicationContext()))
+            if(!SystemUtils.checkNetworkStatus(getApplicationContext()))
             {
                 showToast("No internet connection");
                 return;
             }
             String login = mLogin.getText().toString();
             String password = mPassword.getText().toString();
+
+            if(!ValidData.isTextValid(login,password))
+            {
+                showToast("login failed empty string");
+                return;
+            }
 
             switch (v.getId()) {
                 case R.id.btn_sign_up:
@@ -105,7 +103,7 @@ public class LogInActivity extends ToolbarActivity {
                         error = "Username is already taken";
                         break;
                 }
-                showToast(error);
+                showToast(error); //test
                 hideProgressDialog();
                 return;
             }
@@ -119,13 +117,10 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackLogIn implements LogInCallback {
 
-        String error = "";
-
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
-                error = "error";
-                showToast(error);
+                showToast("error"); //test
                 hideProgressDialog();
                 return;
             }

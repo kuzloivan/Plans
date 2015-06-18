@@ -47,15 +47,20 @@ public class PlannerActivity extends ToolbarActivity {
 //        dbManager.saveNewPlan(p);
         // ------------ For test only ------------ //
 
+    }
+
+    @Override
+    protected void onResume() {
         Cursor cursor = dbManager.getPlans();
 
         if(cursor.moveToFirst()){
             plannerCursorAdapter.swapCursor(cursor);
         }
         else {
-            showToast("Error moving cursor to first element");
+            showToast("Error moving cursor to first element. DB is empty.");
         }
 
+        super.onResume();
     }
 
     @Override
@@ -78,10 +83,6 @@ public class PlannerActivity extends ToolbarActivity {
             case R.id.pa_menu_settings:
                 SettingsActivity.start(PlannerActivity.this);
                 break;
-
-            case R.id.pa_menu_media:
-                MediaActivity.start(PlannerActivity.this);
-                break;            
 
             case R.id.pa_menu_log_off:
                 //Log off!
@@ -144,9 +145,15 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            Plan plan = Mapper.parseCursor(plannerCursorAdapter.getCursor());
+            Cursor cursor = plannerCursorAdapter.getCursor();
+            cursor.moveToPosition(position);
 
-            showToast("Position " + position + "\nTitle" + plan.getTitle() +
+            // awda,shdlaijfh
+
+
+            Plan plan = Mapper.parseCursor(cursor);
+
+            showToast("Position " + position + "\nTitle: " + plan.getTitle() +
                     "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
                     "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
                     "\nParseId: " + plan.getParseId());

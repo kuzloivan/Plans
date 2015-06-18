@@ -12,8 +12,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.TextView;
 
-
-
 import chisw.com.plans.R;
 
 

@@ -20,22 +20,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_alarm_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:gravity="center"
-                android:text="Alarm title"
-                android:textColor="#039be5"
-                android:textSize="20pt" />
-
             <EditText
                 android:id="@+id/setTitle_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin" />
+                android:layout_margin="@dimen/margin"
+                android:hint="@string/alarmTitle_hint"/>
 
             <TextView
                 android:id="@+id/tv_alarm_time"
@@ -50,7 +41,8 @@
             <TimePicker
                 android:id="@+id/timePicker"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
 
             <TextView
                 android:id="@+id/tv_alarm_date"
