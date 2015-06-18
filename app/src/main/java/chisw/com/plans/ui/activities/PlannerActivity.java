@@ -140,16 +140,15 @@ public class PlannerActivity extends ToolbarActivity {
         }
     }
 
-    public final class ItemClicker implements AdapterView.OnItemClickListener{
+    public final class ItemLongClicker implements AdapterView.OnItemLongClickListener{
 
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
             Cursor cursor = plannerCursorAdapter.getCursor();
             cursor.moveToPosition(position);
 
-            // awda,shdlaijfh
-
+            // todo: add detailed activity
 
             Plan plan = Mapper.parseCursor(cursor);
 
@@ -157,6 +156,27 @@ public class PlannerActivity extends ToolbarActivity {
                     "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
                     "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
                     "\nParseId: " + plan.getParseId());
+
+            return false;
+        }
+    }
+
+    public final class ItemClicker implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//            Cursor cursor = plannerCursorAdapter.getCursor();
+//            cursor.moveToPosition(position);
+//
+//            // todo: add detailed activity
+//
+//            Plan plan = Mapper.parseCursor(cursor);
+//
+//            showToast("Position " + position + "\nTitle: " + plan.getTitle() +
+//                    "\nDate: " + DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()) +
+//                    "\nTime: "+ DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()) +
+//                    "\nParseId: " + plan.getParseId());
         }
     }
 }
