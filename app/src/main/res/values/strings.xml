@@ -13,6 +13,7 @@
     <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
     <string name="wakeUp">Wake up !!!</string>
+    <string name="aa_save_alarm">Save alarm</string>
 
     <!-- Net activity -->
     <string name="login">User login</string>
