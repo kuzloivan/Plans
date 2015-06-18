@@ -53,7 +53,7 @@ public class PlannerActivity extends ToolbarActivity {
             plannerCursorAdapter.swapCursor(cursor);
         }
         else {
-            showToast("Error moving cursor to first element");
+            showToast("Error moving cursor to first element. DB is empty.");
         }
 
     }
