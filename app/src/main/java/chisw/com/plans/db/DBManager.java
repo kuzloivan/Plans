@@ -70,6 +70,7 @@ public class DBManager implements DbBridge {
 
     @Override
     public int deletePlanById(int id) {
+        //sqLiteDatabase.delete(PlansEntity)
         return 0;
     }
 
