@@ -1,18 +1,12 @@
 package chisw.com.plans.db;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.parse.ParseUser;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.bridge.DbBridge;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.db.entity.UserEntity;
@@ -106,8 +100,7 @@ public class DBManager implements DbBridge {
 
     @Override
     public int getLastPlanID() {
-       Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP,PlansEntity.AUDIO_PATH}, null, null, null, null, null);
-        //Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID}, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
         int val;
         if (cursor.getCount() == 0) {
             val = 0;
@@ -129,7 +122,7 @@ public class DBManager implements DbBridge {
 
     @Override
     public String getAudioPathByID(int id) {
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP,PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
         cursor.moveToPosition(id - 1);
         String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
         return path;
