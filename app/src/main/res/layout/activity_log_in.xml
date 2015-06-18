@@ -19,30 +19,18 @@
             style="@style/style_linearlayout"
             >
 
-            <TextView
-                android:id="@+id/tv_net_login"
-                style="@style/style_reg_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login" />
-
             <EditText
                 android:id="@+id/net_user_login"
+                android:hint="User name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
 
-            <TextView
-                android:id="@+id/tv_net_password"
-                style="@style/style_reg_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/password" />
 
             <EditText
                 android:id="@+id/net_user_password"
-                style="@style/style_reg_edittext"
                 android:layout_width="match_parent"
+                android:hint="Password"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
 
