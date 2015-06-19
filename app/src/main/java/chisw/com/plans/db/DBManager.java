@@ -113,16 +113,18 @@ public class DBManager implements DbBridge {
 
     @Override
     public String getTitleByID(int id) {
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
-        cursor.moveToPosition(id );
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
         String title = cursor.getString(cursor.getColumnIndex(PlansEntity.TITLE));
         return title;
     }
 
     @Override
     public String getAudioPathByID(int id) {
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
-        cursor.moveToPosition(id - 1);
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
         return path;
     }
