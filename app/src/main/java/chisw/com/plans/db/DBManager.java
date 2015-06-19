@@ -1,17 +1,12 @@
 package chisw.com.plans.db;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.parse.ParseUser;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.bridge.DbBridge;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.db.entity.UserEntity;
@@ -26,7 +21,7 @@ public class DBManager implements DbBridge {
     private DBHelper dbHelper;
     SQLiteDatabase sqLiteDatabase;
 
-    public DBManager (Context context)    {
+    public DBManager(Context context) {
         dbHelper = new DBHelper(context);
         plansArray = new ArrayList<>();
         sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -34,8 +29,7 @@ public class DBManager implements DbBridge {
 
     //returns list of plans
     @Override
-    public List<Plan> getAllPlans()
-    {
+    public List<Plan> getAllPlans() {
         return plansArray;
     }
 
@@ -47,8 +41,7 @@ public class DBManager implements DbBridge {
 
     //clears all writtings in plans_database SQL
     @Override
-    public void clearPlans()
-    {
+    public void clearPlans() {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, null, null);
     }
 
@@ -58,9 +51,9 @@ public class DBManager implements DbBridge {
 
         Plan plan = null;
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + " = ?",
-                new String[] { String.valueOf(id)}, null, null, null);
+                new String[]{String.valueOf(id)}, null, null, null);
 
-        if(cursor != null){
+        if (cursor != null) {
 
             plan = Mapper.parseCursor(cursor);
             cursor.close();
@@ -70,22 +63,22 @@ public class DBManager implements DbBridge {
 
     @Override
     public int deletePlanById(long id) {
-        return sqLiteDatabase.delete(PlansEntity.TABLE_NAME, PlansEntity.LOCAL_ID + "=?",new String[] { String.valueOf(id)});
+        return sqLiteDatabase.delete(PlansEntity.TABLE_NAME, PlansEntity.LOCAL_ID + "=?", new String[]{String.valueOf(id)});
     }
 
     //erase 1 user by id in user_database SQL
-    public void eraseMe(String id)
-    {
+    public void eraseMe(String id) {
         String selection = UserEntity.PARSE_ID + "=?";
-        String[] selectionaArgs=new String[]{id};
-        sqLiteDatabase.delete(UserEntity.TABLE_NAME,selection, selectionaArgs);
+        String[] selectionaArgs = new String[]{id};
+        sqLiteDatabase.delete(UserEntity.TABLE_NAME, selection, selectionaArgs);
     }
+
     //insert new plan into plans_database SQL
     @Override
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
 
-        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
+        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan, getLastPlanID()));
     }
 
     //insert new user into user_database SQL
@@ -101,16 +94,37 @@ public class DBManager implements DbBridge {
     @Override
     public Cursor getMe(String id) {
         String selection = UserEntity.PARSE_ID + "=?";
-        String[] selectionaArgs=new String[]{id};
-        return sqLiteDatabase.query(UserEntity.TABLE_NAME,null,selection,selectionaArgs,null,null,null);
+        String[] selectionaArgs = new String[]{id};
+        return sqLiteDatabase.query(UserEntity.TABLE_NAME, null, selection, selectionaArgs, null, null, null);
     }
 
     @Override
-    public Cursor getLastPlanCursor() {
-        // todo ????
-        //Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
-
-        return null;
+    public int getLastPlanID() {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        int val;
+        if (cursor.getCount() == 0) {
+            val = 0;
+        } else {
+            cursor.moveToLast();
+            val = cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID));
+        }
+        cursor.close();
+        return val;
     }
 
+    @Override
+    public String getTitleByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        cursor.moveToPosition(id - 1);
+        String title = cursor.getString(cursor.getColumnIndex(PlansEntity.TITLE));
+        return title;
+    }
+
+    @Override
+    public String getAudioPathByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        cursor.moveToPosition(id - 1);
+        String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
+        return path;
+    }
 }

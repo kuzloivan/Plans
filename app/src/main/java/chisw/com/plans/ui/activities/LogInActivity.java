@@ -35,17 +35,16 @@ public class LogInActivity extends ToolbarActivity {
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
 
         /* For testing */
-
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
-        //auto-insert user credentials
+
+        /* Auto-insert user credentials */
         if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             mLogin.setText(sharedHelper.getDefaultLogin());
-
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
                 mPassword.setText(sharedHelper.getDefaultPass());
-                //move to main activity
+                /* Move to main activity */
                 PlannerActivity.start(LogInActivity.this);
                 LogInActivity.this.finish();
             }
@@ -61,6 +60,7 @@ public class LogInActivity extends ToolbarActivity {
 
         @Override
         public void onClick(View v) {
+            /* Checking of network connection */
             if(!SystemUtils.checkNetworkStatus(getApplicationContext()))
             {
                 showToast("No internet connection");
@@ -68,36 +68,34 @@ public class LogInActivity extends ToolbarActivity {
             }
             String login = mLogin.getText().toString();
             String password = mPassword.getText().toString();
-
+            /* Checking of valid data */
             if(!ValidData.isTextValid(login,password))
             {
-                showToast("Process failed: empty string");
+                showToast("You haven't filled all fields!");
                 return;
             }
-
+            /* Button's listener */
             switch (v.getId()) {
                 case R.id.btn_sign_up:
                     showProgressDialog("Signing Up", "Please, wait...");
                     netManager.registerUser(login, password, new CallbackSignUp());
                     break;
-
                 case R.id.btn_log_in:
                     showProgressDialog("Logging In", "Please, wait...");
                     netManager.loginUser(login, password, new CallbackLogIn());
                     break;
-
-
             }
         }
     }
 
     public final class CallbackSignUp implements SignUpCallback {
 
-        String error = "";
+        String error = "Error";
 
         @Override
         public void done(ParseException e) {
             if (e != null) {
+                /* Is username already exist */
                 switch(e.getCode()) {
                     case ParseException.USERNAME_TAKEN:
                         error = "Username is already taken";
@@ -107,9 +105,12 @@ public class LogInActivity extends ToolbarActivity {
                 hideProgressDialog();
                 return;
             }
+            /* Save user credentials and then Log In */
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
+
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
+
             hideProgressDialog();
             showToast("Successful");
         }
@@ -117,14 +118,22 @@ public class LogInActivity extends ToolbarActivity {
 
     public final class CallbackLogIn implements LogInCallback {
 
+        String error = "Error";
+
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
-                showToast("error"); //test
+                /* Is username already exist */
+                switch(e.getCode()) {
+                    case ParseException.OBJECT_NOT_FOUND:
+                        error = "Unable to log in. Check your username and password";
+                        break;
+                }
+                showToast(error); //test
                 hideProgressDialog();
                 return;
             }
-            //under login sharedpreferences registration
+            /* Under login sharedpreferences registration */
             sharedHelper.setDefaultLogin(mLogin.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
 
@@ -136,6 +145,7 @@ public class LogInActivity extends ToolbarActivity {
         }
     }
 
+    /* For future release of shared plans/tasks */
     public final class CallbackAddPlan implements SaveCallback {
 
         @Override
@@ -148,6 +158,7 @@ public class LogInActivity extends ToolbarActivity {
         }
     }
 
+    /* For future release of shared plans/tasks */
     public final class CallbackGetPlan implements FindCallback<ParseObject> {
 
         @Override
@@ -160,6 +171,7 @@ public class LogInActivity extends ToolbarActivity {
         }
     }
 
+    /* For future release of shared plans/tasks */
     public final class CallbackGetPlans implements FindCallback<ParseObject> {
 
         @Override

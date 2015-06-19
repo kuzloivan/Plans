@@ -10,20 +10,22 @@
     <application
         android:name=".core.PApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
             android:name=".ui.activities.SplashActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <!--android:theme="@style/AppTheme.Fullscreen">-->
 
         </activity>
 
         <activity
             android:name=".ui.activities.LogInActivity"
-            android:label="@string/title_activity_login">
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -32,21 +34,25 @@
 
         <activity
             android:name=".ui.activities.MediaActivity"
-            android:label="@string/title_activity_media"></activity>
+            android:label="@string/title_activity_media"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.activities.PlannerActivity"
             android:label="@string/title_activity_planner"
-            android:theme="@style/AppTheme.PlannerTheme"></activity>
+            android:theme="@style/AppTheme.PlannerTheme"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.activities.AlarmActivity"
             android:label="@string/title_activity_alarm"
-            android:theme="@style/AppTheme.PlannerTheme" />
+            android:theme="@style/AppTheme.PlannerTheme"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".core.Receivers.Receiver" />
 

@@ -1,7 +1,5 @@
 package chisw.com.plans.model;
 
-import java.util.Date;
-
 /**
  * Created by Alexander on 17.06.2015.
  */
@@ -9,6 +7,10 @@ public class Plan {
     private String parseId;
     private String title;
     private long timeStamp;
+    private String audioPath;
+
+    // todo: add field for plan status.
+    // todo: add details field for plan.
 
     public String getParseId() {
         return parseId;
@@ -32,5 +34,13 @@ public class Plan {
 
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
     }
 }

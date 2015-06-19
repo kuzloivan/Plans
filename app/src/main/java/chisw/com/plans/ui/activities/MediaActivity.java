@@ -82,7 +82,7 @@ public class MediaActivity extends ToolbarActivity {
                     chooseAudio();
                     break;
                 case R.id.ma_play_btn:
-                    multimedia.startPlayer();
+                    multimedia.startPlayer("aaa");
                     break;
                 case R.id.ma_stop_btn:
                     multimedia.stopPlayer();

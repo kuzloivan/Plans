@@ -3,12 +3,10 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -17,10 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
@@ -29,33 +24,23 @@ import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
-import android.widget.Toast;
-
 
 /**
  * Created by Yuriy on 15.06.2015.
  */
 
 public class AlarmActivity extends ToolbarActivity {
-
+    //Probably can be deleted
     private static final String LOG = AlarmActivity.class.getSimpleName();
+    //===================================================
 
     private static final int REQUEST_AUDIO_GET = 1;
     private String path;
     private boolean isChAudioExist;
+    private boolean isAudioSelected;
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
-
-    int myHour = 0;
-    int myMinute = 0;
-
-    int myDay = 1;
-    int myMonth = 1;
-    int myYear = 1999;
-
-    TextView tvTime;
-    TextView tvDate;
     TimePicker tp;
     DatePicker dp;
     EditText et;
@@ -68,24 +53,15 @@ public class AlarmActivity extends ToolbarActivity {
 
         Clicker c = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
-        findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
+        //findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
-        tp.setIs24HourView(true);
+        tp.setIs24HourView(android.text.format.DateFormat.is24HourFormat(this));
         dp = (DatePicker) findViewById(R.id.datePicker);
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        tvTime = (TextView) findViewById(R.id.tv_alarm_time);
-        tvDate = (TextView) findViewById(R.id.tv_alarm_date);
-
-        //delete later
-        if (sharedHelper.getDefaultMediaWay() != null) {
-            path = sharedHelper.getDefaultMediaWay();
-        }
-
-
     }
 
     @Override
@@ -125,52 +101,37 @@ public class AlarmActivity extends ToolbarActivity {
 
     public void startAlarm() {
 
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
-        tvTime.setText(new StringBuilder().append(tp.getCurrentHour()).append(":").append(tp.getCurrentMinute()));
-        tvDate.setText(new StringBuilder().append(dp.getDayOfMonth()).append(".").append(dp.getMonth()).append(":").append(dp.getYear()));
-
-        myHour = tp.getCurrentHour();
-        myMinute = tp.getCurrentMinute();
-
-        myDay = dp.getDayOfMonth();
-        myMonth = dp.getMonth();
-        myYear = dp.getYear();
-
-        calendar.set(Calendar.HOUR_OF_DAY, myHour);
-        calendar.set(Calendar.MINUTE, myMinute);
-
-        calendar.set(Calendar.DAY_OF_MONTH, myDay);
-        calendar.set(Calendar.MONTH, myMonth);
-        calendar.set(Calendar.YEAR, myYear);
+        calendar.set(Calendar.HOUR_OF_DAY, tp.getCurrentHour());
+        calendar.set(Calendar.MINUTE, tp.getCurrentMinute());
+        calendar.set(Calendar.DAY_OF_MONTH, dp.getDayOfMonth());
+        calendar.set(Calendar.MONTH, dp.getMonth());
+        calendar.set(Calendar.YEAR, dp.getYear());
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            Intent intent = createIntent("action 1", "extra 1");
-            pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
-            writeToDB(calendar);
-            finish();
-            //+++++++++++++Delete later+++++++++++++++++++++++++++++++++++++++
-            SimpleDateFormat formatter = new SimpleDateFormat("hh:mm dd-MM-yyyy");
-            showToast(formatter.format(calendar.getTime()) + "");
-            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        }
-        else{
+            if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
+                writeToDB(calendar);
+                Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
+                pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+                //writeToDB(calendar);
+                finish();
+            }
+            else if (calendar.getTimeInMillis() - System.currentTimeMillis() <= 0) {
+                showToast("Time is incorrect.");
+            }
+            else {
+                showToast("Choose audio for notification.");
+            }
+        } else {
             showToast("Field is empty");
         }
-        //PlannerActivity.start(this);
-        /*ValidData.isTextValid(et.getText().toString());
-        Plan p = new Plan();
-        p.setTitle(et.getText().toString());
-        p.setTimeStamp(calendar.getTimeInMillis());
-        dbManager.saveNewPlan(p);
-        */
     }
 
     public void cancelAlarm() {
-        tvTime.setText(R.string.s_alarm_act);
+        // deprecated
         am.cancel(pAlarmIntent);
     }
 
@@ -181,32 +142,13 @@ public class AlarmActivity extends ToolbarActivity {
                 case R.id.bt_save_alarm:
                     startAlarm();
                     break;
-                case R.id.bt_cancel_alarm:
-                    cancelAlarm();
-                    break;
+//                case R.id.bt_cancel_alarm:
+//                    cancelAlarm();
+//                    break;
                 case R.id.aa_setAudio_btn:
                     chooseAudio();
                     break;
             }
-        }
-    }
-
-    private class TimerCallbacks implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String strHour = hourOfDay + "";
-            String strMinute = minute + "";
-
-            if (hourOfDay < 10) {
-                strHour = "0" + hourOfDay;
-            }
-            if (minute < 10) {
-                strMinute = "0" + minute;
-            }
-
-            tvTime.setText("Alarm in " + strHour + " : " + strMinute + " ");
-
         }
     }
 
@@ -221,6 +163,7 @@ public class AlarmActivity extends ToolbarActivity {
             case REQUEST_AUDIO_GET:
                 path = getPath(data);
                 sharedHelper.setDefaultMediaWay(path);
+                isAudioSelected = true;
                 isChAudioExist = false;
                 break;
         }
@@ -282,6 +225,7 @@ public class AlarmActivity extends ToolbarActivity {
         Plan p = new Plan();
         p.setTitle(et.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
+        p.setAudioPath(path);
         dbManager.saveNewPlan(p);
     }
 }
