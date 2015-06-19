@@ -55,7 +55,7 @@
             android:screenOrientation="portrait" />
 
         <receiver android:name=".core.Receivers.Receiver" />
-
+        <uses-permission android:name="android.permission.VIBRATE"/>
         <receiver
             android:name=".core.Receivers.RebootReceiver"
             android:enabled="true" android:exported="true">
