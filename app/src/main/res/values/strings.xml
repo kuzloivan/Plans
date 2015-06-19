@@ -4,7 +4,7 @@
     <string name="app_name">Plans</string>
     <string name="title_activity_planner">Planner</string>
     <string name="title_activity_settings">Settings Activity</string>
-    <string name="title_activity_login">Your Planner</string>
+    <string name="title_activity_login">Day</string>
     <string name="title_activity_media">Media</string>
     
     <!-- Alarm activity -->

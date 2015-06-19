@@ -48,8 +48,8 @@ public class Multimedia {
 
     public void stopPlayer() {
         player.stop();
-        player.release();
         player.reset();
+        player.release();
         player = null;
     }
 
