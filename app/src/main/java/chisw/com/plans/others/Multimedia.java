@@ -13,11 +13,6 @@ public class Multimedia {
     private int PLAYING_AUDIO_TIME = 15;
 
     private MediaPlayer player;
-    private SharedHelper mSharedHelper;
-
-    public Multimedia(SharedHelper sharedHelper) {
-        mSharedHelper = sharedHelper;
-    }
 
     public void startPlayer(String path) {
         try {
@@ -42,6 +37,7 @@ public class Multimedia {
         Handler h = new Handler();
         Runnable stopPlaybackRun = new Runnable() {
             public void run() {
+                player.release();
                 player.stop();
                 player.reset();
                 player = null;
@@ -51,8 +47,10 @@ public class Multimedia {
     }
 
     public void stopPlayer() {
+        player.release();
         player.stop();
         player.reset();
+        player = null;
     }
 
     private final class AudioEndCallback implements MediaPlayer.OnCompletionListener {
