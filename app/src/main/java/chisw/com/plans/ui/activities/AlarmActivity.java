@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import java.util.Calendar;
+import java.util.Date;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
@@ -102,8 +103,6 @@ public class AlarmActivity extends ToolbarActivity {
     public void startAlarm() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
         calendar.set(Calendar.HOUR_OF_DAY, tp.getCurrentHour());
         calendar.set(Calendar.MINUTE, tp.getCurrentMinute());
         calendar.set(Calendar.DAY_OF_MONTH, dp.getDayOfMonth());
@@ -115,7 +114,7 @@ public class AlarmActivity extends ToolbarActivity {
                 writeToDB(calendar);
                 Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() -  Calendar.getInstance().get(Calendar.SECOND) * 1000  , pAlarmIntent);
                 //writeToDB(calendar);
                 finish();
             }

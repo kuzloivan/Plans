@@ -28,7 +28,7 @@ public class PApplication extends Application {
 
         netManager = new NetManager();
         sharedHelper = new SharedHelper(this);
-        multimedia = new Multimedia(sharedHelper);
+        multimedia = new Multimedia();
         dbManager = new DBManager(this);
     }
 
