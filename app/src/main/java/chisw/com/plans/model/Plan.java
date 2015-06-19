@@ -8,7 +8,15 @@ public class Plan {
     private String title;
     private long timeStamp;
     private String audioPath;
+    private int localId;
 
+    public int getLocalId() {
+        return localId;
+    }
+
+    public void setLocalId(int localId) {
+        this.localId = localId;
+    }
     // todo: add field for plan status.
     // todo: add details field for plan.
 

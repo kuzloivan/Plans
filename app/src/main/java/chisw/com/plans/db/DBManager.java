@@ -99,7 +99,7 @@ public class DBManager implements DbBridge {
 
     @Override
     public int getLastPlanID() {
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
         int val;
         if (cursor.getCount() == 0) {
             val = 0;
@@ -117,6 +117,7 @@ public class DBManager implements DbBridge {
                 new String[]{String.valueOf(id)}, null, null, null);
         cursor.moveToFirst();
         String title = cursor.getString(cursor.getColumnIndex(PlansEntity.TITLE));
+        cursor.close();
         return title;
     }
 
@@ -126,6 +127,7 @@ public class DBManager implements DbBridge {
                 new String[]{String.valueOf(id)}, null, null, null);
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
+        cursor.close();
         return path;
     }
 }

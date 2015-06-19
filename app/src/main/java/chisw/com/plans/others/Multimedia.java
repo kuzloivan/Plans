@@ -38,8 +38,8 @@ public class Multimedia {
         Runnable stopPlaybackRun = new Runnable() {
             public void run() {
                 player.stop();
-                player.release();
                 player.reset();
+                player.release();
                 player = null;
             }
         };
