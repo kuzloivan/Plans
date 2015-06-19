@@ -3,7 +3,9 @@ package chisw.com.plans.others;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
+
 import java.io.IOException;
+
 import chisw.com.plans.core.SharedHelper;
 
 /**
@@ -16,12 +18,6 @@ public class Multimedia {
 
     public void startPlayer(String path) {
         try {
-            if(player == null){
-                player = new MediaPlayer();
-            }
-            if (player.isPlaying()) {
-                return;
-            }
             player.setDataSource(path);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.prepare();
@@ -33,7 +29,17 @@ public class Multimedia {
     }
 
     public void alarmNontification(String path) {
-        startPlayer(path);
+        if (player == null) {
+            player = new MediaPlayer();
+        }
+        if (player.isPlaying()) {
+            player.stop();
+            player.reset();
+            startPlayer(path);
+            return;
+        } else {
+            startPlayer(path);
+        }
         Handler h = new Handler();
         Runnable stopPlaybackRun = new Runnable() {
             public void run() {
