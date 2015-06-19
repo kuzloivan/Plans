@@ -27,7 +27,7 @@
 
     <style name="AppTheme.PlannerTheme.ListView" >
         <item name="android:dividerHeight">5dp</item>
-        <item name="android:divider">#00ffff</item>
+        <item name="android:divider">#00FFFFFF</item>
         <item name="android:layout_margin">5dp</item>
     </style>
 
