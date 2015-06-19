@@ -22,7 +22,7 @@
     <color name="color_ma_btn_text">#ffffff</color>
 
     <color name="color_aa_btn_text">#ffffff</color>
-    <color name="color_aa_btn_pressed">#FFFA41</color>
-    <color name="color_aa_btn_normal">#FFFD00</color>
-    <color name="color_aa_tv">#1E2223</color>
+    <color name="color_aa_btn_pressed">#734771</color>
+    <color name="color_aa_btn_normal">#8814A5</color>
+    <color name="color_aa_tv">#9C79BA</color>
 </resources>
