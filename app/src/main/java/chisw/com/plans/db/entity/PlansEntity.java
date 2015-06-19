@@ -13,10 +13,10 @@ public class PlansEntity {
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
-            LOCAL_ID + " INT PRIMARY KEY, " +
+            LOCAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PARSE_ID + " TEXT, " +
             TITLE + " TEXT, " +
-            TIMESTAMP + " INT, " +
+            TIMESTAMP + " INTEGER, " +
             AUDIO_PATH + " TEXT " +
             ")";
 

@@ -16,9 +16,8 @@ import chisw.com.plans.model.Plan;
 
 public class Mapper {
 
-    public static ContentValues parsePlan(Plan model, int lastID) {
+    public static ContentValues parsePlan(Plan model) {
         ContentValues CV = new ContentValues();
-        CV.put(PlansEntity.LOCAL_ID, ++lastID);
         CV.put(PlansEntity.PARSE_ID, model.getParseId());
         CV.put(PlansEntity.TITLE, model.getTitle());
         CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());

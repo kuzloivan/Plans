@@ -50,11 +50,10 @@ public class DBManager implements DbBridge {
     public Plan selectPlanById(int id) {
 
         Plan plan = null;
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + " = ?",
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
 
-        if (cursor != null) {
-
+        if (cursor.moveToFirst()) {
             plan = Mapper.parseCursor(cursor);
             cursor.close();
         }
@@ -78,7 +77,7 @@ public class DBManager implements DbBridge {
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
 
-        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan, getLastPlanID()));
+        sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
     }
 
     //insert new user into user_database SQL
@@ -115,7 +114,7 @@ public class DBManager implements DbBridge {
     @Override
     public String getTitleByID(int id) {
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, new String[]{PlansEntity.LOCAL_ID, PlansEntity.PARSE_ID, PlansEntity.TITLE, PlansEntity.TIMESTAMP, PlansEntity.AUDIO_PATH}, null, null, null, null, null);
-        cursor.moveToPosition(id - 1);
+        cursor.moveToPosition(id );
         String title = cursor.getString(cursor.getColumnIndex(PlansEntity.TITLE));
         return title;
     }
