@@ -6,14 +6,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.util.Log;
-
 import chisw.com.plans.R;
-import chisw.com.plans.core.PApplication;
-import chisw.com.plans.db.DBManager;
+import chisw.com.plans.core.PApplication;;
 import chisw.com.plans.others.Multimedia;
-import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.utils.SystemUtils;
 
 
@@ -26,24 +21,26 @@ public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context ctx, Intent intent) {
         PendingIntent pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
+
         int id = Integer.parseInt(intent.getAction());
         sendNotif(id, pIntent1, ctx);
         Multimedia multimedia = ((PApplication) ctx.getApplicationContext()).getMultimedia();
-        String path = ((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id);
-        multimedia.alarmNontification(path);
+        String path = ((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id);multimedia.alarmNontification(path);
     }
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {
         if (SystemUtils.isICSHigher()) {
             Intent notificationIntent = new Intent();
             PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            Resources res = ctx.getResources();
+            //Resources res = ctx.getResources();
             Notification.Builder builder = new Notification.Builder(ctx);
 
             builder.setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.ic_alarm)
                     .setContentTitle(((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id))
                     .setContentText("Wake up !!!");
+
+
             Notification notification = builder.build();
             NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(NOTIFY_ID, notification);
