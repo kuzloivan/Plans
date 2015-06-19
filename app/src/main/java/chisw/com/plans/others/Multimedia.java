@@ -37,8 +37,8 @@ public class Multimedia {
         Handler h = new Handler();
         Runnable stopPlaybackRun = new Runnable() {
             public void run() {
-                player.release();
                 player.stop();
+                player.release();
                 player.reset();
                 player = null;
             }
@@ -47,8 +47,8 @@ public class Multimedia {
     }
 
     public void stopPlayer() {
-        player.release();
         player.stop();
+        player.release();
         player.reset();
         player = null;
     }
