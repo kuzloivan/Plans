@@ -7,7 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import chisw.com.plans.R;
-import chisw.com.plans.core.PApplication;;
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.utils.SystemUtils;
 

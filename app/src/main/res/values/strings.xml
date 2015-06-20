@@ -47,4 +47,5 @@
     <string name="choose_audio">Choose audio</string>
     <string name="set_audio">Set audio</string>
     <string name="save_alarm">Save alarm</string>
+    <string name="temp_date">2015.06.12</string>
 </resources>
