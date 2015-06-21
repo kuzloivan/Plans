@@ -1,6 +1,7 @@
 package chisw.com.plans.net;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.Parse;
@@ -56,4 +57,18 @@ public class NetManager implements NetBridge {
         query.whereEqualTo("objectId", pId);
         query.findInBackground(findCallback);
     }
+
+    @Override
+    public void editPlan(String pId, GetCallback getCallback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
+        query.getInBackground(pId, getCallback);
+    }
+
+    @Override
+    public void deletePlan(String pId, GetCallback getCallback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
+        query.getInBackground(pId, getCallback);
+    }
+
+
 }
