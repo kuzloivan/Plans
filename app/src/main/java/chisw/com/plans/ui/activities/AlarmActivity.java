@@ -68,8 +68,10 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
 
-        tvDate.setText("Date: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.YEAR));
+        int monthTmp = calendar.get(Calendar.MONTH) + 1;
+        tvDate.setText("Date: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + monthTmp + "-" + calendar.get(Calendar.YEAR));
         tvTime.setText("Time: " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        AlarmActivity.setCalendarSeconds(0);
     }
 
     @Override
@@ -114,8 +116,7 @@ public class AlarmActivity extends ToolbarActivity {
                 writeToDB(calendar);
                 Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() -  Calendar.getInstance().get(Calendar.SECOND) * 1000  , pAlarmIntent);
-                //writeToDB(calendar);
+                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
                 finish();
             }
             else if (calendar.getTimeInMillis() - System.currentTimeMillis() <= 0) {
@@ -253,5 +254,8 @@ public class AlarmActivity extends ToolbarActivity {
     {
         AlarmActivity.calendar.set(Calendar.MINUTE, minute);
     }
-
+    public static void setCalendarSeconds(int seconds)
+    {
+        AlarmActivity.calendar.set(Calendar.SECOND, 0);
+    }
 }

@@ -52,6 +52,7 @@ public class DatePicker extends DialogFragment
                           int month, int day) {
 
         TextView tv = (TextView) getActivity().findViewById(R.id.tvDate);
+        int monthTmp = month + 1;
         tv.setText("Date: " + day + "-" + month + "-" + year);
 
         AlarmActivity.setCalendarDay(day);

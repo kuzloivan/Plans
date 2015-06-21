@@ -54,6 +54,7 @@ public class TimePickFragment extends DialogFragment
 
         AlarmActivity.setCalendarHour(hours);
         AlarmActivity.setCalendarMinute(minute);
+
     }
 
 }
