@@ -31,5 +31,5 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pa_tv_title"
             android:layout_alignParentRight="true"
-            android:text="2015.06.12"/>
+            android:text="@string/temp_date"/>
 </RelativeLayout>

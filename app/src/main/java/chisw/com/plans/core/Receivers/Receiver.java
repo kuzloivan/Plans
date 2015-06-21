@@ -7,8 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import chisw.com.plans.R;
-import chisw.com.plans.core.PApplication;;
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.others.Multimedia;
+import chisw.com.plans.ui.activities.AlarmActivity;
+import chisw.com.plans.ui.activities.PlannerActivity;
 import chisw.com.plans.utils.SystemUtils;
 
 
@@ -30,9 +32,9 @@ public class Receiver extends BroadcastReceiver {
 
     void sendNotif(int id, PendingIntent pIntent, Context ctx) {
         if (SystemUtils.isICSHigher()) {
-            Intent notificationIntent = new Intent();
+            Intent notificationIntent = new Intent(ctx, PlannerActivity.class);
+           // notificationIntent.putExtra(AlarmActivity.TEST_STR, " new text in put extra");
             PendingIntent contentIntent = PendingIntent.getActivity(ctx, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            //Resources res = ctx.getResources();
             Notification.Builder builder = new Notification.Builder(ctx);
 
             builder.setContentIntent(contentIntent)

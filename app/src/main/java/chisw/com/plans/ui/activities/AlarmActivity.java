@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,9 @@ public class AlarmActivity extends ToolbarActivity {
 
         tp = (TimePicker) findViewById(R.id.timePicker);
         tp.setIs24HourView(android.text.format.DateFormat.is24HourFormat(this));
+        Calendar cal = Calendar.getInstance();
+        tp.setCurrentHour(cal.get(Calendar.HOUR));
+        tp.setCurrentMinute(cal.get(Calendar.MINUTE));
         dp = (DatePicker) findViewById(R.id.datePicker);
         dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
