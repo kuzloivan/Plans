@@ -27,6 +27,7 @@
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
     <string name="sa_notification_volume">Notification volume</string>
+    <string name="sa_set_user_sound">Set user sound</string>
 
     <!-- Planner activity -->
     <string name="pa_add_new_reminder">Add reminder</string>

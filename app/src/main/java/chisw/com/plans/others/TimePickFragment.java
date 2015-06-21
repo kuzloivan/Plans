@@ -29,7 +29,7 @@ public class TimePickFragment extends DialogFragment
         // устанавливаем текущее время для TimePicker
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
+        int minute = c.get(Calendar.MINUTE)+1;
 
         // создаем TimePickerDialog и возвращаем его
         Dialog picker = new TimePickerDialog(getActivity(), this, hour, minute, true);

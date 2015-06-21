@@ -31,8 +31,7 @@ public class DatePicker extends DialogFragment
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         // создаем DatePickerDialog и возвращаем его
-        Dialog picker = new DatePickerDialog(getActivity(), this,
-                year, month, day);
+        Dialog picker = new DatePickerDialog(getActivity(), this, year, month, day);
         picker.setTitle(getResources().getString(R.string.set_date));
 
         return picker;
@@ -48,8 +47,7 @@ public class DatePicker extends DialogFragment
     }
 
     @Override
-    public void onDateSet(android.widget.DatePicker datePicker, int year,
-                          int month, int day) {
+    public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
 
         TextView tv = (TextView) getActivity().findViewById(R.id.tvDate);
         int monthTmp = month + 1;

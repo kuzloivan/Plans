@@ -14,8 +14,11 @@ import chisw.com.plans.others.DatePicker;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.EditText;
+import android.widget.TimePicker;
 import java.util.Calendar;
+import java.util.Date;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
@@ -28,25 +31,23 @@ import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 /**
  * Created by Yuriy on 15.06.2015.
  */
 
 public class AlarmActivity extends ToolbarActivity {
-    //Probably can be deleted
-    private static final String LOG = AlarmActivity.class.getSimpleName();
-    //===================================================
 
     private static final int REQUEST_AUDIO_GET = 1;
     private String path;
     private boolean isChAudioExist;
-    private boolean isAudioSelected;
+    public static boolean isAudioSelected;
     private static Calendar calendar = Calendar.getInstance();
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
     EditText et;
-    DatePicker dateDialog;
+    chisw.com.plans.others.DatePicker dateDialog;
     DialogFragment timeDialog;
     TextView tvDate;
     TextView tvTime;
@@ -62,7 +63,20 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
         findViewById(R.id.bt_save_alarm_date).setOnClickListener(c);
         findViewById(R.id.bt_save_alarm_time).setOnClickListener(c);
-
+//        ======= Please, don't delete ======
+//        tp = (TimePicker) findViewById(R.id.timePicker);
+//        tp.setIs24HourView(android.text.format.DateFormat.is24HourFormat(this));
+//        Calendar cal = Calendar.getInstance();
+//        tp.setCurrentHour(cal.get(Calendar.AM_PM));
+//        if(cal.get(Calendar.AM_PM)==0){
+//            tp.setCurrentHour(cal.get(Calendar.HOUR));
+//        }
+//        else{
+//            tp.setCurrentHour(cal.get(Calendar.HOUR)+12);
+//        }
+//        tp.setCurrentMinute(cal.get(Calendar.MINUTE)+1);
+//        dp = (chisw.com.plans.others.DatePicker) findViewById(R.id.datePicker);
+//        dp.setMinDate(System.currentTimeMillis() - 1000);
         et = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvDate = (TextView) findViewById(R.id.tvDate);
@@ -100,22 +114,18 @@ public class AlarmActivity extends ToolbarActivity {
         return R.layout.activity_alarm;
     }
 
-    //========================ALARM=================================
-
-    private Intent createIntent(String action, String extra) {
+    private Intent createIntent(String action) {
         Intent intent = new Intent(this, Receiver.class);
         intent.setAction(action);
-        intent.putExtra("extra", extra);
         return intent;
     }
 
     public void startAlarm() {
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            // if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
-            if ((calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
+            if (/*isAudioSelected && */(calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writeToDB(calendar);
-                Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
+                Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()));
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
                 am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
                 finish();
@@ -131,11 +141,6 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-//    public void cancelAlarm() {
-//        // deprecated
-//        am.cancel(pAlarmIntent);
-//    }
-
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -144,7 +149,7 @@ public class AlarmActivity extends ToolbarActivity {
                     startAlarm();
                     break;
                 case R.id.bt_save_alarm_date:
-                    dateDialog = new DatePicker();
+                    dateDialog = new chisw.com.plans.others.DatePicker();
                     dateDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
                 case R.id.bt_save_alarm_time:
@@ -235,28 +240,27 @@ public class AlarmActivity extends ToolbarActivity {
         dbManager.saveNewPlan(p);
     }
 
-    public static void setCalendarYear(int year)
-    {
+    public static void setCalendarYear(int year){
         AlarmActivity.calendar.set(Calendar.YEAR, year);
     }
-    public static void setCalendarMonth(int month)
-    {
+
+    public static void setCalendarMonth(int month){
         AlarmActivity.calendar.set(Calendar.MONTH, month);
     }
-    public static void setCalendarDay(int day)
-    {
+
+    public static void setCalendarDay(int day){
         AlarmActivity.calendar.set(Calendar.DAY_OF_MONTH, day);
     }
-    public static void setCalendarHour(int hour)
-    {
+
+    public static void setCalendarHour(int hour){
         AlarmActivity.calendar.set(Calendar.HOUR_OF_DAY, hour);
     }
-    public static void setCalendarMinute(int minute)
-    {
+
+    public static void setCalendarMinute(int minute){
         AlarmActivity.calendar.set(Calendar.MINUTE, minute);
     }
-    public static void setCalendarSeconds(int seconds)
-    {
+
+    public static void setCalendarSeconds(int seconds){
         AlarmActivity.calendar.set(Calendar.SECOND, 0);
     }
 }
