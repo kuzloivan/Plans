@@ -25,5 +25,7 @@ public class SettingsActivity extends ToolbarActivity {
         Intent intent = new Intent(activity, SettingsActivity.class);
         activity.startActivity(intent);
     }
+
+
 }
 

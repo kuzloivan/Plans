@@ -54,7 +54,6 @@ public class AlarmActivity extends ToolbarActivity {
 
         Clicker c = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
-        //findViewById(R.id.bt_cancel_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
 
         tp = (TimePicker) findViewById(R.id.timePicker);
