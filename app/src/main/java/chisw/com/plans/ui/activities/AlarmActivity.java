@@ -112,7 +112,8 @@ public class AlarmActivity extends ToolbarActivity {
     public void startAlarm() {
 
         if (ValidData.isTextValid(et.getText().toString())) {
-            if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
+            // if (isAudioSelected && (calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
+            if ((calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writeToDB(calendar);
                 Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()), "extra");
                 pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
