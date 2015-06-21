@@ -8,8 +8,8 @@
     <string name="title_activity_media">Media</string>
     
     <!-- Alarm activity -->
-    <string name="set_date">Choose date</string>
-    <string name="set_time">Choose time</string>
+    <string name="set_date">Set date</string>
+    <string name="set_time">Set time</string>
     <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
     <string name="wakeUp">Wake up !!!</string>
