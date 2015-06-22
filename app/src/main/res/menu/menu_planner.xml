@@ -4,6 +4,13 @@
     tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
     <item
+        android:id="@+id/pa_menu_sync"
+        android:title="test"
+        android:icon="@drawable/ic_autorenew_white_18dp"
+        app:showAsAction="always">
+    </item>
+
+    <item
         android:id="@+id/pa_menu_add_reminder"
         android:title="@string/pa_add_new_reminder"
         android:icon="@drawable/ic_add_circle_white_24dp"
