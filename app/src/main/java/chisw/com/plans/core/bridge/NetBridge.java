@@ -19,7 +19,7 @@ public interface NetBridge {
     void logoutUser(String pName, String pPassword, LogOutCallback logOutCallback);
 
     /* Plan */
-    void addPlan(Plan plan, SaveCallback saveCallback);
+    void addPlan(Plan plan, OnSaveCallback callback);
     void getAllPlans(FindCallback findCallback);
     void getPlan(String pId, FindCallback findCallback);
     void editPlan(String pId, GetCallback getCallback);
