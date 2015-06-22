@@ -2,9 +2,13 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import chisw.com.plans.R;
+import chisw.com.plans.db.Mapper;
+import chisw.com.plans.model.Plan;
 
 /**
  * Created by Alexander on 20.06.2015.
@@ -29,8 +33,9 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
 
+        Plan plan = dbManager.getPlanById(id);
 
-        setTitle(String.valueOf(id));
+        setTitle(plan.getTitle());
     }
 
     @Override

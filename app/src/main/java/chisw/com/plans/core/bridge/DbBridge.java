@@ -14,7 +14,7 @@ public interface DbBridge {
     List<Plan> getAllPlans();
     Cursor getPlans();
     void clearPlans();
-    Plan selectPlanById(int id);
+    Plan getPlanById(int id);
     void deletePlanById(long id);
     void eraseMe(String id);
     void saveMe(ParseUser pParseUser);

@@ -190,7 +190,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             cursor.moveToPosition(position);
 
             int planId = cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID));
-            Plan plan = dbManager.selectPlanById(planId);
+            Plan plan = dbManager.getPlanById(planId);
 
             ViewPlanActivity.start(PlannerActivity.this, plan.getLocalId());
 //

@@ -44,7 +44,6 @@ public class DatePicker extends DialogFragment
         Button nButton =  ((AlertDialog) getDialog())
                 .getButton(DialogInterface.BUTTON_POSITIVE);
         nButton.setText(getResources().getString(R.string.set_date));
-
     }
 
     @Override
