@@ -248,6 +248,8 @@ public class AlarmActivity extends ToolbarActivity {
 
     private void writeToDB(Calendar calendar) {
         Plan p = new Plan();
+        // todo: add Details edit view to alarm activity design file
+        p.setDetails("Details!");
         p.setTitle(et.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(path);

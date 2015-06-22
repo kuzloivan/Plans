@@ -32,12 +32,14 @@ public class Mapper {
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
         int parseIdIndex = cursor.getColumnIndex(PlansEntity.PARSE_ID);
+        int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
         plan.setParseId(cursor.getString(parseIdIndex));
         plan.setTimeStamp(timeStamp);
         plan.setTitle(cursor.getString(titleIndex));
+        plan.setDetails(cursor.getString(detailsIndex));
 
         return plan;
     }
