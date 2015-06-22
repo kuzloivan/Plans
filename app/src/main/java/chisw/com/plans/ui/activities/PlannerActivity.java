@@ -22,7 +22,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.Receivers.Receiver;
+import chisw.com.plans.core.Receivers.NotificationReceiver;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;

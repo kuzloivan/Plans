@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import chisw.com.plans.others.DatePicker;
+import chisw.com.plans.ui.dialogs.DatePickDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +46,6 @@ public class AlarmActivity extends ToolbarActivity {
     private TextView mTextValue;
 
     AlarmManager am;
-    PendingIntent pAlarmIntent;
     EditText et;
     EditText setDetails_textview;
 
@@ -117,8 +116,9 @@ public class AlarmActivity extends ToolbarActivity {
 
         if (ValidData.isTextValid(et.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
-                writeToDB(DataUtils.getCalendar());                
-                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));            
+                writeToDB(DataUtils.getCalendar());
+                am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                finish();
             }
             else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
                 showToast("Time is incorrect.");

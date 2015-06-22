@@ -34,7 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getNotificationOn()) {
             sendNotif(id, pIntent1, ctx);
         }
-       // app = (PApplication) ctx.getApplicationContext();
+        // app = (PApplication) ctx.getApplicationContext();
 
     }
 
@@ -62,17 +62,17 @@ public class NotificationReceiver extends BroadcastReceiver {
             }
             if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getVibrationOn()) {
 
-                    long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
-                    notification.vibrate = vibrate;
-
-                notificationManager.notify(NOTIFY_ID + id, notification);
-            } else {
-                NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
-                Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
-                notif.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
-                nm.notify(NOTIFY_ID + id, notif);
+                long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
+                notification.vibrate = vibrate;
             }
+
+            notificationManager.notify(NOTIFY_ID + id, notification);
+        } else {
+            NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
+            Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
+            notif.flags |= Notification.FLAG_AUTO_CANCEL;
+            notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
+            nm.notify(NOTIFY_ID + id, notif);
         }
     }
 }
