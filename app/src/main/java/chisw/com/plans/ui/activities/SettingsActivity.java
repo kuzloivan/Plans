@@ -6,83 +6,66 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.SharedHelper;
 
 
 public class SettingsActivity extends ToolbarActivity {
-    public static boolean Choose_user_audio = false;
-    public static boolean Choose_notif_vibration = false;
-    
+    private boolean choose_vibration;
+    private boolean choose_notification;
+
+
+    public boolean isChoose_notification() {
+        return choose_notification;
+    }
+
+    public void setChoose_notification(boolean choose_notification) {
+        this.choose_notification = choose_notification;
+    }
+
+    public boolean isChoose_vibration() {
+        return choose_vibration;
+    }
+
+    public void setChoose_vibration(boolean choose_vibration) {
+        this.choose_vibration = choose_vibration;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Switcher sw = new Switcher();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        CompoundButton cb_user_sound = (CompoundButton) findViewById(R.id.sa_set_user_sound);
+        CompoundButton cb_notification = (CompoundButton) findViewById(R.id.sa_notification_switch);
         CompoundButton cb_vibration = (CompoundButton) findViewById(R.id.sa_vibration_switch);
-        if (Choose_user_audio){
-            cb_user_sound.setChecked(true);
-        }
-        else {
-            cb_user_sound.setChecked(false);
-        }
-        if (Choose_notif_vibration){
-            cb_vibration.setChecked(true);
-        }
-        else {
-            cb_vibration.setChecked(false);
-        }
+        CompoundButton cb_user_sound = (CompoundButton) findViewById(R.id.sa_set_user_sound);
+
+        setChoose_vibration(true);
+        setChoose_notification(true);
+
+        cb_notification.setChecked(isChoose_notification());
+        cb_vibration.setChecked(isChoose_vibration());
+        cb_user_sound.setChecked(false);
 
         cb_user_sound.setOnCheckedChangeListener(sw);
         cb_vibration.setOnCheckedChangeListener(sw);
-
-  
     }
 
-    //============don't delete=========================================
+    @Override
+    protected void onResume() {
+        super.onResume();
+        choose_notification = sharedHelper.getNotificationOn();
+        choose_vibration = sharedHelper.getVibrationOn();
 
-//    protected void onDestroy() {
-//        super.onDestroy();
-//       showToast("onDestroy");
-//    }
-//
-//    protected void onPause() {
-//        super.onPause();
-//        showToast("onPause");
-//    }
-//
-//    protected void onRestart() {
-//        super.onRestart();
-//        showToast("onRestart");
-//    }
-//
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        showToast("onRestoreInstanceState");
-//    }
-//
-//    protected void onResume() {
-//        super.onResume();
-//        showToast("onResume");
-//    }
-//
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        //outState.putBoolean();
-//        showToast("onSaveInstanceState");
-//    }
-//
-//    protected void onStart() {
-//        super.onStart();
-//        showToast("onStart");
-//    }
-//
-//    protected void onStop() {
-//        super.onStop();
-//        showToast("onStop");
-//    }
+    }
 
-    //=================================================================
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sharedHelper.setVibrationOn(choose_vibration);
+        sharedHelper.setNotificationOn(choose_notification);
+    }
+
 
     @Override
     protected int contentViewResId() {
@@ -99,13 +82,14 @@ public class SettingsActivity extends ToolbarActivity {
         @Override
         public void onCheckedChanged(CompoundButton cb, boolean cb_bool){
             switch (cb.getId()) {
-                case R.id.sa_set_user_sound:
-                    Choose_user_audio = cb_bool;
-                    showToast("Choose_user_audio = " + Choose_user_audio);
-                    break;
+
                 case R.id.sa_vibration_switch:
-                    Choose_notif_vibration = cb_bool;
-                    showToast("Choose_notif_vibration = " + Choose_notif_vibration);
+                    choose_vibration = cb_bool;
+                    showToast("choose_vibration = " + isChoose_vibration());
+                    break;
+                case R.id.sa_notification_switch:
+                    choose_notification = cb_bool;
+                    showToast("choose_notification = " + isChoose_notification());
                     break;
             }
         }
