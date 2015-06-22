@@ -245,13 +245,13 @@ public class AlarmActivity extends ToolbarActivity {
         dbManager.saveNewPlan(p);
     }
 
-    private void editPlanToDB(Calendar calendar) {
+    private void editPlanToDB(Calendar calendar, int planId) {
         Plan plan = new Plan();
         plan.setDetails(setDetails_textview.getText().toString());
         plan.setTitle(etTitle.getText().toString());
         plan.setTimeStamp(calendar.getTimeInMillis());
         plan.setAudioPath(path);
-        dbManager.editPlan(plan);
+        dbManager.editPlan(plan, planId);
     }
 
     public final class SeekerBar implements SeekBar.OnSeekBarChangeListener{
