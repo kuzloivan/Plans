@@ -17,7 +17,7 @@ public class ViewPlanActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getIntent().getBundleExtra();
+        //getIntent().getBundleExtra();
 
         initBackButton();
     }

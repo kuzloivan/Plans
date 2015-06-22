@@ -51,6 +51,7 @@ public class AlarmActivity extends ToolbarActivity {
     AlarmManager am;
     PendingIntent pAlarmIntent;
     EditText et;
+    EditText setDetails_textview;
     chisw.com.plans.others.DatePicker dateDialog;
     DialogFragment timeDialog;
     TextView tvDate;
@@ -86,6 +87,7 @@ public class AlarmActivity extends ToolbarActivity {
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
+        setDetails_textview = (EditText)findViewById(R.id.setDetails_textview);
 
         formatter.format("Time: %tH:%tM", AlarmActivity.calendar, AlarmActivity.calendar);
         tvTime.setText(formatter.toString());
@@ -256,7 +258,7 @@ public class AlarmActivity extends ToolbarActivity {
     private void writeToDB(Calendar calendar) {
         Plan p = new Plan();
         // todo: add Details edit view to alarm activity design file
-        p.setDetails("Details!");
+        p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(et.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(path);

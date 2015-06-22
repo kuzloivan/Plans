@@ -20,6 +20,7 @@ public class Mapper {
         ContentValues CV = new ContentValues();
         CV.put(PlansEntity.PARSE_ID, model.getParseId());
         CV.put(PlansEntity.TITLE, model.getTitle());
+        CV.put(PlansEntity.DETAILS, model.getDetails());
         CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());
         CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
 

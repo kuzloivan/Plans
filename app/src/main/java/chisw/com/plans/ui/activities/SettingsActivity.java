@@ -94,7 +94,6 @@ public class SettingsActivity extends ToolbarActivity {
         activity.startActivity(intent);
     }
 
-    
 
     public final class Switcher implements CompoundButton.OnCheckedChangeListener{
         @Override

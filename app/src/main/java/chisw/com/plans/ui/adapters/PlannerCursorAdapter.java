@@ -41,19 +41,16 @@ public class PlannerCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder)view.getTag();
 
-        Plan plan = Mapper.parseCursor(cursor);
+        int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
+        int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
+        int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
 
-//
-//        int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
-//        int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
-//        int descriptionIndex = cursor.get
-//
-//        long timeStamp = cursor.getLong(timeStampIndex);
+        long timeStamp = cursor.getLong(timeStampIndex);
 
-        viewHolder.tvTitle.setText(plan.getTitle());
-        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()));
-        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()));
-        viewHolder.tvDetails.setText(plan.getDetails());
+        viewHolder.tvTitle.setText(cursor.getString(titleIndex));
+        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
+        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
+        viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
     }
 
     private static class ViewHolder{
