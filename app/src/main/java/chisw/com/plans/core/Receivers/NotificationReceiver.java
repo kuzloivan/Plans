@@ -20,7 +20,7 @@ import chisw.com.plans.utils.SystemUtils;
 /**
  * Created by Yuriy on 16.06.2015.
  */
-public class Receiver extends BroadcastReceiver {
+public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFY_ID = 101;
     private static final int TEST_ID = 1;
 
