@@ -8,17 +8,34 @@
 
     <include layout="@layout/toolbar" />
 
-    <ScrollView
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:textColor="#00796B"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="@string/title_activity_alarm"
+                android:textSize="22sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:textColor="#00796B"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="@string/title_activity_alarm"
+                android:textSize="22sp">
+
+            </TextView>
 
             <EditText
                 android:id="@+id/setTitle_textview"
@@ -27,19 +44,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/alarmTitle_hint" />
 
-            <TimePicker
-                android:id="@+id/timePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <DatePicker
-                android:id="@+id/datePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin"
-                android:calendarViewShown="false" />
-
             <Button
                 android:id="@+id/aa_setAudio_btn"
                 style="@style/style_aa_btns"
@@ -47,7 +51,20 @@
                 android:layout_height="wrap_content"
                 android:text="@string/set_audio" />
 
-                <Button
+            <Button
+                android:id="@+id/bt_save_alarm_date"
+                style="@style/style_aa_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_date" />
+            <Button
+                android:id="@+id/bt_save_alarm_time"
+                style="@style/style_aa_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_time" />
+
+            <Button
                     android:id="@+id/bt_save_alarm"
                     style="@style/style_aa_btns"
                     android:layout_width="match_parent"
@@ -55,5 +72,4 @@
                     android:text="@string/save_alarm" />
 
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

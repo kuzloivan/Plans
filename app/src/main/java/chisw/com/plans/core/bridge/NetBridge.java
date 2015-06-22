@@ -1,6 +1,7 @@
 package chisw.com.plans.core.bridge;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
@@ -21,6 +22,7 @@ public interface NetBridge {
     void addPlan(Plan plan, SaveCallback saveCallback);
     void getAllPlans(FindCallback findCallback);
     void getPlan(String pId, FindCallback findCallback);
-
+    void editPlan(String pId, GetCallback getCallback);
+    void deletePlan(String pId, GetCallback getCallback);
 
 }

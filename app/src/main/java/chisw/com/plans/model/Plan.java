@@ -6,6 +6,7 @@ package chisw.com.plans.model;
 public class Plan {
     private String parseId;
     private String title;
+    private String details;
     private long timeStamp;
     private String audioPath;
     private int localId;
@@ -18,7 +19,14 @@ public class Plan {
         this.localId = localId;
     }
     // todo: add field for plan status.
-    // todo: add details field for plan.
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
 
     public String getParseId() {
         return parseId;

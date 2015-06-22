@@ -1,0 +1,3 @@
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/abc_btn_rating_star_on_mtrl_alpha"
+    android:tileMode="repeat" />

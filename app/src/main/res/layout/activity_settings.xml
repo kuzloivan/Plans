@@ -6,71 +6,120 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-
-        <TextView
-            android:id="@+id/sa_vibration_textview"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:text="@string/sa_vibration" />
+            android:layout_margin="@dimen/margin"
+            android:orientation="horizontal">
 
-        <Switch
-            android:id="@+id/sa_vibration_switch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:textOff="OFF"
-            android:textOn="ON" />
-    </LinearLayout>
 
-    <LinearLayout
+            <TextView
+                android:id="@+id/sa_vibration_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="@string/sa_vibration" />
+
+            <Switch
+                android:id="@+id/sa_vibration_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textOff="OFF"
+                android:textOn="ON" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/sa_nitification_textview"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:text="@string/sa_notification_enable" />
+            android:layout_margin="@dimen/margin"
+            android:orientation="horizontal">
 
-        <Switch
-            android:id="@+id/sa_nitification_switch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:textOff="OFF"
-            android:textOn="ON" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/sa_nitification_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:text="@string/sa_notification_enable" />
 
-    <LinearLayout
+            <Switch
+                android:id="@+id/sa_notification_switch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textOff="OFF"
+                android:textOn="ON" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/sa_loud_textview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="50"
-            android:text="@string/sa_notification_volume" />
-
-        <SeekBar
-            android:id="@+id/sa_loud_seekbar"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:max="100" />
-    </LinearLayout>
+            android:layout_margin="@dimen/margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_duration_sound"
+                android:layout_width="78dp"
+                android:layout_height="match_parent"
+                android:text="Duration sound" />
+            <TextView
+                android:id="@+id/tv_show_duration_sound"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="19.68"
+                android:text="--" />
+
+            <SeekBar
+                android:id="@+id/sb_duration_sound"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:max="100" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_set_def_sound"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="Set user audio"/>
+
+
+            <Switch
+                android:id="@+id/sa_set_user_sound"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textOff="OFF"
+                android:textOn="ON" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>
 
 

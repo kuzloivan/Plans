@@ -7,6 +7,7 @@ public class PlansEntity {
     public static final String TABLE_NAME = "Plans";
     public static final String PARSE_ID = "parseId";
     public static final String TITLE = "title";
+    public static final String DETAILS = "details";
     public static final String TIMESTAMP = "timeStamp";
     public static final String LOCAL_ID = "_id";
     public static final String AUDIO_PATH = "audioPath";
@@ -16,6 +17,7 @@ public class PlansEntity {
             LOCAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PARSE_ID + " TEXT, " +
             TITLE + " TEXT, " +
+            DETAILS + " TEXT, " +
             TIMESTAMP + " INTEGER, " +
             AUDIO_PATH + " TEXT " +
             ")";

@@ -4,12 +4,12 @@
     <string name="app_name">Plans</string>
     <string name="title_activity_planner">Planner</string>
     <string name="title_activity_settings">Settings Activity</string>
-    <string name="title_activity_login">Day It</string>
+    <string name="title_activity_login">DayIt</string>
     <string name="title_activity_media">Media</string>
     
     <!-- Alarm activity -->
-    <string name="set_date">Choose date</string>
-    <string name="set_time">Choose time</string>
+    <string name="set_date">Set date</string>
+    <string name="set_time">Set time</string>
     <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
     <string name="wakeUp">Wake up !!!</string>
@@ -27,6 +27,7 @@
     <string name="sa_vibration">Vibration</string>
     <string name="sa_notification_enable">Notification enable</string>
     <string name="sa_notification_volume">Notification volume</string>
+    <string name="sa_set_user_sound">Set user sound</string>
 
     <!-- Planner activity -->
     <string name="pa_add_new_reminder">Add reminder</string>
@@ -47,4 +48,5 @@
     <string name="choose_audio">Choose audio</string>
     <string name="set_audio">Set audio</string>
     <string name="save_alarm">Save alarm</string>
+    <string name="temp_date">2015.06.12</string>
 </resources>

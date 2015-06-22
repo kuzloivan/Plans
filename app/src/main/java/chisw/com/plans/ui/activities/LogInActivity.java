@@ -34,16 +34,13 @@ public class LogInActivity extends ToolbarActivity {
         findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
         findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
 
-        /* For testing */
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
 
         /* Auto-insert user credentials */
         if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
-            mLogin.setText(sharedHelper.getDefaultLogin());
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
-                mPassword.setText(sharedHelper.getDefaultPass());
                 /* Move to main activity */
                 PlannerActivity.start(LogInActivity.this);
                 LogInActivity.this.finish();
@@ -66,7 +63,7 @@ public class LogInActivity extends ToolbarActivity {
                 showToast("No internet connection");
                 return;
             }
-            String login = mLogin.getText().toString();
+            String login = mLogin.getText().toString().toLowerCase();
             String password = mPassword.getText().toString();
             /* Checking of valid data */
             if(!ValidData.isTextValid(login,password))
@@ -106,13 +103,13 @@ public class LogInActivity extends ToolbarActivity {
                 return;
             }
             /* Save user credentials and then Log In */
-            sharedHelper.setDefaultLogin(mLogin.getText().toString());
+            sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
 
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
 
             hideProgressDialog();
-            showToast("Successful");
+            showToast("SignUp was successful");
         }
     }
 
@@ -134,11 +131,11 @@ public class LogInActivity extends ToolbarActivity {
                 return;
             }
             /* Under login sharedpreferences registration */
-            sharedHelper.setDefaultLogin(mLogin.getText().toString());
+            sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
 
-            showToast("LogIn was successful");
             hideProgressDialog();
+            showToast("LogIn was successful");
 
             PlannerActivity.start(LogInActivity.this);
             LogInActivity.this.finish();
