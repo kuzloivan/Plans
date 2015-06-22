@@ -2,7 +2,6 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,12 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+
 import chisw.com.plans.ui.dialogs.DatePickDialog;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.EditText;
+
 import java.util.Calendar;
 
 import chisw.com.plans.R;
@@ -25,6 +27,7 @@ import chisw.com.plans.ui.dialogs.TimePickDialog;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
+
 import android.support.v4.app.DialogFragment;
 import android.widget.TextView;
 
@@ -36,9 +39,9 @@ public class AlarmActivity extends ToolbarActivity {
 
     private final int REQUEST_AUDIO_GET = 1;
     private String path;
+    boolean isEdit;
     private boolean isChAudioExist;
     public static boolean isAudioSelected;
-    public static boolean isAlarmToChange;
     private TextView mTextValue;
 
     AlarmManager am;
@@ -67,22 +70,28 @@ public class AlarmActivity extends ToolbarActivity {
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
-        setDetails_textview = (EditText)findViewById(R.id.setDetails_textview);
+        setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
 
         DataUtils.initializeCalendar();
-        if(isAlarmToChange) {
-            etTitle.setText(PlannerActivity.getPlanToSendAndChange().getTitle());
-            setDetails_textview.setText(PlannerActivity.getPlanToSendAndChange().getDetails());
-            DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(PlannerActivity.getPlanToSendAndChange().getTimeStamp()));
+
+        if (getIntent().hasExtra("Plan")) {
+            isEdit = getIntent().getBundleExtra("Plan").getBoolean("isEdit");
+        }
+        if (isEdit) {
+            Bundle bundle = getIntent().getBundleExtra("Plan");
+            etTitle.setText(bundle.getString("Title"));
+            setDetails_textview.setText(bundle.getString("Details"));
+            DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(bundle.getLong("TimeStamp")));
+            path = bundle.getString("Path");
         }
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
         tvDate.setText(DataUtils.getDateStrFromCalendar());
 
         //======Play with seekBar======
         SeekerBar sb = new SeekerBar();
-        final SeekBar seekbar = (SeekBar)findViewById(R.id.sb_duration_sound);
+        final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
-        mTextValue = (TextView)findViewById(R.id.tv_show_duration_sound);
+        mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
         mTextValue.setText("0");
     }
 
@@ -90,8 +99,6 @@ public class AlarmActivity extends ToolbarActivity {
     protected void onStop() {
         super.onStop();
         DataUtils.setCalendar(Calendar.getInstance());
-        if(isAlarmToChange)
-            isAlarmToChange = false;
     }
 
     @Override
@@ -110,8 +117,9 @@ public class AlarmActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void start(Activity a) {
+    public static void start(Activity a, Bundle bundle) {
         Intent i = new Intent(a, AlarmActivity.class);
+        i.putExtra("Plan", bundle);
         a.startActivity(i);
     }
 
@@ -124,19 +132,16 @@ public class AlarmActivity extends ToolbarActivity {
 
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
-                if(isAlarmToChange) {
-
-                }
-                else {
+                if (isEdit) {
+                    editPlanToDB(DataUtils.getCalendar());
+                } else {
                     writePlanToDB(DataUtils.getCalendar());
                 }
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
                 finish();
-            }
-            else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
+            } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
                 showToast("Time is incorrect.");
-            }
-            else {
+            } else {
                 showToast("Choose audio for notification.");
             }
         } else {
@@ -245,21 +250,24 @@ public class AlarmActivity extends ToolbarActivity {
         dbManager.saveNewPlan(p);
     }
 
-    private void editPlanToDB(Calendar calendar, int planId) {
+    private void editPlanToDB(Calendar calendar) {
         Plan plan = new Plan();
         plan.setDetails(setDetails_textview.getText().toString());
         plan.setTitle(etTitle.getText().toString());
         plan.setTimeStamp(calendar.getTimeInMillis());
         plan.setAudioPath(path);
-        dbManager.editPlan(plan, planId);
+        plan.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
+        plan.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
+        dbManager.editPlan(plan);
     }
 
-    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener{
+    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener {
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
         }
+
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
             Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
@@ -268,9 +276,8 @@ public class AlarmActivity extends ToolbarActivity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
-            showToast("PLAYING_AUDIO_TIME = "+ seekBar.getProgress());
+            showToast("PLAYING_AUDIO_TIME = " + seekBar.getProgress());
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
         }
-
     }
 }

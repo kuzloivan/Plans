@@ -73,9 +73,9 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
-    public void editPlan(Plan pPlan, int id) {
+    public void editPlan(Plan pPlan) {
         sqLiteDatabase.update(PlansEntity.TABLE_NAME, Mapper.parsePlan(pPlan), PlansEntity.LOCAL_ID + "=?",
-                new String[]{String.valueOf(id)});
+                new String[]{String.valueOf(pPlan.getLocalId())});
         dbChanged();
     }
 

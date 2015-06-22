@@ -28,7 +28,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     ListView lvPlanner;
     PlannerCursorAdapter plannerCursorAdapter;
-    private static Plan planToSendAndChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +75,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
             switch (item.getItemId()) {
                 case R.id.pa_context_edit:
-                    planToSendAndChange = dbManager.getPlanById(cursor.getInt(idIndex));
-                    AlarmActivity.start(this);
-                    AlarmActivity.isAlarmToChange = true;
-                // todo: implement edit activity.
+                    AlarmActivity.start(this, planToBundle(dbManager.getPlanById(cursor.getInt(idIndex))));
                     break;
 
                 case R.id.pa_context_delete:
@@ -103,7 +99,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         switch (item.getItemId()) {
 
             case R.id.pa_menu_add_reminder:
-                AlarmActivity.start(PlannerActivity.this);
+                AlarmActivity.start(PlannerActivity.this, new Bundle());
                 break;
 
             case R.id.pa_menu_settings:
@@ -195,8 +191,16 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         updateListView();
     }
 
-    public static Plan getPlanToSendAndChange()
-    {
-        return  planToSendAndChange;
+    private Bundle planToBundle(Plan plan) {
+        Bundle bufBundle = new Bundle();
+        bufBundle.putBoolean("isEdit", true);
+        bufBundle.putInt("LocalID", plan.getLocalId());
+        bufBundle.putString("Title", plan.getTitle());
+        bufBundle.putString("Details", plan.getDetails());
+        bufBundle.putLong("TimeStamp", plan.getTimeStamp());
+        bufBundle.putString("Path", plan.getAudioPath());
+        bufBundle.putString("ParseID", plan.getParseId());
+        return bufBundle;
     }
 }
+
