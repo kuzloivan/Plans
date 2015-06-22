@@ -125,7 +125,7 @@ public class AlarmActivity extends ToolbarActivity {
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 if(isAlarmToChange) {
-                    editPlanToDB(DataUtils.getCalendar());
+
                 }
                 else {
                     writePlanToDB(DataUtils.getCalendar());
