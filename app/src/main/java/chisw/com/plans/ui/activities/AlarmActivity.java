@@ -83,6 +83,7 @@ public class AlarmActivity extends ToolbarActivity {
             setDetails_textview.setText(bundle.getString("Details"));
             DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(bundle.getLong("TimeStamp")));
             path = bundle.getString("Path");
+            isAudioSelected = true;
         }
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
         tvDate.setText(DataUtils.getDateStrFromCalendar());
