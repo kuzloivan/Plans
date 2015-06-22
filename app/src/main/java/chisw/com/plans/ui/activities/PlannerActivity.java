@@ -88,6 +88,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     plan =  dbManager.getPlanById(curs.getInt(idIndex));
                 }
 
+
                 //ViewPlanActivity.start(PlannerActivity.this);
                 // todo: implement edit activity.
                 break;
