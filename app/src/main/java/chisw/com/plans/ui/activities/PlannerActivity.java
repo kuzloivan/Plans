@@ -2,7 +2,6 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
@@ -22,11 +20,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.Receivers.NotificationReceiver;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
-import chisw.com.plans.utils.DataUtils;
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
@@ -37,8 +33,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Clicker clicker = new Clicker();
 
         ItemClicker itemClicker = new ItemClicker();
         ItemLongClicker itemLongClicker = new ItemLongClicker();
@@ -52,27 +46,23 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         registerForContextMenu(lvPlanner);
         dbManager.addObserver(this);
-
     }
 
     private void updateListView() {
         Cursor cursor = dbManager.getPlans();
         plannerCursorAdapter.swapCursor(cursor);
         plannerCursorAdapter.notifyDataSetChanged();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         updateListView();
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
         getMenuInflater().inflate(R.menu.context_menu_planner, menu);
     }
 
@@ -80,37 +70,25 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onContextItemSelected(MenuItem item) {
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Cursor cursor = plannerCursorAdapter.getCursor();
 
-        switch (item.getItemId()) {
-            case R.id.pa_context_edit:
-                Cursor curs = plannerCursorAdapter.getCursor();
-
-                if (curs.moveToFirst()) {
-                    curs.moveToPosition((int) (info.position));
-                    int idIndex = curs.getColumnIndex(PlansEntity.LOCAL_ID);
-                    planToSendAndChange =  dbManager.getPlanById(curs.getInt(idIndex));
-                }
-
-                AlarmActivity.start(this);
-                AlarmActivity.isAlarmToChange = true;
-
+        if (cursor.moveToPosition((int) (info.position))) {
+            int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
+            switch (item.getItemId()) {
+                case R.id.pa_context_edit:
+                    planToSendAndChange = dbManager.getPlanById(cursor.getInt(idIndex));
+                    AlarmActivity.start(this);
+                    AlarmActivity.isAlarmToChange = true;
                 // todo: implement edit activity.
-                break;
+                    break;
 
-            case R.id.pa_context_delete:
-
-                Cursor cursor = plannerCursorAdapter.getCursor();
-
-                if (cursor.moveToFirst()) {
-                    cursor.moveToPosition((int) (info.position));
-                    int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
+                case R.id.pa_context_delete:
                     AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
                     dbManager.deletePlanById(cursor.getInt(idIndex));
-                }
-                break;
+                    break;
+            }
         }
-
         return super.onContextItemSelected(item);
     }
 
@@ -173,16 +151,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
             hideProgressDialog();
             showToast("Logged out");
-        }
-    }
-
-    public final class Clicker implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-
-            }
         }
     }
 
