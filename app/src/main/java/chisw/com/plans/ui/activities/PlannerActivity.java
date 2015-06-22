@@ -77,10 +77,19 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         switch (item.getItemId()) {
             case R.id.pa_context_edit:
+                Plan plan;
+                Cursor curs = plannerCursorAdapter.getCursor();
+
+                AlarmActivity.start(this);
+
+                if (curs.moveToFirst()) {
+                    curs.moveToPosition((int) (info.position));
+                    int idIndex = curs.getColumnIndex(PlansEntity.LOCAL_ID);
+                    plan =  dbManager.getPlanById(curs.getInt(idIndex));
+                }
 
                 //ViewPlanActivity.start(PlannerActivity.this);
                 // todo: implement edit activity.
-
                 break;
 
             case R.id.pa_context_delete:

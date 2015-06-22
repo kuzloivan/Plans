@@ -256,5 +256,4 @@ public class AlarmActivity extends ToolbarActivity {
         }
 
     }
-
 }
