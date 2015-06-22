@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Formatter;
 
 import chisw.com.plans.R;
 import chisw.com.plans.ui.activities.AlarmActivity;
@@ -24,13 +25,13 @@ public class DatePicker extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // определяем текущую дату
+
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        // создаем DatePickerDialog и возвращаем его
+
         Dialog picker = new DatePickerDialog(getActivity(), this, year, month, day);
         picker.setTitle(getResources().getString(R.string.set_date));
 
@@ -48,13 +49,15 @@ public class DatePicker extends DialogFragment
 
     @Override
     public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+        Formatter formatter = new Formatter();
 
         TextView tv = (TextView) getActivity().findViewById(R.id.tvDate);
-        int monthTmp = month + 1;
-        tv.setText("Date: " + day + "-" + month + "-" + year);
 
         AlarmActivity.setCalendarDay(day);
         AlarmActivity.setCalendarMonth(month);
         AlarmActivity.setCalendarYear(year);
+
+        formatter.format("Date: %td-%tm-%tY", AlarmActivity.getCalendar(), AlarmActivity.getCalendar(), AlarmActivity.getCalendar());
+        tv.setText(formatter.toString());
     }
 }

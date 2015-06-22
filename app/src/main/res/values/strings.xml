@@ -36,6 +36,9 @@
     <string name="pa_context_edit">Edit</string>
     <string name="pa_context_delete">Delete</string>
 
+    <!-- View plan activity -->
+    <string name="title_activity_view_plan">Plan view</string>
+
     <!-- Names of buttons from main menu -->
     <string name="s_planner_act">Open Planner</string>
     <string name="s_media_act">Media Activity</string>

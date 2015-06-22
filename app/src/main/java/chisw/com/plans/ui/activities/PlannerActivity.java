@@ -76,7 +76,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         switch (item.getItemId()) {
             case R.id.pa_context_edit:
 
-                showToast("Edit selected plan");
+                //ViewPlanActivity.start(PlannerActivity.this);
                 // todo: implement edit activity.
 
                 break;
@@ -183,6 +183,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            ViewPlanActivity.start(PlannerActivity.this, 1);
 
             // todo: go to edit activity
 //

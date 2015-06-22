@@ -17,7 +17,6 @@ import chisw.com.plans.ui.activities.PlannerActivity;
 import chisw.com.plans.ui.activities.SettingsActivity;
 import chisw.com.plans.utils.SystemUtils;
 
-
 /**
  * Created by Yuriy on 16.06.2015.
  */
@@ -48,17 +47,17 @@ public class Receiver extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-            if(SettingsActivity.Coose_user_audio && AlarmActivity.isAudioSelected){
+            try{
                 Multimedia multimedia = ((PApplication) ctx.getApplicationContext()).getMultimedia();
                 String path = ((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id);
                 multimedia.alarmNontification(path);
             }
-            else {
+            catch(Exception e) {
                 Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notification.sound = ringURI;
             }
 
-            if(SettingsActivity.Coose_notif_vibration){
+            if(SettingsActivity.Choose_notif_vibration){
                 long[] vibrate = new long[] { 1000, 1000, 1000, 1000, 1000 };
                 notification.vibrate = vibrate;
             }
