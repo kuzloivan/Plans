@@ -50,7 +50,13 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
-        viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+
+        String details = cursor.getString(detailsIndex);
+
+        // todo count the count of \n
+        //if (details.c)
+
+        viewHolder.tvDetails.setText(details);
     }
 
     private static class ViewHolder{

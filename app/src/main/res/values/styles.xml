@@ -23,7 +23,7 @@
     </style>
 
     <style name="PlannerViewPlanToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">@color/color_pa_list_item_normal</item>
+        <item name="android:background">@color/color_pv_toolbar</item>
         <!--<item name="android:colorPrimaryDark">#ffffff</item>-->
         <!--<item name="text">@color/background_material_dark</item>-->
     </style>
@@ -34,7 +34,7 @@
 
     <style name="AppTheme.PlannerTheme.ListView" >
         <item name="android:dividerHeight">5dp</item>
-        <item name="android:divider">#00FFFFFF</item>
+        <item name="android:divider">@android:color/transparent</item>
         <item name="android:layout_margin">5dp</item>
     </style>
 

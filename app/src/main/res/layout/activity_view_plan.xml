@@ -1,10 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include layout="@layout/plan_view_toolbar"/>
 
+    <RelativeLayout
+        android:id="@+id/pv_bottom_layout"
+        android:padding="10dp"
+        android:background="@color/color_pa_list_item_normal"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/pv_tv_time_info"
+            android:textColor="#95ffffff"
+            android:text="Due time: "
+            android:textStyle="italic"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/pv_tv_time"
+            android:textColor="@color/color_pv_text_view_date_time"
+            android:layout_toRightOf="@id/pv_tv_time_info"
+            android:text="15:40"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/pv_tv_date"
+            android:textColor="@color/color_pv_text_view_date_time"
+            android:layout_alignParentRight="true"
+            android:text="26.06.2015"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/pv_tv_date_info"
+            android:textColor="#95ffffff"
+            android:text="Due date: "
+            android:layout_toLeftOf="@id/pv_tv_date"
+            android:textStyle="italic"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
 
-</LinearLayout>
+    <ScrollView
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/pv_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+</RelativeLayout>
