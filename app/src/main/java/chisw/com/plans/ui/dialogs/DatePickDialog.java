@@ -45,14 +45,12 @@ public class DatePickDialog extends DialogFragment
     @Override
     public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
 
-        Formatter formatter = new Formatter();
-
         TextView tv = (TextView) getActivity().findViewById(R.id.tvDate);
 
         DataUtils.setCalendarDay(day);
         DataUtils.setCalendarMonth(month);
         DataUtils.setCalendarYear(year);
 
-        tv.setText(DataUtils.fillDate());
+        tv.setText(DataUtils.getDateStrFromCalendar());
     }
 }

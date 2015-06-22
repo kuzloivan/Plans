@@ -73,8 +73,8 @@ public class AlarmActivity extends ToolbarActivity {
         tvTime = (TextView) findViewById(R.id.tvTime);
         setDetails_textview = (EditText)findViewById(R.id.setDetails_textview);
 
-        tvTime.setText(DataUtils.fillTime());
-        tvDate.setText(DataUtils.fillDate());
+        tvTime.setText(DataUtils.getTimeStrFromCalendar());
+        tvDate.setText(DataUtils.getDateStrFromCalendar());
 
         DataUtils.initializeCalendar();
 

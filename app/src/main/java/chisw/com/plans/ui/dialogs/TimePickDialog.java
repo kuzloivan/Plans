@@ -49,14 +49,12 @@ public class TimePickDialog extends DialogFragment
     @Override
     public void onTimeSet(TimePicker view, int hours, int minute) {
 
-        Formatter formatter = new Formatter();
-
         TextView tv = (TextView) getActivity().findViewById(R.id.tvTime);
 
         DataUtils.setCalendarHour(hours);
         DataUtils.setCalendarMinute(minute);
 
-        tv.setText(DataUtils.fillTime());
+        tv.setText(DataUtils.getTimeStrFromCalendar());
     }
 
 }

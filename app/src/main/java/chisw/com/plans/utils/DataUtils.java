@@ -6,7 +6,7 @@ import java.util.Formatter;
 
 public class DataUtils {
 
-    private static Calendar calendar = Calendar.getInstance();
+    private static Calendar CALENDAR = Calendar.getInstance();
 
     public static String getDateStringFromTimeStamp(long timeStamp){
         return new SimpleDateFormat("dd.MM.yyyy").format(timeStamp);
@@ -22,35 +22,35 @@ public class DataUtils {
         DataUtils.setCalendarMinute(DataUtils.getCalendar().get(Calendar.MINUTE) + 1);
     }
     public static void setCalendarYear(int year){
-        DataUtils.calendar.set(Calendar.YEAR, year);
+        DataUtils.CALENDAR.set(Calendar.YEAR, year);
     }
 
     public static void setCalendarMonth(int month){
-        DataUtils.calendar.set(Calendar.MONTH, month);
+        DataUtils.CALENDAR.set(Calendar.MONTH, month);
     }
 
     public static void setCalendarDay(int day){
-        DataUtils.calendar.set(Calendar.DAY_OF_MONTH, day);
+        DataUtils.CALENDAR.set(Calendar.DAY_OF_MONTH, day);
     }
 
     public static void setCalendarHour(int hour){
-        DataUtils.calendar.set(Calendar.HOUR_OF_DAY, hour);
+        DataUtils.CALENDAR.set(Calendar.HOUR_OF_DAY, hour);
     }
 
     public static void setCalendarMinute(int minute){
-        DataUtils.calendar.set(Calendar.MINUTE, minute);
+        DataUtils.CALENDAR.set(Calendar.MINUTE, minute);
     }
 
     public static void setCalendarSeconds(int seconds){
-        DataUtils.calendar.set(Calendar.SECOND, seconds);
+        DataUtils.CALENDAR.set(Calendar.SECOND, seconds);
     }
 
     public static Calendar getCalendar()
     {
-        return calendar;
+        return CALENDAR;
     }
 
-    public static String fillTime()
+    public static String getTimeStrFromCalendar()
     {
         Formatter formatter = new Formatter();
 
@@ -59,7 +59,7 @@ public class DataUtils {
         return formatter.toString();
     }
 
-    public static String fillDate()
+    public static String getDateStrFromCalendar()
     {
         Formatter formatter = new Formatter();
 
