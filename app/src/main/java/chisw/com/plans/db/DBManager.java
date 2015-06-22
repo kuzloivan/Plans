@@ -2,6 +2,7 @@ package chisw.com.plans.db;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.Observable;
 import android.database.sqlite.SQLiteDatabase;
 import com.parse.ParseUser;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import chisw.com.plans.model.Plan;
 /**
  * Created by Alexander on 17.06.2015.
  */
-public class DBManager implements DbBridge {
+public class DBManager extends java.util.Observable implements DbBridge {
 
     private List<Plan> plansArray;
     private DBHelper dbHelper;
@@ -43,16 +44,15 @@ public class DBManager implements DbBridge {
     @Override
     public void clearPlans() {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, null, null);
+        dbChanged();
     }
 
 
     @Override
     public Plan selectPlanById(int id) {
-
         Plan plan = null;
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
-
         if (cursor.moveToFirst()) {
             plan = Mapper.parseCursor(cursor);
             cursor.close();
@@ -61,8 +61,9 @@ public class DBManager implements DbBridge {
     }
 
     @Override
-    public int deletePlanById(long id) {
-        return sqLiteDatabase.delete(PlansEntity.TABLE_NAME, PlansEntity.LOCAL_ID + "=?", new String[]{String.valueOf(id)});
+    public void deletePlanById(long id) {
+        sqLiteDatabase.delete(PlansEntity.TABLE_NAME, PlansEntity.LOCAL_ID + "=?", new String[]{String.valueOf(id)});
+        dbChanged();
     }
 
     //erase 1 user by id in user_database SQL
@@ -70,23 +71,23 @@ public class DBManager implements DbBridge {
         String selection = UserEntity.PARSE_ID + "=?";
         String[] selectionaArgs = new String[]{id};
         sqLiteDatabase.delete(UserEntity.TABLE_NAME, selection, selectionaArgs);
+        dbChanged();
     }
 
     //insert new plan into plans_database SQL
     @Override
     public void saveNewPlan(Plan pPlan) {
         plansArray.add(pPlan);
-
         sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
+        dbChanged();
     }
 
     //insert new user into user_database SQL
     @Override
     public void saveMe(ParseUser pParseUser) {
-
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-
         sqLiteDatabase.insert(UserEntity.TABLE_NAME, null, Mapper.parseUser(pParseUser));
+        dbChanged();
     }
 
     //returns user from user_databese SQL
@@ -129,5 +130,11 @@ public class DBManager implements DbBridge {
         String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
         cursor.close();
         return path;
+    }
+
+    @Override
+    public void dbChanged() {
+        setChanged();
+        notifyObservers();
     }
 }
