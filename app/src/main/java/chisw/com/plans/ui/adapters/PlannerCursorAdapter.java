@@ -9,7 +9,9 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import chisw.com.plans.R;
+import chisw.com.plans.db.Mapper;
 import chisw.com.plans.db.entity.PlansEntity;
+import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.DataUtils;
 
 /**
@@ -39,25 +41,32 @@ public class PlannerCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder)view.getTag();
 
-        int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
-        int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
+        Plan plan = Mapper.parseCursor(cursor);
 
-        long timeStamp = cursor.getLong(timeStampIndex);
+//
+//        int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
+//        int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
+//        int descriptionIndex = cursor.get
+//
+//        long timeStamp = cursor.getLong(timeStampIndex);
 
-        viewHolder.tvTitle.setText(cursor.getString(titleIndex));
-        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
-        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
+        viewHolder.tvTitle.setText(plan.getTitle());
+        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()));
+        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()));
+        viewHolder.tvDetails.setText(plan.getDetails());
     }
 
     private static class ViewHolder{
         public TextView tvTitle;
         public TextView tvTime;
         public TextView tvDate;
+        public TextView tvDetails;
 
         public  ViewHolder (View view) {
             tvDate = (TextView)view.findViewById(R.id.pa_tv_date);
             tvTime = (TextView)view.findViewById(R.id.pa_tv_time);
             tvTitle = (TextView)view.findViewById(R.id.pa_tv_title);
+            tvDetails = (TextView)view.findViewById(R.id.pa_tv_details);
         }
     }
 }

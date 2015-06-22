@@ -73,7 +73,7 @@ public class PlannerActivity extends ToolbarActivity {
         switch (item.getItemId()) {
             case R.id.pa_context_edit:
 
-                showToast("Edit selected plan");
+                ViewPlanActivity.start(PlannerActivity.this);
                 // todo: implement edit activity.
 
                 break;
@@ -185,6 +185,12 @@ public class PlannerActivity extends ToolbarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("chisw.com.plans.ui.activities.view_plan_activity.id", 1);
+
+
+            ViewPlanActivity.start(PlannerActivity.this);
 
             // todo: go to edit activity
 //
