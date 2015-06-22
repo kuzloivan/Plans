@@ -5,12 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
-import android.widget.Toast;
 
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.Receivers.NotificationReceiver;
-import chisw.com.plans.core.Receivers.RebootReceiver;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.db.entity.PlansEntity;
 
@@ -33,7 +30,6 @@ public class RestartManager {
         do {
             Intent intent = new Intent(ctx, NotificationReceiver.class);
             intent.setAction(cursor.getString(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
-            Toast.makeText(ctx,cursor.getString(cursor.getColumnIndex(PlansEntity.LOCAL_ID)),Toast.LENGTH_LONG);
             PendingIntent pAlarmIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
             alarmManager.set(AlarmManager.RTC_WAKEUP, cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP)), pAlarmIntent);
         } while (cursor.moveToNext());

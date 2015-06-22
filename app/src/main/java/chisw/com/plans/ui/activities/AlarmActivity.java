@@ -10,23 +10,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Formatter;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.Receivers.NotificationReceiver;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
-import chisw.com.plans.ui.dialogs.DatePickDialog;
 import chisw.com.plans.ui.dialogs.TimePickDialog;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
@@ -40,7 +34,7 @@ import android.widget.TextView;
 
 public class AlarmActivity extends ToolbarActivity {
 
-    private static final int REQUEST_AUDIO_GET = 1;
+    private final int REQUEST_AUDIO_GET = 1;
     private String path;
     private boolean isChAudioExist;
     public static boolean isAudioSelected;
@@ -48,7 +42,6 @@ public class AlarmActivity extends ToolbarActivity {
     private TextView mTextValue;
 
     AlarmManager am;
-    PendingIntent pAlarmIntent;
     EditText etTitle;
     EditText setDetails_textview;
 
@@ -224,7 +217,7 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};

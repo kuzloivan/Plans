@@ -3,10 +3,8 @@ package chisw.com.plans.others;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
-
 import java.io.IOException;
 
-import chisw.com.plans.core.SharedHelper;
 
 /**
  * Created by Kos on 17.06.2015.
@@ -43,10 +41,7 @@ public class Multimedia {
         Handler h = new Handler();
         Runnable stopPlaybackRun = new Runnable() {
             public void run() {
-                player.stop();
-                player.reset();
-                player.release();
-                player = null;
+                stopPlayer();
             }
         };
         h.postDelayed(stopPlaybackRun, PLAYING_AUDIO_TIME * 1000);
