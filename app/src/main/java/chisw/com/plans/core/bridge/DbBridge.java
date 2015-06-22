@@ -15,11 +15,12 @@ public interface DbBridge {
     Cursor getPlans();
     void clearPlans();
     Plan selectPlanById(int id);
-    int deletePlanById(long id);
+    void deletePlanById(long id);
     void eraseMe(String id);
     void saveMe(ParseUser pParseUser);
     Cursor getMe(String id);
     int getLastPlanID();
     String getTitleByID(int id);
     String getAudioPathByID(int id);
+    void dbChanged(); // should be called when database content was changed
 }
