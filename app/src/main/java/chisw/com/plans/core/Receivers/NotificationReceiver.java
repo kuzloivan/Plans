@@ -62,12 +62,8 @@ public class NotificationReceiver extends BroadcastReceiver {
             }
             if (app.getSharedHelper().getVibrationOn()) {
 
-
-                if (app.getSharedHelper().getVibrationOn()) {
                     long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
                     notification.vibrate = vibrate;
-                }
-
 
                 notificationManager.notify(NOTIFY_ID + id, notification);
             } else {

@@ -55,13 +55,32 @@ public class SettingsActivity extends ToolbarActivity {
     protected void onResume() {
         super.onResume();
         choose_notification = sharedHelper.getNotificationOn();
-        choose_vibration = sharedHelper.getVibrationOn();
+        /*if (sharedHelper.getVibrationOn() != null) {
+            switch (sharedHelper.getVibrationOn()) {
+                case "yes":
+                    setChoose_vibration(true);
+                    break;
+                case "no":
+                    setChoose_vibration(false);
+                    break;
+            }
 
+        }
+        else
+            choose_vibration = false;*/
+        choose_vibration = sharedHelper.getVibrationOn();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        /*if(isChoose_vibration()){
+            sharedHelper.setVibrationOn("yes");
+        }
+        else
+        {
+            sharedHelper.setVibrationOn("no");
+        }*/
         sharedHelper.setVibrationOn(choose_vibration);
         sharedHelper.setNotificationOn(choose_notification);
     }
@@ -78,9 +97,9 @@ public class SettingsActivity extends ToolbarActivity {
     }
 
 
-    public final class Switcher implements CompoundButton.OnCheckedChangeListener{
+    public final class Switcher implements CompoundButton.OnCheckedChangeListener {
         @Override
-        public void onCheckedChanged(CompoundButton cb, boolean cb_bool){
+        public void onCheckedChanged(CompoundButton cb, boolean cb_bool) {
             switch (cb.getId()) {
 
                 case R.id.sa_vibration_switch:

@@ -58,7 +58,13 @@ public class SharedHelper {
     public boolean getVibrationOn() {
         return sharedPreferences.getBoolean(APP_PREFERENCES_VIBRATION_ON, true);
     }
+/*    public void setVibrationOn(String appPreferencesVibrationOn) {
+        sharedPreferences.edit().putString(APP_PREFERENCES_VIBRATION_ON, appPreferencesVibrationOn).apply();
+    }
 
+    public String getVibrationOn() {
+        return sharedPreferences.getString(APP_PREFERENCES_VIBRATION_ON, "");
+    }*/
     public void setNotificationOn(boolean appPreferencesNotificationOn) {
         sharedPreferences.edit().putBoolean(APP_PREFERENCES_NOTIFICATION_ON, appPreferencesNotificationOn).apply();
     }
