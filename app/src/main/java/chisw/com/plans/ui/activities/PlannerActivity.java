@@ -59,6 +59,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     protected void onResume() {
         super.onResume();
+
+        updateListView();
     }
 
     @Override
