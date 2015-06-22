@@ -20,6 +20,7 @@ public class Mapper {
         ContentValues CV = new ContentValues();
         CV.put(PlansEntity.PARSE_ID, model.getParseId());
         CV.put(PlansEntity.TITLE, model.getTitle());
+        CV.put(PlansEntity.DETAILS, model.getDetails());
         CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());
         CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
 
@@ -31,12 +32,14 @@ public class Mapper {
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
+        int localIdIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
         int parseIdIndex = cursor.getColumnIndex(PlansEntity.PARSE_ID);
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
         plan.setParseId(cursor.getString(parseIdIndex));
+        plan.setLocalId(cursor.getInt(localIdIndex));
         plan.setTimeStamp(timeStamp);
         plan.setTitle(cursor.getString(titleIndex));
         plan.setDetails(cursor.getString(detailsIndex));

@@ -18,6 +18,13 @@
 
     <style name="PlannerToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbar_background_color</item>
+        <!--<item name="android:colorPrimaryDark">#ffffff</item>-->
+        <!--<item name="text">@color/background_material_dark</item>-->
+    </style>
+
+    <style name="PlannerViewPlanToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">@color/color_pa_list_item_normal</item>
+        <!--<item name="android:colorPrimaryDark">#ffffff</item>-->
         <!--<item name="text">@color/background_material_dark</item>-->
     </style>
 

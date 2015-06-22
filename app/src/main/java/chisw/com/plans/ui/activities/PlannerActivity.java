@@ -10,16 +10,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
+
+import java.util.Observable;
+import java.util.Observer;
 
 import chisw.com.plans.R;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 
-public class PlannerActivity extends ToolbarActivity {
+public class PlannerActivity extends ToolbarActivity implements Observer {
 
     ListView lvPlanner;
     PlannerCursorAdapter plannerCursorAdapter;
@@ -41,12 +45,12 @@ public class PlannerActivity extends ToolbarActivity {
         lvPlanner.setOnItemLongClickListener(itemLongClicker);
 
         registerForContextMenu(lvPlanner);
+        dbManager.addObserver(this);
 
     }
 
     private void updateListView() {
         Cursor cursor = dbManager.getPlans();
-
         plannerCursorAdapter.swapCursor(cursor);
         plannerCursorAdapter.notifyDataSetChanged();
 
@@ -54,8 +58,9 @@ public class PlannerActivity extends ToolbarActivity {
 
     @Override
     protected void onResume() {
-        updateListView();
         super.onResume();
+
+        updateListView();
     }
 
     @Override
@@ -72,10 +77,19 @@ public class PlannerActivity extends ToolbarActivity {
 
         switch (item.getItemId()) {
             case R.id.pa_context_edit:
+                Plan plan;
+                Cursor curs = plannerCursorAdapter.getCursor();
 
-                showToast("Edit selected plan");
+                AlarmActivity.start(this);
+
+                if (curs.moveToFirst()) {
+                    curs.moveToPosition((int) (info.position));
+                    int idIndex = curs.getColumnIndex(PlansEntity.LOCAL_ID);
+                    plan =  dbManager.getPlanById(curs.getInt(idIndex));
+                }
+
+                //ViewPlanActivity.start(PlannerActivity.this);
                 // todo: implement edit activity.
-
                 break;
 
             case R.id.pa_context_delete:
@@ -84,14 +98,9 @@ public class PlannerActivity extends ToolbarActivity {
 
                 if (cursor.moveToFirst()) {
                     cursor.moveToPosition((int) (info.position));
-
                     int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
-
                     dbManager.deletePlanById(cursor.getInt(idIndex));
-
-                    updateListView();
                 }
-
                 break;
         }
 
@@ -186,7 +195,13 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            // todo: go to edit activity
+            Cursor cursor = plannerCursorAdapter.getCursor();
+            cursor.moveToPosition(position);
+
+            int planId = cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID));
+            Plan plan = dbManager.getPlanById(planId);
+
+            ViewPlanActivity.start(PlannerActivity.this, plan.getLocalId());
 //
 //            Cursor cursor = plannerCursorAdapter.getCursor();
 //
@@ -198,5 +213,10 @@ public class PlannerActivity extends ToolbarActivity {
 //            showToast(plan.getTitle());
 
         }
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        updateListView();
     }
 }

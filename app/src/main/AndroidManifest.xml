@@ -44,6 +44,12 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.activities.ViewPlanActivity"
+            android:label="@string/title_activity_view_plan"
+            android:theme="@style/AppTheme.PlannerTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.activities.AlarmActivity"
             android:label="@string/title_activity_alarm"
             android:theme="@style/AppTheme.PlannerTheme"
@@ -54,7 +60,7 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".core.Receivers.Receiver" />
+        <receiver android:name=".core.Receivers.NotificationReceiver" />
 
         <receiver
             android:name=".core.Receivers.RebootReceiver"
