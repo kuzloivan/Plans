@@ -40,7 +40,7 @@ public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
             viewHolder.tvDate = (TextView)convertView.findViewById(R.id.pa_tv_date);
             viewHolder.tvTime = (TextView)convertView.findViewById(R.id.pa_tv_time);
             viewHolder.tvTitle = (TextView)convertView.findViewById(R.id.pa_tv_title);
-
+            // todo: add DetailsView
             convertView.setTag(viewHolder);
         }
         else{
@@ -58,6 +58,7 @@ public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
         public TextView tvTitle;
         public TextView tvTime;
         public TextView tvDate;
+        public TextView tvDetails;
     }
 
 }

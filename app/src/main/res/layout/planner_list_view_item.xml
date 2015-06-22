@@ -8,18 +8,39 @@
         <TextView
             android:id="@+id/pa_tv_title"
             android:textColor="@color/color_pa_list_item_text_view_text"
-            android:textSize="@dimen/abc_text_size_large_material"
+            android:textStyle="bold"
+            android:textSize="@dimen/abc_text_size_medium_material"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"/>
 
         <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/color_pa_list_item_text_view_text"
+            android:id="@+id/pa_tv_details"
+            android:layout_below="@id/pa_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Details of plan\nMore details!\nAnd more!\nMore and more!\nPlease, fix me!!!"/>
+
+        <LinearLayout
+            android:layout_below="@id/pa_tv_details"
+            android:id="@+id/pa_la_image"
+            android:background="@drawable/tile_background"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:textColor="@color/color_pa_list_item_text_view_text"
             android:id="@+id/pa_tv_time"
+            android:textStyle="italic"
             android:textSize="@dimen/abc_text_size_small_material"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pa_tv_title"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/pa_la_image"
             android:text="18.50"/>
 
         <TextView
@@ -29,7 +50,7 @@
             android:id="@+id/pa_tv_date"
             android:textColor="@color/color_pa_list_item_text_view_text"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pa_tv_title"
+            android:layout_below="@id/pa_la_image"
             android:layout_alignParentRight="true"
-            android:text="@string/temp_date"/>
+            android:text="22.06.2015"/>
 </RelativeLayout>
