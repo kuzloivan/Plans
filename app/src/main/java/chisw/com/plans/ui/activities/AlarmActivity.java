@@ -14,6 +14,7 @@ import chisw.com.plans.others.DatePicker;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
 
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -23,6 +24,7 @@ import java.util.Date;
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.others.TimePickFragment;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
@@ -43,6 +45,7 @@ public class AlarmActivity extends ToolbarActivity {
     private boolean isChAudioExist;
     public static boolean isAudioSelected;
     private static Calendar calendar = Calendar.getInstance();
+    private TextView mTextValue;
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
@@ -86,6 +89,13 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate.setText("Date: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + monthTmp + "-" + calendar.get(Calendar.YEAR));
         tvTime.setText("Time: " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
         AlarmActivity.setCalendarSeconds(0);
+
+        //======Play with seekBar======
+        SeekerBar sb = new SeekerBar();
+        final SeekBar seekbar = (SeekBar)findViewById(R.id.sb_duration_sound);
+        seekbar.setOnSeekBarChangeListener(sb);
+        mTextValue = (TextView)findViewById(R.id.tv_show_duration_sound);
+        mTextValue.setText("0");
     }
 
     @Override
@@ -266,5 +276,24 @@ public class AlarmActivity extends ToolbarActivity {
 
     public static void setCalendarSeconds(int seconds){
         AlarmActivity.calendar.set(Calendar.SECOND, 0);
+    }
+    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener{
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+            mTextValue.setText(String.valueOf(seekBar.getProgress()));
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+            showToast("PLAYING_AUDIO_TIME = "+ seekBar.getProgress());
+            mTextValue.setText(String.valueOf(seekBar.getProgress()));
+        }
+
     }
 }
