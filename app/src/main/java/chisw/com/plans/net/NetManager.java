@@ -26,30 +26,30 @@ import chisw.com.plans.ui.activities.LogInActivity;
 public class NetManager implements NetBridge {
 
     @Override
-    public void registerUser(String pName, String pPassword, SignUpCallback signUpCallback) {
+    public void registerUser(String name, String password, SignUpCallback signUpCallback) {
         ParseUser user = new ParseUser();
-        user.setUsername(pName);
-        user.setPassword(pPassword);
+        user.setUsername(name);
+        user.setPassword(password);
         user.signUpInBackground(signUpCallback);
     }
 
     @Override
-    public void loginUser(String pName, String pPassword, LogInCallback logInCallback) {
-        ParseUser.logInInBackground(pName, pPassword, logInCallback);
+    public void loginUser(String name, String password, LogInCallback logInCallback) {
+        ParseUser.logInInBackground(name, password, logInCallback);
     }
 
     @Override
-    public void logoutUser(String pName, String pPassword, LogOutCallback logoutCallback) {
+    public void logoutUser(String name, String pPassword, LogOutCallback logoutCallback) {
         ParseUser.logOutInBackground(logoutCallback);
     }
 
     @Override
     public void addPlan(Plan plan, OnSaveCallback callback) {
-        String parseId;
-        ParseObject pPlan = new ParseObject("Plans");
-        pPlan.put("name", plan.getTitle());
-        pPlan.put("timeStamp", plan.getTimeStamp());
-        pPlan.saveInBackground(new CallbackAddPlan(pPlan, callback));
+        ParseObject parsePlan = new ParseObject("Plans");
+        parsePlan.put("name", plan.getTitle());
+        parsePlan.put("timeStamp", plan.getTimeStamp());
+        parsePlan.put("details", plan.getDetails());
+        parsePlan.saveInBackground(new CallbackAddPlan(parsePlan, callback));
     }
 
     @Override
@@ -59,22 +59,22 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public void getPlan(String pId, FindCallback findCallback) {
+    public void getPlan(String parseId, FindCallback findCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.whereEqualTo("objectId", pId);
+        query.whereEqualTo("objectId", parseId);
         query.findInBackground(findCallback);
     }
 
     @Override
-    public void editPlan(String pId, GetCallback getCallback) {
+    public void editPlan(String parseId, GetCallback getCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.getInBackground(pId, getCallback);
+        query.getInBackground(parseId, getCallback);
     }
 
     @Override
-    public void deletePlan(String pId, GetCallback getCallback) {
+    public void deletePlan(String parseId, GetCallback getCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.getInBackground(pId, getCallback);
+        query.getInBackground(parseId, getCallback);
     }
 
     public final class CallbackAddPlan implements SaveCallback {

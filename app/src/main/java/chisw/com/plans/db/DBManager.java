@@ -18,20 +18,12 @@ import chisw.com.plans.model.Plan;
  */
 public class DBManager extends java.util.Observable implements DbBridge {
 
-    private List<Plan> plansArray;
     private DBHelper dbHelper;
     SQLiteDatabase sqLiteDatabase;
 
     public DBManager(Context context) {
         dbHelper = new DBHelper(context);
-        plansArray = new ArrayList<>();
         sqLiteDatabase = dbHelper.getWritableDatabase();
-    }
-
-    //returns list of plans
-    @Override
-    public List<Plan> getAllPlans() {
-        return plansArray;
     }
 
     //returns every plan from plans_database SQL
@@ -76,8 +68,14 @@ public class DBManager extends java.util.Observable implements DbBridge {
     //insert new plan into plans_database SQL
     @Override
     public void saveNewPlan(Plan pPlan) {
-        plansArray.add(pPlan);
         sqLiteDatabase.insert(PlansEntity.TABLE_NAME, null, Mapper.parsePlan(pPlan));
+        dbChanged();
+    }
+
+    @Override
+    public void editPlan(Plan pPlan, int id) {
+        sqLiteDatabase.update(PlansEntity.TABLE_NAME, Mapper.parsePlan(pPlan), PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)});
         dbChanged();
     }
 

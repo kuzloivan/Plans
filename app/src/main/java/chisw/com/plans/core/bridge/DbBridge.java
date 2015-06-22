@@ -11,7 +11,7 @@ import chisw.com.plans.model.Plan;
 public interface DbBridge {
 
     void saveNewPlan(Plan pPlan);
-    List<Plan> getAllPlans();
+    void editPlan(Plan pPlan, int id);
     Cursor getPlans();
     void clearPlans();
     Plan getPlanById(int id);

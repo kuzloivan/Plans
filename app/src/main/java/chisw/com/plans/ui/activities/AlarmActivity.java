@@ -128,7 +128,7 @@ public class AlarmActivity extends ToolbarActivity {
 
                 }
                 else {
-                    writeToDB(DataUtils.getCalendar());
+                    writePlanToDB(DataUtils.getCalendar());
                 }
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
                 finish();
@@ -235,7 +235,7 @@ public class AlarmActivity extends ToolbarActivity {
         return null;
     }
 
-    private void writeToDB(Calendar calendar) {
+    private void writePlanToDB(Calendar calendar) {
         Plan p = new Plan();
         // todo: add Details edit view to alarm activity design file
         p.setDetails(setDetails_textview.getText().toString());
@@ -245,6 +245,14 @@ public class AlarmActivity extends ToolbarActivity {
         dbManager.saveNewPlan(p);
     }
 
+    private void editPlanToDB(Calendar calendar, int planId) {
+        Plan plan = new Plan();
+        plan.setDetails(setDetails_textview.getText().toString());
+        plan.setTitle(etTitle.getText().toString());
+        plan.setTimeStamp(calendar.getTimeInMillis());
+        plan.setAudioPath(path);
+        dbManager.editPlan(plan, planId);
+    }
 
     public final class SeekerBar implements SeekBar.OnSeekBarChangeListener{
         @Override
