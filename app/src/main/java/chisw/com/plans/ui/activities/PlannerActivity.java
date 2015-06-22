@@ -1,6 +1,9 @@
 package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
@@ -90,6 +94,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 if (cursor.moveToFirst()) {
                     cursor.moveToPosition((int) (info.position));
                     int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
+                    AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
                     dbManager.deletePlanById(cursor.getInt(idIndex));
                 }
                 break;

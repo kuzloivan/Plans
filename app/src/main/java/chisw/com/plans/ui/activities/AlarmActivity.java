@@ -10,29 +10,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import chisw.com.plans.others.DatePicker;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 
 import android.widget.EditText;
-import android.widget.TimePicker;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Formatter;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.others.TimePickFragment;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**
@@ -133,20 +127,12 @@ public class AlarmActivity extends ToolbarActivity {
         return R.layout.activity_alarm;
     }
 
-    private Intent createIntent(String action) {
-        Intent intent = new Intent(this, Receiver.class);
-        intent.setAction(action);
-        return intent;
-    }
-
     public void startAlarm() {
 
         if (ValidData.isTextValid(et.getText().toString())) {
             if (/*isAudioSelected && */(calendar.getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writeToDB(calendar);
-                Intent intent = createIntent(Integer.toString(dbManager.getLastPlanID()));
-                pAlarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pAlarmIntent);
+                am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
                 finish();
             }
             else if (calendar.getTimeInMillis() - System.currentTimeMillis() <= 0) {

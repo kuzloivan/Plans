@@ -1,5 +1,7 @@
 package chisw.com.plans.ui.activities;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -7,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.Receivers.Receiver;
 
 /**
  * Created by Alexander on 16.06.2015.
@@ -44,5 +47,11 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected void initBackButton(){
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    protected PendingIntent createPendingIntent(String action){
+        Intent intent = new Intent(this, Receiver.class);
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
