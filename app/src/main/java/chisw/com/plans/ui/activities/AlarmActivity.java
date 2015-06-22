@@ -141,6 +141,10 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
+    public void cancelAlarm() {
+        am.cancel(pAlarmIntent);
+    }
+
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {

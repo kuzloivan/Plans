@@ -58,6 +58,11 @@ public class Receiver extends BroadcastReceiver {
                 notification.sound = ringURI;
             }
 
+            if(SettingsActivity.Coose_notif_vibration){
+                long[] vibrate = new long[] { 1000, 1000, 1000, 1000, 1000 };
+                notification.vibrate = vibrate;
+            }
+
 
             notificationManager.notify(NOTIFY_ID+id, notification);
         } else {

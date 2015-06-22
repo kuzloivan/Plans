@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".core.PApplication"
@@ -55,7 +55,7 @@
             android:screenOrientation="portrait" />
 
         <receiver android:name=".core.Receivers.Receiver" />
-        <uses-permission android:name="android.permission.VIBRATE"/>
+
         <receiver
             android:name=".core.Receivers.RebootReceiver"
             android:enabled="true" android:exported="true">

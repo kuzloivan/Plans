@@ -12,7 +12,7 @@ import chisw.com.plans.core.SharedHelper;
  * Created by Kos on 17.06.2015.
  */
 public class Multimedia {
-    private int PLAYING_AUDIO_TIME = 15;
+    static public int PLAYING_AUDIO_TIME = 15;
 
     private MediaPlayer player;
 
