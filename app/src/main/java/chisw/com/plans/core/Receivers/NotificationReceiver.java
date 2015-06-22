@@ -24,17 +24,17 @@ public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFY_ID = 101;
     private static final int TEST_ID = 1;
 
-    PApplication app;
+    //PApplication app;
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
         PendingIntent pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
 
         int id = Integer.parseInt(intent.getAction());
-        if (app.getSharedHelper().getNotificationOn()) {
+        if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getNotificationOn()) {
             sendNotif(id, pIntent1, ctx);
         }
-        app = (PApplication) ctx.getApplicationContext();
+       // app = (PApplication) ctx.getApplicationContext();
 
     }
 
@@ -46,21 +46,21 @@ public class NotificationReceiver extends BroadcastReceiver {
             Notification.Builder builder = new Notification.Builder(ctx);
             builder.setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.ic_alarm)
-                    .setContentTitle(app.getDbManager().getTitleByID(id))
+                    .setContentTitle(((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id))
                     .setContentText("Wake up !!!");
             Notification notification = builder.build();
             NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
             try {
-                Multimedia multimedia = (app.getMultimedia());
-                String path = (app.getDbManager().getAudioPathByID(id));
+                Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
+                String path = (((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id));
                 multimedia.alarmNontification(path);
             } catch (Exception e) {
                 Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notification.sound = ringURI;
             }
-            if (app.getSharedHelper().getVibrationOn()) {
+            if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getVibrationOn()) {
 
                     long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
                     notification.vibrate = vibrate;
@@ -70,7 +70,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
                 Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
                 notif.flags |= Notification.FLAG_AUTO_CANCEL;
-                notif.setLatestEventInfo(ctx, app.getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
+                notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
                 nm.notify(NOTIFY_ID + id, notif);
             }
         }
