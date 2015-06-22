@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
@@ -61,6 +62,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         initBackButton();
 
+        Formatter formatter = new Formatter();
         Clicker c = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
@@ -85,9 +87,14 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
 
-        int monthTmp = calendar.get(Calendar.MONTH) + 1;
-        tvDate.setText("Date: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + monthTmp + "-" + calendar.get(Calendar.YEAR));
-        tvTime.setText("Time: " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        formatter.format("Time: %tH:%tM", AlarmActivity.calendar, AlarmActivity.calendar);
+        tvTime.setText(formatter.toString());
+
+        formatter = new Formatter();
+
+        formatter.format("Date: %td-%tm-%tY", AlarmActivity.calendar, AlarmActivity.calendar, AlarmActivity.calendar);
+        tvDate.setText(formatter.toString());
+
         AlarmActivity.setCalendarSeconds(0);
 
         //======Play with seekBar======
@@ -297,5 +304,10 @@ public class AlarmActivity extends ToolbarActivity {
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
         }
 
+    }
+
+    public static Calendar getCalendar()
+    {
+        return calendar;
     }
 }
