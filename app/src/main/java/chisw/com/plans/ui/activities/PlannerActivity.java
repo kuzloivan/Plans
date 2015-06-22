@@ -186,9 +186,13 @@ public class PlannerActivity extends ToolbarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            ViewPlanActivity.start(PlannerActivity.this, 1);
+            Cursor cursor = plannerCursorAdapter.getCursor();
+            cursor.moveToPosition(position);
 
-            // todo: go to edit activity
+            int planId = cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID));
+            Plan plan = dbManager.selectPlanById(planId);
+
+            ViewPlanActivity.start(PlannerActivity.this, plan.getLocalId());
 //
 //            Cursor cursor = plannerCursorAdapter.getCursor();
 //

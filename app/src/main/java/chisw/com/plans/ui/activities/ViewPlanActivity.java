@@ -12,6 +12,7 @@ import chisw.com.plans.R;
 public class ViewPlanActivity extends ToolbarActivity {
 
     public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.view_plan_activity.id";
+    public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.view_plan_activity.bundle";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,16 @@ public class ViewPlanActivity extends ToolbarActivity {
         //getIntent().getBundleExtra();
 
         initBackButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+
+
+        setTitle(String.valueOf(id));
     }
 
     @Override
@@ -32,9 +43,11 @@ public class ViewPlanActivity extends ToolbarActivity {
         Intent intent = new Intent(activity, ViewPlanActivity.class);
 
         Bundle bundle = new Bundle();
-        intent.putExtra("bundle", bundle);
 
         bundle.putInt(BUNDLE_ID_KEY, id);
+
+        intent.putExtra(BUNDLE_KEY, bundle);
+
 
         activity.startActivity(intent);
     }
