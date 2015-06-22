@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Formatter;
 
 import chisw.com.plans.R;
 import chisw.com.plans.ui.activities.AlarmActivity;
@@ -26,12 +27,12 @@ public class TimePickFragment extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // устанавливаем текущее время для TimePicker
+
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE)+1;
 
-        // создаем TimePickerDialog и возвращаем его
+
         Dialog picker = new TimePickerDialog(getActivity(), this, hour, minute, true);
         picker.setTitle(getResources().getString(R.string.set_time));
 
@@ -41,20 +42,26 @@ public class TimePickFragment extends DialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        // добавляем кастомный текст для кнопки
+
         Button nButton =  ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
         nButton.setText(getResources().getString(R.string.set_time));
 
     }
     @Override
     public void onTimeSet(TimePicker view, int hours, int minute) {
-        // Выводим выбранное время
+
+        Formatter formatter = new Formatter();
         TextView tv = (TextView) getActivity().findViewById(R.id.tvTime);
-        tv.setText("Time: " + hours + ":" + minute);
+        String hoursStr = String.valueOf(hours);
+        String minutesStr = String.valueOf(minute);
+
+        tv.setText("Time: " + hoursStr + ":" + minutesStr);
 
         AlarmActivity.setCalendarHour(hours);
         AlarmActivity.setCalendarMinute(minute);
 
+        formatter.format("Time: %tH:%tM", AlarmActivity.getCalendar(), AlarmActivity.getCalendar());
+        tv.setText(formatter.toString());
     }
 
 }

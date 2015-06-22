@@ -14,15 +14,18 @@ import chisw.com.plans.others.DatePicker;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
 
 import android.widget.EditText;
 import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.Receiver;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.others.TimePickFragment;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
@@ -43,6 +46,7 @@ public class AlarmActivity extends ToolbarActivity {
     private boolean isChAudioExist;
     public static boolean isAudioSelected;
     private static Calendar calendar = Calendar.getInstance();
+    private TextView mTextValue;
 
     AlarmManager am;
     PendingIntent pAlarmIntent;
@@ -58,6 +62,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         initBackButton();
 
+        Formatter formatter = new Formatter();
         Clicker c = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
@@ -82,10 +87,22 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
 
-        int monthTmp = calendar.get(Calendar.MONTH) + 1;
-        tvDate.setText("Date: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + monthTmp + "-" + calendar.get(Calendar.YEAR));
-        tvTime.setText("Time: " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
+        formatter.format("Time: %tH:%tM", AlarmActivity.calendar, AlarmActivity.calendar);
+        tvTime.setText(formatter.toString());
+
+        formatter = new Formatter();
+
+        formatter.format("Date: %td-%tm-%tY", AlarmActivity.calendar, AlarmActivity.calendar, AlarmActivity.calendar);
+        tvDate.setText(formatter.toString());
+
         AlarmActivity.setCalendarSeconds(0);
+
+        //======Play with seekBar======
+        SeekerBar sb = new SeekerBar();
+        final SeekBar seekbar = (SeekBar)findViewById(R.id.sb_duration_sound);
+        seekbar.setOnSeekBarChangeListener(sb);
+        mTextValue = (TextView)findViewById(R.id.tv_show_duration_sound);
+        mTextValue.setText("0");
     }
 
     @Override
@@ -268,5 +285,29 @@ public class AlarmActivity extends ToolbarActivity {
 
     public static void setCalendarSeconds(int seconds){
         AlarmActivity.calendar.set(Calendar.SECOND, 0);
+    }
+    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener{
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+            mTextValue.setText(String.valueOf(seekBar.getProgress()));
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+            showToast("PLAYING_AUDIO_TIME = "+ seekBar.getProgress());
+            mTextValue.setText(String.valueOf(seekBar.getProgress()));
+        }
+
+    }
+
+    public static Calendar getCalendar()
+    {
+        return calendar;
     }
 }
