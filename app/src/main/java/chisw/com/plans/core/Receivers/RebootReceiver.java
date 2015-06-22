@@ -32,8 +32,6 @@ public class RebootReceiver extends BroadcastReceiver {
         Toast.makeText(ctx, "Some Text. Device booting 1", Toast.LENGTH_SHORT).show();
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             Toast.makeText(ctx, "Some Text. Device booting 2", Toast.LENGTH_LONG).show();
-
-
         }
     }
 

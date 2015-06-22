@@ -1,10 +1,8 @@
-package chisw.com.plans.others;
-
+package chisw.com.plans.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,13 +13,10 @@ import java.util.Calendar;
 import java.util.Formatter;
 
 import chisw.com.plans.R;
-import chisw.com.plans.ui.activities.AlarmActivity;
+import chisw.com.plans.utils.DataUtils;
 
-public class DatePicker extends DialogFragment
+public class DatePickDialog extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
-
-    private Calendar calendar = Calendar.getInstance();
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -40,7 +35,7 @@ public class DatePicker extends DialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        // добавляем кастомный текст для кнопки
+
         Button nButton =  ((AlertDialog) getDialog())
                 .getButton(DialogInterface.BUTTON_POSITIVE);
         nButton.setText(getResources().getString(R.string.set_date));
@@ -49,15 +44,15 @@ public class DatePicker extends DialogFragment
 
     @Override
     public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+
         Formatter formatter = new Formatter();
 
         TextView tv = (TextView) getActivity().findViewById(R.id.tvDate);
 
-        AlarmActivity.setCalendarDay(day);
-        AlarmActivity.setCalendarMonth(month);
-        AlarmActivity.setCalendarYear(year);
+        DataUtils.setCalendarDay(day);
+        DataUtils.setCalendarMonth(month);
+        DataUtils.setCalendarYear(year);
 
-        formatter.format("Date: %td-%tm-%tY", AlarmActivity.getCalendar(), AlarmActivity.getCalendar(), AlarmActivity.getCalendar());
-        tv.setText(formatter.toString());
+        tv.setText(DataUtils.fillDate());
     }
 }

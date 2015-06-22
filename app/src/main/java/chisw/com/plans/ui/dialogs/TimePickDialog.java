@@ -1,7 +1,7 @@
-package chisw.com.plans.others;
+package chisw.com.plans.ui.dialogs;
 
 /**
- * Created by Александр on 21.06.2015.
+ * Created by Alex on 21.06.2015.
  */
 
 import android.app.AlertDialog;
@@ -18,12 +18,11 @@ import java.util.Calendar;
 import java.util.Formatter;
 
 import chisw.com.plans.R;
-import chisw.com.plans.ui.activities.AlarmActivity;
+import chisw.com.plans.utils.DataUtils;
 
-public class TimePickFragment extends DialogFragment
+public class TimePickDialog extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-    private Calendar calendar = Calendar.getInstance();;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -51,17 +50,13 @@ public class TimePickFragment extends DialogFragment
     public void onTimeSet(TimePicker view, int hours, int minute) {
 
         Formatter formatter = new Formatter();
+
         TextView tv = (TextView) getActivity().findViewById(R.id.tvTime);
-        String hoursStr = String.valueOf(hours);
-        String minutesStr = String.valueOf(minute);
 
-        tv.setText("Time: " + hoursStr + ":" + minutesStr);
+        DataUtils.setCalendarHour(hours);
+        DataUtils.setCalendarMinute(minute);
 
-        AlarmActivity.setCalendarHour(hours);
-        AlarmActivity.setCalendarMinute(minute);
-
-        formatter.format("Time: %tH:%tM", AlarmActivity.getCalendar(), AlarmActivity.getCalendar());
-        tv.setText(formatter.toString());
+        tv.setText(DataUtils.fillTime());
     }
 
 }

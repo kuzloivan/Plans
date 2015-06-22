@@ -60,7 +60,7 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".core.Receivers.Receiver" />
+        <receiver android:name=".core.Receivers.NotificationReceiver" />
 
         <receiver
             android:name=".core.Receivers.RebootReceiver"
