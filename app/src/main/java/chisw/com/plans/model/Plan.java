@@ -63,11 +63,4 @@ public class Plan {
         this.audioPath = audioPath;
     }
 
-    public Calendar getCalendarByTimeStamp()
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(timeStamp);
-
-        return  calendar;
-    }
 }

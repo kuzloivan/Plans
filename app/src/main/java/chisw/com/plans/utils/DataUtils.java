@@ -67,4 +67,13 @@ public class DataUtils {
 
         return formatter.toString();
     }
+
+
+    public Calendar getCalendarByTimeStamp(long timeStamp)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeStamp);
+
+        return  calendar;
+    }
 }
