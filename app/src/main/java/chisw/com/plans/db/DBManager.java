@@ -120,6 +120,16 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
+    public String getDetailsByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        String details = cursor.getString(cursor.getColumnIndex(PlansEntity.DETAILS));
+        cursor.close();
+        return details;
+    }
+
+    @Override
     public String getAudioPathByID(int id) {
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);

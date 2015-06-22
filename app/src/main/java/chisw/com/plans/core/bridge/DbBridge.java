@@ -21,6 +21,7 @@ public interface DbBridge {
     Cursor getMe(String id);
     int getLastPlanID();
     String getTitleByID(int id);
+    String getDetailsByID(int id);
     String getAudioPathByID(int id);
     void dbChanged(); // should be called when database content was changed
 }

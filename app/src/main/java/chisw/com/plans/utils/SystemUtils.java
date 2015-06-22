@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 public class SystemUtils {
 
     private static final int KITKAT_VERSION = 19;
-    private static final int ICS_VERSION = 16;
+    private static final int JELLY_BEAN_VERSION = 16;
 
     public static boolean checkNetworkStatus(Context pContext)
     {
@@ -54,8 +54,8 @@ public class SystemUtils {
         return Build.VERSION.SDK_INT >= KITKAT_VERSION;
     }
 
-    public static boolean isICSHigher(){
-        return Build.VERSION.SDK_INT >= ICS_VERSION;
+    public static boolean isJellyBeanHigher(){
+        return Build.VERSION.SDK_INT >= JELLY_BEAN_VERSION;
     }
 
 }

@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.widget.Toast;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
-import chisw.com.plans.core.SharedHelper;
+import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.ui.activities.PlannerActivity;
-import chisw.com.plans.ui.activities.SettingsActivity;
 import chisw.com.plans.utils.SystemUtils;
 
 /**
@@ -28,29 +28,31 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
-        PendingIntent pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
-
         int id = Integer.parseInt(intent.getAction());
         if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getNotificationOn()) {
-            sendNotif(id, pIntent1, ctx);
-        }
-        // app = (PApplication) ctx.getApplicationContext();
 
+            if(SystemUtils.isJellyBeanHigher()){
+                sendNotificationForJellyBeanAndHigher(id, ctx);
+            }
+            else {
+                sendNotificationForIceCreamSandwichAndLower(id, ctx);
+            }
+        }
     }
 
-    void sendNotif(int id, PendingIntent pIntent, Context ctx) {
-        if (SystemUtils.isICSHigher()) {
+    private void sendNotificationForJellyBeanAndHigher(int id, Context ctx){
             Intent notificationIntent = new Intent(ctx, PlannerActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent = PendingIntent.getActivity(ctx, TEST_ID + id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
             Notification.Builder builder = new Notification.Builder(ctx);
             builder.setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.ic_alarm)
                     .setContentTitle(((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id))
-                    .setContentText("Wake up !!!");
+                    .setContentText(((PApplication) ctx.getApplicationContext()).getDbManager().getDetailsByID(id));
+
             Notification notification = builder.build();
             NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-
 
             try {
                 Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
@@ -60,19 +62,39 @@ public class NotificationReceiver extends BroadcastReceiver {
                 Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notification.sound = ringURI;
             }
-            if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getVibrationOn()) {
 
+            if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getVibrationOn()) {
                 long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
                 notification.vibrate = vibrate;
+                Toast.makeText(ctx, "vibrating", Toast.LENGTH_SHORT).show();
             }
-
             notificationManager.notify(NOTIFY_ID + id, notification);
-        } else {
-            NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
-            Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
-            notif.flags |= Notification.FLAG_AUTO_CANCEL;
-            notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
-            nm.notify(NOTIFY_ID + id, notif);
+    }
+
+    private void sendNotificationForIceCreamSandwichAndLower(int id, Context ctx){
+        Intent notificationIntent = new Intent(ctx, PlannerActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(ctx, TEST_ID + id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
+        Notification notif = new Notification(R.drawable.ic_alarm, ((PApplication) ctx.getApplicationContext()).getDbManager().getDetailsByID(id), System.currentTimeMillis());
+        notif.flags |= Notification.FLAG_AUTO_CANCEL;
+        notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), ((PApplication) ctx.getApplicationContext()).getDbManager().getDetailsByID(id), contentIntent);
+
+        try {
+            Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
+            String path = (((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id));
+            multimedia.alarmNontification(path);
+        } catch (Exception e) {
+            Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notif.sound = ringURI;
         }
+
+        if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getVibrationOn()) {
+            long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
+            notif.vibrate = vibrate;
+            Toast.makeText(ctx, "vibrating", Toast.LENGTH_SHORT).show();
+        }
+        nm.notify(NOTIFY_ID + id, notif);
     }
 }
