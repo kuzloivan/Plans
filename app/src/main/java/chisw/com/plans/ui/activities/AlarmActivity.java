@@ -132,11 +132,7 @@ public class AlarmActivity extends ToolbarActivity {
 
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
-                if (isEdit) {
-                    editPlanToDB(DataUtils.getCalendar());
-                } else {
-                    writePlanToDB(DataUtils.getCalendar());
-                }
+                writePlanToDB(DataUtils.getCalendar());
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
                 finish();
             } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
@@ -247,18 +243,13 @@ public class AlarmActivity extends ToolbarActivity {
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(path);
-        dbManager.saveNewPlan(p);
-    }
-
-    private void editPlanToDB(Calendar calendar) {
-        Plan plan = new Plan();
-        plan.setDetails(setDetails_textview.getText().toString());
-        plan.setTitle(etTitle.getText().toString());
-        plan.setTimeStamp(calendar.getTimeInMillis());
-        plan.setAudioPath(path);
-        plan.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
-        plan.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
-        dbManager.editPlan(plan);
+        if (isEdit) {
+            p.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
+            p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
+            dbManager.editPlan(p);
+        } else {
+            dbManager.saveNewPlan(p);
+        }
     }
 
     public final class SeekerBar implements SeekBar.OnSeekBarChangeListener {
