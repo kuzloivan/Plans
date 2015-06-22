@@ -1,5 +1,8 @@
 package chisw.com.plans.model;
 
+import java.security.Timestamp;
+import java.util.Calendar;
+
 /**
  * Created by Alexander on 17.06.2015.
  */
@@ -59,4 +62,5 @@ public class Plan {
     public void setAudioPath(String audioPath) {
         this.audioPath = audioPath;
     }
+
 }

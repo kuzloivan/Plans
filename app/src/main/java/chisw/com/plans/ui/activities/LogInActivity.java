@@ -18,6 +18,8 @@ import com.parse.SignUpCallback;
 import java.util.List;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
@@ -76,6 +78,17 @@ public class LogInActivity extends ToolbarActivity {
                 case R.id.btn_sign_up:
                     showProgressDialog("Signing Up", "Please, wait...");
                     netManager.registerUser(login, password, new CallbackSignUp());
+
+/*                    Plan plan = new Plan();
+                    plan.setTitle("Vlad");
+                    plan.setTimeStamp(123);
+                    netManager.addPlan(plan, new OnSaveCallback() {
+                        @Override
+                        public void getId(String id) {
+                            showToast(id);
+                        }
+                    });*/
+
                     break;
                 case R.id.btn_log_in:
                     showProgressDialog("Logging In", "Please, wait...");
@@ -139,19 +152,6 @@ public class LogInActivity extends ToolbarActivity {
 
             PlannerActivity.start(LogInActivity.this);
             LogInActivity.this.finish();
-        }
-    }
-
-    /* For future release of shared plans/tasks */
-    public final class CallbackAddPlan implements SaveCallback {
-
-        @Override
-        public void done(ParseException e) {
-            if(e == null) {
-                showToast("Plan was added");
-                return;
-            }
-            showToast(e.getMessage());
         }
     }
 

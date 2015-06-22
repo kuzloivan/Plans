@@ -11,8 +11,8 @@ import android.net.Uri;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
+import chisw.com.plans.core.SharedHelper;
 import chisw.com.plans.others.Multimedia;
-import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.ui.activities.PlannerActivity;
 import chisw.com.plans.ui.activities.SettingsActivity;
 import chisw.com.plans.utils.SystemUtils;
@@ -20,16 +20,21 @@ import chisw.com.plans.utils.SystemUtils;
 /**
  * Created by Yuriy on 16.06.2015.
  */
-public class Receiver extends BroadcastReceiver {
+public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFY_ID = 101;
     private static final int TEST_ID = 1;
+
+    //PApplication app;
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
         PendingIntent pIntent1 = PendingIntent.getBroadcast(ctx, 0, intent, 0);
 
         int id = Integer.parseInt(intent.getAction());
-        sendNotif(id, pIntent1, ctx);
+        if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getNotificationOn()) {
+            sendNotif(id, pIntent1, ctx);
+        }
+       // app = (PApplication) ctx.getApplicationContext();
 
     }
 
@@ -37,7 +42,7 @@ public class Receiver extends BroadcastReceiver {
         if (SystemUtils.isICSHigher()) {
             Intent notificationIntent = new Intent(ctx, PlannerActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent contentIntent = PendingIntent.getActivity(ctx, TEST_ID+id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(ctx, TEST_ID + id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             Notification.Builder builder = new Notification.Builder(ctx);
             builder.setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.ic_alarm)
@@ -47,29 +52,27 @@ public class Receiver extends BroadcastReceiver {
             NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-            try{
-                Multimedia multimedia = ((PApplication) ctx.getApplicationContext()).getMultimedia();
-                String path = ((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id);
+            try {
+                Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
+                String path = (((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id));
                 multimedia.alarmNontification(path);
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notification.sound = ringURI;
             }
+            if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getVibrationOn()) {
 
-            if(SettingsActivity.Choose_notif_vibration){
-                long[] vibrate = new long[] { 1000, 1000, 1000, 1000, 1000 };
-                notification.vibrate = vibrate;
+                    long[] vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
+                    notification.vibrate = vibrate;
+
+                notificationManager.notify(NOTIFY_ID + id, notification);
+            } else {
+                NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
+                Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
+                notif.flags |= Notification.FLAG_AUTO_CANCEL;
+                notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
+                nm.notify(NOTIFY_ID + id, notif);
             }
-
-
-            notificationManager.notify(NOTIFY_ID+id, notification);
-        } else {
-            NotificationManager nm = (NotificationManager) ctx.getSystemService(ctx.NOTIFICATION_SERVICE);
-            Notification notif = new Notification(R.drawable.ic_alarm, "Wake up !!!", System.currentTimeMillis());
-            notif.flags |= Notification.FLAG_AUTO_CANCEL;
-            notif.setLatestEventInfo(ctx, ((PApplication) ctx.getApplicationContext()).getDbManager().getTitleByID(id), "Wake up !!!", pIntent);
-            nm.notify(NOTIFY_ID+id, notif);
         }
     }
 }
