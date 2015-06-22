@@ -8,10 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.Calendar;
-import java.util.Formatter;
-
 import chisw.com.plans.R;
 import chisw.com.plans.utils.DataUtils;
 
@@ -45,12 +42,12 @@ public class DatePickDialog extends DialogFragment
     @Override
     public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
 
-        TextView tv = (TextView) getActivity().findViewById(R.id.tvDate);
+        TextView tvDate = (TextView) getActivity().findViewById(R.id.tvDate);
 
         DataUtils.setCalendarDay(day);
         DataUtils.setCalendarMonth(month);
         DataUtils.setCalendarYear(year);
 
-        tv.setText(DataUtils.getDateStrFromCalendar());
+        tvDate.setText(DataUtils.getDateStrFromCalendar());
     }
 }

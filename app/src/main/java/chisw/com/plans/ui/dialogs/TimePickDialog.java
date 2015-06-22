@@ -15,8 +15,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.Formatter;
-
 import chisw.com.plans.R;
 import chisw.com.plans.utils.DataUtils;
 
@@ -29,7 +27,7 @@ public class TimePickDialog extends DialogFragment
 
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE)+1;
+        int minute = c.get(Calendar.MINUTE) + 1;
 
 
         Dialog picker = new TimePickerDialog(getActivity(), this, hour, minute, true);
@@ -49,12 +47,12 @@ public class TimePickDialog extends DialogFragment
     @Override
     public void onTimeSet(TimePicker view, int hours, int minute) {
 
-        TextView tv = (TextView) getActivity().findViewById(R.id.tvTime);
+        TextView tvTime = (TextView) getActivity().findViewById(R.id.tvTime);
 
         DataUtils.setCalendarHour(hours);
         DataUtils.setCalendarMinute(minute);
 
-        tv.setText(DataUtils.getTimeStrFromCalendar());
+        tvTime.setText(DataUtils.getTimeStrFromCalendar());
     }
 
 }

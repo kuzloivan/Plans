@@ -14,11 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
-
 import android.widget.EditText;
-
 import java.util.Calendar;
-
 import chisw.com.plans.R;
 import chisw.com.plans.core.Receivers.NotificationReceiver;
 import chisw.com.plans.model.Plan;
@@ -30,7 +27,6 @@ import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 import android.support.v4.app.DialogFragment;
 import android.widget.TextView;
-
 
 /**
  * Created by Yuriy on 15.06.2015.
@@ -73,10 +69,10 @@ public class AlarmActivity extends ToolbarActivity {
         tvTime = (TextView) findViewById(R.id.tvTime);
         setDetails_textview = (EditText)findViewById(R.id.setDetails_textview);
 
+        DataUtils.initializeCalendar();
+
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
         tvDate.setText(DataUtils.getDateStrFromCalendar());
-
-        DataUtils.initializeCalendar();
 
         //======Play with seekBar======
         SeekerBar sb = new SeekerBar();
@@ -137,10 +133,6 @@ public class AlarmActivity extends ToolbarActivity {
         } else {
             showToast("Field is empty");
         }
-    }
-
-    public void cancelAlarm() {
-        am.cancel(pAlarmIntent);
     }
 
     public final class Clicker implements View.OnClickListener {
