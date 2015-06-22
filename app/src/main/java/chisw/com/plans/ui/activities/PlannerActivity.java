@@ -26,11 +26,13 @@ import chisw.com.plans.core.Receivers.NotificationReceiver;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
+import chisw.com.plans.utils.DataUtils;
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
     ListView lvPlanner;
     PlannerCursorAdapter plannerCursorAdapter;
+    private static Plan planToSendAndChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,18 +83,17 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         switch (item.getItemId()) {
             case R.id.pa_context_edit:
-                Plan plan;
                 Cursor curs = plannerCursorAdapter.getCursor();
-
-                AlarmActivity.start(this);
 
                 if (curs.moveToFirst()) {
                     curs.moveToPosition((int) (info.position));
                     int idIndex = curs.getColumnIndex(PlansEntity.LOCAL_ID);
-                    plan =  dbManager.getPlanById(curs.getInt(idIndex));
+                    planToSendAndChange =  dbManager.getPlanById(curs.getInt(idIndex));
                 }
 
-                //ViewPlanActivity.start(PlannerActivity.this);
+                AlarmActivity.start(this);
+                AlarmActivity.isAlarmToChange = true;
+
                 // todo: implement edit activity.
                 break;
 
@@ -224,5 +225,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         updateListView();
+    }
+
+    public static Plan getPlanToSendAndChange()
+    {
+        return  planToSendAndChange;
     }
 }

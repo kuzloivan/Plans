@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,10 +44,12 @@ public class AlarmActivity extends ToolbarActivity {
     private String path;
     private boolean isChAudioExist;
     public static boolean isAudioSelected;
+    public static boolean isAlarmToChange;
     private TextView mTextValue;
 
     AlarmManager am;
-    EditText et;
+    PendingIntent pAlarmIntent;
+    EditText etTitle;
     EditText setDetails_textview;
 
     DatePickDialog dateDialog;
@@ -67,14 +70,18 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.bt_save_alarm_date).setOnClickListener(c);
         findViewById(R.id.bt_save_alarm_time).setOnClickListener(c);
 
-        et = (EditText) findViewById(R.id.setTitle_textview);
+        etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
         setDetails_textview = (EditText)findViewById(R.id.setDetails_textview);
 
         DataUtils.initializeCalendar();
-
+        if(isAlarmToChange) {
+            etTitle.setText(PlannerActivity.getPlanToSendAndChange().getTitle());
+            setDetails_textview.setText(PlannerActivity.getPlanToSendAndChange().getDetails());
+            DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(PlannerActivity.getPlanToSendAndChange().getTimeStamp()));
+        }
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
         tvDate.setText(DataUtils.getDateStrFromCalendar());
 
@@ -84,6 +91,14 @@ public class AlarmActivity extends ToolbarActivity {
         seekbar.setOnSeekBarChangeListener(sb);
         mTextValue = (TextView)findViewById(R.id.tv_show_duration_sound);
         mTextValue.setText("0");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        DataUtils.setCalendar(Calendar.getInstance());
+        if(isAlarmToChange)
+            isAlarmToChange = false;
     }
 
     @Override
@@ -114,9 +129,14 @@ public class AlarmActivity extends ToolbarActivity {
 
     public void startAlarm() {
 
-        if (ValidData.isTextValid(et.getText().toString())) {
+        if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
-                writeToDB(DataUtils.getCalendar());
+                if(isAlarmToChange) {
+
+                }
+                else {
+                    writeToDB(DataUtils.getCalendar());
+                }
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
                 finish();
             }
@@ -226,7 +246,7 @@ public class AlarmActivity extends ToolbarActivity {
         Plan p = new Plan();
         // todo: add Details edit view to alarm activity design file
         p.setDetails(setDetails_textview.getText().toString());
-        p.setTitle(et.getText().toString());
+        p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(path);
         dbManager.saveNewPlan(p);

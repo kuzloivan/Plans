@@ -19,7 +19,7 @@ public class DataUtils {
     public static void initializeCalendar()
     {
         DataUtils.setCalendarSeconds(0);
-        DataUtils.setCalendarMinute(DataUtils.getCalendar().get(Calendar.MINUTE) + 1);
+       // DataUtils.setCalendarMinute(DataUtils.getCalendar().get(Calendar.MINUTE) + 1);
     }
     public static void setCalendarYear(int year){
         DataUtils.CALENDAR.set(Calendar.YEAR, year);
@@ -68,8 +68,12 @@ public class DataUtils {
         return formatter.toString();
     }
 
+    public static void setCalendar(Calendar calendar)
+    {
+        CALENDAR = calendar;
+    }
 
-    public Calendar getCalendarByTimeStamp(long timeStamp)
+    public static Calendar getCalendarByTimeStamp(long timeStamp)
     {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeStamp);

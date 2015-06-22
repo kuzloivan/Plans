@@ -47,7 +47,6 @@ public class DBManager extends java.util.Observable implements DbBridge {
         dbChanged();
     }
 
-
     @Override
     public Plan getPlanById(int id) {
         Plan plan = null;
