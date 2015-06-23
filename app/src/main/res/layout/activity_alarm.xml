@@ -31,7 +31,7 @@
                     android:gravity="center"
                     android:text="@string/set_date"
                     android:textColor="#00796B"
-                    android:textSize="22sp"></TextView>
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/setTime_textview"
@@ -42,9 +42,7 @@
                     android:gravity="center"
                     android:text="@string/set_time"
                     android:textColor="#00796B"
-                    android:textSize="22sp">
-
-                </TextView>
+                    android:textSize="22sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -61,9 +59,7 @@
                     android:gravity="center"
                     android:text="--"
                     android:textColor="#00796B"
-                    android:textSize="22sp">
-
-                </TextView>
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/timeValue_textview"
@@ -75,15 +71,9 @@
                     android:gravity="center"
                     android:text="--"
                     android:textColor="#00796B"
-                    android:textSize="22sp"></TextView>
+                    android:textSize="22sp" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/setDetails_textview"
-                style="@style/style_aa_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Details" />
 
             <EditText
                 android:id="@+id/setTitle_textview"
@@ -92,6 +82,13 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/alarmTitle_hint"
                 android:maxLines="10" />
+
+            <EditText
+                android:id="@+id/setDetails_textview"
+                style="@style/style_aa_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Details" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,6 +143,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>
