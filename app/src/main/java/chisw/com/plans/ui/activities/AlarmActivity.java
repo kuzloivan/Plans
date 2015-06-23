@@ -5,10 +5,8 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
@@ -18,8 +16,6 @@ import chisw.com.plans.ui.dialogs.DatePickDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
@@ -43,11 +39,6 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-/**
- * Created by Yuriy on 15.06.2015.
- */
 
 public class AlarmActivity extends ToolbarActivity {
 
@@ -188,16 +179,6 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
-       /* iv_image.setImageURI(null);
-        iv_image.setImageURI(selectedImageURI);*/
-
-    }
-
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -244,14 +225,11 @@ public class AlarmActivity extends ToolbarActivity {
             case GALLERY_REQUEST:
                 if (resultCode == RESULT_OK) {
                     selectedImageURI = data.getData();
-
                     iv_image.setImageURI(selectedImageURI);
 
                 }
                 break;
         }
-
-
     }
 
     private void chooseAudio() {
@@ -355,40 +333,6 @@ public class AlarmActivity extends ToolbarActivity {
 
     }
 
-
-    public final class Clicker implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.bt_save_alarm:
-                    startAlarm();
-                    break;
-                case R.id.dateValue_textview:
-                case R.id.setDate_textview:
-                    dateDialog = new DatePickDialog();
-                    dateDialog.show(getSupportFragmentManager(), "datePicker");
-                    break;
-                case R.id.timeValue_textview:
-                case R.id.setTime_textview:
-                    timeDialog = new TimePickDialog();
-                    timeDialog.show(getSupportFragmentManager(), "timePicker");
-                    break;
-                case R.id.aa_setAudio_btn:
-                    chooseAudio();
-                    break;
-                case R.id.switch_repeating:
-                    if(sRepeating.isChecked()) {
-                        daysOfWeekDialog = new DaysOfWeekDialog();
-                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
-                    }
-                    break;
-                case R.id.aa_image:
-                    chooseImage();
-                    break;
-            }
-        }
-
-    }
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
         private final Plan plan;
 
