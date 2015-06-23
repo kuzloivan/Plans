@@ -95,7 +95,6 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate = (TextView) findViewById(R.id.dateValue_textview);
         tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
-        path = "";
 
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
         DataUtils.initializeCalendar();
@@ -290,12 +289,24 @@ public class AlarmActivity extends ToolbarActivity {
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
+        //test
+        if(isAudioSelected==false) {
+            path="no audio";
+            p.setAudioPath(path);
+        }else{
+            p.setAudioPath(path);
+        }
+
         if (isEdit) {
-            if(isAudioSelected==false) {
-                p.setAudioPath("no audio");
-            }
             p.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
             p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
+
+            //test
+            if(!ValidData.isTextValid(path)){
+                path="no audio";
+                p.setAudioPath(path);
+            }
+
             dbManager.editPlan(p);
             netManager.editPlan(p, new CallbackEditPlan(p));
             showToast(Integer.toString(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId()));
