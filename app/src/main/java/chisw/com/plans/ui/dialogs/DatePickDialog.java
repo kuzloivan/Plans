@@ -34,7 +34,7 @@ public class DatePickDialog extends DialogFragment
         pButton.setText("OK");
         Button nButton =  ((AlertDialog) getDialog())
                 .getButton(DialogInterface.BUTTON_NEGATIVE);
-        nButton.setText("Calcel");
+        nButton.setText("Cancel");
     }
 
     @Override

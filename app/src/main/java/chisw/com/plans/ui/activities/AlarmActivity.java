@@ -52,6 +52,7 @@ public class AlarmActivity extends ToolbarActivity {
     DialogFragment timeDialog;
     TextView tvDate;
     TextView tvTime;
+    TextView soundTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,9 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
         findViewById(R.id.dateValue_textview).setOnClickListener(c);
         findViewById(R.id.timeValue_textview).setOnClickListener(c);
+        findViewById(R.id.setDate_textview).setOnClickListener(c);
+        findViewById(R.id.setTime_textview).setOnClickListener(c);
+        soundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
 
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -154,10 +158,12 @@ public class AlarmActivity extends ToolbarActivity {
                     startAlarm();
                     break;
                 case R.id.dateValue_textview:
+                case R.id.setDate_textview:
                     dateDialog = new DatePickDialog();
                     dateDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
                 case R.id.timeValue_textview:
+                case R.id.setTime_textview:
                     timeDialog = new TimePickDialog();
                     timeDialog.show(getSupportFragmentManager(), "timePicker");
                     break;
@@ -272,4 +278,6 @@ public class AlarmActivity extends ToolbarActivity {
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
         }
     }
+
+
 }
