@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -15,6 +16,9 @@ import chisw.com.plans.ui.dialogs.DatePickDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
 
@@ -54,6 +58,13 @@ public class AlarmActivity extends ToolbarActivity {
     TextView tvTime;
     TextView soundTitle;
 
+    ImageView iv_image;
+    private static final int GALLERY_REQUEST = 2;
+    private Uri selectedImageURI;
+    private String selectedImagePath;
+    private boolean isChImageExist;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +80,11 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.setDate_textview).setOnClickListener(c);
         findViewById(R.id.setTime_textview).setOnClickListener(c);
         soundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
+
+        findViewById(R.id.aa_image).setOnClickListener(c);
+
+        //findViewById(R.id.aa_choose_image).setOnClickListener(c);
+        iv_image = (ImageView)findViewById(R.id.aa_image);
 
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -150,36 +166,30 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-    public final class Clicker implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.bt_save_alarm:
-                    startAlarm();
-                    break;
-                case R.id.dateValue_textview:
-                case R.id.setDate_textview:
-                    dateDialog = new DatePickDialog();
-                    dateDialog.show(getSupportFragmentManager(), "datePicker");
-                    break;
-                case R.id.timeValue_textview:
-                case R.id.setTime_textview:
-                    timeDialog = new TimePickDialog();
-                    timeDialog.show(getSupportFragmentManager(), "timePicker");
-                    break;
-                case R.id.aa_setAudio_btn:
-                    chooseAudio();
-                    break;
-            }
-        }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+       /* iv_image.setImageURI(null);
+        iv_image.setImageURI(selectedImageURI);*/
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
-            isChAudioExist = false;
-            return;
+            switch (requestCode) {
+                case REQUEST_AUDIO_GET:
+                    isChAudioExist = false;
+                    return;
+                case GALLERY_REQUEST:
+                    isChImageExist = false;
+                    return;
+            }
+
         }
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
@@ -188,7 +198,17 @@ public class AlarmActivity extends ToolbarActivity {
                 isAudioSelected = true;
                 isChAudioExist = false;
                 break;
+            case GALLERY_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    selectedImageURI = data.getData();
+
+                    iv_image.setImageURI(selectedImageURI);
+
+                }
+                break;
         }
+
+
     }
 
     private void chooseAudio() {
@@ -277,7 +297,34 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("PLAYING_AUDIO_TIME = " + seekBar.getProgress());
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
         }
+
     }
 
 
+    public final class Clicker implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.bt_save_alarm:
+                    startAlarm();
+                    break;
+                case R.id.dateValue_textview:
+                case R.id.setDate_textview:
+                    dateDialog = new DatePickDialog();
+                    dateDialog.show(getSupportFragmentManager(), "datePicker");
+                    break;
+                case R.id.timeValue_textview:
+                case R.id.setTime_textview:
+                    timeDialog = new TimePickDialog();
+                    timeDialog.show(getSupportFragmentManager(), "timePicker");
+                    break;
+                case R.id.aa_setAudio_btn:
+                    chooseAudio();
+                    break;
+                case R.id.aa_image:
+                    chooseImage();
+                    break;
+            }
+        }
+    }
 }
