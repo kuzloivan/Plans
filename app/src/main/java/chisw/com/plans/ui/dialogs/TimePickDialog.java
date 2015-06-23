@@ -22,7 +22,6 @@ import chisw.com.plans.utils.DataUtils;
 public class TimePickDialog extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

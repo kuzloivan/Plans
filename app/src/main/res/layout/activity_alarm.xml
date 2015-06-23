@@ -162,6 +162,17 @@
                     android:paddingLeft="8dp"
                     android:text="@string/save_alarm" />
             </LinearLayout>
+
+            <Switch
+                android:id="@+id/switch_repeating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:text="Repeating"
+                android:textColor="#00796B"
+                android:textSize="18sp"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
