@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -45,8 +46,12 @@ public class AlarmActivity extends ToolbarActivity {
     private final int REQUEST_AUDIO_GET = 1;
     private String path;
     boolean isEdit;
-    private boolean isChAudioExist;
-    public static boolean isAudioSelected;
+    private boolean isDialogExist;
+    private long durationBuf;
+    private float audioDuration;
+    //public static boolean isAudioSelected;
+    private boolean isAudioSelected;
+
     private TextView mTextValue;
 
     AlarmManager am;
@@ -65,8 +70,6 @@ public class AlarmActivity extends ToolbarActivity {
     private static final int GALLERY_REQUEST = 2;
     private Uri selectedImageURI;
     private String selectedImagePath;
-    private boolean isChImageExist;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,16 +91,17 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_image).setOnClickListener(c);
 
         //findViewById(R.id.aa_choose_image).setOnClickListener(c);
-        iv_image = (ImageView)findViewById(R.id.aa_image);
+        iv_image = (ImageView) findViewById(R.id.aa_image);
 
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         tvDate = (TextView) findViewById(R.id.dateValue_textview);
         tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
-
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
+
         DataUtils.initializeCalendar();
+
 
         if (getIntent().hasExtra("Plan")) {
             isEdit = getIntent().getBundleExtra("Plan").getBoolean("isEdit");
@@ -108,6 +112,7 @@ public class AlarmActivity extends ToolbarActivity {
             setDetails_textview.setText(bundle.getString("Details"));
             DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(bundle.getLong("TimeStamp")));
             path = bundle.getString("Path");
+            audioDuration = bundle.getInt("Duration");
             isAudioSelected = true;
         }
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
@@ -204,42 +209,39 @@ public class AlarmActivity extends ToolbarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_AUDIO_GET:
-                    isChAudioExist = false;
-                    return;
-                case GALLERY_REQUEST:
-                    isChImageExist = false;
-                    return;
-            }
-
+            isDialogExist = false;
+            return;
         }
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 path = getPath(data);
-                sharedHelper.setDefaultMediaWay(path);
+                if (SystemUtils.isKitKatHigher()) {
+                    durationBuf = getAudioDuration(data.getData(), this);
+                } else {
+                    Uri u = data.getData();
+                    // todo Check audio from MEDIA
+                    // u.getPath();
+                    durationBuf = getAudioDuration(u, this);
+                }
                 isAudioSelected = true;
-                isChAudioExist = false;
+                isDialogExist = false;
                 break;
             case GALLERY_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    selectedImageURI = data.getData();
-                    iv_image.setImageURI(selectedImageURI);
-
-                }
+                selectedImageURI = data.getData();
+                iv_image.setImageURI(selectedImageURI);
                 break;
         }
     }
 
     private void chooseAudio() {
-        if (isChAudioExist) {
+        if (isDialogExist) {
             return;
         }
-        isChAudioExist = true;
+        isDialogExist = true;
         Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
         chooseAudio.setType("audio/*");
         if (chooseAudio.resolveActivity(getPackageManager()) == null) {
-            isChAudioExist = false;
+            isDialogExist = false;
         }
         startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
     }
@@ -285,15 +287,15 @@ public class AlarmActivity extends ToolbarActivity {
 
     private void writePlanToDB(Calendar calendar) {
         final Plan p = new Plan();
-        // todo: add Details edit view to alarm activity design file
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
+        p.setAudioDuration((int) audioDuration);
         //test
-        if(isAudioSelected==false) {
-            path="no audio";
+        if (isAudioSelected == false) {
+            path = "no audio";
             p.setAudioPath(path);
-        }else{
+        } else {
             p.setAudioPath(path);
         }
 
@@ -302,8 +304,8 @@ public class AlarmActivity extends ToolbarActivity {
             p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
 
             //test
-            if(!ValidData.isTextValid(path)){
-                path="no audio";
+            if (!ValidData.isTextValid(path)) {
+                path = "no audio";
                 p.setAudioPath(path);
             }
 
@@ -326,22 +328,43 @@ public class AlarmActivity extends ToolbarActivity {
     public final class SeekerBar implements SeekBar.OnSeekBarChangeListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
-            mTextValue.setText(String.valueOf(seekBar.getProgress()));
+            Duration(seekBar);
         }
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
+            /*Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();*/
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
-            showToast("PLAYING_AUDIO_TIME = " + seekBar.getProgress());
-            mTextValue.setText(String.valueOf(seekBar.getProgress()));
+            Duration(seekBar);
         }
 
+        private void Duration(SeekBar seekBar) {
+            audioDuration = (durationBuf * seekBar.getProgress()) / 100;
+            timeFormat();
+        }
+
+        private void timeFormat() {
+            long h = (long) audioDuration / 3600;
+            long m = ((long) audioDuration - h * 3600) / 60;
+            long s = (long) audioDuration - (h * 3600 + m * 60);
+            String durationValue;
+            if (h == 0) {
+                durationValue = m + ":" + s;
+            } else {
+                durationValue = h + ":" + m + ":" + s;
+            }
+            mTextValue.setText(durationValue);
+        }
+    }
+
+    private long getAudioDuration(Uri path, Context ctx) {
+        MediaMetadataRetriever mm = new MediaMetadataRetriever();
+        mm.setDataSource(ctx, path);
+        long durationMs = Long.parseLong(mm.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        return durationMs / 1000;
     }
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
@@ -353,18 +376,16 @@ public class AlarmActivity extends ToolbarActivity {
 
         @Override
         public void done(ParseObject parseObject, ParseException e) {
-            if(e == null) {
+            if (e == null) {
                 parseObject.put("name", plan.getTitle());
                 parseObject.put("timeStamp", plan.getTimeStamp());
                 parseObject.put("audioPath", plan.getAudioPath());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
-            }
-            else{
+            } else {
                 showToast(e.getMessage());
             }
         }
     }
-
 }

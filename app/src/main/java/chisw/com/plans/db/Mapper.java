@@ -23,6 +23,7 @@ public class Mapper {
         CV.put(PlansEntity.DETAILS, model.getDetails());
         CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());
         CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
+        CV.put(PlansEntity.AUDIO_DURATION, model.getAudioDuration());
 
         return CV;
     }
@@ -35,6 +36,8 @@ public class Mapper {
         int localIdIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
         int parseIdIndex = cursor.getColumnIndex(PlansEntity.PARSE_ID);
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
+        int audioPathIndex = cursor.getColumnIndex(PlansEntity.AUDIO_PATH);
+        int audioDuration = cursor.getColumnIndex(PlansEntity.AUDIO_DURATION);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -43,6 +46,8 @@ public class Mapper {
         plan.setTimeStamp(timeStamp);
         plan.setTitle(cursor.getString(titleIndex));
         plan.setDetails(cursor.getString(detailsIndex));
+        plan.setAudioPath(cursor.getString(audioPathIndex));
+        plan.setAudioDuration(cursor.getInt(audioDuration));
 
         return plan;
     }

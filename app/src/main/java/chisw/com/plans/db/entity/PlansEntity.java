@@ -11,6 +11,7 @@ public class PlansEntity {
     public static final String TIMESTAMP = "timeStamp";
     public static final String LOCAL_ID = "_id";
     public static final String AUDIO_PATH = "audioPath";
+    public static final String AUDIO_DURATION = "audioDuration";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -19,7 +20,8 @@ public class PlansEntity {
             TITLE + " TEXT, " +
             DETAILS + " TEXT, " +
             TIMESTAMP + " INTEGER, " +
-            AUDIO_PATH + " TEXT " +
+            AUDIO_PATH + " TEXT, " +
+            AUDIO_DURATION + " INTEGER " +
             ")";
 
 }

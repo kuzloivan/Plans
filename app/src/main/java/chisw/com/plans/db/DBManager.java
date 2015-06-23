@@ -140,6 +140,16 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
+    public int getAudioDurationByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        int duration = cursor.getInt(cursor.getColumnIndex(PlansEntity.AUDIO_DURATION));
+        cursor.close();
+        return duration;
+    }
+
+    @Override
     public void dbChanged() {
         setChanged();
         notifyObservers();

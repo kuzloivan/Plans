@@ -30,7 +30,6 @@ import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
     ListView lvPlanner;
-    FloatingActionButton fab;
     PlannerCursorAdapter plannerCursorAdapter;
 
     @Override
@@ -133,6 +132,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 while(cursor.moveToNext()){
                     alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
                 }
+                cursor.close();
                 dbManager.clearPlans();
                 dbManager.eraseMe(sharedHelper.getDefaultLogin());
                 sharedHelper.clearData();
@@ -223,7 +223,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         bufBundle.putLong("TimeStamp", plan.getTimeStamp());
         bufBundle.putString("Path", plan.getAudioPath());
         bufBundle.putString("ParseID", plan.getParseId());
-        showToast(plan.getParseId());
+        bufBundle.putInt("Duration", plan.getAudioDuration());
         return bufBundle;
     }
 
@@ -235,7 +235,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 case R.id.fab:
                     AlarmActivity.start(PlannerActivity.this, new Bundle());
                     break;
-
             }
         }
     }

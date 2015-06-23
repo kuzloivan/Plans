@@ -24,8 +24,6 @@ public class NotificationReceiver extends BroadcastReceiver {
     private static final int NOTIFY_ID = 101;
     private static final int TEST_ID = 1;
 
-    //PApplication app;
-
     @Override
     public void onReceive(Context ctx, Intent intent) {
         int id = Integer.parseInt(intent.getAction());
@@ -57,7 +55,8 @@ public class NotificationReceiver extends BroadcastReceiver {
             try {
                 Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
                 String path = (((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id));
-                multimedia.alarmNontification(path);
+                multimedia.setPlayTime((((PApplication) ctx.getApplicationContext()).getDbManager().getAudioDurationByID(id)));
+                multimedia.alarmNotification(path);
             } catch (Exception e) {
                 Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notification.sound = ringURI;
@@ -84,7 +83,8 @@ public class NotificationReceiver extends BroadcastReceiver {
         try {
             Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
             String path = (((PApplication) ctx.getApplicationContext()).getDbManager().getAudioPathByID(id));
-            multimedia.alarmNontification(path);
+            multimedia.setPlayTime((((PApplication) ctx.getApplicationContext()).getDbManager().getAudioDurationByID(id)));
+            multimedia.alarmNotification(path);
         } catch (Exception e) {
             Uri ringURI = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             notif.sound = ringURI;
