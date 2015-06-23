@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+
 import chisw.com.plans.R;
 import chisw.com.plans.utils.DataUtils;
 
@@ -39,11 +40,14 @@ public class TimePickDialog extends DialogFragment
     @Override
     public void onStart() {
         super.onStart();
-
-        Button nButton =  ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
-        nButton.setText(getResources().getString(R.string.set_time));
-
+        Button pButton =  ((AlertDialog) getDialog())
+                .getButton(DialogInterface.BUTTON_POSITIVE);
+        pButton.setText("OK");
+        Button nButton =  ((AlertDialog) getDialog())
+                .getButton(DialogInterface.BUTTON_NEGATIVE);
+        nButton.setText("Calcel");
     }
+
     @Override
     public void onTimeSet(TimePicker view, int hours, int minute) {
 
