@@ -110,6 +110,11 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 //Log off!
                 showProgressDialog("Loging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
+                Cursor cursor = dbManager.getPlans();
+                AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                while(cursor.moveToNext()){
+                    alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
+                }
                 dbManager.clearPlans();
                 dbManager.eraseMe(sharedHelper.getDefaultLogin());
                 sharedHelper.clearData();
