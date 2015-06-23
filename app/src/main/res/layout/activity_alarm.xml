@@ -166,9 +166,10 @@
 
             <ImageView
                 android:id="@+id/aa_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/aa_icon"/>
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:src="@drawable/aa_icon"
+                android:layout_gravity="center"/>
 
 
             <Switch
