@@ -197,6 +197,12 @@ public class AlarmActivity extends ToolbarActivity {
                     timeDialog = new TimePickDialog();
                     timeDialog.show(getSupportFragmentManager(), "timePicker");
                     break;
+                case R.id.switch_repeating:
+                    if(sRepeating.isChecked()) {
+                        daysOfWeekDialog = new DaysOfWeekDialog();
+                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
+                    }
+                    break;
                 case R.id.aa_setAudio_btn:
                     chooseAudio();
                     break;
