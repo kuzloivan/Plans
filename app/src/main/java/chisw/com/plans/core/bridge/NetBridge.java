@@ -4,12 +4,9 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
-
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.ui.activities.AlarmActivity;
 
 public interface NetBridge {
 
@@ -22,7 +19,7 @@ public interface NetBridge {
     void addPlan(Plan plan, OnSaveCallback callback);
     void getAllPlans(FindCallback findCallback);
     void getPlan(String pId, FindCallback findCallback);
-    void editPlan(String pId, GetCallback getCallback);
+    void editPlan(Plan plan, AlarmActivity.CallbackEditPlan callbackEditPlan);
     void deletePlan(String pId, GetCallback getCallback);
 
 }

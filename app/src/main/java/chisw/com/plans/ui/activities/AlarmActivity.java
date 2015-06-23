@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 
 import android.view.Menu;
@@ -30,6 +31,12 @@ import chisw.com.plans.utils.ValidData;
 
 import android.support.v4.app.DialogFragment;
 import android.widget.TextView;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * Created by Yuriy on 15.06.2015.
@@ -71,6 +78,7 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate = (TextView) findViewById(R.id.dateValue_textview);
         tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
+        path = "";
 
         DataUtils.initializeCalendar();
 
@@ -238,18 +246,30 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     private void writePlanToDB(Calendar calendar) {
-        Plan p = new Plan();
+        final Plan p = new Plan();
         // todo: add Details edit view to alarm activity design file
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
-        p.setAudioPath(path);
         if (isEdit) {
+            if(isAudioSelected==false) {
+                p.setAudioPath("no audio");
+            }
             p.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
             p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
             dbManager.editPlan(p);
+            netManager.editPlan(p, new CallbackEditPlan(p));
+            showToast(Integer.toString(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId()));
         } else {
             dbManager.saveNewPlan(p);
+            netManager.addPlan(p, new OnSaveCallback() {
+                @Override
+                public void getId(String id) {
+                    p.setParseId(id);
+                    p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
+                    dbManager.editPlan(p);
+                }
+            });
         }
     }
 
@@ -271,5 +291,29 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("PLAYING_AUDIO_TIME = " + seekBar.getProgress());
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
         }
+
     }
+    public final class CallbackEditPlan implements GetCallback<ParseObject> {
+        private final Plan plan;
+
+        public CallbackEditPlan(Plan plan) {
+            this.plan = plan;
+        }
+
+        @Override
+        public void done(ParseObject parseObject, ParseException e) {
+            if(e == null) {
+                parseObject.put("name", plan.getTitle());
+                parseObject.put("timeStamp", plan.getTimeStamp());
+                parseObject.put("audioPath", plan.getAudioPath());
+                parseObject.put("details", plan.getDetails());
+                parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
+                parseObject.saveInBackground();
+            }
+            else{
+                showToast(e.getMessage());
+            }
+        }
+    }
+
 }

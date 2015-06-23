@@ -200,6 +200,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         bufBundle.putLong("TimeStamp", plan.getTimeStamp());
         bufBundle.putString("Path", plan.getAudioPath());
         bufBundle.putString("ParseID", plan.getParseId());
+        showToast(plan.getParseId());
         return bufBundle;
     }
 }
