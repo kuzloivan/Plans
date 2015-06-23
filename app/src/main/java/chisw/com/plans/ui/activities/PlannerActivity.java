@@ -5,8 +5,10 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,16 +24,19 @@ import java.util.Observer;
 import chisw.com.plans.R;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.others.FloatingActionButton;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
     ListView lvPlanner;
+    FloatingActionButton fab;
     PlannerCursorAdapter plannerCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Clicker c = new Clicker();
 
         ItemClicker itemClicker = new ItemClicker();
         ItemLongClicker itemLongClicker = new ItemLongClicker();
@@ -45,6 +50,19 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         registerForContextMenu(lvPlanner);
         dbManager.addObserver(this);
+
+        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+
+                .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
+                .withButtonColor(getResources().getColor(R.color.toolbar_background_color))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fabButton.setId(R.id.fab);
+        //fabButton.showFloatingActionButton();
+        fabButton.setOnClickListener(c);
+
+
     }
 
     private void updateListView() {
@@ -110,6 +128,11 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 //Log off!
                 showProgressDialog("Loging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
+                Cursor cursor = dbManager.getPlans();
+                AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                while(cursor.moveToNext()){
+                    alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
+                }
                 dbManager.clearPlans();
                 dbManager.eraseMe(sharedHelper.getDefaultLogin());
                 sharedHelper.clearData();
@@ -202,6 +225,19 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         bufBundle.putString("ParseID", plan.getParseId());
         showToast(plan.getParseId());
         return bufBundle;
+    }
+
+
+    public final class Clicker implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.fab:
+                    AlarmActivity.start(PlannerActivity.this, new Bundle());
+                    break;
+
+            }
+        }
     }
 }
 

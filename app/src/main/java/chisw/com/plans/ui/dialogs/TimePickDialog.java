@@ -22,18 +22,14 @@ import chisw.com.plans.utils.DataUtils;
 public class TimePickDialog extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE) + 1;
-
-
         Dialog picker = new TimePickerDialog(getActivity(), this, hour, minute, true);
         picker.setTitle(getResources().getString(R.string.set_time));
-
         return picker;
     }
 
@@ -45,7 +41,7 @@ public class TimePickDialog extends DialogFragment
         pButton.setText("OK");
         Button nButton =  ((AlertDialog) getDialog())
                 .getButton(DialogInterface.BUTTON_NEGATIVE);
-        nButton.setText("Calcel");
+        nButton.setText("Cancel");
     }
 
     @Override

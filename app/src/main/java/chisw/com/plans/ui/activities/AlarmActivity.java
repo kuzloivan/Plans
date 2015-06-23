@@ -5,8 +5,10 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
@@ -16,6 +18,9 @@ import chisw.com.plans.ui.dialogs.DatePickDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
 
@@ -24,12 +29,14 @@ import java.util.Calendar;
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
+import chisw.com.plans.ui.dialogs.DaysOfWeekDialog;
 import chisw.com.plans.ui.dialogs.TimePickDialog;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
 import android.support.v4.app.DialogFragment;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -56,9 +63,19 @@ public class AlarmActivity extends ToolbarActivity {
     EditText setDetails_textview;
 
     DatePickDialog dateDialog;
+    DaysOfWeekDialog daysOfWeekDialog;
     DialogFragment timeDialog;
     TextView tvDate;
     TextView tvTime;
+    Switch sRepeating;
+    TextView soundTitle;
+
+    ImageView iv_image;
+    private static final int GALLERY_REQUEST = 2;
+    private Uri selectedImageURI;
+    private String selectedImagePath;
+    private boolean isChImageExist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +89,15 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
         findViewById(R.id.dateValue_textview).setOnClickListener(c);
         findViewById(R.id.timeValue_textview).setOnClickListener(c);
+        findViewById(R.id.switch_repeating).setOnClickListener(c);
+        findViewById(R.id.setDate_textview).setOnClickListener(c);
+        findViewById(R.id.setTime_textview).setOnClickListener(c);
+        soundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
+
+        findViewById(R.id.aa_image).setOnClickListener(c);
+
+        //findViewById(R.id.aa_choose_image).setOnClickListener(c);
+        iv_image = (ImageView)findViewById(R.id.aa_image);
 
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -80,6 +106,7 @@ public class AlarmActivity extends ToolbarActivity {
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
         path = "";
 
+        sRepeating = (Switch) findViewById(R.id.switch_repeating);
         DataUtils.initializeCalendar();
 
         if (getIntent().hasExtra("Plan")) {
@@ -142,7 +169,14 @@ public class AlarmActivity extends ToolbarActivity {
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
+
+
+                // don't delete !
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+
+                //am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                // don't delete !
+
                 finish();
             } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
                 showToast("Time is incorrect.");
@@ -152,6 +186,16 @@ public class AlarmActivity extends ToolbarActivity {
         } else {
             showToast("Field is empty");
         }
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+       /* iv_image.setImageURI(null);
+        iv_image.setImageURI(selectedImageURI);*/
+
     }
 
     public final class Clicker implements View.OnClickListener {
@@ -180,8 +224,15 @@ public class AlarmActivity extends ToolbarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
-            isChAudioExist = false;
-            return;
+            switch (requestCode) {
+                case REQUEST_AUDIO_GET:
+                    isChAudioExist = false;
+                    return;
+                case GALLERY_REQUEST:
+                    isChImageExist = false;
+                    return;
+            }
+
         }
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
@@ -190,7 +241,17 @@ public class AlarmActivity extends ToolbarActivity {
                 isAudioSelected = true;
                 isChAudioExist = false;
                 break;
+            case GALLERY_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    selectedImageURI = data.getData();
+
+                    iv_image.setImageURI(selectedImageURI);
+
+                }
+                break;
         }
+
+
     }
 
     private void chooseAudio() {
@@ -290,6 +351,41 @@ public class AlarmActivity extends ToolbarActivity {
             Multimedia.PLAYING_AUDIO_TIME = seekBar.getProgress();
             showToast("PLAYING_AUDIO_TIME = " + seekBar.getProgress());
             mTextValue.setText(String.valueOf(seekBar.getProgress()));
+        }
+
+    }
+
+
+    public final class Clicker implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.bt_save_alarm:
+                    startAlarm();
+                    break;
+                case R.id.dateValue_textview:
+                case R.id.setDate_textview:
+                    dateDialog = new DatePickDialog();
+                    dateDialog.show(getSupportFragmentManager(), "datePicker");
+                    break;
+                case R.id.timeValue_textview:
+                case R.id.setTime_textview:
+                    timeDialog = new TimePickDialog();
+                    timeDialog.show(getSupportFragmentManager(), "timePicker");
+                    break;
+                case R.id.aa_setAudio_btn:
+                    chooseAudio();
+                    break;
+                case R.id.switch_repeating:
+                    if(sRepeating.isChecked()) {
+                        daysOfWeekDialog = new DaysOfWeekDialog();
+                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
+                    }
+                    break;
+                case R.id.aa_image:
+                    chooseImage();
+                    break;
+            }
         }
 
     }
