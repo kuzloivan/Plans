@@ -186,10 +186,12 @@ public class AlarmActivity extends ToolbarActivity {
                     startAlarm();
                     break;
                 case R.id.dateValue_textview:
+                case R.id.setDate_textview:
                     dateDialog = new DatePickDialog();
                     dateDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
                 case R.id.timeValue_textview:
+                case R.id.setTime_textview:
                     timeDialog = new TimePickDialog();
                     timeDialog.show(getSupportFragmentManager(), "timePicker");
                     break;
