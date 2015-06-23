@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
@@ -27,12 +28,14 @@ import java.util.Calendar;
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
+import chisw.com.plans.ui.dialogs.DaysOfWeekDialog;
 import chisw.com.plans.ui.dialogs.TimePickDialog;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
 import android.support.v4.app.DialogFragment;
+import android.widget.Switch;
 import android.widget.TextView;
 
 /**
@@ -53,9 +56,11 @@ public class AlarmActivity extends ToolbarActivity {
     EditText setDetails_textview;
 
     DatePickDialog dateDialog;
+    DaysOfWeekDialog daysOfWeekDialog;
     DialogFragment timeDialog;
     TextView tvDate;
     TextView tvTime;
+    Switch sRepeating;
     TextView soundTitle;
 
     ImageView iv_image;
@@ -77,6 +82,7 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
         findViewById(R.id.dateValue_textview).setOnClickListener(c);
         findViewById(R.id.timeValue_textview).setOnClickListener(c);
+        findViewById(R.id.switch_repeating).setOnClickListener(c);
         findViewById(R.id.setDate_textview).setOnClickListener(c);
         findViewById(R.id.setTime_textview).setOnClickListener(c);
         soundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
@@ -91,7 +97,7 @@ public class AlarmActivity extends ToolbarActivity {
         tvDate = (TextView) findViewById(R.id.dateValue_textview);
         tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
-
+        sRepeating = (Switch) findViewById(R.id.switch_repeating);
         DataUtils.initializeCalendar();
 
         if (getIntent().hasExtra("Plan")) {
@@ -154,7 +160,14 @@ public class AlarmActivity extends ToolbarActivity {
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
+
+
+                // don't delete !
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+
+                //am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                // don't delete !
+
                 finish();
             } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
                 showToast("Time is incorrect.");
@@ -320,6 +333,12 @@ public class AlarmActivity extends ToolbarActivity {
                     break;
                 case R.id.aa_setAudio_btn:
                     chooseAudio();
+                    break;
+                case R.id.switch_repeating:
+                    if(sRepeating.isChecked()) {
+                        daysOfWeekDialog = new DaysOfWeekDialog();
+                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
+                    }
                     break;
                 case R.id.aa_image:
                     chooseImage();

@@ -12,6 +12,7 @@ import chisw.com.plans.core.Receivers.NotificationReceiver;
 /**
  * Created by Alexander on 16.06.2015.
  */
+
 public abstract class ToolbarActivity extends BaseActivity {
 
     private Toolbar toolbar;
@@ -50,6 +51,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected PendingIntent createPendingIntent(String action){
         Intent intent = new Intent(this, NotificationReceiver.class);
         intent.setAction(action);
+
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
