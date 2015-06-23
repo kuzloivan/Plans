@@ -285,31 +285,15 @@ public class AlarmActivity extends ToolbarActivity {
 
     private void writePlanToDB(Calendar calendar) {
         final Plan p = new Plan();
-        // todo: add Details edit view to alarm activity design file
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
-        //test
-        if(isAudioSelected==false) {
-            path="no audio";
-            p.setAudioPath(path);
-        }else{
-            p.setAudioPath(path);
-        }
-
+        p.setAudioPath(path);
         if (isEdit) {
             p.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
             p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
-
-            //test
-            if(!ValidData.isTextValid(path)){
-                path="no audio";
-                p.setAudioPath(path);
-            }
-
             dbManager.editPlan(p);
             netManager.editPlan(p, new CallbackEditPlan(p));
-            showToast(Integer.toString(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId()));
         } else {
             dbManager.saveNewPlan(p);
             netManager.addPlan(p, new OnSaveCallback() {
@@ -356,12 +340,14 @@ public class AlarmActivity extends ToolbarActivity {
             if(e == null) {
                 parseObject.put("name", plan.getTitle());
                 parseObject.put("timeStamp", plan.getTimeStamp());
-                parseObject.put("audioPath", plan.getAudioPath());
+                if(ValidData.isTextValid(plan.getAudioPath())) {
+                    parseObject.put("audioPath", plan.getAudioPath());
+                }
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
             }
-            else{
+            else {
                 showToast(e.getMessage());
             }
         }

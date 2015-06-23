@@ -32,6 +32,7 @@
     <string name="sa_set_user_sound">Set user sound</string>
 
     <!-- Planner activity -->
+    <string name="pa_start_sync">Start synchronization</string>
     <string name="pa_add_new_reminder">Add reminder</string>
     <string name="pa_settings">Settings</string>
     <string name="pa_log_out">Log out</string>
