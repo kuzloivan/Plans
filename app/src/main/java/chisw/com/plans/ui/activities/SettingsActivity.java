@@ -50,6 +50,7 @@ public class SettingsActivity extends ToolbarActivity {
             cb_notification.setChecked(false);
         }
 
+
         cb_notification.setOnCheckedChangeListener(sw);
         cb_vibration.setOnCheckedChangeListener(sw);
     }

@@ -8,12 +8,14 @@
     <string name="title_activity_media">Media</string>
     
     <!-- Alarm activity -->
+    <string name="wakeUp">Wake up !!!</string>
     <string name="set_date">Set date</string>
     <string name="set_time">Set time</string>
     <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
-    <string name="wakeUp">Wake up !!!</string>
-    <string name="alarmTitle_hint">Alarm title</string>
+    <string name="alarm_title_hint">Alarm title</string>
+    <string name="alarm_sound_duration">Sound duration</string>
+    <string name="alarm_details_hint">Details</string>
     <string name="aa_save_alarm">Save alarm</string>
     <string name="bt_ok">Ok</string>
     <string name="days_of_week_choos">Choose days of week</string>
@@ -55,4 +57,6 @@
     <string name="set_audio">Set audio</string>
     <string name="save_alarm">Save alarm</string>
     <string name="temp_date">2015.06.12</string>
+    <string name="set_sound">Set sound</string>
+
 </resources>
