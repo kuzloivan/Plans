@@ -8,49 +8,90 @@
 
     <include layout="@layout/toolbar" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:textColor="#00796B"
-                android:gravity="center"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:text="@string/title_activity_alarm"
-                android:textSize="22sp">
+                android:orientation="horizontal">
 
-            </TextView>
+                <TextView
+                    android:id="@+id/setDate_textview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="@string/set_date"
+                    android:textColor="#00796B"
+                    android:textSize="22sp"></TextView>
 
-            <TextView
-                android:id="@+id/tvTime"
-                android:textColor="#00796B"
-                android:gravity="center"
-                android:layout_width="fill_parent"
+                <TextView
+                    android:id="@+id/setTime_textview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="@string/set_time"
+                    android:textColor="#00796B"
+                    android:textSize="22sp">
+
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/dateValue_textview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="50"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="--"
+                    android:textColor="#00796B"
+                    android:textSize="22sp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/timeValue_textview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="50"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="--"
+                    android:textColor="#00796B"
+                    android:textSize="22sp"></TextView>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/setDetails_textview"
+                style="@style/style_aa_et"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:text="@string/title_activity_alarm"
-                android:textSize="22sp">
-
-            </TextView>
+                android:hint="Details" />
 
             <EditText
                 android:id="@+id/setTitle_textview"
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/alarmTitle_hint" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/setDetails_textview"
-                style="@style/style_aa_et"
-                android:layout_gravity="center_horizontal"
-                android:hint="Details"/>
+                android:hint="@string/alarmTitle_hint"
+                android:maxLines="10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,55 +102,50 @@
                 <TextView
                     android:id="@+id/tv_duration_sound"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sound duration"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/margin"
-                    android:textSize="16sp"/>
+                    android:text="Sound duration" />
 
                 <TextView
                     android:id="@+id/tv_show_duration_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
-                    android:text="--"
-                    android:layout_margin="@dimen/margin"/>
+                    android:layout_margin="@dimen/margin"
+                    android:text="--" />
 
                 <SeekBar
                     android:id="@+id/sb_duration_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="100"
-                    android:max="100"
-                    />
+                    android:max="100" />
             </LinearLayout>
 
-
-            <Button
-                android:id="@+id/aa_setAudio_btn"
-                style="@style/style_aa_btns"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/set_audio" />
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/bt_save_alarm_date"
-                style="@style/style_aa_btns"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/set_date" />
-            <Button
-                android:id="@+id/bt_save_alarm_time"
-                style="@style/style_aa_btns"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/set_time" />
+                <Button
+                    android:id="@+id/aa_setAudio_btn"
+                    style="@style/style_aa_btns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_choose_sound"
+                    android:paddingLeft="8dp"
+                    android:text="Set sound" />
 
-            <Button
+                <Button
                     android:id="@+id/bt_save_alarm"
                     style="@style/style_aa_btns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_save"
+                    android:paddingLeft="8dp"
                     android:text="@string/save_alarm" />
-
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

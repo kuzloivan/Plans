@@ -63,13 +63,13 @@ public class AlarmActivity extends ToolbarActivity {
 
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
-        findViewById(R.id.bt_save_alarm_date).setOnClickListener(c);
-        findViewById(R.id.bt_save_alarm_time).setOnClickListener(c);
+        findViewById(R.id.dateValue_textview).setOnClickListener(c);
+        findViewById(R.id.timeValue_textview).setOnClickListener(c);
 
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        tvDate = (TextView) findViewById(R.id.tvDate);
-        tvTime = (TextView) findViewById(R.id.tvTime);
+        tvDate = (TextView) findViewById(R.id.dateValue_textview);
+        tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
 
         DataUtils.initializeCalendar();
@@ -153,11 +153,11 @@ public class AlarmActivity extends ToolbarActivity {
                 case R.id.bt_save_alarm:
                     startAlarm();
                     break;
-                case R.id.bt_save_alarm_date:
+                case R.id.dateValue_textview:
                     dateDialog = new DatePickDialog();
                     dateDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
-                case R.id.bt_save_alarm_time:
+                case R.id.timeValue_textview:
                     timeDialog = new TimePickDialog();
                     timeDialog.show(getSupportFragmentManager(), "timePicker");
                     break;

@@ -27,6 +27,7 @@ public class DatePickDialog extends DialogFragment
         Dialog picker = new DatePickerDialog(getActivity(), this, year, month, day);
         picker.setTitle(getResources().getString(R.string.set_date));
 
+
         return picker;
     }
     @Override
@@ -36,12 +37,13 @@ public class DatePickDialog extends DialogFragment
         Button nButton =  ((AlertDialog) getDialog())
                 .getButton(DialogInterface.BUTTON_POSITIVE);
         nButton.setText(getResources().getString(R.string.set_date));
+
     }
 
     @Override
     public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
 
-        TextView tvDate = (TextView) getActivity().findViewById(R.id.tvDate);
+        TextView tvDate = (TextView) getActivity().findViewById(R.id.dateValue_textview);
 
         DataUtils.setCalendarDay(day);
         DataUtils.setCalendarMonth(month);
