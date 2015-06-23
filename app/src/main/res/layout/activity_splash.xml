@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="@dimen/margin"
+        android:layout_margin="@dimen/margin8"
         android:orientation="vertical"
         >
 
@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s_planner_act"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="@dimen/margin8"
             android:layout_weight="0.25"
             android:textSize="@dimen/text_size_names"/>
 
@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s_media_act"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="@dimen/margin8"
             android:layout_weight="0.25"
             android:textSize="@dimen/text_size_names"/>
 
@@ -36,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s_alarm_act"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="@dimen/margin8"
             android:layout_weight="0.25"
             android:textSize="@dimen/text_size_names"/>
 
@@ -46,8 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s_settings_act"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="@dimen/margin8"
             android:layout_weight="0.25"
             android:textSize="@dimen/text_size_names"
             />

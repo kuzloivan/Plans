@@ -48,8 +48,7 @@ public class AlarmActivity extends ToolbarActivity {
     boolean isEdit;
     private boolean isDialogExist;
     private long durationBuf;
-    private float audioDuration;
-    //public static boolean isAudioSelected;
+    private float audioDuration;    
     private boolean isAudioSelected;
 
     private TextView mTextValue;
@@ -99,9 +98,7 @@ public class AlarmActivity extends ToolbarActivity {
         tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
-
         DataUtils.initializeCalendar();
-
 
         if (getIntent().hasExtra("Plan")) {
             isEdit = getIntent().getBundleExtra("Plan").getBoolean("isEdit");
@@ -191,10 +188,12 @@ public class AlarmActivity extends ToolbarActivity {
                     startAlarm();
                     break;
                 case R.id.dateValue_textview:
+                case R.id.setDate_textview:
                     dateDialog = new DatePickDialog();
                     dateDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
                 case R.id.timeValue_textview:
+                case R.id.setTime_textview:
                     timeDialog = new TimePickDialog();
                     timeDialog.show(getSupportFragmentManager(), "timePicker");
                     break;
@@ -290,28 +289,12 @@ public class AlarmActivity extends ToolbarActivity {
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
-        p.setAudioDuration((int) audioDuration);
-        //test
-        if (isAudioSelected == false) {
-            path = "no audio";
-            p.setAudioPath(path);
-        } else {
-            p.setAudioPath(path);
-        }
-
+        p.setAudioPath(path);
         if (isEdit) {
             p.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
             p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
-
-            //test
-            if (!ValidData.isTextValid(path)) {
-                path = "no audio";
-                p.setAudioPath(path);
-            }
-
             dbManager.editPlan(p);
             netManager.editPlan(p, new CallbackEditPlan(p));
-            showToast(Integer.toString(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId()));
         } else {
             dbManager.saveNewPlan(p);
             netManager.addPlan(p, new OnSaveCallback() {
@@ -376,16 +359,20 @@ public class AlarmActivity extends ToolbarActivity {
 
         @Override
         public void done(ParseObject parseObject, ParseException e) {
-            if (e == null) {
+            if(e == null) {
                 parseObject.put("name", plan.getTitle());
                 parseObject.put("timeStamp", plan.getTimeStamp());
-                parseObject.put("audioPath", plan.getAudioPath());
+                if(ValidData.isTextValid(plan.getAudioPath())) {
+                    parseObject.put("audioPath", plan.getAudioPath());
+                }
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
-            } else {
+            }
+            else {
                 showToast(e.getMessage());
             }
         }
     }
+
 }

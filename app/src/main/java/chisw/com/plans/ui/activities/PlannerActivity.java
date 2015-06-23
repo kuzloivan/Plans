@@ -18,8 +18,12 @@ import android.widget.ListView;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import chisw.com.plans.R;
 import chisw.com.plans.db.entity.PlansEntity;
@@ -115,12 +119,18 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            case R.id.pa_menu_sync:
+                startSynchronization();
+                break;
+
             case R.id.pa_menu_add_reminder:
                 AlarmActivity.start(PlannerActivity.this, new Bundle());
                 break;
 
             case R.id.pa_menu_settings:
                 SettingsActivity.start(PlannerActivity.this);
+
+                startSynchronization();
                 break;
 
             case R.id.pa_menu_log_off:
@@ -141,6 +151,16 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSynchronization() {
+        Map<Integer, Integer> historyOfChanges = new HashMap<Integer, Integer>();
+        historyOfChanges.put(5,223);
+        historyOfChanges.put(5,3);
+        historyOfChanges.put(5,123);
+        historyOfChanges.put(5,55);
+        showToast(Integer.toString(historyOfChanges.size()));
+        showToast(Integer.toString(historyOfChanges.get(5)));
     }
 
 

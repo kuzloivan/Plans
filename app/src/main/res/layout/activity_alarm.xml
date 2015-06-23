@@ -53,7 +53,7 @@
                     android:id="@+id/dateValue_textview"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
+                    android:layout_margin="@dimen/margin8"
                     android:layout_weight="50"
                     android:clickable="true"
                     android:gravity="center"
@@ -65,7 +65,7 @@
                     android:id="@+id/timeValue_textview"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
+                    android:layout_margin="@dimen/margin8"
                     android:layout_weight="50"
                     android:clickable="true"
                     android:gravity="center"
@@ -80,34 +80,35 @@
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/alarmTitle_hint"
-                android:maxLines="10" />
+                android:hint="@string/alarm_title_hint"
+                android:maxLines="2"/>
 
             <EditText
                 android:id="@+id/setDetails_textview"
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Details" />
+                android:hint="@string/alarm_details_hint"
+                android:maxLines="5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
+                android:layout_margin="@dimen/margin8"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_duration_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin"
-                    android:text="Sound duration" />
+                    android:layout_margin="@dimen/margin8"
+                    android:text="@string/alarm_sound_duration" />
 
                 <TextView
                     android:id="@+id/tv_show_duration_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin"
+                    android:layout_margin="@dimen/margin8"
                     android:text="--" />
 
                 <SeekBar
@@ -126,16 +127,16 @@
                     android:id="@+id/alarmSound_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/margin"
-                    android:layout_marginTop="@dimen/margin"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="@dimen/margin8"
+                    android:layout_marginLeft="@dimen/margin16"
+                    android:layout_marginTop="@dimen/margin8"
                     android:text="Alarm sound: " />
 
                 <TextView
                     android:id="@+id/alarmSoundTitle_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin"
+                    android:layout_margin="@dimen/margin8"
                     android:text="--" />
             </LinearLayout>
 
@@ -151,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_choose_sound"
                     android:paddingLeft="8dp"
-                    android:text="Set sound" />
+                    android:text="@string/set_sound" />
 
                 <Button
                     android:id="@+id/bt_save_alarm"
@@ -159,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_save"
-                    android:paddingLeft="8dp"
+                    android:paddingLeft="@dimen/margin8"
                     android:text="@string/save_alarm" />
 
             </LinearLayout>
