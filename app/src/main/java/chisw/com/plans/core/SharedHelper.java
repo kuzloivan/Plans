@@ -14,6 +14,7 @@ public class SharedHelper {
     public static final String APP_PREFERENCES_NOTIFICATION_ON = "notification_on";
     public static final String APP_PREFERENCES_DURATION_SONG = "duration_song";
     public static final String APP_PREFERENCES_USER_SONG = "user_song";
+    public static final String APP_PREFERENCE_SYNCHRONIZATION = "sync_on";
 
     private SharedPreferences sharedPreferences;
 
@@ -65,6 +66,14 @@ public class SharedHelper {
 
     public boolean getNotificationOn() {
         return sharedPreferences.getBoolean(APP_PREFERENCES_NOTIFICATION_ON, true);
+    }
+
+    public void setSynchronization(boolean appPreferenceSynchronization) {
+        sharedPreferences.edit().putBoolean(APP_PREFERENCE_SYNCHRONIZATION, appPreferenceSynchronization).apply();
+    }
+
+    public boolean getSynchronization() {
+        return sharedPreferences.getBoolean(APP_PREFERENCE_SYNCHRONIZATION, true);
     }
 
     public void setDurationSong(String appPreferencesDurationSong) {

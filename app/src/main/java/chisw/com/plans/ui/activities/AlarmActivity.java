@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.EditText;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
@@ -297,6 +298,12 @@ public class AlarmActivity extends ToolbarActivity {
             netManager.editPlan(p, new CallbackEditPlan(p));
         } else {
             dbManager.saveNewPlan(p);
+            if(!sharedHelper.getSynchronization()) {
+                p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
+                synchronization.wasAdding(p.getLocalId());
+                showToast(Integer.toString(p.getLocalId()));
+                return;
+            }
             netManager.addPlan(p, new OnSaveCallback() {
                 @Override
                 public void getId(String id) {

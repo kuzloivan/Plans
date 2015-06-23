@@ -99,7 +99,9 @@ public class NetManager implements NetBridge {
         public void done(ParseException e) {
             if (e == null) {
                 onSaveCallback.getId(parsePlan.getObjectId());
+                return;
             }
+            e.getMessage();
         }
 
     }

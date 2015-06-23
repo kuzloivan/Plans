@@ -35,7 +35,7 @@
 
     <!-- Planner activity -->
     <string name="pa_start_sync">Start synchronization</string>
-    <string name="pa_add_new_reminder">Add reminder</string>
+    //<string name="pa_add_new_reminder">Add reminder</string>
     <string name="pa_settings">Settings</string>
     <string name="pa_log_out">Log out</string>
     <string name="pa_context_edit">Edit</string>

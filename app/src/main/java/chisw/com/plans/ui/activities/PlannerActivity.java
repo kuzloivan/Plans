@@ -26,6 +26,7 @@ import java.util.Observer;
 import java.util.Set;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.FloatingActionButton;
@@ -123,14 +124,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 startSynchronization();
                 break;
 
-            case R.id.pa_menu_add_reminder:
-                AlarmActivity.start(PlannerActivity.this, new Bundle());
-                break;
-
             case R.id.pa_menu_settings:
                 SettingsActivity.start(PlannerActivity.this);
-
-                startSynchronization();
                 break;
 
             case R.id.pa_menu_log_off:
@@ -154,15 +149,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private void startSynchronization() {
-        Map<Integer, Integer> historyOfChanges = new HashMap<Integer, Integer>();
-        historyOfChanges.put(5,223);
-        historyOfChanges.put(5,3);
-        historyOfChanges.put(5,123);
-        historyOfChanges.put(5,55);
-        showToast(Integer.toString(historyOfChanges.size()));
-        showToast(Integer.toString(historyOfChanges.get(5)));
+        synchronization.startSynchronization();
     }
-
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, PlannerActivity.class);

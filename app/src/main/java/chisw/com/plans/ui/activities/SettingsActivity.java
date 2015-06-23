@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.SharedHelper;
 
 
 public class SettingsActivity extends ToolbarActivity {
-    private boolean choose_vibration;
-    private boolean choose_notification;
+    private boolean chooseVibration;
+    private boolean chooseNotification;
+    private boolean chooseSynchronization;
 
 //    public boolean isChoose_notification() {
 //        return choose_notification;
@@ -35,38 +35,47 @@ public class SettingsActivity extends ToolbarActivity {
         Switcher sw = new Switcher();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        CompoundButton cb_notification = (CompoundButton) findViewById(R.id.sa_notification_switch);
-        CompoundButton cb_vibration = (CompoundButton) findViewById(R.id.sa_vibration_switch);
+        CompoundButton cbNotification = (CompoundButton) findViewById(R.id.sa_notification_switch);
+        CompoundButton cbVibration = (CompoundButton) findViewById(R.id.sa_vibration_switch);
+        CompoundButton cbSynchronization = (CompoundButton) findViewById(R.id.sa_autoSync_switch);
 
-        if(sharedHelper.getVibrationOn()){
-            cb_vibration.setChecked(true);
-        }else {
-            cb_vibration.setChecked(false);
+        if (sharedHelper.getVibrationOn()) {
+            cbVibration.setChecked(true);
+        } else {
+            cbVibration.setChecked(false);
         }
 
-        if (sharedHelper.getNotificationOn()){
-            cb_notification.setChecked(true);
-        } else{
-            cb_notification.setChecked(false);
+        if (sharedHelper.getNotificationOn()) {
+            cbNotification.setChecked(true);
+        } else {
+            cbNotification.setChecked(false);
         }
 
+        if (sharedHelper.getSynchronization()) {
+            cbSynchronization.setChecked(true);
+        } else {
+            cbSynchronization.setChecked(false);
+        }
 
-        cb_notification.setOnCheckedChangeListener(sw);
-        cb_vibration.setOnCheckedChangeListener(sw);
+        cbNotification.setOnCheckedChangeListener(sw);
+        cbVibration.setOnCheckedChangeListener(sw);
+        cbSynchronization.setOnCheckedChangeListener(sw);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        choose_notification = sharedHelper.getNotificationOn();
-        choose_vibration = sharedHelper.getVibrationOn();
+        chooseNotification = sharedHelper.getNotificationOn();
+        chooseVibration = sharedHelper.getVibrationOn();
+        chooseSynchronization = sharedHelper.getSynchronization();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        sharedHelper.setVibrationOn(choose_vibration);
-        sharedHelper.setNotificationOn(choose_notification);
+        sharedHelper.setVibrationOn(chooseVibration);
+        sharedHelper.setNotificationOn(chooseNotification);
+        sharedHelper.setSynchronization(chooseSynchronization);
     }
 
     @Override
@@ -81,16 +90,20 @@ public class SettingsActivity extends ToolbarActivity {
 
     public final class Switcher implements CompoundButton.OnCheckedChangeListener {
         @Override
-        public void onCheckedChanged(CompoundButton cb, boolean cb_bool) {
+        public void onCheckedChanged(CompoundButton cb, boolean cbBool) {
             switch (cb.getId()) {
 
                 case R.id.sa_vibration_switch:
-                    choose_vibration = cb_bool;
-                    showToast("choose_vibration = " + choose_vibration);
+                    chooseVibration = cbBool;
+                    showToast("choose_vibration = " + chooseVibration);
                     break;
                 case R.id.sa_notification_switch:
-                    choose_notification = cb_bool;
-                    showToast("choose_notification = " + choose_notification);
+                    chooseNotification = cbBool;
+                    showToast("choose_notification = " + chooseNotification);
+                    break;
+                case R.id.sa_autoSync_switch:
+                    chooseSynchronization = cbBool;
+                    showToast("chooseSynchronization = " + chooseSynchronization);
                     break;
             }
         }
