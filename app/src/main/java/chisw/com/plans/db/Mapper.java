@@ -29,6 +29,30 @@ public class Mapper {
         return CV;
     }
 
+    public static ContentValues parseNullablePlan(Plan model) {
+        ContentValues CV = new ContentValues();
+
+        if(model.getParseId() != null )
+            CV.put(PlansEntity.PARSE_ID, model.getParseId());
+
+        if(model.getTitle() != null )
+            CV.put(PlansEntity.TITLE, model.getTitle());
+
+        if(model.getDetails() != null )
+            CV.put(PlansEntity.DETAILS, model.getDetails());
+
+        if(model.getTimeStamp() != -1 )
+            CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());
+
+        if(model.getAudioPath() != null )
+            CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
+
+        if(model.getAudioDuration() != -1 )
+            CV.put(PlansEntity.AUDIO_DURATION, model.getAudioDuration());
+
+        return CV;
+    }
+
     public static Plan parseCursor(Cursor cursor){
         Plan plan = new Plan();
 

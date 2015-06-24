@@ -62,6 +62,9 @@ public class ViewPlanActivity extends ToolbarActivity {
                 break;
             case R.id.vp_menu_edit:
 
+                Plan p = dbManager.getPlanById(planId);
+                AlarmActivity.start(this, p.getLocalId());
+
                 break;
         }
 

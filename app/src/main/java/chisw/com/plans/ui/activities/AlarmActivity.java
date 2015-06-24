@@ -153,7 +153,12 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
-                PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(dbManager.getLastPlanID()));
+
+                int pendingId = dbManager.getLastPlanID();
+
+                if(isEdit) pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+
+                PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
 
                 if(!sRepeating.isChecked()) {
                     am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
@@ -269,15 +274,20 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     private void writePlanToDB(Calendar calendar) {
         final Plan p = new Plan();
+
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(path);
         p.setAudioDuration((int) audioDuration);
+
         if (isEdit) {
-            p.setParseId(getIntent().getBundleExtra("Plan").getString("ParseID"));
-            p.setLocalId(getIntent().getBundleExtra("Plan").getInt("LocalID"));
-            dbManager.editPlan(p);
+
+            int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+
+            p.setParseId(null);
+
+            dbManager.editPlan(p, id);
             netManager.editPlan(p, new CallbackEditPlan(p));
         } else {
             dbManager.saveNewPlan(p);
@@ -291,8 +301,9 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 @Override
                 public void getId(String id) {
                     p.setParseId(id);
-                    p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
-                    dbManager.editPlan(p);
+                    int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                    p.setLocalId(planId);
+                    dbManager.editPlan(p, planId);
                 }
             });
         }

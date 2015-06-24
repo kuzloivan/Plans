@@ -99,11 +99,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
             switch (item.getItemId()) {
                 case R.id.pa_context_edit:
+
                     Plan p = dbManager.getPlanById(cursor.getInt(idIndex));
                     AlarmActivity.start(this, p.getLocalId());
+
                     break;
 
                 case R.id.pa_context_delete:
+
+
 
                     deleteEntirely(cursor, idIndex);
 

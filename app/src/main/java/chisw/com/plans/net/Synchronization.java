@@ -48,8 +48,8 @@ public class Synchronization {
                         @Override
                         public void getId(String id) {
                             plan.setParseId(id);
-                            plan.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
-                            dbManager.editPlan(plan);
+                            int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                            dbManager.editPlan(plan, planId);
                         }
                     });
                     break;
