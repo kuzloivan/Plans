@@ -102,7 +102,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 case R.id.pa_context_delete:
                     AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
-                    netManager.deletePlan((dbManager.getPlanById(cursor.getInt(idIndex))).getParseId());
+                    if(!sharedHelper.getSynchronization()){
+                        synchronization.wasDeleting((dbManager.getPlanById(cursor.getInt(idIndex))).getLocalId());
+                    }
+                    else{
+                        netManager.deletePlan((dbManager.getPlanById(cursor.getInt(idIndex))).getParseId());
+                    }
                     dbManager.deletePlanById(cursor.getInt(idIndex));
                     break;
             }
