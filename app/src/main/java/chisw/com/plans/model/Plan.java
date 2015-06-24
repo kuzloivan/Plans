@@ -14,6 +14,7 @@ public class Plan {
     private String audioPath;
     private int localId;
     private int audioDuration;
+//    private String imagePath;
 
     public int getLocalId() {
         return localId;
@@ -71,5 +72,13 @@ public class Plan {
     public void setAudioDuration(int audioDuration) {
         this.audioDuration = audioDuration;
     }
+
+    /*public String getImagePath(){
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath){
+        this.imagePath = imagePath;
+    }*/
 
 }
