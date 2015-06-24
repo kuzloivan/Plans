@@ -9,8 +9,8 @@
     
     <!-- Alarm activity -->
     <string name="wakeUp">Wake up !!!</string>
-    <string name="set_date">Set date</string>
-    <string name="set_time">Set time</string>
+    <string name="set_date">Date</string>
+    <string name="set_time">Time</string>
     <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
     <string name="alarm_title_hint">Alarm title</string>
