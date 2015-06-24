@@ -14,15 +14,17 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.util.List;
+
 import chisw.com.plans.core.bridge.NetBridge;
 import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.ui.activities.BaseActivity;
 import chisw.com.plans.ui.activities.LogInActivity;
+import chisw.com.plans.utils.ValidData;
 
-/**
- * Created by vdbo on 16.06.15.
- */
+
 public class NetManager implements NetBridge {
 
     @Override
@@ -45,11 +47,15 @@ public class NetManager implements NetBridge {
 
     @Override
     public void addPlan(Plan plan, OnSaveCallback callback) {
-        ParseObject parsePlan = new ParseObject("Plans");
-        parsePlan.put("name", plan.getTitle());
-        parsePlan.put("timeStamp", plan.getTimeStamp());
-        parsePlan.put("details", plan.getDetails());
-        parsePlan.saveInBackground(new CallbackAddPlan(parsePlan, callback));
+        ParseObject pPlan = new ParseObject("Plans");
+        pPlan.put("name", plan.getTitle());
+        pPlan.put("timeStamp", plan.getTimeStamp());
+        if(ValidData.isTextValid(plan.getAudioPath())) {
+            pPlan.put("audioPath", plan.getAudioPath());
+        }
+        pPlan.put("details", plan.getDetails());
+        pPlan.put("userId", ParseUser.getCurrentUser().getObjectId());
+        pPlan.saveInBackground(new CallbackAddPlan(pPlan, callback));
     }
 
     @Override
@@ -61,14 +67,16 @@ public class NetManager implements NetBridge {
     @Override
     public void getPlan(String parseId, FindCallback findCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.whereEqualTo("objectId", parseId);
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
         query.findInBackground(findCallback);
+
     }
 
     @Override
-    public void editPlan(String parseId, GetCallback getCallback) {
+    public void editPlan(Plan plan, AlarmActivity.CallbackEditPlan callbackEditPlan) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.getInBackground(parseId, getCallback);
+        query.whereEqualTo("objectId", plan.getParseId());
+        query.getInBackground(plan.getParseId(), callbackEditPlan);
     }
 
     @Override
@@ -80,19 +88,22 @@ public class NetManager implements NetBridge {
     public final class CallbackAddPlan implements SaveCallback {
 
         private final ParseObject parsePlan;
-        private OnSaveCallback onSaveCallback;
+        private final OnSaveCallback onSaveCallback;
 
         public CallbackAddPlan(ParseObject parsePlan, OnSaveCallback onSaveCallback) {
-            this.onSaveCallback = onSaveCallback;
             this.parsePlan = parsePlan;
+            this.onSaveCallback = onSaveCallback;
         }
 
         @Override
         public void done(ParseException e) {
-           if(e == null) {
-               onSaveCallback.getId(parsePlan.getObjectId());
-               return;
-           }
+            if (e == null) {
+                onSaveCallback.getId(parsePlan.getObjectId());
+                return;
+            }
+            e.getMessage();
         }
+
     }
+
 }

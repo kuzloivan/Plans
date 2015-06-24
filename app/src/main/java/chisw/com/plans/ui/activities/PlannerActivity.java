@@ -5,8 +5,10 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,23 +18,29 @@ import android.widget.ListView;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.others.FloatingActionButton;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
     ListView lvPlanner;
     PlannerCursorAdapter plannerCursorAdapter;
-    private static Plan planToSendAndChange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Clicker c = new Clicker();
 
         ItemClicker itemClicker = new ItemClicker();
         ItemLongClicker itemLongClicker = new ItemLongClicker();
@@ -46,6 +54,19 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         registerForContextMenu(lvPlanner);
         dbManager.addObserver(this);
+
+        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+
+                .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
+                .withButtonColor(getResources().getColor(R.color.toolbar_background_color))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 16)
+                .create();
+        fabButton.setId(R.id.fab);
+        //fabButton.showFloatingActionButton();
+        fabButton.setOnClickListener(c);
+
+
     }
 
     private void updateListView() {
@@ -76,10 +97,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
             switch (item.getItemId()) {
                 case R.id.pa_context_edit:
-                    planToSendAndChange = dbManager.getPlanById(cursor.getInt(idIndex));
-                    AlarmActivity.start(this);
-                    AlarmActivity.isAlarmToChange = true;
-                // todo: implement edit activity.
+                    AlarmActivity.start(this, planToBundle(dbManager.getPlanById(cursor.getInt(idIndex))));
                     break;
 
                 case R.id.pa_context_delete:
@@ -102,8 +120,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.pa_menu_add_reminder:
-                AlarmActivity.start(PlannerActivity.this);
+            case R.id.pa_menu_sync:
+                startSynchronization();
                 break;
 
             case R.id.pa_menu_settings:
@@ -114,6 +132,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 //Log off!
                 showProgressDialog("Loging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
+                Cursor cursor = dbManager.getPlans();
+                AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+                while(cursor.moveToNext()){
+                    alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
+                }
+                cursor.close();
                 dbManager.clearPlans();
                 dbManager.eraseMe(sharedHelper.getDefaultLogin());
                 sharedHelper.clearData();
@@ -124,6 +148,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         return super.onOptionsItemSelected(item);
     }
 
+    private void startSynchronization() {
+        synchronization.startSynchronization();
+    }
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, PlannerActivity.class);
@@ -195,8 +222,29 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         updateListView();
     }
 
-    public static Plan getPlanToSendAndChange()
-    {
-        return  planToSendAndChange;
+    private Bundle planToBundle(Plan plan) {
+        Bundle bufBundle = new Bundle();
+        bufBundle.putBoolean("isEdit", true);
+        bufBundle.putInt("LocalID", plan.getLocalId());
+        bufBundle.putString("Title", plan.getTitle());
+        bufBundle.putString("Details", plan.getDetails());
+        bufBundle.putLong("TimeStamp", plan.getTimeStamp());
+        bufBundle.putString("Path", plan.getAudioPath());
+        bufBundle.putString("ParseID", plan.getParseId());
+        bufBundle.putInt("Duration", plan.getAudioDuration());
+        return bufBundle;
+    }
+
+
+    public final class Clicker implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.fab:
+                    AlarmActivity.start(PlannerActivity.this, new Bundle());
+                    break;
+            }
+        }
     }
 }
+

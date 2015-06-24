@@ -1,8 +1,12 @@
 package chisw.com.plans.others;
 
+import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
+
 import java.io.IOException;
 
 
@@ -10,7 +14,16 @@ import java.io.IOException;
  * Created by Kos on 17.06.2015.
  */
 public class Multimedia {
-    static public int PLAYING_AUDIO_TIME = 15;
+    private int PLAYING_AUDIO_TIME = 10;
+    private int playTime;
+
+    public void setPlayTime(int playTime) {
+        if (playTime < 10) {
+            this.playTime = PLAYING_AUDIO_TIME;
+        } else {
+            this.playTime = playTime;
+        }
+    }
 
     private MediaPlayer player;
 
@@ -26,7 +39,7 @@ public class Multimedia {
         }
     }
 
-    public void alarmNontification(String path) {
+    public void alarmNotification(String path) {
         if (player == null) {
             player = new MediaPlayer();
         }
@@ -44,7 +57,7 @@ public class Multimedia {
                 stopPlayer();
             }
         };
-        h.postDelayed(stopPlaybackRun, PLAYING_AUDIO_TIME * 1000);
+        h.postDelayed(stopPlaybackRun, playTime * 1000);
     }
 
     public void stopPlayer() {
@@ -61,4 +74,5 @@ public class Multimedia {
         }
     }
 }
+
 

@@ -13,6 +13,7 @@ public class Plan {
     private long timeStamp;
     private String audioPath;
     private int localId;
+    private int audioDuration;
 
     public int getLocalId() {
         return localId;
@@ -61,6 +62,14 @@ public class Plan {
 
     public void setAudioPath(String audioPath) {
         this.audioPath = audioPath;
+    }
+
+    public int getAudioDuration() {
+        return audioDuration;
+    }
+
+    public void setAudioDuration(int audioDuration) {
+        this.audioDuration = audioDuration;
     }
 
 }

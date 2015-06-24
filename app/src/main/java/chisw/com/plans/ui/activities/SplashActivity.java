@@ -33,7 +33,7 @@ public class SplashActivity extends BaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.sa_alarm_btn:
-                    AlarmActivity.start(SplashActivity.this);
+                   // AlarmActivity.start(SplashActivity.this);
                     break;
 
                 case R.id.sa_planner_btn:

@@ -11,7 +11,7 @@ import chisw.com.plans.model.Plan;
 public interface DbBridge {
 
     void saveNewPlan(Plan pPlan);
-    void editPlan(Plan pPlan, int id);
+    void editPlan(Plan pPlan);
     Cursor getPlans();
     void clearPlans();
     Plan getPlanById(int id);
@@ -21,6 +21,8 @@ public interface DbBridge {
     Cursor getMe(String id);
     int getLastPlanID();
     String getTitleByID(int id);
+    String getDetailsByID(int id);
     String getAudioPathByID(int id);
     void dbChanged(); // should be called when database content was changed
+    int getAudioDurationByID (int id);
 }

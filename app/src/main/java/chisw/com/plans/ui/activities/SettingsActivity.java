@@ -6,29 +6,28 @@ import android.os.Bundle;
 import android.widget.CompoundButton;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.SharedHelper;
 
 
 public class SettingsActivity extends ToolbarActivity {
-    private boolean choose_vibration;
-    private boolean choose_notification;
+    private boolean chooseVibration;
+    private boolean chooseNotification;
+    private boolean chooseSynchronization;
 
-
-    public boolean isChoose_notification() {
-        return choose_notification;
-    }
-
-    public void setChoose_notification(boolean choose_notification) {
-        this.choose_notification = choose_notification;
-    }
-
-    public boolean isChoose_vibration() {
-        return choose_vibration;
-    }
-
-    public void setChoose_vibration(boolean choose_vibration) {
-        this.choose_vibration = choose_vibration;
-    }
+//    public boolean isChoose_notification() {
+//        return choose_notification;
+//    }
+//
+//    public void setChoose_notification(boolean choose_notification) {
+//        this.choose_notification = choose_notification;
+//    }
+//
+//    public boolean isChoose_vibration() {
+//        return choose_vibration;
+//    }
+//
+//    public void setChoose_vibration(boolean choose_vibration) {
+//        this.choose_vibration = choose_vibration;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,55 +35,48 @@ public class SettingsActivity extends ToolbarActivity {
         Switcher sw = new Switcher();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        CompoundButton cb_notification = (CompoundButton) findViewById(R.id.sa_notification_switch);
-        CompoundButton cb_vibration = (CompoundButton) findViewById(R.id.sa_vibration_switch);
-        CompoundButton cb_user_sound = (CompoundButton) findViewById(R.id.sa_set_user_sound);
+        CompoundButton cbNotification = (CompoundButton) findViewById(R.id.sa_notification_switch);
+        CompoundButton cbVibration = (CompoundButton) findViewById(R.id.sa_vibration_switch);
+        CompoundButton cbSynchronization = (CompoundButton) findViewById(R.id.sa_autoSync_switch);
 
-        setChoose_vibration(true);
-        setChoose_notification(true);
+        if (sharedHelper.getVibrationOn()) {
+            cbVibration.setChecked(true);
+        } else {
+            cbVibration.setChecked(false);
+        }
 
-        cb_notification.setChecked(isChoose_notification());
-        cb_vibration.setChecked(isChoose_vibration());
-        cb_user_sound.setChecked(false);
+        if (sharedHelper.getNotificationOn()) {
+            cbNotification.setChecked(true);
+        } else {
+            cbNotification.setChecked(false);
+        }
 
-        cb_user_sound.setOnCheckedChangeListener(sw);
-        cb_vibration.setOnCheckedChangeListener(sw);
+        if (sharedHelper.getSynchronization()) {
+            cbSynchronization.setChecked(true);
+        } else {
+            cbSynchronization.setChecked(false);
+        }
+
+        cbNotification.setOnCheckedChangeListener(sw);
+        cbVibration.setOnCheckedChangeListener(sw);
+        cbSynchronization.setOnCheckedChangeListener(sw);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        choose_notification = sharedHelper.getNotificationOn();
-        /*if (sharedHelper.getVibrationOn() != null) {
-            switch (sharedHelper.getVibrationOn()) {
-                case "yes":
-                    setChoose_vibration(true);
-                    break;
-                case "no":
-                    setChoose_vibration(false);
-                    break;
-            }
-
-        }
-        else
-            choose_vibration = false;*/
-        choose_vibration = sharedHelper.getVibrationOn();
+        chooseNotification = sharedHelper.getNotificationOn();
+        chooseVibration = sharedHelper.getVibrationOn();
+        chooseSynchronization = sharedHelper.getSynchronization();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        /*if(isChoose_vibration()){
-            sharedHelper.setVibrationOn("yes");
-        }
-        else
-        {
-            sharedHelper.setVibrationOn("no");
-        }*/
-        sharedHelper.setVibrationOn(choose_vibration);
-        sharedHelper.setNotificationOn(choose_notification);
+        sharedHelper.setVibrationOn(chooseVibration);
+        sharedHelper.setNotificationOn(chooseNotification);
+        sharedHelper.setSynchronization(chooseSynchronization);
     }
-
 
     @Override
     protected int contentViewResId() {
@@ -96,23 +88,25 @@ public class SettingsActivity extends ToolbarActivity {
         activity.startActivity(intent);
     }
 
-
     public final class Switcher implements CompoundButton.OnCheckedChangeListener {
         @Override
-        public void onCheckedChanged(CompoundButton cb, boolean cb_bool) {
+        public void onCheckedChanged(CompoundButton cb, boolean cbBool) {
             switch (cb.getId()) {
 
                 case R.id.sa_vibration_switch:
-                    choose_vibration = cb_bool;
-                    showToast("choose_vibration = " + isChoose_vibration());
+                    chooseVibration = cbBool;
+                    showToast("choose_vibration = " + chooseVibration);
                     break;
                 case R.id.sa_notification_switch:
-                    choose_notification = cb_bool;
-                    showToast("choose_notification = " + isChoose_notification());
+                    chooseNotification = cbBool;
+                    showToast("choose_notification = " + chooseNotification);
+                    break;
+                case R.id.sa_autoSync_switch:
+                    chooseSynchronization = cbBool;
+                    showToast("chooseSynchronization = " + chooseSynchronization);
                     break;
             }
         }
     }
-
 }
 

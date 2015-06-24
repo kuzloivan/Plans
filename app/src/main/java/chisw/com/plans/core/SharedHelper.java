@@ -14,6 +14,7 @@ public class SharedHelper {
     public static final String APP_PREFERENCES_NOTIFICATION_ON = "notification_on";
     public static final String APP_PREFERENCES_DURATION_SONG = "duration_song";
     public static final String APP_PREFERENCES_USER_SONG = "user_song";
+    public static final String APP_PREFERENCE_SYNCHRONIZATION = "sync_on";
 
     private SharedPreferences sharedPreferences;
 
@@ -58,19 +59,21 @@ public class SharedHelper {
     public boolean getVibrationOn() {
         return sharedPreferences.getBoolean(APP_PREFERENCES_VIBRATION_ON, true);
     }
-/*    public void setVibrationOn(String appPreferencesVibrationOn) {
-        sharedPreferences.edit().putString(APP_PREFERENCES_VIBRATION_ON, appPreferencesVibrationOn).apply();
-    }
 
-    public String getVibrationOn() {
-        return sharedPreferences.getString(APP_PREFERENCES_VIBRATION_ON, "");
-    }*/
     public void setNotificationOn(boolean appPreferencesNotificationOn) {
         sharedPreferences.edit().putBoolean(APP_PREFERENCES_NOTIFICATION_ON, appPreferencesNotificationOn).apply();
     }
 
     public boolean getNotificationOn() {
         return sharedPreferences.getBoolean(APP_PREFERENCES_NOTIFICATION_ON, true);
+    }
+
+    public void setSynchronization(boolean appPreferenceSynchronization) {
+        sharedPreferences.edit().putBoolean(APP_PREFERENCE_SYNCHRONIZATION, appPreferenceSynchronization).apply();
+    }
+
+    public boolean getSynchronization() {
+        return sharedPreferences.getBoolean(APP_PREFERENCE_SYNCHRONIZATION, true);
     }
 
     public void setDurationSong(String appPreferencesDurationSong) {
@@ -88,5 +91,4 @@ public class SharedHelper {
     public boolean getUserSong() {
         return sharedPreferences.getBoolean(APP_PREFERENCES_USER_SONG, false);
     }
-    // *********   Settings  **********
 }

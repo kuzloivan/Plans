@@ -73,9 +73,9 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
-    public void editPlan(Plan pPlan, int id) {
+    public void editPlan(Plan pPlan) {
         sqLiteDatabase.update(PlansEntity.TABLE_NAME, Mapper.parsePlan(pPlan), PlansEntity.LOCAL_ID + "=?",
-                new String[]{String.valueOf(id)});
+                new String[]{String.valueOf(pPlan.getLocalId())});
         dbChanged();
     }
 
@@ -120,6 +120,16 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
+    public String getDetailsByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        String details = cursor.getString(cursor.getColumnIndex(PlansEntity.DETAILS));
+        cursor.close();
+        return details;
+    }
+
+    @Override
     public String getAudioPathByID(int id) {
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
@@ -127,6 +137,16 @@ public class DBManager extends java.util.Observable implements DbBridge {
         String path = cursor.getString(cursor.getColumnIndex(PlansEntity.AUDIO_PATH));
         cursor.close();
         return path;
+    }
+
+    @Override
+    public int getAudioDurationByID(int id) {
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        int duration = cursor.getInt(cursor.getColumnIndex(PlansEntity.AUDIO_DURATION));
+        cursor.close();
+        return duration;
     }
 
     @Override

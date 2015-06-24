@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
+        android:layout_marginTop="@dimen/margin8"
         android:orientation="vertical"
         android:padding="@dimen/padding8">
 
@@ -29,7 +29,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
+        android:layout_marginTop="@dimen/margin8"
         android:orientation="horizontal"
         android:padding="@dimen/padding8">
 
@@ -37,8 +37,8 @@
             android:id="@+id/ma_play_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="@dimen/margin8"
             android:layout_weight="0.5"
 
             android:text="@string/start_playing" />
@@ -47,8 +47,8 @@
             android:id="@+id/ma_stop_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin"
-            android:layout_marginRight="@dimen/margin"
+            android:layout_marginLeft="@dimen/margin8"
+            android:layout_marginRight="@dimen/margin8"
             android:layout_weight="0.5"
             android:text="@string/stop_playing" />
     </LinearLayout>

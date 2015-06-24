@@ -49,7 +49,7 @@
 
     <!-- layout -->
     <style name="style_linearlayout">
-        <item name="android:layout_marginTop">@dimen/margin</item>
+        <item name="android:layout_marginTop">@dimen/margin8</item>
         <item name="android:padding">8sp</item>
         <item name="android:orientation">vertical</item>
     </style>
@@ -83,6 +83,11 @@
     <style name="style_aa_btns" parent="style_btns">
         <item name="android:background">@drawable/aa_btns_selector</item>
         <item name="android:textColor">@color/color_aa_btn_text</item>
+    </style>
+
+    <style name="aa_testview" >
+        <item name="android:layout_margin">@dimen/margin8</item>
+        <item name="android:textColor">@color/toolbar_background_color</item>
     </style>
 
     <style name="style_aa_et">
