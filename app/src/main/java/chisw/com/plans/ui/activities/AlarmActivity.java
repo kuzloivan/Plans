@@ -2,7 +2,6 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.content.ContentResolver;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -24,9 +23,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
@@ -46,8 +42,6 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
-public class AlarmActivity extends ToolbarActivity {
 
 public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.DaysOfWeekDialogListener {
 
@@ -80,6 +74,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         Clicker clicker = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
+        findViewById(R.id.switch_repeating).setOnClickListener(clicker);
         tvDate = (TextView) findViewById(R.id.setDate_textview);
         tvTime = (TextView) findViewById(R.id.setTime_textview);
         tvSoundDuration = (TextView) findViewById(R.id.tv_sound_duration);
@@ -147,13 +142,12 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
                 PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(dbManager.getLastPlanID()));
-                am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
 
                 if(!sRepeating.isChecked()) {
-                    am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                    am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
                 }
                 else {
-                    am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                    am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                 }
 
                 finish();
