@@ -52,6 +52,12 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
+    public Cursor getCursorById(int id) {
+        return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+    }
+
+    @Override
     public void deletePlanById(long id) {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, PlansEntity.LOCAL_ID + "=?", new String[]{String.valueOf(id)});
         dbChanged();

@@ -26,6 +26,7 @@ import java.util.Observer;
 import java.util.Set;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
@@ -93,26 +94,37 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         Cursor cursor = plannerCursorAdapter.getCursor();
 
         if (cursor.moveToPosition((int) (info.position))) {
+
             int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
+
             switch (item.getItemId()) {
                 case R.id.pa_context_edit:
-                    AlarmActivity.start(this, planToBundle(dbManager.getPlanById(cursor.getInt(idIndex))));
+                    Plan p = dbManager.getPlanById(cursor.getInt(idIndex));
+                    AlarmActivity.start(this, p.getLocalId());
                     break;
 
                 case R.id.pa_context_delete:
-                    AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
-                    if(!sharedHelper.getSynchronization()){
-                        synchronization.wasDeleting((dbManager.getPlanById(cursor.getInt(idIndex))).getLocalId());
-                    }
-                    else{
-                        netManager.deletePlan((dbManager.getPlanById(cursor.getInt(idIndex))).getParseId());
-                    }
-                    dbManager.deletePlanById(cursor.getInt(idIndex));
+
+                    deleteEntirely(cursor, idIndex);
+
                     break;
             }
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Deprecated
+    public void deleteEntirely(Cursor cursor, int idIndex){
+        alarmManager.cancelAlarm(cursor);
+
+        if(!sharedHelper.getSynchronization()){
+            synchronization.wasDeleting((dbManager.getPlanById(cursor.getInt(idIndex))).getLocalId());
+        }
+        else{
+            netManager.deletePlan((dbManager.getPlanById(cursor.getInt(idIndex))).getParseId());
+        }
+
+        dbManager.deletePlanById(cursor.getInt(idIndex));
     }
 
     @Override
@@ -138,9 +150,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 showProgressDialog("Loging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
                 Cursor cursor = dbManager.getPlans();
-                AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-                while(cursor.moveToNext()){
-                    alarmManager.cancel(createPendingIntent(Integer.toString(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)))));
+
+                while(cursor.moveToNext()) {
+                    alarmManager.cancelAlarm(cursor);
                 }
                 cursor.close();
                 dbManager.clearPlans();
@@ -227,27 +239,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         updateListView();
     }
 
-    private Bundle planToBundle(Plan plan) {
-
-        Bundle bufBundle = new Bundle();
-        bufBundle.putBoolean("isEdit", true);
-        bufBundle.putInt("LocalID", plan.getLocalId());
-        bufBundle.putString("Title", plan.getTitle());
-        bufBundle.putString("Details", plan.getDetails());
-        bufBundle.putLong("TimeStamp", plan.getTimeStamp());
-        bufBundle.putString("Path", plan.getAudioPath());
-        bufBundle.putString("ParseID", plan.getParseId());
-        bufBundle.putInt("Duration", plan.getAudioDuration());
-        return bufBundle;
-    }
-
-
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.fab:
-                    AlarmActivity.start(PlannerActivity.this, new Bundle());
+                    AlarmActivity.start(PlannerActivity.this);
                     break;
             }
         }

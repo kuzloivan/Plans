@@ -131,7 +131,7 @@
                     android:text="Sound duration" />
 
                 <TextView
-                    android:id="@+id/tv_show_duration_sound"
+                    android:id="@+id/tv_sound_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="--" />

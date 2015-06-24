@@ -17,8 +17,9 @@
     <string name="alarm_sound_duration">Sound duration</string>
     <string name="alarm_details_hint">Details</string>
     <string name="aa_save_alarm">Save alarm</string>
-    <string name="bt_ok">Ok</string>
-    <string name="days_of_week_choos">Choose days of week</string>
+    <string name="ok">Ok</string>
+    <string name="days_of_week_choose">Choose days of week</string>
+    <string name="cancel">Cancel</string>
     <string name="alarmTitle_hint">Alarm title</string>
 
     <!-- Net activity -->
