@@ -40,7 +40,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Clicker c = new Clicker();
+        Clicker clicker = new Clicker();
 
         ItemClicker itemClicker = new ItemClicker();
         ItemLongClicker itemLongClicker = new ItemLongClicker();
@@ -56,7 +56,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         dbManager.addObserver(this);
 
         FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
-
                 .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
                 .withButtonColor(getResources().getColor(R.color.toolbar_background_color))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
@@ -64,7 +63,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 .create();
         fabButton.setId(R.id.fab);
         //fabButton.showFloatingActionButton();
-        fabButton.setOnClickListener(c);
+        fabButton.setOnClickListener(clicker);
 
 
     }
@@ -223,6 +222,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private Bundle planToBundle(Plan plan) {
+
         Bundle bufBundle = new Bundle();
         bufBundle.putBoolean("isEdit", true);
         bufBundle.putInt("LocalID", plan.getLocalId());

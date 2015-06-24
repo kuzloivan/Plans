@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import chisw.com.plans.R;
 import chisw.com.plans.db.Mapper;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.utils.DataUtils;
 
 /**
  * Created by Alexander on 20.06.2015.
@@ -18,11 +20,18 @@ public class ViewPlanActivity extends ToolbarActivity {
     public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.view_plan_activity.id";
     public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.view_plan_activity.bundle";
 
+    TextView pv_tv_time;
+    TextView pv_tv_date;
+    TextView pv_tv_details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //getIntent().getBundleExtra();
+        pv_tv_time = (TextView)findViewById(R.id.pv_tv_time);
+        pv_tv_date = (TextView)findViewById(R.id.pv_tv_date);
+        pv_tv_details = (TextView)findViewById(R.id.pv_tv_details);
 
         initBackButton();
     }
@@ -36,6 +45,9 @@ public class ViewPlanActivity extends ToolbarActivity {
         Plan plan = dbManager.getPlanById(id);
 
         setTitle(plan.getTitle());
+        pv_tv_time.setText(DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()));
+        pv_tv_date.setText(DataUtils.getDateStringFromTimeStamp(plan.getTimeStamp()));
+        pv_tv_details.setText(plan.getDetails());
     }
 
     @Override
