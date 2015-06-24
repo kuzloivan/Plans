@@ -207,7 +207,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 selectedImagePath = cursor.getString(column_index);
 
                 Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(selectedImagePath, 110, 110);
-                iv_image.setImageBitmap(bitmap);
+                //iv_image.setImageBitmap(bitmap);
+                iv_image.setImageURI(selectedImageURI);
 
                 break;
         }
