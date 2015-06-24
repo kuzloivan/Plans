@@ -51,6 +51,8 @@ public class ViewPlanActivity extends ToolbarActivity {
         switch (item.getItemId()){
             case R.id.vp_menu_delete:
 
+
+
                 break;
             case R.id.vp_menu_edit:
 
