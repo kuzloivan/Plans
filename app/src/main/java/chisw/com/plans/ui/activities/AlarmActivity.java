@@ -1,11 +1,13 @@
 package chisw.com.plans.ui.activities;
 
-
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.content.ContentResolver;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,14 +24,16 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
-import java.util.Map;
 
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
-import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.ui.dialogs.DaysOfWeekDialog;
 import chisw.com.plans.ui.dialogs.TimePickDialog;
+import chisw.com.plans.utils.BitmapUtils;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
@@ -37,86 +41,69 @@ import chisw.com.plans.utils.ValidData;
 import android.support.v4.app.DialogFragment;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+public class AlarmActivity extends ToolbarActivity {
 
 public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.DaysOfWeekDialogListener {
 
     private final int REQUEST_AUDIO_GET = 1;
-    private String path;
-    boolean isEdit;
+    private final int GALLERY_REQUEST = 2;
     private boolean isDialogExist;
     private int durationBuf;
     private long audioDuration;
     private boolean isAudioSelected;
-
-    private TextView mTextValue;
-
-    AlarmManager am;
-    EditText etTitle;
-    EditText setDetails_textview;
-
-    DatePickDialog dateDialog;
-    DaysOfWeekDialog daysOfWeekDialog;
-    DialogFragment timeDialog;
-    TextView tvDate;
-    TextView tvTime;
-    Switch sRepeating;
-    TextView soundTitle;
-
-    ImageView iv_image;
-    private static final int GALLERY_REQUEST = 2;
+    private boolean isEdit;
+    private EditText etTitle;
+    private EditText setDetails_textview;
+    private TextView tvSoundDuration;
+    private TextView tvDate;
+    private TextView tvTime;
+    private AlarmManager am;
+    private String path;
+    private DatePickDialog dateDialog;
+    private DaysOfWeekDialog daysOfWeekDialog;
+    private DialogFragment timeDialog;
+    private Switch sRepeating;
+    private ImageView iv_image;
     private Uri selectedImageURI;
     private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initBackButton();
-
-        Clicker c = new Clicker();
-
-        findViewById(R.id.bt_save_alarm).setOnClickListener(c);
-        findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
-        findViewById(R.id.dateValue_textview).setOnClickListener(c);
-        findViewById(R.id.timeValue_textview).setOnClickListener(c);
-        findViewById(R.id.switch_repeating).setOnClickListener(c);
-        findViewById(R.id.setDate_textview).setOnClickListener(c);
-        findViewById(R.id.setTime_textview).setOnClickListener(c);
-        soundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
-
-        findViewById(R.id.aa_image).setOnClickListener(c);
-
-        //findViewById(R.id.aa_choose_image).setOnClickListener(c);
+        Clicker clicker = new Clicker();
+        findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
+        findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
+        tvDate = (TextView) findViewById(R.id.setDate_textview);
+        tvTime = (TextView) findViewById(R.id.setTime_textview);
+        tvSoundDuration = (TextView) findViewById(R.id.tv_sound_duration);
+        tvSoundDuration.setOnClickListener(clicker);
+        tvDate.setOnClickListener(clicker);
+        tvTime.setOnClickListener(clicker);
         iv_image = (ImageView) findViewById(R.id.aa_image);
-
+        iv_image.setOnClickListener(clicker);
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        tvDate = (TextView) findViewById(R.id.dateValue_textview);
-        tvTime = (TextView) findViewById(R.id.timeValue_textview);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
-        mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
-
         SeekerBar sb = new SeekerBar();
         final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
 
         DataUtils.initializeCalendar();
-
         if (getIntent().hasExtra("Plan")) {
             isEdit = getIntent().getBundleExtra("Plan").getBoolean("isEdit");
         }
         if (isEdit) {
             fillIn(seekbar);
         } else {
-            mTextValue.setText("0:0");
+            tvSoundDuration.setText("0:0");
         }
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
         tvDate.setText(DataUtils.getDateStrFromCalendar());
@@ -159,6 +146,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
+                PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(dbManager.getLastPlanID()));
+                am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
 
                 if(!sRepeating.isChecked()) {
                     am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
@@ -199,7 +188,15 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 break;
             case GALLERY_REQUEST:
                 selectedImageURI = data.getData();
-                iv_image.setImageURI(selectedImageURI);
+                final String[] proj = {MediaStore.Images.Media.DATA};
+                final Cursor cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
+                final int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToLast();
+                selectedImagePath = cursor.getString(column_index);
+
+                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(selectedImagePath, 110, 110);
+                iv_image.setImageBitmap(bitmap);
+
                 break;
         }
     }
@@ -229,7 +226,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     private String getPath(Intent str) {
         if (SystemUtils.isKitKatHigher()) {
-
             Uri data = str.getData();
             final String docId = DocumentsContract.getDocumentId(data);
             final String[] split = docId.split(":");
@@ -241,7 +237,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             final String[] selectionArgs = new String[]{
                     split[1]
             };
-
             return getDataColumn(this, contentUri, selection, selectionArgs);
         } else {
             return str.getDataString();
@@ -328,7 +323,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         } else {
             durationValue = h + ":" + m + ":" + s;
         }
-        mTextValue.setText(durationValue);
+        tvSoundDuration.setText(durationValue);
     }
 
     private void fillIn(SeekBar seekbar) {
@@ -380,6 +375,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             }
         }
     }
+
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -387,12 +383,10 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 case R.id.bt_save_alarm:
                     startAlarm();
                     break;
-                case R.id.dateValue_textview:
                 case R.id.setDate_textview:
                     dateDialog = new DatePickDialog();
                     dateDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
-                case R.id.timeValue_textview:
                 case R.id.setTime_textview:
                     timeDialog = new TimePickDialog();
                     timeDialog.show(getSupportFragmentManager(), "timePicker");
