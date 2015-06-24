@@ -107,6 +107,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
+        mTextValue = (TextView)findViewById(R.id.alarmSoundTitle_textview);
         tvDate = (TextView) findViewById(R.id.setDate_textview);
         tvTime = (TextView) findViewById(R.id.setTime_textview);
         tvDate.setOnClickListener(c);
@@ -245,8 +246,19 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             isDialogExist = false;
             return;
         }
+        Uri selectedUri  = data.getData();
+        final String[] proj = {MediaStore.Audio.Media.DATA};
+        final Cursor cursor;
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
+                cursor = getContentResolver().query(selectedUri, proj, null, null, null);
+                final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+                cursor.moveToLast();
+                String selectedAudioPath = cursor.getString(column_index_a);
+
+                String [] arrPath = selectedAudioPath.split("/");
+                mTextValue.setText(arrPath[arrPath.length-1]);
+
                 path = getPath(data);
                 if (SystemUtils.isKitKatHigher()) {
                     durationBuf = getAudioDuration(data.getData(), this);
@@ -256,14 +268,14 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
+
                 break;
             case GALLERY_REQUEST:
                 selectedImageURI = data.getData();
-                final String[] proj = {MediaStore.Images.Media.DATA};
-                final Cursor cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
-                final int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
+                final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToLast();
-                selectedImagePath = cursor.getString(column_index);
+                selectedImagePath = cursor.getString(column_index_i);
 
 
 
