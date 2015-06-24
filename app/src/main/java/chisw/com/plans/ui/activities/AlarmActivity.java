@@ -1,5 +1,6 @@
 package chisw.com.plans.ui.activities;
 
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.Context;
@@ -36,13 +37,15 @@ import chisw.com.plans.utils.ValidData;
 import android.support.v4.app.DialogFragment;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class AlarmActivity extends ToolbarActivity {
+
+public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.DaysOfWeekDialogListener {
 
     private final int REQUEST_AUDIO_GET = 1;
     private String path;
@@ -157,12 +160,12 @@ public class AlarmActivity extends ToolbarActivity {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
 
-
-                // don't delete !
-                am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
-
-                //am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
-                // don't delete !
+                if(!sRepeating.isChecked()) {
+                    am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                }
+                else {
+                    am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+                }
 
                 finish();
             } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
@@ -174,8 +177,6 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("Field is empty");
         }
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -411,4 +412,23 @@ public class AlarmActivity extends ToolbarActivity {
             }
         }
     }
+
+    @Override
+    public void onDaysOfWeekPositiveClick(Bundle bundle) {
+
+        //test. Delete later
+        showToast("Sunday " + bundle.getBoolean("Sun") + "\n" +
+                "Monday " + bundle.getBoolean("Mon") + "\n" +
+                "Tuesday " + bundle.getBoolean("Tues") + "\n" +
+                "Wednesday " + bundle.getBoolean("Wed") + "\n" +
+                "Thursday " + bundle.getBoolean("Thurs") + "\n" +
+                "Friday " + bundle.getBoolean("Fri") + "\n" +
+                "Saturday " + bundle.getBoolean("Sat"));
+    }
+
+    @Override
+    public void onDaysOfWeekNegativeClick(Bundle bundle) {
+
+    }
+
 }
