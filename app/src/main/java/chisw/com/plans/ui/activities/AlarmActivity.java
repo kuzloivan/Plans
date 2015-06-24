@@ -69,6 +69,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     private Switch sRepeating;
     private ImageView iv_image;
     private TextView mTextValue;
+    private SeekBar seekbar;
 
 
 
@@ -125,7 +126,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
         //mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
         SeekerBar sb = new SeekerBar();
-        final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
+        //final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
+        seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
 
         DataUtils.initializeCalendar();
@@ -265,6 +267,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 } else {
                     Uri u = data.getData();
                     durationBuf = getAudioDuration(u, this);
+                    Duration(seekbar);
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
@@ -399,11 +402,11 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         public void onStopTrackingTouch(SeekBar seekBar) {
             Duration(seekBar);
         }
+    }
 
-        private void Duration(SeekBar seekBar) {
-            audioDuration = (durationBuf * seekBar.getProgress()) / 100;
-            timeFormat();
-        }
+    private void Duration(SeekBar seekBar) {
+        audioDuration = (durationBuf * seekBar.getProgress()) / 100;
+        timeFormat();
     }
 
     private void timeFormat() {
