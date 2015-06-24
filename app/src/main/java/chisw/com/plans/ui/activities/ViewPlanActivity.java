@@ -2,6 +2,7 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import chisw.com.plans.R;
 import chisw.com.plans.db.Mapper;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
 import chisw.com.plans.utils.DataUtils;
 
 /**
@@ -25,6 +27,8 @@ public class ViewPlanActivity extends ToolbarActivity {
     TextView pv_tv_time;
     TextView pv_tv_date;
     TextView pv_tv_details;
+
+    private int planId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +52,11 @@ public class ViewPlanActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
         switch (item.getItemId()){
             case R.id.vp_menu_delete:
 
+                deleteEntirely(dbManager.getPlanById(planId), planId);
 
 
                 break;
@@ -59,16 +65,32 @@ public class ViewPlanActivity extends ToolbarActivity {
                 break;
         }
 
+        finish();
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Deprecated
+    public void deleteEntirely(Plan plan, int idIndex){
+        alarmManager.cancelAlarm(plan);
+
+        if(!sharedHelper.getSynchronization()){
+            synchronization.wasDeleting((dbManager.getPlanById(idIndex).getLocalId()));
+        }
+        else{
+            netManager.deletePlan((dbManager.getPlanById(idIndex).getParseId()));
+        }
+
+        dbManager.deletePlanById(idIndex);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+        planId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
 
-        Plan plan = dbManager.getPlanById(id);
+        Plan plan = dbManager.getPlanById(planId);
 
         setTitle(plan.getTitle());
         pv_tv_time.setText(DataUtils.getTimeStringFromTimeStamp(plan.getTimeStamp()));
