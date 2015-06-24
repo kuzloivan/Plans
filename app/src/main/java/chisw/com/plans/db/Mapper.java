@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import chisw.com.plans.db.entity.PlansEntity;
@@ -25,6 +24,7 @@ public class Mapper {
         CV.put(PlansEntity.TIMESTAMP, model.getTimeStamp());
         CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
         CV.put(PlansEntity.AUDIO_DURATION, model.getAudioDuration());
+//        CV.put(PlansEntity.IMAGE_PATH, model.getImagePath());
 
         return CV;
     }
@@ -50,6 +50,8 @@ public class Mapper {
         if(model.getAudioDuration() != -1 )
             CV.put(PlansEntity.AUDIO_DURATION, model.getAudioDuration());
 
+//        if(model.getImagePath() != null )
+//            CV.put(PlansEntity.IMAGE_PATH, model.getImagePath());
         return CV;
     }
 
@@ -63,6 +65,7 @@ public class Mapper {
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
         int audioPathIndex = cursor.getColumnIndex(PlansEntity.AUDIO_PATH);
         int audioDuration = cursor.getColumnIndex(PlansEntity.AUDIO_DURATION);
+//        int imagePathIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -73,7 +76,7 @@ public class Mapper {
         plan.setDetails(cursor.getString(detailsIndex));
         plan.setAudioPath(cursor.getString(audioPathIndex));
         plan.setAudioDuration(cursor.getInt(audioDuration));
-
+//        plan.setImagePath(cursor.getString(imagePathIndex));
         return plan;
     }
 
@@ -85,5 +88,4 @@ public class Mapper {
 
         return CV;
     }
-
 }

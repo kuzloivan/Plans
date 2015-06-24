@@ -54,7 +54,7 @@ public class DataUtils {
     {
         Formatter formatter = new Formatter();
 
-        formatter.format("%tH:%tM",DataUtils.getCalendar(), DataUtils.getCalendar());
+        formatter.format("Set time: %tH:%tM", DataUtils.getCalendar(), DataUtils.getCalendar());
 
         return formatter.toString();
     }
@@ -63,7 +63,7 @@ public class DataUtils {
     {
         Formatter formatter = new Formatter();
 
-        formatter.format("%td-%tm-%tY", DataUtils.getCalendar(), DataUtils.getCalendar(), DataUtils.getCalendar());
+        formatter.format("Set date: %td/%tm/%tY", DataUtils.getCalendar(), DataUtils.getCalendar(), DataUtils.getCalendar());
 
         return formatter.toString();
     }

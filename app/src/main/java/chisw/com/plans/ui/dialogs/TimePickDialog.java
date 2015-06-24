@@ -29,7 +29,6 @@ public class TimePickDialog extends DialogFragment
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE) + 1;
         Dialog picker = new TimePickerDialog(getActivity(), this, hour, minute, true);
-        picker.setTitle(getResources().getString(R.string.set_time));
         return picker;
     }
 
@@ -47,7 +46,7 @@ public class TimePickDialog extends DialogFragment
     @Override
     public void onTimeSet(TimePicker view, int hours, int minute) {
 
-        TextView tvTime = (TextView) getActivity().findViewById(R.id.timeValue_textview);
+        TextView tvTime = (TextView) getActivity().findViewById(R.id.setTime_textview);
 
         DataUtils.setCalendarHour(hours);
         DataUtils.setCalendarMinute(minute);

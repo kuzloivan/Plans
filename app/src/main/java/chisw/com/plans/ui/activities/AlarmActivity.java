@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,12 +68,28 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     private DialogFragment timeDialog;
     private Switch sRepeating;
     private ImageView iv_image;
+    private TextView mTextValue;
+    private SeekBar seekbar;
+
+
+
+
+
+
+
+
+
+
+
+
+
     private Uri selectedImageURI;
     private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initBackButton();
         Clicker clicker = new Clicker();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
@@ -86,13 +103,31 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         tvTime.setOnClickListener(clicker);
         iv_image = (ImageView) findViewById(R.id.aa_image);
         iv_image.setOnClickListener(clicker);
+
+        Clicker c = new Clicker();
+
+        findViewById(R.id.bt_save_alarm).setOnClickListener(c);
+        findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
+        mTextValue = (TextView)findViewById(R.id.alarmSoundTitle_textview);
+        tvDate = (TextView) findViewById(R.id.setDate_textview);
+        tvTime = (TextView) findViewById(R.id.setTime_textview);
+        tvDate.setOnClickListener(c);
+        tvTime.setOnClickListener(c);
+        findViewById(R.id.switch_repeating).setOnClickListener(c);
+
+        findViewById(R.id.aa_image).setOnClickListener(c);
+
+
+        iv_image = (ImageView) findViewById(R.id.aa_image);
         etTitle = (EditText) findViewById(R.id.setTitle_textview);
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
         //mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
         SeekerBar sb = new SeekerBar();
-        final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
+        //final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
+        seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
 
         DataUtils.initializeCalendar();
@@ -107,7 +142,35 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         }
         tvTime.setText(DataUtils.getTimeStrFromCalendar());
         tvDate.setText(DataUtils.getDateStrFromCalendar());
+        etTitle.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                    if (((EditText) v).getLineCount() >= 2)
+                        return true;
+                }
+                return false;
+            }
+        });
+        setDetails_textview.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                    if (((EditText) v).getLineCount() >= 5)
+                        return true;
+                }
+                return false;
+            }
+        });
     }
+
+
 
     @Override
     protected void onStop() {
@@ -185,25 +248,39 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             isDialogExist = false;
             return;
         }
+        Uri selectedUri  = data.getData();
+        final String[] proj = {MediaStore.Audio.Media.DATA};
+        final Cursor cursor;
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
+                cursor = getContentResolver().query(selectedUri, proj, null, null, null);
+                final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+                cursor.moveToLast();
+                String selectedAudioPath = cursor.getString(column_index_a);
+
+                String [] arrPath = selectedAudioPath.split("/");
+                mTextValue.setText(arrPath[arrPath.length-1]);
+
                 path = getPath(data);
                 if (SystemUtils.isKitKatHigher()) {
                     durationBuf = getAudioDuration(data.getData(), this);
                 } else {
                     Uri u = data.getData();
                     durationBuf = getAudioDuration(u, this);
+                    Duration(seekbar);
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
+
                 break;
             case GALLERY_REQUEST:
                 selectedImageURI = data.getData();
-                final String[] proj = {MediaStore.Images.Media.DATA};
-                final Cursor cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
-                final int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
+                final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToLast();
-                selectedImagePath = cursor.getString(column_index);
+                selectedImagePath = cursor.getString(column_index_i);
+
+
 
                 Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(selectedImagePath, 110, 110);
                 iv_image.setImageBitmap(bitmap);
@@ -237,6 +314,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     private String getPath(Intent str) {
         if (SystemUtils.isKitKatHigher()) {
+
             Uri data = str.getData();
             final String docId = DocumentsContract.getDocumentId(data);
             final String[] split = docId.split(":");
@@ -248,6 +326,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             final String[] selectionArgs = new String[]{
                     split[1]
             };
+
             return getDataColumn(this, contentUri, selection, selectionArgs);
         } else {
             return str.getDataString();
@@ -292,7 +371,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             netManager.editPlan(p, new CallbackEditPlan(p));
         } else {
             dbManager.saveNewPlan(p);
-            if(!sharedHelper.getSynchronization()) {
+            if (!sharedHelper.getSynchronization()) {
                 p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
                 synchronization.wasAdding(p.getLocalId());
                 return;
@@ -323,11 +402,11 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         public void onStopTrackingTouch(SeekBar seekBar) {
             Duration(seekBar);
         }
+    }
 
-        private void Duration(SeekBar seekBar) {
-            audioDuration = (durationBuf * seekBar.getProgress()) / 100;
-            timeFormat();
-        }
+    private void Duration(SeekBar seekBar) {
+        audioDuration = (durationBuf * seekBar.getProgress()) / 100;
+        timeFormat();
     }
 
     private void timeFormat() {
