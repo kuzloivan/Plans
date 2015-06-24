@@ -175,35 +175,7 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-    public final class Clicker implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.bt_save_alarm:
-                    startAlarm();
-                    break;
-                case R.id.dateValue_textview:
-                case R.id.setDate_textview:
-                    dateDialog = new DatePickDialog();
-                    dateDialog.show(getSupportFragmentManager(), "datePicker");
-                    break;
-                case R.id.timeValue_textview:
-                case R.id.setTime_textview:
-                    timeDialog = new TimePickDialog();
-                    timeDialog.show(getSupportFragmentManager(), "timePicker");
-                    break;
-                case R.id.switch_repeating:
-                    if (sRepeating.isChecked()) {
-                        daysOfWeekDialog = new DaysOfWeekDialog();
-                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
-                    }
-                    break;
-                case R.id.aa_setAudio_btn:
-                    chooseAudio();
-                    break;
-            }
-        }
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -242,6 +214,16 @@ public class AlarmActivity extends ToolbarActivity {
             isDialogExist = false;
         }
         startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+       /* iv_image.setImageURI(null);
+        iv_image.setImageURI(selectedImageURI);*/
+
     }
 
     private String getPath(Intent str) {
@@ -394,6 +376,38 @@ public class AlarmActivity extends ToolbarActivity {
                 parseObject.saveInBackground();
             } else {
                 showToast(e.getMessage());
+            }
+        }
+    }
+    public final class Clicker implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.bt_save_alarm:
+                    startAlarm();
+                    break;
+                case R.id.dateValue_textview:
+                case R.id.setDate_textview:
+                    dateDialog = new DatePickDialog();
+                    dateDialog.show(getSupportFragmentManager(), "datePicker");
+                    break;
+                case R.id.timeValue_textview:
+                case R.id.setTime_textview:
+                    timeDialog = new TimePickDialog();
+                    timeDialog.show(getSupportFragmentManager(), "timePicker");
+                    break;
+                case R.id.switch_repeating:
+                    if (sRepeating.isChecked()) {
+                        daysOfWeekDialog = new DaysOfWeekDialog();
+                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
+                    }
+                    break;
+                case R.id.aa_setAudio_btn:
+                    chooseAudio();
+                    break;
+                case R.id.aa_image:
+                    chooseImage();
+                    break;
             }
         }
     }

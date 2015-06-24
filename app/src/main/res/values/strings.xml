@@ -19,6 +19,7 @@
     <string name="aa_save_alarm">Save alarm</string>
     <string name="bt_ok">Ok</string>
     <string name="days_of_week_choos">Choose days of week</string>
+    <string name="alarmTitle_hint">Alarm title</string>
 
     <!-- Net activity -->
     <string name="login">User login</string>
