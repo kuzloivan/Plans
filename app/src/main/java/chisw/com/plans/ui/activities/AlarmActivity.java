@@ -2,6 +2,7 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -159,7 +160,9 @@ public class AlarmActivity extends ToolbarActivity {
 
 
                 // don't delete !
-                am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
+
+                PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(dbManager.getLastPlanID()));
+                am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
 
                 //am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
                 // don't delete !

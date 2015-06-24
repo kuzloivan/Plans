@@ -47,11 +47,4 @@ public abstract class ToolbarActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
-
-    protected PendingIntent createPendingIntent(String action){
-        Intent intent = new Intent(this, NotificationReceiver.class);
-        intent.setAction(action);
-
-        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 }

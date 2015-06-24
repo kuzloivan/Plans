@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.SharedHelper;
+import chisw.com.plans.db.AlarmManager;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.net.NetManager;
 import chisw.com.plans.net.Synchronization;
@@ -15,6 +16,7 @@ import chisw.com.plans.others.Multimedia;
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected NetManager netManager;
+    protected AlarmManager alarmManager;
     protected SharedHelper sharedHelper;
     protected Multimedia multimedia;
     protected DBManager dbManager;
@@ -26,6 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         PApplication pApplication = (PApplication) getApplication();
 
+        alarmManager = pApplication.getAlarmManager();
         sharedHelper = pApplication.getSharedHelper();
         netManager = pApplication.getNetManager();
         dbManager = pApplication.getDbManager();

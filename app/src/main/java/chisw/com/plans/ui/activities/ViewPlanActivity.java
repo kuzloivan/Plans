@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import chisw.com.plans.R;
@@ -34,6 +36,28 @@ public class ViewPlanActivity extends ToolbarActivity {
         pv_tv_details = (TextView)findViewById(R.id.pv_tv_details);
 
         initBackButton();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_view_plan, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.vp_menu_delete:
+
+                break;
+            case R.id.vp_menu_edit:
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
