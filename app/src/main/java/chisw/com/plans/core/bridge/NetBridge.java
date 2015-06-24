@@ -20,6 +20,6 @@ public interface NetBridge {
     void getAllPlans(FindCallback findCallback);
     void getPlan(String pId, FindCallback findCallback);
     void editPlan(Plan plan, AlarmActivity.CallbackEditPlan callbackEditPlan);
-    void deletePlan(String pId, GetCallback getCallback);
+    void deletePlan(String pId);
 
 }
