@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.db.DBManager;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 
 import android.view.Menu;
@@ -43,6 +45,9 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 public class AlarmActivity extends ToolbarActivity {
+
+    public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.alarm_activity.id";
+    public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.alarm_activity.bundle";
 
     private final int REQUEST_AUDIO_GET = 1;
     private String path;
@@ -100,15 +105,14 @@ public class AlarmActivity extends ToolbarActivity {
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
         mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
-
         SeekerBar sb = new SeekerBar();
         final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
 
         DataUtils.initializeCalendar();
 
-        if (getIntent().hasExtra("Plan")) {
-            isEdit = getIntent().getBundleExtra("Plan").getBoolean("isEdit");
+        if (getIntent().hasExtra(BUNDLE_KEY)) {
+            isEdit = true;
         }
         if (isEdit) {
             fillIn(seekbar);
@@ -141,9 +145,16 @@ public class AlarmActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void start(Activity a, Bundle bundle) {
+    public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
-        i.putExtra("Plan", bundle);
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_ID_KEY, id);
+        i.putExtra(BUNDLE_KEY, bundle);
+        a.startActivity(i);
+    }
+
+    public static void start(Activity a) {
+        Intent i = new Intent(a, AlarmActivity.class);
         a.startActivity(i);
     }
 
@@ -174,7 +185,6 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("Field is empty");
         }
     }
-
 
 
     @Override
@@ -279,7 +289,7 @@ public class AlarmActivity extends ToolbarActivity {
             netManager.editPlan(p, new CallbackEditPlan(p));
         } else {
             dbManager.saveNewPlan(p);
-            if(!sharedHelper.getSynchronization()) {
+            if (!sharedHelper.getSynchronization()) {
                 p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
                 synchronization.wasAdding(p.getLocalId());
                 showToast(Integer.toString(p.getLocalId()));
@@ -331,17 +341,23 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     private void fillIn(SeekBar seekbar) {
-        Bundle bundle = getIntent().getBundleExtra("Plan");
-        etTitle.setText(bundle.getString("Title"));
-        setDetails_textview.setText(bundle.getString("Details"));
-        DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(bundle.getLong("TimeStamp")));
-        path = bundle.getString("Path");
-        audioDuration = bundle.getInt("Duration");
+        int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+        Plan p = dbManager.getPlanById(id);
+        etTitle.setText(p.getTitle());
+        setDetails_textview.setText(p.getDetails());
+        DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
+        path = p.getAudioPath();
+        showToast(path);
+        if (path == null) {
+            return;
+        }
         Uri u = Uri.parse(path);
+        audioDuration = p.getAudioDuration();
         durationBuf = getAudioDuration(u, this);
-        isAudioSelected = true;
         seekbar.setProgress(getPercent((int) audioDuration, path));
+        isAudioSelected = true;
         timeFormat();
+
     }
 
     private int getPercent(int val, String path) {
@@ -379,6 +395,7 @@ public class AlarmActivity extends ToolbarActivity {
             }
         }
     }
+
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
