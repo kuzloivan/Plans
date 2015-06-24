@@ -50,7 +50,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     private final int REQUEST_AUDIO_GET = 1;
     private final int GALLERY_REQUEST = 2;
-    private String path;    
     private boolean isDialogExist;
     private int durationBuf;
     private long audioDuration;
@@ -91,7 +90,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
         setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
         sRepeating = (Switch) findViewById(R.id.switch_repeating);
-        mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
+        //mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
         SeekerBar sb = new SeekerBar();
         final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
@@ -340,7 +339,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         setDetails_textview.setText(p.getDetails());
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
         path = p.getAudioPath();
-        showToast(path);
         if (path == null) {
             return;
         }
