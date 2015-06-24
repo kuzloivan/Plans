@@ -2,10 +2,12 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.content.ContentResolver;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,12 +24,16 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.dialogs.DaysOfWeekDialog;
 import chisw.com.plans.ui.dialogs.TimePickDialog;
+import chisw.com.plans.utils.BitmapUtils;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
@@ -63,6 +69,7 @@ public class AlarmActivity extends ToolbarActivity {
     private Switch sRepeating;
     private ImageView iv_image;
     private Uri selectedImageURI;
+    private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,16 +144,8 @@ public class AlarmActivity extends ToolbarActivity {
         if (ValidData.isTextValid(etTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
-
-
-                // don't delete !
-
                 PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(dbManager.getLastPlanID()));
                 am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
-
-                //am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, createPendingIntent(Integer.toString(dbManager.getLastPlanID())));
-                // don't delete !
-
                 finish();
             } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
                 showToast("Time is incorrect.");
@@ -179,7 +178,15 @@ public class AlarmActivity extends ToolbarActivity {
                 break;
             case GALLERY_REQUEST:
                 selectedImageURI = data.getData();
-                iv_image.setImageURI(selectedImageURI);
+                final String[] proj = {MediaStore.Images.Media.DATA};
+                final Cursor cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
+                final int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToLast();
+                selectedImagePath = cursor.getString(column_index);
+
+                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(selectedImagePath, 110, 110);
+                iv_image.setImageBitmap(bitmap);
+
                 break;
         }
     }
