@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 
+import chisw.com.plans.db.AlarmManager;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.net.NetManager;
 import chisw.com.plans.net.Synchronization;
@@ -16,6 +17,7 @@ public class PApplication extends Application {
     private SharedHelper sharedHelper;
     private Multimedia multimedia;
     private Synchronization synchronization;
+    private AlarmManager alarmManagerHelper;
 
     private static final String APP_KEY = "fYItmKEFfg4ZxDEB1SrwVMUx82sw91XMyTeZJ0fC";
     private static final String CLNT_KEY = "QVWnE2OAOKVt5yv3KRt830rguZv22wkk8ySkLA4K";
@@ -27,6 +29,7 @@ public class PApplication extends Application {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, APP_KEY, CLNT_KEY);
 
+        alarmManagerHelper = new AlarmManager(this);
         netManager = new NetManager();
         sharedHelper = new SharedHelper(this);
         multimedia = new Multimedia();
@@ -45,6 +48,8 @@ public class PApplication extends Application {
     public Multimedia getMultimedia() {
         return multimedia;
     }
+
+    public AlarmManager getAlarmManager() { return alarmManagerHelper; }
 
     public DBManager getDbManager() { return dbManager; }
 

@@ -41,9 +41,9 @@ public class Synchronization {
 
     public void startSynchronization() {
         for(Integer key : historyOfChanges.keySet()) {
+            final Plan plan = dbManager.getPlanById(key);
             switch(historyOfChanges.get(key)) {
                 case 0:
-                    final Plan plan = dbManager.getPlanById(key);
                     netManager.addPlan(plan, new OnSaveCallback() {
                         @Override
                         public void getId(String id) {
@@ -56,6 +56,9 @@ public class Synchronization {
                 case 1:
                     break;
                 case 2:
+                    if(plan.getParseId()!=""){
+                        netManager.deletePlan(plan.getParseId());
+                    }
                     break;
             }
         }
