@@ -1,56 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     style="@style/AppTheme.PlannerTheme.ListView.Item"
-    android:padding="10dp"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+
+    <ImageView
+        android:id="@+id/pa_iv_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="8dp"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/pa_iv_image">
 
         <TextView
             android:id="@+id/pa_tv_title"
-            android:textColor="@color/color_pa_list_item_text_view_text"
-            android:textStyle="bold"
-            android:textSize="@dimen/abc_text_size_medium_material"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"/>
+            android:text="Title"
+            android:textColor="@color/color_pa_list_item_text_view_text"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/color_pa_list_item_text_view_text"
             android:id="@+id/pa_tv_details"
-            android:layout_below="@id/pa_tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Details of plan\nMore details!\nAnd more!\nMore and more!\nPlease, fix me!!!"/>
+            android:layout_below="@id/pa_tv_title"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Details of plan\nMore details!\nAnd more!\nMore and more!\nPlease, fix me!!!"
+            android:textColor="@color/color_pa_list_item_text_view_text" />
 
         <LinearLayout
-            android:layout_below="@id/pa_tv_details"
             android:id="@+id/pa_la_image"
-            android:background="@drawable/tile_background"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pa_tv_details"
+            android:background="@drawable/tile_background"
+            android:orientation="horizontal" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:textColor="@color/color_pa_list_item_text_view_text"
             android:id="@+id/pa_tv_time"
-            android:textStyle="italic"
-            android:textSize="@dimen/abc_text_size_small_material"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/pa_la_image"
-            android:text="18.50"/>
+            android:text="18.50"
+            android:textColor="@color/color_pa_list_item_text_view_text"
+            android:textSize="@dimen/abc_text_size_small_material"
+            android:textStyle="italic" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/abc_text_size_small_material"
-            android:textStyle="italic"
             android:id="@+id/pa_tv_date"
-            android:textColor="@color/color_pa_list_item_text_view_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pa_la_image"
             android:layout_alignParentRight="true"
-            android:text="22.06.2015"/>
+            android:layout_below="@id/pa_la_image"
+            android:text="22.06.2015"
+            android:textColor="@color/color_pa_list_item_text_view_text"
+            android:textSize="@dimen/abc_text_size_small_material"
+            android:textStyle="italic" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -1,163 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1"
-    >
+    android:layout_height="match_parent">
 
     <include layout="@layout/toolbar" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/aa_sw_activity"
-        >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="8dp">
+            <ImageView
+                android:id="@+id/aa_image"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:src="@drawable/aa_icon" />
 
-                <ImageView
-                    android:id="@+id/aa_image"
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    android:src="@drawable/aa_icon" />
+            <TextView
+                android:id="@+id/setDate_textview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="@dimen/margin8"
+                android:layout_toEndOf="@+id/aa_image"
+                android:layout_toRightOf="@+id/aa_image"
+                android:clickable="true"
+                android:text="@string/set_date"
+                android:textColor="#00796B"
+                android:textSize="20sp" />
 
-                <LinearLayout
-                    android:id="@+id/aa_linlt_for_color"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/setTime_textview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/setDate_textview"
+                android:layout_margin="@dimen/margin8"
+                android:layout_toEndOf="@+id/aa_image"
+                android:layout_toRightOf="@+id/aa_image"
+                android:clickable="true"
+                android:text="@string/set_time"
+                android:textColor="#00796B"
+                android:textSize="20sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            android:id="@+id/setDate_textview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="50"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:text="@string/set_date"
-                            android:textColor="#00796B"
-                            android:textSize="25sp" />
-
-                        <TextView
-                            android:id="@+id/setTime_textview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="50"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:text="@string/set_time"
-                            android:textColor="#00796B"
-                            android:textSize="25sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/dateValue_textview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="50"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:text="--"
-                            android:textColor="#00796B"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/timeValue_textview"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="50"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:text="--"
-                            android:textColor="#00796B"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
 
             <EditText
                 android:id="@+id/setTitle_textview"
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/alarmTitle_hint"
-                android:maxLines="10" />
+                android:layout_below="@id/aa_image"
+                android:hint="@string/alarm_title_hint"
+                android:maxLines="2" />
+
 
             <EditText
                 android:id="@+id/setDetails_textview"
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Details" />
+                android:layout_below="@id/setTitle_textview"
+                android:hint="@string/alarm_details_hint"
+                android:maxLines="5" />
+
 
             <LinearLayout
+                android:id="@+id/linear_layout_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/setDetails_textview"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_duration_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="@dimen/margin16"
                     android:text="Sound duration" />
 
                 <TextView
                     android:id="@+id/tv_sound_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="@dimen/margin16"
                     android:text="--" />
 
                 <SeekBar
                     android:id="@+id/sb_duration_sound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin8"
                     android:layout_weight="100"
                     android:max="100" />
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/alarmSound_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/linear_layout_duration"
+                android:layout_margin="@dimen/margin16"
+                android:text="Alarm sound: " />
+
+            <TextView
+                android:id="@+id/alarmSoundTitle_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/linear_layout_duration"
+                android:layout_margin="@dimen/margin16"
+                android:layout_toRightOf="@+id/alarmSound_textview"
+                android:text="--" />
+
+            <TextView
+                android:id="@+id/alarmRepearing_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/alarmSoundTitle_textview"
+                android:layout_margin="@dimen/margin16"
+                android:text="Repeating" />
+
+            <Switch
+                android:id="@+id/switch_repeating"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/alarmSound_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:text="Alarm sound: " />
-
-                <TextView
-                    android:id="@+id/alarmSoundTitle_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="--" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/alarmSoundTitle_textview"
+                android:layout_margin="@dimen/margin16"
+                android:layout_toRightOf="@+id/alarmRepearing_textview"
+                android:textOff="OFF"
+                android:textOn="ON" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/alarmRepearing_textview"
                 android:orientation="horizontal">
 
                 <Button
@@ -180,19 +159,9 @@
 
             </LinearLayout>
 
+        </RelativeLayout>
 
-            <Switch
-                android:id="@+id/switch_repeating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="30dp"
-                android:text="Repeating"
-                android:textColor="#00796B"
-                android:textSize="18sp" />
-
-        </LinearLayout>
     </ScrollView>
 
 
-</LinearLayout>
+</RelativeLayout>

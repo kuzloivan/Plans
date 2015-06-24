@@ -12,6 +12,7 @@ public class PlansEntity {
     public static final String LOCAL_ID = "_id";
     public static final String AUDIO_PATH = "audioPath";
     public static final String AUDIO_DURATION = "audioDuration";
+    public static final String IMAGE_PATH = "imagePath";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -21,7 +22,8 @@ public class PlansEntity {
             DETAILS + " TEXT, " +
             TIMESTAMP + " INTEGER, " +
             AUDIO_PATH + " TEXT, " +
-            AUDIO_DURATION + " INTEGER " +
+            AUDIO_DURATION + " INTEGER " + //Coma!
+//            IMAGE_PATH + " TEXT " +
             ")";
 
 }

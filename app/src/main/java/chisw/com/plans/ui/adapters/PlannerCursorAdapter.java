@@ -2,16 +2,19 @@ package chisw.com.plans.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import chisw.com.plans.R;
 import chisw.com.plans.db.Mapper;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.utils.BitmapUtils;
 import chisw.com.plans.utils.DataUtils;
 
 /**
@@ -52,7 +55,8 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
 
         String details = cursor.getString(detailsIndex);
-
+//        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource((new Plan().getImagePath()), 60, 60);
+//        viewHolder.ivImage.setImageBitmap(bitmap);
         // todo count the count of \n
         //if (details.c)
 
@@ -64,12 +68,14 @@ public class PlannerCursorAdapter extends CursorAdapter {
         public TextView tvTime;
         public TextView tvDate;
         public TextView tvDetails;
+//        public ImageView ivImage;
 
         public  ViewHolder (View view) {
             tvDate = (TextView)view.findViewById(R.id.pa_tv_date);
             tvTime = (TextView)view.findViewById(R.id.pa_tv_time);
             tvTitle = (TextView)view.findViewById(R.id.pa_tv_title);
             tvDetails = (TextView)view.findViewById(R.id.pa_tv_details);
+//            ivImage = (ImageView)view.findViewById(R.id.pa_iv_image);
         }
     }
 }
