@@ -80,9 +80,14 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public void deletePlan(String parseId, GetCallback getCallback) {
+    public void deletePlan(String parseId) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.getInBackground(parseId, getCallback);
+        query.getInBackground(parseId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                parseObject.deleteInBackground();
+            }
+        });
     }
 
     public final class CallbackAddPlan implements SaveCallback {
