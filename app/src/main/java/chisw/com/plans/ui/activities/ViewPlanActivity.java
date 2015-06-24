@@ -65,7 +65,6 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         intent.putExtra(BUNDLE_KEY, bundle);
 
-
         activity.startActivity(intent);
     }
 
