@@ -14,10 +14,15 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import chisw.com.plans.core.bridge.GetPlanCallback;
 import chisw.com.plans.core.bridge.NetBridge;
 import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.db.Mapper;
+import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.ui.activities.BaseActivity;
@@ -59,17 +64,43 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public void getAllPlans(FindCallback findCallback) {
+    public List<Plan> getAllPlans(FindCallback findCallback) {
+        List<Plan> plans = new ArrayList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.findInBackground(findCallback);
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for(ParseObject obj : list){
+                    Plan p = new Plan();
+                    p.setAudioPath(obj.getString(PlansEntity.AUDIO_PATH));
+                    p.setLocalId(obj.getInt(PlansEntity.LOCAL_ID));
+                    p.setDetails(obj.getString(PlansEntity.DETAILS));
+                    p.setTitle(obj.getString(PlansEntity.TITLE));
+                    p.setTimeStamp(obj.getLong(PlansEntity.TIMESTAMP));
+                    plans.add(p);
+                }
+            }
+        });
+        return plans;
     }
 
     @Override
-    public void getPlan(String parseId, FindCallback findCallback) {
+    public Plan getPlan(String parseId) {
+        final Plan p = new Plan();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Plans");
-        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground(findCallback);
-
+        query.whereEqualTo("objectId", parseId);
+        query.getInBackground(parseId, new CallbackGetPlan(new GetPlanCallback() {
+            @Override
+            public void getPlan(ParseObject parseObject) {
+                p.setAudioPath(parseObject.getString(PlansEntity.AUDIO_PATH));
+                p.setLocalId(parseObject.getInt(PlansEntity.LOCAL_ID));
+                p.setDetails(parseObject.getString(PlansEntity.DETAILS));
+                p.setTitle(parseObject.getString(PlansEntity.TITLE));
+                p.setTimeStamp(parseObject.getLong(PlansEntity.TIMESTAMP));
+            }
+        }));
+        return p;
     }
 
     @Override
@@ -88,6 +119,21 @@ public class NetManager implements NetBridge {
                 parseObject.deleteInBackground();
             }
         });
+    }
+
+    public final class CallbackGetPlan implements GetCallback<ParseObject>{
+        private final GetPlanCallback getPlanCallback;
+
+        public CallbackGetPlan( GetPlanCallback callback){
+            this.getPlanCallback=callback;
+        }
+
+        @Override
+        public void done(ParseObject parseObject, ParseException e) {
+            if (e==null){
+                getPlanCallback.getPlan(parseObject);
+            }
+        }
     }
 
     public final class CallbackAddPlan implements SaveCallback {

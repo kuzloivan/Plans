@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import chisw.com.plans.db.entity.PlansEntity;
@@ -60,4 +61,5 @@ public class Mapper {
 
         return CV;
     }
+
 }
