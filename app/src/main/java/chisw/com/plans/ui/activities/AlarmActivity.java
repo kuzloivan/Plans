@@ -105,8 +105,9 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         } else {
             tvSoundDuration.setText("0:0");
         }
-        tvTime.setText(DataUtils.getTimeStrFromCalendar());
-        tvDate.setText(DataUtils.getDateStrFromCalendar());
+        ((TextView)findViewById(R.id.timeValue_textview)).setText(DataUtils.getTimeStrFromCalendar());
+        ((TextView)findViewById(R.id.dateValue_textview)).setText(DataUtils.getDateStrFromCalendar());
+        //tvDate.setText(DataUtils.getDateStrFromCalendar());
     }
 
     @Override
