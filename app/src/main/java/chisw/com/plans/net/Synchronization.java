@@ -69,7 +69,7 @@ public class Synchronization {
                         dbManager.saveNewPlan(plan);
                     }
                     RestartManager restartManager = new RestartManager(ctxt);
-                    restartManager.Reload(ctxt);
+                    restartManager.Reload();
                 }
             });
         } else if(!historyOfChanges.isEmpty()) {
