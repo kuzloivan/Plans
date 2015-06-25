@@ -71,6 +71,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     private TextView mTextValue;
     private SeekBar seekbar;
 
+
     private Uri selectedImageURI;
     private String selectedImagePath;
 
@@ -96,7 +97,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
         findViewById(R.id.bt_save_alarm).setOnClickListener(c);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
-        mTextValue = (TextView)findViewById(R.id.alarmSoundTitle_textview);
+        mTextValue = (TextView) findViewById(R.id.alarmSoundTitle_textview);
         tvDate = (TextView) findViewById(R.id.setDate_textview);
         tvTime = (TextView) findViewById(R.id.setTime_textview);
         tvDate.setOnClickListener(c);
@@ -159,7 +160,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     }
 
 
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -207,14 +207,14 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
                 int pendingId = dbManager.getLastPlanID();
 
-                if(isEdit) pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+                if (isEdit)
+                    pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
 
                 PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
 
-                if(!sRepeating.isChecked()) {
+                if (!sRepeating.isChecked()) {
                     am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
-                }
-                else {
+                } else {
                     am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                 }
 
@@ -236,14 +236,12 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             isDialogExist = false;
             return;
         }
-        Uri selectedUri  = data.getData();
+        Uri selectedUri = data.getData();
         final String[] proj = {MediaStore.Audio.Media.DATA};
         final Cursor cursor;
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-
                 path = getPath(data);
-
                 if (SystemUtils.isKitKatHigher()) {
                     durationBuf = getAudioDuration(data.getData(), this);
                     mTextValue.setText(getName(path));
@@ -251,16 +249,15 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                     Uri u = data.getData();
                     durationBuf = getAudioDuration(u, this);
                     Duration(seekbar);
-
                     cursor = getContentResolver().query(selectedUri, proj, null, null, null);
                     final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
                     cursor.moveToLast();
                     String selectedAudioPath = cursor.getString(column_index_a);
                     mTextValue.setText(getName(selectedAudioPath));
+                    cursor.close();
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
-
                 break;
             case GALLERY_REQUEST:
                 selectedImageURI = data.getData();
@@ -268,18 +265,15 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToLast();
                 selectedImagePath = cursor.getString(column_index_i);
-
-
-
                 Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(selectedImagePath, 110, 110);
                 iv_image.setImageBitmap(bitmap);
-
                 break;
         }
     }
-    private String getName(String pathName){
-        String [] arrPath = pathName.split("/");
-        return arrPath[arrPath.length-1];
+
+    private String getName(String pathName) {
+        String[] arrPath = pathName.split("/");
+        return arrPath[arrPath.length - 1];
     }
 
     private void chooseAudio() {
@@ -357,7 +351,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             p.setParseId(dbManager.getPlanById(id).getParseId());
             p.setLocalId(dbManager.getPlanById(id).getLocalId());
             dbManager.editPlan(p, id);
-            if(!sharedHelper.getSynchronization()) {
+            if (!sharedHelper.getSynchronization()) {
                 synchronization.wasEditing(p.getLocalId());
                 return;
             }
@@ -421,25 +415,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         durationBuf = getAudioDuration(u, this);
         isAudioSelected = true;
 //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         seekbar.setProgress(getPercent((int) audioDuration, path));

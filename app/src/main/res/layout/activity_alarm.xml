@@ -129,6 +129,8 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_layout_duration"
                 android:layout_margin="@dimen/margin16"
+                android:lines="2"
+                android:ellipsize="marquee"
                 android:layout_toRightOf="@+id/alarmSound_textview"
                 android:text="--" />
 

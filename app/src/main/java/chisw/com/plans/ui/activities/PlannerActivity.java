@@ -168,7 +168,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private void startSynchronization() {
-        synchronization.startSynchronization();
+        synchronization.startSynchronization(getApplication().getApplicationContext());
     }
 
     public static void start(Activity activity) {
