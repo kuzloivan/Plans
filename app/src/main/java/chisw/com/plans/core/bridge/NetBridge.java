@@ -1,8 +1,10 @@
 package chisw.com.plans.core.bridge;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
+import com.parse.ParseObject;
 import com.parse.SignUpCallback;
 
 import java.util.List;
@@ -19,9 +21,9 @@ public interface NetBridge {
 
     /* Plan */
     void addPlan(Plan plan, OnSaveCallback callback);
-    List<Plan> getAllPlans(FindCallback findCallback);
+    void getAllPlans(OnGetPlansCallback callback);
     Plan getPlan(String pId);
-    void editPlan(Plan plan, AlarmActivity.CallbackEditPlan callbackEditPlan);
+    void editPlan(Plan plan, GetCallback<ParseObject> callbackEditPlan);
     void deletePlan(String pId);
 
 }

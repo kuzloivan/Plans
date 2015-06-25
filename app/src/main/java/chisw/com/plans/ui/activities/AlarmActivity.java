@@ -362,7 +362,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     private void writePlanToDB(Calendar calendar) {
         final Plan p = new Plan();
-
         p.setDetails(setDetails_textview.getText().toString());
         p.setTitle(etTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
@@ -370,19 +369,20 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         p.setAudioDuration((int) audioDuration);
 
         if (isEdit) {
-
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
-
-            p.setParseId(null);
-
+            p.setParseId(dbManager.getPlanById(id).getParseId());
+            p.setLocalId(dbManager.getPlanById(id).getLocalId());
             dbManager.editPlan(p, id);
+            if(!sharedHelper.getSynchronization()) {
+                synchronization.wasEditing(p.getLocalId());
+                return;
+            }
             netManager.editPlan(p, new CallbackEditPlan(p));
         } else {
             dbManager.saveNewPlan(p);
             if (!sharedHelper.getSynchronization()) {
                 p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
                 synchronization.wasAdding(p.getLocalId());
-                showToast(Integer.toString(p.getLocalId()));
                 return;
             }
             netManager.addPlan(p, new OnSaveCallback() {
@@ -494,7 +494,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         @Override
         public void done(ParseObject parseObject, ParseException e) {
             if (e == null) {
-                parseObject.put("name", plan.getTitle());
+                parseObject.put("title", plan.getTitle());
                 parseObject.put("timeStamp", plan.getTimeStamp());
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
