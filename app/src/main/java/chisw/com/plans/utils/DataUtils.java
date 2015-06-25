@@ -54,7 +54,20 @@ public class DataUtils {
     {
         Formatter formatter = new Formatter();
 
-        formatter.format("Set time: %tH:%tM", DataUtils.getCalendar(), DataUtils.getCalendar());
+        formatter.format("%tH:%tM", DataUtils.getCalendar(), DataUtils.getCalendar());
+
+        return formatter.toString();
+    }
+
+    public static String getTimeStrFromTimeStamp(int timeStamp)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, timeStamp);
+
+        Formatter formatter = new Formatter();
+
+        formatter.format("%tM:%tS", calendar, calendar);
 
         return formatter.toString();
     }
@@ -63,7 +76,7 @@ public class DataUtils {
     {
         Formatter formatter = new Formatter();
 
-        formatter.format("Set date: %td/%tm/%tY", DataUtils.getCalendar(), DataUtils.getCalendar(), DataUtils.getCalendar());
+        formatter.format("%td/%tm/%tY", DataUtils.getCalendar(), DataUtils.getCalendar(), DataUtils.getCalendar());
 
         return formatter.toString();
     }
