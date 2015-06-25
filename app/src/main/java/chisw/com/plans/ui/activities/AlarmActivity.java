@@ -70,19 +70,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     private ImageView iv_image;
     private TextView mTextValue;
     private SeekBar seekbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
     private Uri selectedImageURI;
     private String selectedImagePath;
 

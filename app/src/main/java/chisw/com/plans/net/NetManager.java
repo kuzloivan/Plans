@@ -61,6 +61,7 @@ public class NetManager implements NetBridge {
         }
         pPlan.put("details", plan.getDetails());
         pPlan.put("userId", ParseUser.getCurrentUser().getObjectId());
+        pPlan.put("audioDuration", plan.getAudioDuration());
         pPlan.saveInBackground(new CallbackAddPlan(pPlan, callback));
     }
 
