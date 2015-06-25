@@ -1,5 +1,6 @@
 package chisw.com.plans.net;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import chisw.com.plans.core.bridge.OnGetPlansCallback;
 import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.others.RestartManager;
 import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.ui.activities.LogInActivity;
 import chisw.com.plans.utils.ValidData;
@@ -55,7 +57,7 @@ public class Synchronization {
         historyOfChanges.put(planId, "2");
     }
 
-    public void startSynchronization() {
+    public void startSynchronization(final Context ctxt) {
         Cursor cursor = dbManager.getPlans();
         if(!cursor.moveToFirst()) {
             final ArrayList<Plan> plans = new ArrayList<>();
@@ -66,6 +68,8 @@ public class Synchronization {
                         plans.add(plan);
                         dbManager.saveNewPlan(plan);
                     }
+                    RestartManager restartManager = new RestartManager(ctxt);
+                    restartManager.Reload(ctxt);
                 }
             });
         } else if(!historyOfChanges.isEmpty()) {

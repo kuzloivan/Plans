@@ -253,21 +253,26 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         final Cursor cursor;
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                cursor = getContentResolver().query(selectedUri, proj, null, null, null);
-                final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-                cursor.moveToLast();
-                String selectedAudioPath = cursor.getString(column_index_a);
 
-                String [] arrPath = selectedAudioPath.split("/");
-                mTextValue.setText(arrPath[arrPath.length-1]);
 
                 path = getPath(data);
+
+
+
                 if (SystemUtils.isKitKatHigher()) {
                     durationBuf = getAudioDuration(data.getData(), this);
+                    mTextValue.setText(getName(path));
                 } else {
                     Uri u = data.getData();
                     durationBuf = getAudioDuration(u, this);
                     Duration(seekbar);
+
+                    cursor = getContentResolver().query(selectedUri, proj, null, null, null);
+                    final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+                    cursor.moveToLast();
+                    String selectedAudioPath = cursor.getString(column_index_a);
+                    mTextValue.setText(getName(selectedAudioPath));
+
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
@@ -287,6 +292,10 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
                 break;
         }
+    }
+    private String getName(String pathName){
+        String [] arrPath = pathName.split("/");
+        return arrPath[arrPath.length-1];
     }
 
     private void chooseAudio() {
@@ -436,6 +445,28 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         audioDuration = p.getAudioDuration();
         durationBuf = getAudioDuration(u, this);
         isAudioSelected = true;
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         seekbar.setProgress(getPercent((int) audioDuration, path));
         isAudioSelected = true;
         timeFormat();
