@@ -236,30 +236,31 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             isDialogExist = false;
             return;
         }
-        Uri selectedUri = data.getData();
-        final String[] proj = {MediaStore.Audio.Media.DATA};
-        final Cursor cursor;
+
+
+
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 path = getPath(data);
+
+
+
                 if (SystemUtils.isKitKatHigher()) {
                     durationBuf = getAudioDuration(data.getData(), this);
-                    mTextValue.setText(getName(path));
+                    mTextValue.setText(getName(null, path));
                 } else {
                     Uri u = data.getData();
                     durationBuf = getAudioDuration(u, this);
                     Duration(seekbar);
-                    cursor = getContentResolver().query(selectedUri, proj, null, null, null);
-                    final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-                    cursor.moveToLast();
-                    String selectedAudioPath = cursor.getString(column_index_a);
-                    mTextValue.setText(getName(selectedAudioPath));
-                    cursor.close();
+
+                    mTextValue.setText(getName(u, null));
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
                 break;
             case GALLERY_REQUEST:
+                final String[] proj = {MediaStore.Audio.Media.DATA};
+                final Cursor cursor;
                 selectedImageURI = data.getData();
                 cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
                 final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -271,8 +272,19 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         }
     }
 
-    private String getName(String pathName) {
-        String[] arrPath = pathName.split("/");
+    private String getName(Uri pathUri, String pathName) {
+        String[] arrPath = null;
+        if (!SystemUtils.isKitKatHigher()) {
+
+            final String[] proj = {MediaStore.Audio.Media.DATA};
+            final Cursor cursor;
+            cursor = getContentResolver().query(pathUri, proj, null, null, null);
+            final int column_index_a = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+            cursor.moveToLast();
+            pathName = cursor.getString(column_index_a);
+            cursor.close();
+        }
+        arrPath = pathName.split("/");
         return arrPath[arrPath.length - 1];
     }
 
@@ -414,7 +426,12 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         audioDuration = p.getAudioDuration();
         durationBuf = getAudioDuration(u, this);
         isAudioSelected = true;
-//
+
+
+
+        Uri tmpUri = Uri.parse(path);
+
+        mTextValue.setText(getName(tmpUri, path));
 
 
         seekbar.setProgress(getPercent((int) audioDuration, path));
