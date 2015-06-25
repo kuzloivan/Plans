@@ -34,6 +34,7 @@ public class Synchronization {
     public  Map<Integer, String> historyOfChanges;
     private DBManager dbManager;
     private NetManager netManager;
+    private boolean isSyncStarted;
 
     public Synchronization(DBManager dbManager, NetManager netManager) {
         this.historyOfChanges = new HashMap<>();
@@ -73,6 +74,11 @@ public class Synchronization {
                 }
             });
         } else if(!historyOfChanges.isEmpty()) {
+            if(isSyncStarted == false) {
+                isSyncStarted = true;
+            } else {
+                return;
+            }
             for (Integer key : historyOfChanges.keySet()) {
                 final Plan plan = dbManager.getPlanById(key);
                 switch (historyOfChanges.get(key)) {
@@ -83,6 +89,7 @@ public class Synchronization {
                                 plan.setParseId(id);
                                 int planId = plan.getLocalId();
                                 dbManager.editPlan(plan, planId);
+                                isSyncStarted=false;
                             }
                         });
                         break;
@@ -94,6 +101,7 @@ public class Synchronization {
                                     plan.setParseId(id);
                                     int planId = plan.getLocalId();
                                     dbManager.editPlan(plan, planId);
+                                    isSyncStarted=false;
                                 }
                             });
                             return;
@@ -121,7 +129,7 @@ public class Synchronization {
         @Override
         public void done(ParseObject parseObject, ParseException e) {
             if (e == null) {
-                parseObject.put("name", plan.getTitle());
+                parseObject.put("title", plan.getTitle());
                 parseObject.put("timeStamp", plan.getTimeStamp());
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
