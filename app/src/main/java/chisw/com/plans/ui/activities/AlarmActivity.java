@@ -462,6 +462,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
+                parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();

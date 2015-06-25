@@ -20,6 +20,7 @@ import java.util.Map;
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.bridge.OnGetPlansCallback;
 import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.core.bridge.SyncBridge;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.RestartManager;
@@ -30,7 +31,11 @@ import chisw.com.plans.utils.ValidData;
 /**
  * Created by vdboo_000 on 23.06.2015.
  */
-public class Synchronization {
+public class Synchronization implements SyncBridge {
+    private static final String ADD_PLAN = "0";
+    private static final String EDIT_PLAN = "1";
+    private static final String DELETE_LOCAL_PLAN = "2";
+
     public  Map<Integer, String> historyOfChanges;
     private DBManager dbManager;
     private NetManager netManager;
@@ -40,14 +45,15 @@ public class Synchronization {
         this.historyOfChanges = new HashMap<>();
         this.dbManager = dbManager;
         this.netManager = netManager;
+        isSyncStarted = false;
     }
 
     public void wasAdding(int planId) {
-        historyOfChanges.put(planId, "0");
+        historyOfChanges.put(planId, ADD_PLAN);
     }
 
     public void wasEditing(int planId) {
-        historyOfChanges.put(planId, "1");
+        historyOfChanges.put(planId, EDIT_PLAN);
     }
 
     public void wasDeleting(int planId) {
@@ -55,26 +61,12 @@ public class Synchronization {
             historyOfChanges.put(planId, dbManager.getPlanById(planId).getParseId());
             return;
         }
-        historyOfChanges.put(planId, "2");
+        historyOfChanges.put(planId, DELETE_LOCAL_PLAN);
     }
 
     public void startSynchronization(final Context ctxt) {
-        Cursor cursor = dbManager.getPlans();
-        if(!cursor.moveToFirst()) {
-            final ArrayList<Plan> plans = new ArrayList<>();
-            netManager.getAllPlans(new OnGetPlansCallback() {
-                @Override
-                public void getPlans(ArrayList<Plan> lPlans) {
-                    for (Plan plan : lPlans) {
-                        plans.add(plan);
-                        dbManager.saveNewPlan(plan);
-                    }
-                    RestartManager restartManager = new RestartManager(ctxt);
-                    restartManager.Reload();
-                }
-            });
-        } else if(!historyOfChanges.isEmpty()) {
-            if(isSyncStarted == false) {
+        if(!historyOfChanges.isEmpty()) {
+            if (!isSyncStarted) {
                 isSyncStarted = true;
             } else {
                 return;
@@ -82,18 +74,18 @@ public class Synchronization {
             for (Integer key : historyOfChanges.keySet()) {
                 final Plan plan = dbManager.getPlanById(key);
                 switch (historyOfChanges.get(key)) {
-                    case "0":
+                    case ADD_PLAN:
                         netManager.addPlan(plan, new OnSaveCallback() {
                             @Override
                             public void getId(String id) {
                                 plan.setParseId(id);
                                 int planId = plan.getLocalId();
                                 dbManager.editPlan(plan, planId);
-                                isSyncStarted=false;
+                                isSyncStarted = false;
                             }
                         });
                         break;
-                    case "1":
+                    case EDIT_PLAN:
                         if (plan.getParseId() == null) {
                             netManager.addPlan(plan, new OnSaveCallback() {
                                 @Override
@@ -101,22 +93,40 @@ public class Synchronization {
                                     plan.setParseId(id);
                                     int planId = plan.getLocalId();
                                     dbManager.editPlan(plan, planId);
-                                    isSyncStarted=false;
+                                    isSyncStarted = false;
                                 }
                             });
                             return;
                         }
                         netManager.editPlan(plan, new CallbackEditPlan(plan));
                         break;
-                    case "2":
+                    case DELETE_LOCAL_PLAN:
+                        isSyncStarted = false;
                         break;
                     default:
                         netManager.deletePlan(historyOfChanges.get(key));
+                        isSyncStarted = false;
                         break;
                 }
             }
-            historyOfChanges.clear();
+        } else {
+            Cursor cursor = dbManager.getPlans();
+            if (!cursor.moveToFirst()) {
+                final ArrayList<Plan> plans = new ArrayList<>();
+                netManager.getAllPlans(new OnGetPlansCallback() {
+                    @Override
+                    public void getPlans(ArrayList<Plan> lPlans) {
+                        for (Plan plan : lPlans) {
+                            plans.add(plan);
+                            dbManager.saveNewPlan(plan);
+                        }
+                        RestartManager restartManager = new RestartManager(ctxt);
+                        restartManager.Reload();
+                    }
+                });
+            }
         }
+        historyOfChanges.clear();
     }
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
@@ -134,6 +144,7 @@ public class Synchronization {
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
+                parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
