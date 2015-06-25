@@ -258,8 +258,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 cursor.moveToLast();
                 String selectedAudioPath = cursor.getString(column_index_a);
 
-                String [] arrPath = selectedAudioPath.split("/");
-                mTextValue.setText(arrPath[arrPath.length-1]);
+                //String [] arrPath = selectedAudioPath.split("/");
+                //mTextValue.setText(arrPath[arrPath.length-1]);
 
                 path = getPath(data);
                 if (SystemUtils.isKitKatHigher()) {
