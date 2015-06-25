@@ -235,26 +235,26 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             return;
         }
 
-
-
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                path = getPath(data);
-
-
-
-                if (SystemUtils.isKitKatHigher()) {
-                    durationBuf = getAudioDuration(data.getData(), this);
-                    mTextValue.setText(getName(null, path));
-                } else {
-                    Uri u = data.getData();
-                    durationBuf = getAudioDuration(u, this);
-                    Duration(seekbar);
-
-                    mTextValue.setText(getName(u, null));
+                try {
+                    path = getPath(data);
+                    if (SystemUtils.isKitKatHigher()) {
+                        durationBuf = getAudioDuration(data.getData(), this);
+                        mTextValue.setText(getName(null, path));
+                    } else {
+                        Uri u = data.getData();
+                        durationBuf = getAudioDuration(u, this);
+                        Duration(seekbar);
+                        mTextValue.setText(getName(u, null));
+                    }
+                    isAudioSelected = true;
+                    isDialogExist = false;
                 }
-                isAudioSelected = true;
-                isDialogExist = false;
+                catch (IllegalArgumentException e)
+                {
+                    showToast("File is not valid");
+                }
                 break;
             case GALLERY_REQUEST:
                 final String[] proj = {MediaStore.Audio.Media.DATA};
@@ -309,25 +309,23 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     }
 
-    private String getPath(Intent str) {
-        if (SystemUtils.isKitKatHigher()) {
-
-            Uri data = str.getData();
-            final String docId = DocumentsContract.getDocumentId(data);
-            final String[] split = docId.split(":");
-            Uri contentUri = null;
-            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private String getPath(Intent str) throws IllegalArgumentException{
+            if (SystemUtils.isKitKatHigher()) {
+                Uri data = str.getData();
+                final String docId = DocumentsContract.getDocumentId(data);
+                final String[] split = docId.split(":");
+                Uri contentUri = null;
+                if ("com.android.providers.media.documents".equals(data.getAuthority())) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+                return getDataColumn(this, contentUri, selection, selectionArgs);
+            } else {
+                return str.getDataString();
             }
-            final String selection = "_id=?";
-            final String[] selectionArgs = new String[]{
-                    split[1]
-            };
-
-            return getDataColumn(this, contentUri, selection, selectionArgs);
-        } else {
-            return str.getDataString();
-        }
     }
 
     private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {

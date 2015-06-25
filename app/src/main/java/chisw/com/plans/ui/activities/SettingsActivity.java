@@ -92,18 +92,17 @@ public class SettingsActivity extends ToolbarActivity {
         @Override
         public void onCheckedChanged(CompoundButton cb, boolean cbBool) {
             switch (cb.getId()) {
-
                 case R.id.sa_vibration_switch:
                     chooseVibration = cbBool;
-                    showToast("choose_vibration = " + chooseVibration);
+                    showToast("Vibration " + String.valueOf(chooseVibration ? "On" : "Off"));
                     break;
                 case R.id.sa_notification_switch:
                     chooseNotification = cbBool;
-                    showToast("choose_notification = " + chooseNotification);
+                    showToast("Notification " + String.valueOf(chooseNotification ? "On" : "Off"));
                     break;
                 case R.id.sa_autoSync_switch:
                     chooseSynchronization = cbBool;
-                    showToast("chooseSynchronization = " + chooseSynchronization);
+                    showToast("Synchronization " + String.valueOf(chooseSynchronization ? "On" : "Off"));
                     break;
             }
         }
