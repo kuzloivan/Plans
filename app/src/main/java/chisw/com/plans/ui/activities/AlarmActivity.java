@@ -71,18 +71,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     private TextView mTextValue;
     private SeekBar seekbar;
 
-
-
-
-
-
-
-
-
-
-
-
-
     private Uri selectedImageURI;
     private String selectedImagePath;
 
@@ -138,10 +126,10 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         if (isEdit) {
             fillIn(seekbar);
         } else {
-            tvSoundDuration.setText("0:0");
+            tvSoundDuration.setText("00:00");
         }
-        tvTime.setText(DataUtils.getTimeStrFromCalendar());
-        tvDate.setText(DataUtils.getDateStrFromCalendar());
+        tvTime.setText("Time: " + DataUtils.getTimeStrFromCalendar());
+        tvDate.setText("Date: " + DataUtils.getDateStrFromCalendar());
         etTitle.setOnKeyListener(new View.OnKeyListener() {
 
             @Override
@@ -254,10 +242,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
 
-
                 path = getPath(data);
-
-
 
                 if (SystemUtils.isKitKatHigher()) {
                     durationBuf = getAudioDuration(data.getData(), this);
@@ -272,7 +257,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                     cursor.moveToLast();
                     String selectedAudioPath = cursor.getString(column_index_a);
                     mTextValue.setText(getName(selectedAudioPath));
-
                 }
                 isAudioSelected = true;
                 isDialogExist = false;
@@ -419,16 +403,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     }
 
     private void timeFormat() {
-        long h = audioDuration / 3600;
-        long m = (audioDuration - h * 3600) / 60;
-        long s = audioDuration - (h * 3600 + m * 60);
-        String durationValue;
-        if (h == 0) {
-            durationValue = m + ":" + s;
-        } else {
-            durationValue = h + ":" + m + ":" + s;
-        }
-        tvSoundDuration.setText(durationValue);
+        tvSoundDuration.setText(DataUtils.getTimeStrFromTimeStamp((int)audioDuration));
     }
 
     private void fillIn(SeekBar seekbar) {
