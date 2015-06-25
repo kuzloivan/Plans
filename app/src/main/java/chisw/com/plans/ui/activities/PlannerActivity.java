@@ -215,7 +215,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             Cursor cursor = plannerCursorAdapter.getCursor();
             cursor.moveToPosition(position);
 
