@@ -66,7 +66,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         //fabButton.showFloatingActionButton();
         fabButton.setOnClickListener(clicker);
 
-
+        startSynchronization();
     }
 
     private void updateListView() {
