@@ -93,15 +93,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
         Clicker c = new Clicker();
 
-        findViewById(R.id.bt_save_alarm).setOnClickListener(c);
-        findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
         mTextValue = (TextView) findViewById(R.id.alarmSoundTitle_textview);
-        tvDate = (TextView) findViewById(R.id.setDate_textview);
-        tvTime = (TextView) findViewById(R.id.setTime_textview);
-        tvDate.setOnClickListener(c);
-        tvTime.setOnClickListener(c);
         findViewById(R.id.switch_repeating).setOnClickListener(c);
-
         findViewById(R.id.aa_image).setOnClickListener(c);
 
 
@@ -116,7 +109,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         //final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
-
+        seekbar.setEnabled(false);
         DataUtils.initializeCalendar();
 
         if (getIntent().hasExtra(BUNDLE_KEY)) {
@@ -127,8 +120,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         } else {
             tvSoundDuration.setText("00:00");
         }
-        tvTime.setText("Time: " + DataUtils.getTimeStrFromCalendar());
-        tvDate.setText("Date: " + DataUtils.getDateStrFromCalendar());
+        /*tvTime.setText("Time: " + DataUtils.getTimeStrFromCalendar());
+        tvDate.setText("Date: " + DataUtils.getDateStrFromCalendar());*/
         etTitle.setOnKeyListener(new View.OnKeyListener() {
 
             @Override
@@ -234,7 +227,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             isDialogExist = false;
             return;
         }
-
+        seekbar.setEnabled(true);
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                     if ( data.getType() != "audio/mp3"){
