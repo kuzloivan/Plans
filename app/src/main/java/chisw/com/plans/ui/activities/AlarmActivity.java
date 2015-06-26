@@ -230,10 +230,10 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         seekbar.setEnabled(true);
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                    if ( data.getType() != "audio/mp3"){
+                    /*if ( data.getType() != "audio/mp3"){
                         showToast("File is not valid");
                         return;
-                    }
+                    }*/
                     path = getPath(data);
                     if (SystemUtils.isKitKatHigher()) {
                         durationBuf = getAudioDuration(data.getData(), this);
