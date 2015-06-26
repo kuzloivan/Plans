@@ -61,6 +61,9 @@ public class Multimedia {
     }
 
     public void stopPlayer() {
+        if(player == null){
+            return;
+        }
         player.stop();
         player.reset();
         player.release();

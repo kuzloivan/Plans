@@ -173,5 +173,4 @@ public class NetManager implements NetBridge {
             e.getMessage();
         }
     }
-
 }

@@ -66,7 +66,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         //fabButton.showFloatingActionButton();
         fabButton.setOnClickListener(clicker);
 
-
+        startSynchronization();
     }
 
     private void updateListView() {
@@ -107,6 +107,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
                 case R.id.pa_context_delete:
 
+
+
                     deleteEntirely(cursor, idIndex);
 
                     break;
@@ -119,10 +121,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public void deleteEntirely(Cursor cursor, int idIndex){
         alarmManager.cancelAlarm(cursor);
 
-        if(!sharedHelper.getSynchronization()) {
-            synchronization.wasDeleting(dbManager.getPlanById(cursor.getInt(idIndex)).getLocalId());
+        if(!sharedHelper.getSynchronization()){
+            synchronization.wasDeleting((dbManager.getPlanById(cursor.getInt(idIndex))).getLocalId());
         }
-        else {
+        else{
             netManager.deletePlan((dbManager.getPlanById(cursor.getInt(idIndex))).getParseId());
         }
 

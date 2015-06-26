@@ -93,15 +93,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
         Clicker c = new Clicker();
 
-        findViewById(R.id.bt_save_alarm).setOnClickListener(c);
-        findViewById(R.id.aa_setAudio_btn).setOnClickListener(c);
         mTextValue = (TextView) findViewById(R.id.alarmSoundTitle_textview);
-        tvDate = (TextView) findViewById(R.id.setDate_textview);
-        tvTime = (TextView) findViewById(R.id.setTime_textview);
-        tvDate.setOnClickListener(c);
-        tvTime.setOnClickListener(c);
         findViewById(R.id.switch_repeating).setOnClickListener(c);
-
         findViewById(R.id.aa_image).setOnClickListener(c);
 
 
@@ -116,7 +109,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         //final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
         seekbar.setOnSeekBarChangeListener(sb);
-
+        seekbar.setEnabled(false);
         DataUtils.initializeCalendar();
 
         if (getIntent().hasExtra(BUNDLE_KEY)) {
@@ -127,8 +120,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         } else {
             tvSoundDuration.setText("00:00");
         }
-        tvTime.setText("Time: " + DataUtils.getTimeStrFromCalendar());
-        tvDate.setText("Date: " + DataUtils.getDateStrFromCalendar());
+        /*tvTime.setText("Time: " + DataUtils.getTimeStrFromCalendar());
+        tvDate.setText("Date: " + DataUtils.getDateStrFromCalendar());*/
         etTitle.setOnKeyListener(new View.OnKeyListener() {
 
             @Override
@@ -234,27 +227,26 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
             isDialogExist = false;
             return;
         }
-
-
-
+        seekbar.setEnabled(true);
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                path = getPath(data);
+                    /*if ( data.getType() != "audio/mp3"){
+                        showToast("File is not valid");
+                        return;
+                    }*/
+                    path = getPath(data);
+                    if (SystemUtils.isKitKatHigher()) {
+                        durationBuf = getAudioDuration(data.getData(), this);
+                        mTextValue.setText(getName(null, path));
+                    } else {
+                        Uri u = data.getData();
+                        durationBuf = getAudioDuration(u, this);
+                        Duration(seekbar);
+                        mTextValue.setText(getName(u, null));
+                    }
+                    isAudioSelected = true;
+                    isDialogExist = false;
 
-
-
-                if (SystemUtils.isKitKatHigher()) {
-                    durationBuf = getAudioDuration(data.getData(), this);
-                    mTextValue.setText(getName(null, path));
-                } else {
-                    Uri u = data.getData();
-                    durationBuf = getAudioDuration(u, this);
-                    Duration(seekbar);
-
-                    mTextValue.setText(getName(u, null));
-                }
-                isAudioSelected = true;
-                isDialogExist = false;
                 break;
             case GALLERY_REQUEST:
                 final String[] proj = {MediaStore.Audio.Media.DATA};
@@ -309,25 +301,23 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     }
 
-    private String getPath(Intent str) {
-        if (SystemUtils.isKitKatHigher()) {
-
-            Uri data = str.getData();
-            final String docId = DocumentsContract.getDocumentId(data);
-            final String[] split = docId.split(":");
-            Uri contentUri = null;
-            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private String getPath(Intent str) throws IllegalArgumentException{
+            if (SystemUtils.isKitKatHigher()) {
+                Uri data = str.getData();
+                final String docId = DocumentsContract.getDocumentId(data);
+                final String[] split = docId.split(":");
+                Uri contentUri = null;
+                if ("com.android.providers.media.documents".equals(data.getAuthority())) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+                return getDataColumn(this, contentUri, selection, selectionArgs);
+            } else {
+                return str.getDataString();
             }
-            final String selection = "_id=?";
-            final String[] selectionArgs = new String[]{
-                    split[1]
-            };
-
-            return getDataColumn(this, contentUri, selection, selectionArgs);
-        } else {
-            return str.getDataString();
-        }
     }
 
     private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
@@ -464,6 +454,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
+                parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
