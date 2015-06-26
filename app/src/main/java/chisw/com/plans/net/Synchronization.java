@@ -72,33 +72,12 @@ public class Synchronization implements SyncBridge {
                 return;
             }
             for (Integer key : historyOfChanges.keySet()) {
-                final Plan plan = dbManager.getPlanById(key);
                 switch (historyOfChanges.get(key)) {
                     case ADD_PLAN:
-                        netManager.addPlan(plan, new OnSaveCallback() {
-                            @Override
-                            public void getId(String id) {
-                                plan.setParseId(id);
-                                int planId = plan.getLocalId();
-                                dbManager.editPlan(plan, planId);
-                                isSyncStarted = false;
-                            }
-                        });
+                        addPlan(key);
                         break;
                     case EDIT_PLAN:
-                        if (plan.getParseId() == null) {
-                            netManager.addPlan(plan, new OnSaveCallback() {
-                                @Override
-                                public void getId(String id) {
-                                    plan.setParseId(id);
-                                    int planId = plan.getLocalId();
-                                    dbManager.editPlan(plan, planId);
-                                    isSyncStarted = false;
-                                }
-                            });
-                            return;
-                        }
-                        netManager.editPlan(plan, new CallbackEditPlan(plan));
+                        editPlan(key);
                         break;
                     case DELETE_LOCAL_PLAN:
                         isSyncStarted = false;
@@ -110,12 +89,49 @@ public class Synchronization implements SyncBridge {
                 }
             }
         } else {
-            Cursor cursor = dbManager.getPlans();
-            if (!cursor.moveToFirst()) {
-                final ArrayList<Plan> plans = new ArrayList<>();
-                netManager.getAllPlans(new OnGetPlansCallback() {
-                    @Override
-                    public void getPlans(ArrayList<Plan> lPlans) {
+            downloadPlans(ctxt);
+        }
+        historyOfChanges.clear();
+    }
+
+    public void addPlan(Integer key) {
+        final Plan plan = dbManager.getPlanById(key);
+        netManager.addPlan(plan, new OnSaveCallback() {
+            @Override
+            public void getId(String id) {
+                plan.setParseId(id);
+                int planId = plan.getLocalId();
+                dbManager.editPlan(plan, planId);
+                isSyncStarted = false;
+            }
+        });
+    }
+
+    public void editPlan(Integer key) {
+        final Plan plan = dbManager.getPlanById(key);
+        if (plan.getParseId() == null) {
+            netManager.addPlan(plan, new OnSaveCallback() {
+                @Override
+                public void getId(String id) {
+                    plan.setParseId(id);
+                    int planId = plan.getLocalId();
+                    dbManager.editPlan(plan, planId);
+                    isSyncStarted = false;
+                }
+            });
+            return;
+        }
+        netManager.editPlan(plan, new CallbackEditPlan(plan));
+    }
+
+    public void downloadPlans(final Context ctxt) {
+        Cursor cursor = dbManager.getPlans();
+        if (cursor.getCount() == 0) {
+            final ArrayList<Plan> plans = new ArrayList<>();
+            netManager.getAllPlans(new OnGetPlansCallback() {
+                @Override
+                public void getPlans(ArrayList<Plan> lPlans) {
+                    if(!lPlans.isEmpty()) {
                         for (Plan plan : lPlans) {
                             plans.add(plan);
                             dbManager.saveNewPlan(plan);
@@ -123,10 +139,9 @@ public class Synchronization implements SyncBridge {
                         RestartManager restartManager = new RestartManager(ctxt);
                         restartManager.Reload();
                     }
-                });
-            }
+                }
+            });
         }
-        historyOfChanges.clear();
     }
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
