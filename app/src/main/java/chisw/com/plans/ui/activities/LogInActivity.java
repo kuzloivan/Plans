@@ -68,9 +68,12 @@ public class LogInActivity extends ToolbarActivity {
             String login = mLogin.getText().toString().toLowerCase();
             String password = mPassword.getText().toString();
             /* Checking of valid data */
-            if(!ValidData.isTextValid(login,password))
-            {
-                showToast("You haven't filled all fields!");
+            if(!ValidData.isCredntialsValid(login,getString(R.string.login_pttrn))){
+                showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+                return;
+            }
+            if(!ValidData.isCredntialsValid(password,getString(R.string.pass_pttrn))){
+                showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
                 return;
             }
             /* Button's listener */
@@ -78,17 +81,6 @@ public class LogInActivity extends ToolbarActivity {
                 case R.id.btn_sign_up:
                     showProgressDialog("Signing Up", "Please, wait...");
                     netManager.registerUser(login, password, new CallbackSignUp());
-
-/*                    Plan plan = new Plan();
-                    plan.setTitle("Vlad");
-                    plan.setTimeStamp(123);
-                    netManager.addPlan(plan, new OnSaveCallback() {
-                        @Override
-                        public void getId(String id) {
-                            showToast(id);
-                        }
-                    });*/
-
                     break;
                 case R.id.btn_log_in:
                     showProgressDialog("Logging In", "Please, wait...");

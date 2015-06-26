@@ -2,6 +2,11 @@ package chisw.com.plans.utils;
 
 import android.text.TextUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import chisw.com.plans.R;
+
 public class ValidData
 {
     public static boolean isTextValid(String ... args)
@@ -15,5 +20,10 @@ public class ValidData
             }
         }
         return true;
+    }
+
+    public static boolean isCredntialsValid(String arg, String pattern)
+    {
+        return Pattern.matches(pattern, arg);
     }
 }

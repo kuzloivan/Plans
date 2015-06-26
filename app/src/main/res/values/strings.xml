@@ -28,6 +28,9 @@
     <string name="log_in">Log in</string>
     <string name="Sign_up">Sign up</string>
     <string name="go_to_sph">Go to Splash</string>
+    <!-- Regex patterns -->
+    <string name="login_pttrn">[a-zA-Z0-9]{4,15}</string>
+    <string name="pass_pttrn">[a-zA-Z0-9]{6,15}</string>
 
     <string name="back">Back</string>
     <string name="sa_vibration">Vibration</string>
