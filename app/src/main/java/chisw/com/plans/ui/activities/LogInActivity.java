@@ -69,11 +69,11 @@ public class LogInActivity extends ToolbarActivity {
             String password = mPassword.getText().toString();
             /* Checking of valid data */
             if(!ValidData.isCredntialsValid(login,getString(R.string.login_pttrn))){
-                showToast("Login is incorrect");
+                showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
                 return;
             }
             if(!ValidData.isCredntialsValid(password,getString(R.string.pass_pttrn))){
-                showToast("Password is incorrect");
+                showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
                 return;
             }
             /* Button's listener */
