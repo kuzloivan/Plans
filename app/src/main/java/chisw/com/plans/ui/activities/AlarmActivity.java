@@ -237,7 +237,10 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                try {
+                    if ( data.getType() != "audio/mp3"){
+                        showToast("File is not valid");
+                        return;
+                    }
                     path = getPath(data);
                     if (SystemUtils.isKitKatHigher()) {
                         durationBuf = getAudioDuration(data.getData(), this);
@@ -250,11 +253,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                     }
                     isAudioSelected = true;
                     isDialogExist = false;
-                }
-                catch (IllegalArgumentException e)
-                {
-                    showToast("File is not valid");
-                }
+
                 break;
             case GALLERY_REQUEST:
                 final String[] proj = {MediaStore.Audio.Media.DATA};
