@@ -404,6 +404,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         Plan p = dbManager.getPlanById(id);
         etTitle.setText(p.getTitle());
+        seekbar.setEnabled(true);
+
         setDetails_textview.setText(p.getDetails());
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
         path = p.getAudioPath();
