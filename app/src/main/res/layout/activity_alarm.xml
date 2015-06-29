@@ -9,11 +9,13 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <RelativeLayout
                 android:id="@+id/aa_rellay_top"
@@ -21,18 +23,18 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_margin="10dp"
                     android:id="@+id/aa_image"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
+                    android:layout_margin="10dp"
                     android:src="@drawable/aa_icon" />
 
                 <LinearLayout
-                    android:layout_toRightOf="@id/aa_image"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/aa_image"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/setDate_textview"
@@ -50,8 +52,8 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin8"
-                        android:paddingLeft="24dp"
                         android:clickable="true"
+                        android:paddingLeft="24dp"
                         android:text="@string/set_time"
                         android:textColor="#00796B"
                         android:textSize="20sp" />
@@ -125,22 +127,21 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/linear_layout_duration"
                 android:layout_margin="@dimen/margin16"
-                android:lines="2"
-                android:ellipsize="marquee"
                 android:layout_toRightOf="@+id/alarmSound_textview"
+                android:ellipsize="marquee"
+                android:lines="2"
                 android:text="--" />
 
             <TextView
-                android:visibility="invisible"
                 android:id="@+id/alarmRepearing_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/alarmSoundTitle_textview"
                 android:layout_margin="@dimen/margin16"
-                android:text="Repeating" />
+                android:text="Repeating"
+                android:visibility="invisible" />
 
             <Switch
-                android:visibility="invisible"
                 android:id="@+id/switch_repeating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +149,8 @@
                 android:layout_margin="@dimen/margin16"
                 android:layout_toRightOf="@+id/alarmRepearing_textview"
                 android:textOff="OFF"
-                android:textOn="ON" />
+                android:textOn="ON"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -179,6 +181,10 @@
         </RelativeLayout>
 
     </ScrollView>
+
+
+
+
 
 
 </RelativeLayout>

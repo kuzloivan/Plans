@@ -63,7 +63,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 .withMargins(0, 0, 16, 16)
                 .create();
         fabButton.setId(R.id.fab);
-        //fabButton.showFloatingActionButton();
         fabButton.setOnClickListener(clicker);
 
         startSynchronization();
