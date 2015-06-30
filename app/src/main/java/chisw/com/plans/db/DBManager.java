@@ -81,7 +81,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
     @Override
     public void editPlan(Plan pPlan, int id) {
         sqLiteDatabase.update(PlansEntity.TABLE_NAME, Mapper.parseNullablePlan(pPlan), PlansEntity.LOCAL_ID + "=?",
-                new String[]{ String.valueOf(id) });
+                new String[]{String.valueOf(id)});
         dbChanged();
     }
 
@@ -153,6 +153,15 @@ public class DBManager extends java.util.Observable implements DbBridge {
         int duration = cursor.getInt(cursor.getColumnIndex(PlansEntity.AUDIO_DURATION));
         cursor.close();
         return duration;
+    }
+
+    @Override
+    public String getPicturePathByID(int id){
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(PlansEntity.IMAGE_PATH));
+        return path;
     }
 
     @Override

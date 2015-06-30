@@ -23,7 +23,7 @@ public class PlansEntity {
             DETAILS + " TEXT, " +
             TIMESTAMP + " INTEGER, " +
             AUDIO_PATH + " TEXT, " +
-            AUDIO_DURATION + " INTEGER " + //Coma!
-//            IMAGE_PATH + " TEXT " +
+            AUDIO_DURATION + " INTEGER, " +
+            IMAGE_PATH + " TEXT " +
             ")";
 }

@@ -275,7 +275,7 @@ public class AlarmActivity extends ToolbarActivity{
                 mIsDialogExist = false;
                 break;
             case GALLERY_REQUEST:
-                final String[] proj = {MediaStore.Audio.Media.DATA};
+                final String[] proj = {MediaStore.Images.Media.DATA};
                 final Cursor cursor;
                 mSelectedImageURI = data.getData();
                 cursor = getContentResolver().query(mSelectedImageURI, proj, null, null, null);

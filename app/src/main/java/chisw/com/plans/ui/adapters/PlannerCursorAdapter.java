@@ -3,14 +3,18 @@ package chisw.com.plans.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.db.Mapper;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
@@ -23,6 +27,8 @@ import chisw.com.plans.utils.DataUtils;
 public class PlannerCursorAdapter extends CursorAdapter {
 
     private LayoutInflater layoutInflater;
+    private Uri mSelectedImageURI;
+    private String mSelectedImagePath;
 
     public PlannerCursorAdapter(Context context) {
         super(context, null, false);
@@ -47,20 +53,20 @@ public class PlannerCursorAdapter extends CursorAdapter {
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
-
+        int image = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         long timeStamp = cursor.getLong(timeStampIndex);
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
-
         String details = cursor.getString(detailsIndex);
-//        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource((new Plan().getImagePath()), 60, 60);
-//        viewHolder.ivImage.setImageBitmap(bitmap);
-        // todo count the count of \n
-        //if (details.c)
-
         viewHolder.tvDetails.setText(details);
+
+        mSelectedImagePath = cursor.getString(image);
+
+        //Toast.makeText(context, "mSelectedImagePath = " + mSelectedImagePath , Toast.LENGTH_LONG).show();
+        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource( mSelectedImagePath, 60, 60);
+        viewHolder.ivPicture.setImageBitmap(bitmap);
     }
 
     private static class ViewHolder{
@@ -68,14 +74,14 @@ public class PlannerCursorAdapter extends CursorAdapter {
         public TextView tvTime;
         public TextView tvDate;
         public TextView tvDetails;
-//        public ImageView ivImage;
+        public ImageView ivPicture;
 
         public  ViewHolder (View view) {
             tvDate = (TextView)view.findViewById(R.id.pa_tv_date);
             tvTime = (TextView)view.findViewById(R.id.pa_tv_time);
             tvTitle = (TextView)view.findViewById(R.id.pa_tv_title);
             tvDetails = (TextView)view.findViewById(R.id.pa_tv_details);
-//            ivImage = (ImageView)view.findViewById(R.id.pa_iv_image);
+            ivPicture = (ImageView)view.findViewById(R.id.image_view_pictures);
         }
     }
 }
