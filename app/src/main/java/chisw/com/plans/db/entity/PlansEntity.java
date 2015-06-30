@@ -3,6 +3,7 @@ package chisw.com.plans.db.entity;
 /**
  * Created by Darina on 17.06.2015.
  */
+
 public class PlansEntity {
     public static final String TABLE_NAME = "Plans";
     public static final String PARSE_ID = "parseId";
@@ -25,5 +26,4 @@ public class PlansEntity {
             AUDIO_DURATION + " INTEGER " + //Coma!
 //            IMAGE_PATH + " TEXT " +
             ")";
-
 }

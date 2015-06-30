@@ -3,7 +3,6 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,14 +11,11 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.List;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.bridge.OnSaveCallback;
-import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
