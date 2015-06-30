@@ -27,7 +27,7 @@ public class LogInActivity extends ToolbarActivity {
 
     private EditText mLogin;
     private EditText mPassword;
-    ClickerNet mClicker;
+    private ClickerNet mClicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
