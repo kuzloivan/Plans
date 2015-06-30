@@ -1,32 +1,41 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="chisw.com.plans.ui.NetManagementActivity">
-
     <include layout="@layout/toolbar" />
 
     <LinearLayout
-        style="@style/style_linearlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/net_user_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin8"
             android:hint="User name"
-            android:inputType="text" />
-
+            android:textColorHint="#bbbbbb" />
 
         <EditText
             android:id="@+id/net_user_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin8"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:textColorHint="#bbbbbb"
+            android:password="true"/>
 
+        <TextView
+            android:id="@+id/forgotPassword_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin16"
+            android:text="Forgot password?"
+            android:textColor="@color/toolbar_background_color" />
 
         <LinearLayout
             style="@style/style_linearlayout"
@@ -41,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Sign_up" />
 
-
             <Button
                 android:id="@+id/btn_log_in"
                 style="@style/style_registration_btns"
@@ -49,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/log_in" />
         </LinearLayout>
-        
+
     </LinearLayout>
-</LinearLayout>
+
+</RelativeLayout>
