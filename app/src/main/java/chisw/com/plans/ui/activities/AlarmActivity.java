@@ -91,7 +91,7 @@ public class AlarmActivity extends ToolbarActivity{
 
     private void initViews() {
         Clicker clicker = new Clicker();
-        SeekerBar sb = new SeekerBar();
+        SeekBarListener sb = new SeekBarListener();
         initBackButton();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
@@ -288,23 +288,6 @@ public class AlarmActivity extends ToolbarActivity{
         }
     }
 
-    @Override
-    public void onDaysOfWeekPositiveClick(Bundle bundle) {
-        //test. Delete later
-        showToast("Sunday " + bundle.getBoolean("Sun") + "\n" +
-                "Monday " + bundle.getBoolean("Mon") + "\n" +
-                "Tuesday " + bundle.getBoolean("Tues") + "\n" +
-                "Wednesday " + bundle.getBoolean("Wed") + "\n" +
-                "Thursday " + bundle.getBoolean("Thurs") + "\n" +
-                "Friday " + bundle.getBoolean("Fri") + "\n" +
-                "Saturday " + bundle.getBoolean("Sat"));
-    }
-
-    @Override
-    public void onDaysOfWeekNegativeClick(Bundle bundle) {
-
-    }
-
     private boolean isValidFormat(String path) {
         Pattern p = Pattern.compile(".*\\.mp3$");
         Matcher m = p.matcher(path);
@@ -422,6 +405,24 @@ public class AlarmActivity extends ToolbarActivity{
         mm.setDataSource(ctx, path);
         int durationMs = Integer.parseInt(mm.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
         return durationMs / 1000;
+    }
+
+    public final class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            duration(mSeekBar);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            duration(mSeekBar);
+        }
     }
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
