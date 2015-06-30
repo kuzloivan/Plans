@@ -27,13 +27,9 @@ public class ViewPlanActivity extends ToolbarActivity {
 
     public static void start(Activity pActivity, int pId) {
         Intent intent = new Intent(pActivity, ViewPlanActivity.class);
-
         Bundle bundle = new Bundle();
-
         bundle.putInt(BUNDLE_ID_KEY, pId);
-
         intent.putExtra(BUNDLE_KEY, bundle);
-
         pActivity.startActivity(intent);
     }
 
@@ -55,7 +51,7 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         switch (pMenuItem.getItemId()) {
             case R.id.vp_menu_delete:
-                deleteEntirely(mPlan, mPlanId);
+                deleteEntirely();
                 break;
             case R.id.vp_menu_edit:
                 AlarmActivity.start(this, mPlanId);
@@ -65,15 +61,14 @@ public class ViewPlanActivity extends ToolbarActivity {
         return super.onOptionsItemSelected(pMenuItem);
     }
 
-    @Deprecated
-    public void deleteEntirely(Plan pPlan, int pIdIndex) {
-        alarmManager.cancelAlarm(pPlan);
+    public void deleteEntirely() {
+        alarmManager.cancelAlarm(mPlanId);
         if (!sharedHelper.getSynchronization()) {
             synchronization.wasDeleting(mPlanId);
         } else {
-            netManager.deletePlan((pPlan.getParseId()));
+            netManager.deletePlan((mPlan.getParseId()));
         }
-        dbManager.deletePlanById(pIdIndex);
+        dbManager.deletePlanById(mPlanId);
     }
 
     @Override
@@ -92,6 +87,4 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_details.setText(mPlan.getDetails());
     }
-
-
 }

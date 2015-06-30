@@ -94,22 +94,21 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     break;
 
                 case R.id.pa_context_delete:
-                    deleteEntirely(cursor, idIndex);
+                    deleteEntirely(cursor.getInt(idIndex));
                     break;
             }
         }
         return super.onContextItemSelected(pMenuItem);
     }
 
-    @Deprecated
-    public void deleteEntirely(Cursor pCursor, int pIdIndex) {
-        alarmManager.cancelAlarm(pCursor);
+    public void deleteEntirely(int id) {
+        alarmManager.cancelAlarm(id);
         if (!sharedHelper.getSynchronization()) {
-            synchronization.wasDeleting((dbManager.getPlanById(pCursor.getInt(pIdIndex))).getLocalId());
+            synchronization.wasDeleting((dbManager.getPlanById(id)).getLocalId());
         } else {
-            netManager.deletePlan((dbManager.getPlanById(pCursor.getInt(pIdIndex))).getParseId());
+            netManager.deletePlan((dbManager.getPlanById(id)).getParseId());
         }
-        dbManager.deletePlanById(pCursor.getInt(pIdIndex));
+        dbManager.deletePlanById(id);
     }
 
     @Override
@@ -134,9 +133,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 showProgressDialog("Loging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
                 Cursor cursor = dbManager.getPlans();
-
                 while (cursor.moveToNext()) {
-                    alarmManager.cancelAlarm(cursor);
+                    alarmManager.cancelAlarm(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
                 }
                 cursor.close();
                 dbManager.clearPlans();
