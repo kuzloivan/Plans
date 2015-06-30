@@ -1,6 +1,5 @@
 package chisw.com.plans.db;
 
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,6 +10,7 @@ import chisw.com.plans.db.entity.UserEntity;
 /**
  * Created by Darina on 17.06.2015.
  */
+
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final int VERSION = 1;

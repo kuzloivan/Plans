@@ -24,6 +24,7 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
     private final String LOG_TAG = "myLogs";
     private boolean[] mCheckedItems = { false, false, false, false, false, false, false};
     private String[] checkDaysName = { "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat" };
+    private DaysOfWeekDialogListener mListener;
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
@@ -40,13 +41,11 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDaysOfWeekNegativeClick(new Bundle());
-
                     }
                 })
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDaysOfWeekPositiveClick(getBundleDaysOfWeek());
-
                     }
                 });
         ;
@@ -81,32 +80,19 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
         void onDaysOfWeekNegativeClick(Bundle bundle);
     }
 
-    // Use this instance of the interface to deliver action events
-    DaysOfWeekDialogListener mListener;
-
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mListener = (DaysOfWeekDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement DaysOfWeekDialogListener");
-        }
-    }
-    public Bundle getBundleDaysOfWeek()
+    private Bundle getBundleDaysOfWeek()
     {
        Bundle daysOfWeek = new Bundle();
 
-        for (int i = 0; i < 7; i++)
-        {
+        for (int i = 0; i < 7; i++) {
             daysOfWeek.putBoolean(checkDaysName[i], mCheckedItems[i]);
         }
 
         return daysOfWeek;
     }
+
+    public void setListener(DaysOfWeekDialogListener pDaysOfWeekDialogListener){
+        mListener = pDaysOfWeekDialogListener;
+    }
+
 }

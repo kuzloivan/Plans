@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  * Created by Kos on 17.06.2015.
  */
+
 public class Multimedia {
     private int PLAYING_AUDIO_TIME = 10;
     private int playTime;

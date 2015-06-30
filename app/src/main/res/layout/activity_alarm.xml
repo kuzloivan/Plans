@@ -138,8 +138,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/alarmSoundTitle_textview"
                 android:layout_margin="@dimen/margin16"
-                android:text="Repeating"
-                android:visibility="invisible" />
+                android:text="Repeating" />
 
             <Switch
                 android:id="@+id/switch_repeating"
@@ -149,8 +148,7 @@
                 android:layout_margin="@dimen/margin16"
                 android:layout_toRightOf="@+id/alarmRepearing_textview"
                 android:textOff="OFF"
-                android:textOn="ON"
-                android:visibility="invisible" />
+                android:textOn="ON"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

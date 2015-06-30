@@ -1,5 +1,6 @@
 package chisw.com.plans.ui.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -46,7 +48,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.DaysOfWeekDialogListener {
+public class AlarmActivity extends ToolbarActivity{
 
     public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.alarm_activity.id";
     public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.alarm_activity.bundle";
@@ -280,7 +282,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         Matcher m = p.matcher(path);
 
         return m.matches();
-
     }
 
     private String getName(Uri pathUri, String pathName) {
@@ -322,6 +323,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private String getPath(Intent str) throws IllegalArgumentException {
         if (SystemUtils.isKitKatHigher()) {
             Uri data = str.getData();
@@ -504,6 +506,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 case R.id.switch_repeating:
                     if (sRepeating.isChecked()) {
                         daysOfWeekDialog = new DaysOfWeekDialog();
+                        daysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
                         daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
                     }
                     break;
@@ -517,22 +520,25 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         }
     }
 
-    @Override
-    public void onDaysOfWeekPositiveClick(Bundle bundle) {
+    private final class DialogDaysOfWeekClicker implements  DaysOfWeekDialog.DaysOfWeekDialogListener{
 
-        //test. Delete later
-        showToast("Sunday " + bundle.getBoolean("Sun") + "\n" +
-                "Monday " + bundle.getBoolean("Mon") + "\n" +
-                "Tuesday " + bundle.getBoolean("Tues") + "\n" +
-                "Wednesday " + bundle.getBoolean("Wed") + "\n" +
-                "Thursday " + bundle.getBoolean("Thurs") + "\n" +
-                "Friday " + bundle.getBoolean("Fri") + "\n" +
-                "Saturday " + bundle.getBoolean("Sat"));
-    }
+        @Override
+        public void onDaysOfWeekPositiveClick(Bundle pBundle) {
 
-    @Override
-    public void onDaysOfWeekNegativeClick(Bundle bundle) {
+            // test. Delete later
+            showToast("Sunday " + pBundle.getBoolean("Sun") + "\n" +
+                    "Monday " + pBundle.getBoolean("Mon") + "\n" +
+                    "Tuesday " + pBundle.getBoolean("Tues") + "\n" +
+                    "Wednesday " + pBundle.getBoolean("Wed") + "\n" +
+                    "Thursday " + pBundle.getBoolean("Thurs") + "\n" +
+                    "Friday " + pBundle.getBoolean("Fri") + "\n" +
+                    "Saturday " + pBundle.getBoolean("Sat"));
+        }
 
+        @Override
+        public void onDaysOfWeekNegativeClick(Bundle bundle) {
+
+        }
     }
 
 }
