@@ -16,6 +16,7 @@ import chisw.com.plans.model.Plan;
 /**
  * Created by Alexander on 17.06.2015.
  */
+
 public class DBManager extends java.util.Observable implements DbBridge {
 
     private DBHelper dbHelper;
@@ -32,7 +33,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
         return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
     }
 
-    //clears all writtings in plans_database SQL
+    //clears all writings in plans_database SQL
     @Override
     public void clearPlans() {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, null, null);
@@ -155,6 +156,14 @@ public class DBManager extends java.util.Observable implements DbBridge {
         return duration;
     }
 
+    public String getDaysToAlarmById(int id){ //DOW
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        cursor.moveToFirst();
+        String daysOfWeek = cursor.getString(cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM));
+        cursor.close();
+        return daysOfWeek;
+    }
     @Override
     public String getPicturePathByID(int id){
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",

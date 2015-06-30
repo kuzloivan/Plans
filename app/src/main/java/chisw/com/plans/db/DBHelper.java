@@ -24,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(PlansEntity.CREATE_SCRIPT);
         sqLiteDatabase.execSQL(UserEntity.CREATE_SCRIPT);
+
     }
 
     @Override

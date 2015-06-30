@@ -3,6 +3,7 @@ package chisw.com.plans.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 
 import com.parse.ParseUser;
 
@@ -25,7 +26,7 @@ public class Mapper {
         CV.put(PlansEntity.AUDIO_PATH, model.getAudioPath());
         CV.put(PlansEntity.AUDIO_DURATION, model.getAudioDuration());
         CV.put(PlansEntity.IMAGE_PATH, model.getImagePath());
-
+        CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
         return CV;
     }
 
@@ -52,6 +53,10 @@ public class Mapper {
 
         if(model.getImagePath() != null )
             CV.put(PlansEntity.IMAGE_PATH, model.getImagePath());
+
+        if(model.getImagePath() != null )
+            CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
+
         return CV;
     }
 
@@ -66,6 +71,7 @@ public class Mapper {
         int audioPathIndex = cursor.getColumnIndex(PlansEntity.AUDIO_PATH);
         int audioDuration = cursor.getColumnIndex(PlansEntity.AUDIO_DURATION);
         int imagePathIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
+        int daysToAlarm = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -77,6 +83,7 @@ public class Mapper {
         plan.setAudioPath(cursor.getString(audioPathIndex));
         plan.setAudioDuration(cursor.getInt(audioDuration));
         plan.setImagePath(cursor.getString(imagePathIndex));
+        plan.setDaysToAlarm(cursor.getString(daysToAlarm));
         return plan;
     }
 

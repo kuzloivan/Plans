@@ -75,6 +75,7 @@ public class AlarmActivity extends ToolbarActivity{
     private SeekBar mSeekBar;
     private Uri mSelectedImageURI;
     private String mSelectedImagePath;
+    private String mDaysToAlarm;
 
     public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
@@ -187,6 +188,8 @@ public class AlarmActivity extends ToolbarActivity{
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(mPath);
         p.setAudioDuration((int) mAudioDuration);
+        p.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
+
         if (mIsEdit) {
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             p.setParseId(dbManager.getPlanById(id).getParseId());
@@ -485,10 +488,8 @@ public class AlarmActivity extends ToolbarActivity{
     private final class DialogDaysOfWeekClicker implements  DaysOfWeekDialog.DaysOfWeekDialogListener{
 
         @Override
-        public void onDaysOfWeekPositiveClick(String pString) {
-
-            // test. Delete later
-            showToast(pString);
+        public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
+            mDaysToAlarm = pDaysOfWeek; //DOW
         }
 
         @Override

@@ -14,6 +14,8 @@ public class Plan {
     private String audioPath;
     private int localId;
     private int audioDuration;
+    private String daysToAlarm;
+//    private String imagePath;
     private String imagePath;
 
     public int getLocalId() {
@@ -71,6 +73,13 @@ public class Plan {
 
     public void setAudioDuration(int audioDuration) {
         this.audioDuration = audioDuration;
+    }
+
+    public void setDaysToAlarm(String pDaysToAlarm){ //DOW
+        this.daysToAlarm = pDaysToAlarm;
+    }
+    public String getDaysToAlarm(){   //DOW
+        return this.daysToAlarm;
     }
 
     public String getImagePath(){

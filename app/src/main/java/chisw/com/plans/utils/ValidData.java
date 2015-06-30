@@ -1,7 +1,9 @@
 package chisw.com.plans.utils;
 
+import android.os.Bundle;
 import android.text.TextUtils;
 
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,5 +27,16 @@ public class ValidData
     public static boolean isCredntialsValid(String arg, String pattern)
     {
         return Pattern.matches(pattern, arg);
+    }
+
+    public static boolean isDayToAlarmValid(String pDaysToAlarmBundle){
+        char[] daysToAlarmCh = pDaysToAlarmBundle.toCharArray();
+
+        if (daysToAlarmCh[0] == '0')
+            return true;
+        else {
+            Calendar calendar = Calendar.getInstance();
+            return (daysToAlarmCh[(calendar.get(Calendar.DAY_OF_WEEK))] == '1');
+        }
     }
 }

@@ -1,5 +1,6 @@
 package chisw.com.plans.core.Receivers;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,16 +10,20 @@ import android.content.Intent;
 import android.graphics.Path;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
+import chisw.com.plans.db.Mapper;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
 import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.ui.activities.PlannerActivity;
 import chisw.com.plans.ui.activities.ViewPlanActivity;
 import chisw.com.plans.utils.SystemUtils;
+import chisw.com.plans.utils.ValidData;
 
 /**
  * Created by Yuriy on 16.06.2015.
@@ -30,7 +35,12 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context ctx, Intent intent) {
         int id = Integer.parseInt(intent.getAction());
-        if (((PApplication) ctx.getApplicationContext()).getSharedHelper().getNotificationOn()) {
+
+        String daysOfWeekStr = (((PApplication) ctx.getApplicationContext()).getDbManager().getDaysToAlarmById(id));
+       // Bundle daysToAlarmBundle = Mapper.parseStringDaysOfWeek(daysOfWeekStr);
+
+        if ((((PApplication) ctx.getApplicationContext()).getSharedHelper().getNotificationOn())
+                && ValidData.isDayToAlarmValid(daysOfWeekStr)) {
 
             if (SystemUtils.isJellyBeanHigher()) {
                 sendNotificationForJellyBeanAndHigher(id, ctx);
@@ -40,6 +50,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void sendNotificationForJellyBeanAndHigher(int id, Context ctx) {
         Intent openPlannerIntent = new Intent(ctx, PlannerActivity.class);
         openPlannerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -58,6 +69,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         Notification notification = builder.build();
         NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+
 
         try {
             Multimedia multimedia = (((PApplication) ctx.getApplicationContext()).getMultimedia());
