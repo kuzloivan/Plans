@@ -523,22 +523,15 @@ public class AlarmActivity extends ToolbarActivity{
     private final class DialogDaysOfWeekClicker implements  DaysOfWeekDialog.DaysOfWeekDialogListener{
 
         @Override
-        public void onDaysOfWeekPositiveClick(Bundle pBundle) {
+        public void onDaysOfWeekPositiveClick(String pString) {
 
             // test. Delete later
-            showToast("Sunday " + pBundle.getBoolean("Sun") + "\n" +
-                    "Monday " + pBundle.getBoolean("Mon") + "\n" +
-                    "Tuesday " + pBundle.getBoolean("Tues") + "\n" +
-                    "Wednesday " + pBundle.getBoolean("Wed") + "\n" +
-                    "Thursday " + pBundle.getBoolean("Thurs") + "\n" +
-                    "Friday " + pBundle.getBoolean("Fri") + "\n" +
-                    "Saturday " + pBundle.getBoolean("Sat"));
+            showToast(pString);
         }
 
         @Override
-        public void onDaysOfWeekNegativeClick(Bundle bundle) {
+        public void onDaysOfWeekNegativeClick(String pString) {
 
         }
     }
-
 }

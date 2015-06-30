@@ -40,12 +40,12 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
                         })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDaysOfWeekNegativeClick(new Bundle());
+                        mListener.onDaysOfWeekNegativeClick(null);
                     }
                 })
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDaysOfWeekPositiveClick(getBundleDaysOfWeek());
+                        mListener.onDaysOfWeekPositiveClick(getStringSunToSatDaysToAlarm());
                     }
                 });
         ;
@@ -76,16 +76,16 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
 
 
     public interface DaysOfWeekDialogListener {
-        void onDaysOfWeekPositiveClick(Bundle bundle);
-        void onDaysOfWeekNegativeClick(Bundle bundle);
+        void onDaysOfWeekPositiveClick(String pString);
+        void onDaysOfWeekNegativeClick(String pString);
     }
 
-    private Bundle getBundleDaysOfWeek()
+    private String getStringSunToSatDaysToAlarm()
     {
-       Bundle daysOfWeek = new Bundle();
+       String daysOfWeek = "";
 
         for (int i = 0; i < 7; i++) {
-            daysOfWeek.putBoolean(checkDaysName[i], mCheckedItems[i]);
+            daysOfWeek += mCheckedItems[i] ? "1" : "0";
         }
 
         return daysOfWeek;
