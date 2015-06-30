@@ -27,27 +27,32 @@ public class LogInActivity extends ToolbarActivity {
 
     private EditText mLogin;
     private EditText mPassword;
+    ClickerNet mClicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ClickerNet clickerNet = new ClickerNet();
-        findViewById(R.id.btn_sign_up).setOnClickListener(clickerNet);
-        findViewById(R.id.btn_log_in).setOnClickListener(clickerNet);
-
+        initView();
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mPassword = (EditText) findViewById(R.id.net_user_password);
-
-        /* Auto-insert user credentials */
         if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
-                /* Move to main activity */
                 PlannerActivity.start(LogInActivity.this);
                 LogInActivity.this.finish();
             }
         }
+    }
+
+    public static void start(Activity a) {
+        Intent intent = new Intent(a, LogInActivity.class);
+        a.startActivity(intent);
+    }
+
+    private void initView(){
+        mClicker = new ClickerNet();
+        findViewById(R.id.btn_sign_up).setOnClickListener(mClicker);
+        findViewById(R.id.btn_log_in).setOnClickListener(mClicker);
     }
 
     @Override
@@ -56,10 +61,8 @@ public class LogInActivity extends ToolbarActivity {
     }
 
     public final class ClickerNet implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
-            /* Checking of network connection */
             if(!SystemUtils.checkNetworkStatus(getApplicationContext()))
             {
                 showToast("No internet connection");
@@ -67,7 +70,6 @@ public class LogInActivity extends ToolbarActivity {
             }
             String login = mLogin.getText().toString().toLowerCase();
             String password = mPassword.getText().toString();
-            /* Checking of valid data */
             if(!ValidData.isCredntialsValid(login,getString(R.string.login_pttrn))){
                 showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
                 return;
@@ -76,7 +78,6 @@ public class LogInActivity extends ToolbarActivity {
                 showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
                 return;
             }
-            /* Button's listener */
             switch (v.getId()) {
                 case R.id.btn_sign_up:
                     showProgressDialog("Signing Up", "Please, wait...");
@@ -91,9 +92,7 @@ public class LogInActivity extends ToolbarActivity {
     }
 
     public final class CallbackSignUp implements SignUpCallback {
-
         String error = "Error";
-
         @Override
         public void done(ParseException e) {
             if (e != null) {
@@ -110,18 +109,14 @@ public class LogInActivity extends ToolbarActivity {
             /* Save user credentials and then Log In */
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
-
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
-
             hideProgressDialog();
             showToast("SignUp was successful");
         }
     }
 
     public final class CallbackLogIn implements LogInCallback {
-
         String error = "Error";
-
         @Override
         public void done(ParseUser parseUser, ParseException e) {
             if (e != null) {
@@ -135,46 +130,12 @@ public class LogInActivity extends ToolbarActivity {
                 hideProgressDialog();
                 return;
             }
-            /* Under login sharedpreferences registration */
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
-
             hideProgressDialog();
             showToast("Login was successful");
-
             PlannerActivity.start(LogInActivity.this);
             LogInActivity.this.finish();
         }
-    }
-
-    /* For future release of shared plans/tasks */
-    public final class CallbackGetPlan implements FindCallback<ParseObject> {
-
-        @Override
-        public void done(List<ParseObject> list, ParseException e) {
-            if(e == null) {
-                showToast("I've got it");
-                return;
-            }
-            showToast(e.getMessage());
-        }
-    }
-
-    /* For future release of shared plans/tasks */
-    public final class CallbackGetPlans implements FindCallback<ParseObject> {
-
-        @Override
-        public void done(List<ParseObject> list, ParseException e) {
-            if(e == null) {
-                showToast("I've got it");
-                return;
-            }
-            showToast(e.getMessage());
-        }
-    }
-
-    public static void start(Activity a) {
-        Intent intent = new Intent(a, LogInActivity.class);
-        a.startActivity(intent);
     }
 }
