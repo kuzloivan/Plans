@@ -1,5 +1,6 @@
 package chisw.com.plans.ui.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -46,7 +48,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.DaysOfWeekDialogListener {
+public class AlarmActivity extends ToolbarActivity{
 
     public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.alarm_activity.id";
     public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.alarm_activity.bundle";
@@ -436,7 +438,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
-                parseObject.put("mAudioDuration", plan.getAudioDuration());
+                parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
@@ -466,7 +468,8 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                     if (mSwitchRepeating.isChecked()) {
                         mDaysOfWeekDialog = new DaysOfWeekDialog();
                         mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
-                    }
+                        mDaysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
+                    }   
                     break;
                 case R.id.aa_setAudio_btn:
                     chooseAudio();
@@ -478,20 +481,18 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         }
     }
 
-    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener {
+    private final class DialogDaysOfWeekClicker implements  DaysOfWeekDialog.DaysOfWeekDialogListener{
 
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            duration(seekBar);
+        public void onDaysOfWeekPositiveClick(String pString) {
+
+            // test. Delete later
+            showToast(pString);
         }
 
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
+        public void onDaysOfWeekNegativeClick(String pString) {
 
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            duration(seekBar);
         }
     }
 }

@@ -3,6 +3,7 @@ package chisw.com.plans.db.entity;
 /**
  * Created by Oksana on 17.06.2015.
  */
+
 public class UserEntity {
     public static final String TABLE_NAME = "User";
     public static final String PARSE_ID = "parseId";
