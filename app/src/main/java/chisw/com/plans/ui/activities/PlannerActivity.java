@@ -93,7 +93,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         Cursor cursor = plannerCursorAdapter.getCursor();
 
         if (cursor.moveToPosition((int) (info.position))) {
-
             int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
 
             switch (item.getItemId()) {

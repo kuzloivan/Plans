@@ -53,92 +53,63 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     private final int REQUEST_AUDIO_GET = 1;
     private final int GALLERY_REQUEST = 2;
-    private boolean isDialogExist;
-    private int durationBuf;
-    private long audioDuration;
-    private boolean isAudioSelected;
-    private boolean isEdit;
-    private EditText etTitle;
-    private EditText setDetails_textview;
-    private TextView tvSoundDuration;
-    private TextView tvDate;
-    private TextView tvTime;
-    private AlarmManager am;
-    private String path;
-    private DatePickDialog dateDialog;
-    private DaysOfWeekDialog daysOfWeekDialog;
-    private DialogFragment timeDialog;
-    private Switch sRepeating;
-    private ImageView iv_image;
+    private boolean mIsDialogExist;
+    private int mDurationBuf;
+    private long mAudioDuration;
+    private boolean mIsEdit;
+    private EditText mEtTitle;
+    private EditText mTvSetDetails;
+    private TextView mTvSoundDuration;
+    private TextView mTvDate;
+    private TextView mTvTime;
+    private AlarmManager mAlarmManager;
+    private String mPath;
+    private DatePickDialog mDatePickDialog;
+    private DaysOfWeekDialog mDaysOfWeekDialog;
+    private DialogFragment mTimeDialog;
+    private Switch mSwitchRepeating;
+    private ImageView mIvImage;
     private TextView mTextValue;
-    private SeekBar seekbar;
-    private Uri selectedImageURI;
-    private String selectedImagePath;
+    private SeekBar mSeekBar;
+    private Uri mSelectedImageURI;
+    private String mSelectedImagePath;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static void start(Activity a, int id) {
+        Intent i = new Intent(a, AlarmActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_ID_KEY, id);
+        i.putExtra(BUNDLE_KEY, bundle);
+        a.startActivity(i);
+    }
 
-        initBackButton();
+    public static void start(Activity a) {
+        Intent i = new Intent(a, AlarmActivity.class);
+        a.startActivity(i);
+    }
+
+    private void initViews() {
         Clicker clicker = new Clicker();
+        SeekerBar sb = new SeekerBar();
+        initBackButton();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
-        findViewById(R.id.switch_repeating).setOnClickListener(clicker);
-        tvDate = (TextView) findViewById(R.id.setDate_textview);
-        tvTime = (TextView) findViewById(R.id.setTime_textview);
-        tvSoundDuration = (TextView) findViewById(R.id.tv_sound_duration);
-        tvSoundDuration.setOnClickListener(clicker);
-        tvDate.setOnClickListener(clicker);
-        tvTime.setOnClickListener(clicker);
-        iv_image = (ImageView) findViewById(R.id.aa_image);
-        iv_image.setOnClickListener(clicker);
-
-        Clicker c = new Clicker();
-
+        mTvDate = (TextView) findViewById(R.id.setDate_textview);
+        mTvDate.setOnClickListener(clicker);
+        mTvTime = (TextView) findViewById(R.id.setTime_textview);
+        mTvTime.setOnClickListener(clicker);
+        mTvSoundDuration = (TextView) findViewById(R.id.tv_sound_duration);
+        mTvSoundDuration.setOnClickListener(clicker);
         mTextValue = (TextView) findViewById(R.id.alarmSoundTitle_textview);
-        findViewById(R.id.switch_repeating).setOnClickListener(c);
-        findViewById(R.id.aa_image).setOnClickListener(c);
-
-
-        iv_image = (ImageView) findViewById(R.id.aa_image);
-        etTitle = (EditText) findViewById(R.id.setTitle_textview);
-        am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        setDetails_textview = (EditText) findViewById(R.id.setDetails_textview);
-        sRepeating = (Switch) findViewById(R.id.switch_repeating);
-        //mTextValue = (TextView) findViewById(R.id.tv_show_duration_sound);
-        SeekerBar sb = new SeekerBar();
-        //final SeekBar seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
-        seekbar = (SeekBar) findViewById(R.id.sb_duration_sound);
-        seekbar.setOnSeekBarChangeListener(sb);
-        seekbar.setEnabled(false);
-        DataUtils.initializeCalendar();
-
-        if (getIntent().hasExtra(BUNDLE_KEY)) {
-            isEdit = true;
-        }
-        if (isEdit) {
-            fillIn(seekbar);
-        } else {
-            tvSoundDuration.setText("00:00");
-        }
-        /*tvTime.setText("Time: " + DataUtils.getTimeStrFromCalendar());
-        tvDate.setText("Date: " + DataUtils.getDateStrFromCalendar());*/
-        etTitle.setOnKeyListener(new View.OnKeyListener() {
-
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-                    if (((EditText) v).getLineCount() >= 2)
-                        return true;
-                }
-                return false;
-            }
-        });
-        setDetails_textview.setOnKeyListener(new View.OnKeyListener() {
-
+        mIvImage = (ImageView) findViewById(R.id.aa_image);
+        mIvImage.setOnClickListener(clicker);
+        mSwitchRepeating = (Switch) findViewById(R.id.switch_repeating);
+        mSwitchRepeating.setOnClickListener(clicker);
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        mSeekBar = (SeekBar) findViewById(R.id.sb_duration_sound);
+        mSeekBar.setOnSeekBarChangeListener(sb);
+        mSeekBar.setEnabled(false);
+        mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
+        mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
@@ -150,8 +121,35 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 return false;
             }
         });
+        mEtTitle = (EditText) findViewById(R.id.setTitle_textview);
+        mEtTitle.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                    if (((EditText) v).getLineCount() >= 2)
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initViews();
+        DataUtils.initializeCalendar();
+        if (getIntent().hasExtra(BUNDLE_KEY)) {
+            mIsEdit = true;
+        }
+        if (mIsEdit) {
+            fillIn(mSeekBar);
+        } else {
+            mTvSoundDuration.setText("00:00");
+        }
+    }
 
     @Override
     protected void onStop() {
@@ -175,42 +173,60 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         return super.onOptionsItemSelected(item);
     }
 
-    public static void start(Activity a, int id) {
-        Intent i = new Intent(a, AlarmActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt(BUNDLE_ID_KEY, id);
-        i.putExtra(BUNDLE_KEY, bundle);
-        a.startActivity(i);
-    }
-
-    public static void start(Activity a) {
-        Intent i = new Intent(a, AlarmActivity.class);
-        a.startActivity(i);
-    }
-
     @Override
     protected int contentViewResId() {
         return R.layout.activity_alarm;
     }
 
+    private void writePlanToDB(Calendar calendar) {
+        final Plan p = new Plan();
+        p.setDetails(mTvSetDetails.getText().toString());
+        p.setTitle(mEtTitle.getText().toString());
+        p.setTimeStamp(calendar.getTimeInMillis());
+        p.setAudioPath(mPath);
+        p.setAudioDuration((int) mAudioDuration);
+        if (mIsEdit) {
+            int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+            p.setParseId(dbManager.getPlanById(id).getParseId());
+            p.setLocalId(dbManager.getPlanById(id).getLocalId());
+            dbManager.editPlan(p, id);
+            if (!sharedHelper.getSynchronization()) {
+                synchronization.wasEditing(p.getLocalId());
+                return;
+            }
+            netManager.editPlan(p, new CallbackEditPlan(p));
+        } else {
+            dbManager.saveNewPlan(p);
+            if (!sharedHelper.getSynchronization()) {
+                p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
+                synchronization.wasAdding(p.getLocalId());
+                return;
+            }
+            netManager.addPlan(p, new OnSaveCallback() {
+                @Override
+                public void getId(String id) {
+                    p.setParseId(id);
+                    int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                    p.setLocalId(planId);
+                    dbManager.editPlan(p, planId);
+                }
+            });
+        }
+    }
+
     public void startAlarm() {
-        if (ValidData.isTextValid(etTitle.getText().toString())) {
+        if (ValidData.isTextValid(mEtTitle.getText().toString())) {
             if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
                 writePlanToDB(DataUtils.getCalendar());
-
                 int pendingId = dbManager.getLastPlanID();
-
-                if (isEdit)
+                if (mIsEdit)
                     pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
-
                 PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
-
-                if (!sRepeating.isChecked()) {
-                    am.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
+                if (!mSwitchRepeating.isChecked()) {
+                    mAlarmManager.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
                 } else {
-                    am.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                 }
-
                 finish();
             } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
                 showToast("Time is incorrect.");
@@ -226,67 +242,76 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
-            isDialogExist = false;
+            mIsDialogExist = false;
             return;
         }
-        seekbar.setEnabled(true);
+        mSeekBar.setEnabled(true);
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                    /*if ( data.getType() != "audio/mp3"){
-                        showToast("File is not valid");
-                        return;
-                    }*/
-                path = getPath(data);
+                mPath = getPath(data);
                 if (SystemUtils.isKitKatHigher()) {
-                    mTextValue.setText(getName(null, path));
+                    mTextValue.setText(getName(null, mPath));
                     if (!isValidFormat(mTextValue.getText().toString())) {
-                        isDialogExist = false;
+                        mIsDialogExist = false;
                         mTextValue.setText("--");
                         showToast("File is not valid");
                         return;
                     }
-                    durationBuf = getAudioDuration(data.getData(), this);
+                    mDurationBuf = getAudioDuration(data.getData(), this);
                 } else {
                     Uri u = data.getData();
                     mTextValue.setText(getName(u, null));
                     if (!isValidFormat(mTextValue.getText().toString())) {
-                        isDialogExist = false;
+                        mIsDialogExist = false;
                         mTextValue.setText("--");
                         showToast("File is not valid");
                         return;
                     }
-                    durationBuf = getAudioDuration(u, this);
-                    Duration(seekbar);
+                    mDurationBuf = getAudioDuration(u, this);
+                    duration(mSeekBar);
                 }
-                isAudioSelected = true;
-                isDialogExist = false;
+                mIsDialogExist = false;
                 break;
             case GALLERY_REQUEST:
                 final String[] proj = {MediaStore.Audio.Media.DATA};
                 final Cursor cursor;
-                selectedImageURI = data.getData();
-                cursor = getContentResolver().query(selectedImageURI, proj, null, null, null);
+                mSelectedImageURI = data.getData();
+                cursor = getContentResolver().query(mSelectedImageURI, proj, null, null, null);
                 final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToLast();
-                selectedImagePath = cursor.getString(column_index_i);
-                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(selectedImagePath, 110, 110);
-                iv_image.setImageBitmap(bitmap);
+                mSelectedImagePath = cursor.getString(column_index_i);
+                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
+                mIvImage.setImageBitmap(bitmap);
                 break;
         }
+    }
+
+    @Override
+    public void onDaysOfWeekPositiveClick(Bundle bundle) {
+        //test. Delete later
+        showToast("Sunday " + bundle.getBoolean("Sun") + "\n" +
+                "Monday " + bundle.getBoolean("Mon") + "\n" +
+                "Tuesday " + bundle.getBoolean("Tues") + "\n" +
+                "Wednesday " + bundle.getBoolean("Wed") + "\n" +
+                "Thursday " + bundle.getBoolean("Thurs") + "\n" +
+                "Friday " + bundle.getBoolean("Fri") + "\n" +
+                "Saturday " + bundle.getBoolean("Sat"));
+    }
+
+    @Override
+    public void onDaysOfWeekNegativeClick(Bundle bundle) {
+
     }
 
     private boolean isValidFormat(String path) {
         Pattern p = Pattern.compile(".*\\.mp3$");
         Matcher m = p.matcher(path);
-
         return m.matches();
-
     }
 
     private String getName(Uri pathUri, String pathName) {
         String[] arrPath = null;
         if (!SystemUtils.isKitKatHigher()) {
-
             final String[] proj = {MediaStore.Audio.Media.DATA};
             final Cursor cursor;
             cursor = getContentResolver().query(pathUri, proj, null, null, null);
@@ -297,29 +322,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         }
         arrPath = pathName.split("/");
         return arrPath[arrPath.length - 1];
-    }
-
-    private void chooseAudio() {
-        if (isDialogExist) {
-            return;
-        }
-        isDialogExist = true;
-        Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
-        chooseAudio.setType("audio/*");
-        if (chooseAudio.resolveActivity(getPackageManager()) == null) {
-            isDialogExist = false;
-        }
-        startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
-    }
-
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
-       /* iv_image.setImageURI(null);
-        iv_image.setImageURI(selectedImageURI);*/
-
     }
 
     private String getPath(Intent str) throws IllegalArgumentException {
@@ -359,93 +361,52 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         return null;
     }
 
-    private void writePlanToDB(Calendar calendar) {
-        final Plan p = new Plan();
-        p.setDetails(setDetails_textview.getText().toString());
-        p.setTitle(etTitle.getText().toString());
-        p.setTimeStamp(calendar.getTimeInMillis());
-        p.setAudioPath(path);
-        p.setAudioDuration((int) audioDuration);
-
-        if (isEdit) {
-            int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
-            p.setParseId(dbManager.getPlanById(id).getParseId());
-            p.setLocalId(dbManager.getPlanById(id).getLocalId());
-            dbManager.editPlan(p, id);
-            if (!sharedHelper.getSynchronization()) {
-                synchronization.wasEditing(p.getLocalId());
-                return;
-            }
-            netManager.editPlan(p, new CallbackEditPlan(p));
-        } else {
-            dbManager.saveNewPlan(p);
-            if (!sharedHelper.getSynchronization()) {
-                p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
-                synchronization.wasAdding(p.getLocalId());
-                return;
-            }
-            netManager.addPlan(p, new OnSaveCallback() {
-                @Override
-                public void getId(String id) {
-                    p.setParseId(id);
-                    int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
-                    p.setLocalId(planId);
-                    dbManager.editPlan(p, planId);
-                }
-            });
+    private void chooseAudio() {
+        if (mIsDialogExist) {
+            return;
         }
+        mIsDialogExist = true;
+        Intent chooseAudio = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseAudio.setType("audio/*");
+        if (chooseAudio.resolveActivity(getPackageManager()) == null) {
+            mIsDialogExist = false;
+        }
+        startActivityForResult(chooseAudio, REQUEST_AUDIO_GET);
     }
 
-    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Duration(seekBar);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            Duration(seekBar);
-        }
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
     }
 
-    private void Duration(SeekBar seekBar) {
-        audioDuration = (durationBuf * seekBar.getProgress()) / 100;
+    private void duration(SeekBar seekBar) {
+        mAudioDuration = (mDurationBuf * seekBar.getProgress()) / 100;
         timeFormat();
     }
 
     private void timeFormat() {
-        tvSoundDuration.setText(DataUtils.getTimeStrFromTimeStamp((int) audioDuration));
+        mTvSoundDuration.setText(DataUtils.getTimeStrFromTimeStamp((int) mAudioDuration));
     }
 
     private void fillIn(SeekBar seekbar) {
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         Plan p = dbManager.getPlanById(id);
-        etTitle.setText(p.getTitle());
+        mEtTitle.setText(p.getTitle());
         seekbar.setEnabled(true);
-
-        setDetails_textview.setText(p.getDetails());
+        mTvSetDetails.setText(p.getDetails());
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
-        path = p.getAudioPath();
-        if (path == null) {
+        mPath = p.getAudioPath();
+        if (mPath == null) {
             return;
         }
-        Uri u = Uri.parse(path);
-        audioDuration = p.getAudioDuration();
-        durationBuf = getAudioDuration(u, this);
-        isAudioSelected = true;
-
-
-        Uri tmpUri = Uri.parse(path);
-
-        mTextValue.setText(getName(tmpUri, path));
-
-
-        seekbar.setProgress(getPercent((int) audioDuration, path));
-        isAudioSelected = true;
+        Uri u = Uri.parse(mPath);
+        mAudioDuration = p.getAudioDuration();
+        mDurationBuf = getAudioDuration(u, this);
+        Uri tmpUri = Uri.parse(mPath);
+        mTextValue.setText(getName(tmpUri, mPath));
+        seekbar.setProgress(getPercent((int) mAudioDuration, mPath));
         timeFormat();
     }
 
@@ -463,7 +424,6 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
         private final Plan plan;
-
         public CallbackEditPlan(Plan plan) {
             this.plan = plan;
         }
@@ -476,7 +436,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
-                parseObject.put("audioDuration", plan.getAudioDuration());
+                parseObject.put("mAudioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
@@ -487,6 +447,7 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
     }
 
     public final class Clicker implements View.OnClickListener {
+
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -494,17 +455,17 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
                     startAlarm();
                     break;
                 case R.id.setDate_textview:
-                    dateDialog = new DatePickDialog();
-                    dateDialog.show(getSupportFragmentManager(), "datePicker");
+                    mDatePickDialog = new DatePickDialog();
+                    mDatePickDialog.show(getSupportFragmentManager(), "datePicker");
                     break;
                 case R.id.setTime_textview:
-                    timeDialog = new TimePickDialog();
-                    timeDialog.show(getSupportFragmentManager(), "timePicker");
+                    mTimeDialog = new TimePickDialog();
+                    mTimeDialog.show(getSupportFragmentManager(), "timePicker");
                     break;
                 case R.id.switch_repeating:
-                    if (sRepeating.isChecked()) {
-                        daysOfWeekDialog = new DaysOfWeekDialog();
-                        daysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
+                    if (mSwitchRepeating.isChecked()) {
+                        mDaysOfWeekDialog = new DaysOfWeekDialog();
+                        mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
                     }
                     break;
                 case R.id.aa_setAudio_btn:
@@ -517,22 +478,20 @@ public class AlarmActivity extends ToolbarActivity implements DaysOfWeekDialog.D
         }
     }
 
-    @Override
-    public void onDaysOfWeekPositiveClick(Bundle bundle) {
+    public final class SeekerBar implements SeekBar.OnSeekBarChangeListener {
 
-        //test. Delete later
-        showToast("Sunday " + bundle.getBoolean("Sun") + "\n" +
-                "Monday " + bundle.getBoolean("Mon") + "\n" +
-                "Tuesday " + bundle.getBoolean("Tues") + "\n" +
-                "Wednesday " + bundle.getBoolean("Wed") + "\n" +
-                "Thursday " + bundle.getBoolean("Thurs") + "\n" +
-                "Friday " + bundle.getBoolean("Fri") + "\n" +
-                "Saturday " + bundle.getBoolean("Sat"));
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            duration(seekBar);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            duration(seekBar);
+        }
     }
-
-    @Override
-    public void onDaysOfWeekNegativeClick(Bundle bundle) {
-
-    }
-
 }
