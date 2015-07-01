@@ -3,6 +3,7 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.ContextMenu;
@@ -81,7 +82,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private void updateListView() {
-        //Cursor cursor = dbManager.getPlans();
         Cursor cursor = dbManager.getNotDeletedPlans();
         mAdapter.swapCursor(cursor);
         mAdapter.notifyDataSetChanged();
@@ -98,7 +98,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) pMenuItem.getMenuInfo();
         Cursor cursor = mAdapter.getCursor();
-
         if (cursor.moveToPosition((int) (info.position))) {
             int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
 
@@ -107,7 +106,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     Plan p = dbManager.getPlanById(cursor.getInt(idIndex));
                     AlarmActivity.start(this, p.getLocalId());
                     break;
-
                 case R.id.pa_context_delete:
                     deleteEntirely(cursor.getInt(idIndex));
                     break;
