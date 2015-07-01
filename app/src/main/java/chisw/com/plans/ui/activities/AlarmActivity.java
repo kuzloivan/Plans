@@ -187,6 +187,7 @@ public class AlarmActivity extends ToolbarActivity{
         p.setTitle(mEtTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setAudioPath(mPath);
+        p.setImagePath(mSelectedImagePath);
         p.setAudioDuration((int) mAudioDuration);
         p.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
         p.setIsDeleted(0);
@@ -281,6 +282,7 @@ public class AlarmActivity extends ToolbarActivity{
                 }
                 mIsDialogExist = false;
                 break;
+
             case GALLERY_REQUEST:
                 final String[] proj = {MediaStore.Images.Media.DATA};
                 final Cursor cursor;
@@ -388,6 +390,14 @@ public class AlarmActivity extends ToolbarActivity{
         mEtTitle.setText(p.getTitle());
         seekbar.setEnabled(true);
         mTvSetDetails.setText(p.getDetails());
+
+        mTvDate.setText(DataUtils.getDateStringFromTimeStamp(p.getTimeStamp()));
+        mTvTime.setText(DataUtils.getTimeStringFromTimeStamp(p.getTimeStamp()));
+
+        mSelectedImagePath = p.getImagePath();
+        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
+        mIvImage.setImageBitmap(bitmap);
+
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
         mPath = p.getAudioPath();
         if (mPath == null) {
@@ -446,10 +456,15 @@ public class AlarmActivity extends ToolbarActivity{
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
+                if (ValidData.isTextValid(plan.getImagePath())){
+                    parseObject.put("imagePath", plan.getImagePath());
+                }
                 parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
                 parseObject.saveInBackground();
+
+
             } else {
                 showToast(e.getMessage());
             }

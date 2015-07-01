@@ -289,6 +289,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
+                if(ValidData.isTextValid(plan.getImagePath())){
+                    parseObject.put("imagePath", plan.getImagePath());
+                }
                 parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());

@@ -31,6 +31,7 @@ public class NetManager implements NetBridge {
     public static final String USER_ID = "userId";
     public static final String AUDIO_PATH = "audioPath";
     public static final String AUDIO_DURATION = "audioDuration";
+    public static final String IMAGE_PATH = "imagePath";
     public static final String PLAN_ID = "objectId";
 
     @Override
@@ -59,6 +60,9 @@ public class NetManager implements NetBridge {
         if(ValidData.isTextValid(plan.getAudioPath())) {
             pPlan.put(AUDIO_PATH, plan.getAudioPath());
         }
+        if (ValidData.isTextValid(plan.getImagePath())){
+            pPlan.put(IMAGE_PATH, plan.getImagePath());
+        }
         pPlan.put(DETAILS, plan.getDetails());
         pPlan.put(USER_ID, ParseUser.getCurrentUser().getObjectId());
         pPlan.put(AUDIO_DURATION, plan.getAudioDuration());
@@ -81,6 +85,7 @@ public class NetManager implements NetBridge {
             @Override
             public void getPlan(ParseObject parseObject) {
                 p.setAudioPath(parseObject.getString(PlansEntity.AUDIO_PATH));
+                p.setImagePath(parseObject.getString(PlansEntity.IMAGE_PATH));
                 p.setLocalId(parseObject.getInt(PlansEntity.LOCAL_ID));
                 p.setDetails(parseObject.getString(PlansEntity.DETAILS));
                 p.setTitle(parseObject.getString(PlansEntity.TITLE));
@@ -158,6 +163,7 @@ public class NetManager implements NetBridge {
                 for (ParseObject obj : list) {
                     Plan p = new Plan();
                     p.setAudioPath(obj.getString(PlansEntity.AUDIO_PATH));
+                    p.setImagePath(obj.getString(PlansEntity.IMAGE_PATH));
                     p.setDetails(obj.getString(PlansEntity.DETAILS));
                     p.setTitle(obj.getString(PlansEntity.TITLE));
                     p.setTimeStamp(obj.getLong(PlansEntity.TIMESTAMP));

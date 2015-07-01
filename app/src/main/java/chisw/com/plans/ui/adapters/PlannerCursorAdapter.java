@@ -51,19 +51,15 @@ public class PlannerCursorAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder)view.getTag();
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
-        int timeStampIndex = cursor.getColumnIndex(PlansEntity.TIMESTAMP);
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
-        int image = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
-        long timeStamp = cursor.getLong(timeStampIndex);
+        int imageIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
+        long timeStamp = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
-        String details = cursor.getString(detailsIndex);
-        viewHolder.tvDetails.setText(details);
-
-        mSelectedImagePath = cursor.getString(image);
-
+        viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+        mSelectedImagePath = cursor.getString(imageIndex);
         //Toast.makeText(context, "mSelectedImagePath = " + mSelectedImagePath , Toast.LENGTH_LONG).show();
         Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource( mSelectedImagePath, 60, 60);
         viewHolder.ivPicture.setImageBitmap(bitmap);
