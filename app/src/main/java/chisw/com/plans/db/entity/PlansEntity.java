@@ -15,6 +15,8 @@ public class PlansEntity {
     public static final String AUDIO_DURATION = "audioDuration";
     public static final String IMAGE_PATH = "imagePath";
     public static final String DAYS_TO_ALARM = "daysToAlarm";
+    public static final String IS_DELETED = "isDeleted";
+    public static final String IS_SYNCHRONIZED = "isSynchronized";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -26,6 +28,8 @@ public class PlansEntity {
             AUDIO_PATH + " TEXT, " +
             AUDIO_DURATION + " INTEGER, " +
             IMAGE_PATH + " TEXT, " +
-            DAYS_TO_ALARM + " TEXT " + //Coma!   DOW
+            DAYS_TO_ALARM + " TEXT, " + //Coma!   DOW
+            IS_DELETED + " INTEGER, " +
+            IS_SYNCHRONIZED + " INTEGER " +
             ")";
 }

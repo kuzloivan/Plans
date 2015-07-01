@@ -189,24 +189,28 @@ public class AlarmActivity extends ToolbarActivity{
         p.setAudioPath(mPath);
         p.setAudioDuration((int) mAudioDuration);
         p.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
+        p.setIsDeleted(0);
 
         if (mIsEdit) {
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             p.setParseId(dbManager.getPlanById(id).getParseId());
             p.setLocalId(dbManager.getPlanById(id).getLocalId());
-            dbManager.editPlan(p, id);
-            if (!sharedHelper.getSynchronization()) {
-                synchronization.wasEditing(p.getLocalId());
+            if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                p.setIsSynchronized(0);
+                dbManager.editPlan(p, id);
                 return;
             }
+            p.setIsSynchronized(1);
+            dbManager.editPlan(p, id);
             netManager.editPlan(p, new CallbackEditPlan(p));
         } else {
-            dbManager.saveNewPlan(p);
-            if (!sharedHelper.getSynchronization()) {
-                p.setLocalId(dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId());
-                synchronization.wasAdding(p.getLocalId());
+            if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                p.setIsSynchronized(0);
+                dbManager.saveNewPlan(p);
                 return;
             }
+            p.setIsSynchronized(1);
+            dbManager.saveNewPlan(p);
             netManager.addPlan(p, new OnSaveCallback() {
                 @Override
                 public void getId(String id) {

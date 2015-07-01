@@ -10,6 +10,7 @@ import android.widget.TextView;
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.DataUtils;
+import chisw.com.plans.utils.SystemUtils;
 
 /**
  * Created by Alexander on 20.06.2015.
@@ -63,12 +64,17 @@ public class ViewPlanActivity extends ToolbarActivity {
 
     public void deleteEntirely() {
         alarmManager.cancelAlarm(mPlanId);
-        if (!sharedHelper.getSynchronization()) {
-            synchronization.wasDeleting(mPlanId);
+
+        Plan plan = dbManager.getPlanById(mPlanId);
+        if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+            plan.setIsSynchronized(0);
+            plan.setIsDeleted(1);
+            dbManager.editPlan(plan, mPlanId);
         } else {
-            netManager.deletePlan((mPlan.getParseId()));
+            netManager.deletePlan(plan.getParseId());
+            dbManager.deletePlanById(mPlanId);
+            plan.setIsSynchronized(1);
         }
-        dbManager.deletePlanById(mPlanId);
     }
 
     @Override

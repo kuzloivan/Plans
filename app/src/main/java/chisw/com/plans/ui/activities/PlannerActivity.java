@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -12,17 +13,28 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.parse.GetCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.plans.R;
+import chisw.com.plans.core.bridge.OnGetPlansCallback;
+import chisw.com.plans.core.bridge.OnSaveCallback;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.FloatingActionButton;
+import chisw.com.plans.others.RestartManager;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
+import chisw.com.plans.utils.DataUtils;
+import chisw.com.plans.utils.SystemUtils;
+import chisw.com.plans.utils.ValidData;
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
@@ -38,7 +50,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         initView();
-        startSynchronization();
+        if(SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
+            startSynchronization();
+        }
     }
 
     @Override
@@ -67,7 +81,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private void updateListView() {
-        Cursor cursor = dbManager.getPlans();
+        //Cursor cursor = dbManager.getPlans();
+        Cursor cursor = dbManager.getNotDeletedPlans();
         mAdapter.swapCursor(cursor);
         mAdapter.notifyDataSetChanged();
     }
@@ -103,12 +118,16 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     public void deleteEntirely(int id) {
         alarmManager.cancelAlarm(id);
-        if (!sharedHelper.getSynchronization()) {
-            synchronization.wasDeleting((dbManager.getPlanById(id)).getLocalId());
+        Plan plan = dbManager.getPlanById(id);
+        if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+            plan.setIsSynchronized(0);
+            plan.setIsDeleted(1);
+            dbManager.editPlan(plan, id);
         } else {
-            netManager.deletePlan((dbManager.getPlanById(id)).getParseId());
+            netManager.deletePlan(plan.getParseId());
+            dbManager.deletePlanById(id);
+            plan.setIsSynchronized(1);
         }
-        dbManager.deletePlanById(id);
     }
 
     @Override
@@ -121,7 +140,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
         switch (pMenuItem.getItemId()) {
             case R.id.pa_menu_sync:
-                startSynchronization();
+                if(SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                    startSynchronization();
+                }
                 break;
 
             case R.id.pa_menu_settings:
@@ -147,7 +168,57 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private void startSynchronization() {
-        synchronization.startSynchronization(getApplication().getApplicationContext());
+        Cursor cursor = dbManager.getPlans();
+        if (cursor.moveToFirst()) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                final Plan plan = dbManager.getPlanById(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
+
+                if (plan.getIsSynchronized() == 0) {
+                    if (ValidData.isTextValid(plan.getParseId())) {
+                        if (plan.getIsDeleted() == 1) {
+                            netManager.deletePlan(plan.getParseId());
+                            dbManager.deletePlanById(plan.getLocalId());
+                        } else {
+                            netManager.editPlan(plan, new CallbackEditPlan(plan));
+                            plan.setIsSynchronized(1);
+                            dbManager.editPlan(plan, plan.getLocalId());
+                        }
+                    } else {
+                        if (plan.getIsDeleted() == 1) {
+                            dbManager.deletePlanById(plan.getLocalId());
+                        } else {
+                            netManager.addPlan(plan, new OnSaveCallback() {
+                                @Override
+                                public void getId(String id) {
+                                    plan.setParseId(id);
+                                    int planId = plan.getLocalId();
+                                    plan.setIsSynchronized(1);
+                                    dbManager.editPlan(plan, planId);
+                                }
+                            });
+                        }
+                    }
+
+                }
+                cursor.moveToNext();
+            }
+        } else {
+            final ArrayList<Plan> plans = new ArrayList<>();
+            netManager.getAllPlans(new OnGetPlansCallback() {
+                @Override
+                public void getPlans(ArrayList<Plan> lPlans) {
+                    for (Plan plan : lPlans) {
+                        plans.add(plan);
+                        dbManager.saveNewPlan(plan);
+                    }
+                    if (!lPlans.isEmpty()) {
+                        RestartManager restartManager = new RestartManager(getApplication().getApplicationContext());
+                        restartManager.Reload();
+                    }
+                }
+            });
+        }
+        cursor.close();
     }
 
     @Override
@@ -200,6 +271,30 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 case R.id.fab:
                     AlarmActivity.start(PlannerActivity.this);
                     break;
+            }
+        }
+    }
+
+    public final class CallbackEditPlan implements GetCallback<ParseObject> {
+        private final Plan plan;
+        public CallbackEditPlan(Plan plan) {
+            this.plan = plan;
+        }
+
+        @Override
+        public void done(ParseObject parseObject, ParseException e) {
+            if (e == null) {
+                parseObject.put("title", plan.getTitle());
+                parseObject.put("timeStamp", plan.getTimeStamp());
+                if (ValidData.isTextValid(plan.getAudioPath())) {
+                    parseObject.put("audioPath", plan.getAudioPath());
+                }
+                parseObject.put("audioDuration", plan.getAudioDuration());
+                parseObject.put("details", plan.getDetails());
+                parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
+                parseObject.saveInBackground();
+            } else {
+                showToast(e.getMessage());
             }
         }
     }

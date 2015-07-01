@@ -13,6 +13,7 @@ public interface DbBridge {
     void saveNewPlan(Plan pPlan);
     void editPlan(Plan pPlan, int id);
     Cursor getPlans();
+    Cursor getNotDeletedPlans();
     void clearPlans();
     Plan getPlanById(int id);
     Cursor getCursorById(int id);

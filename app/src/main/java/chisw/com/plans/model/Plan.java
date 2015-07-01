@@ -15,8 +15,9 @@ public class Plan {
     private int localId;
     private int audioDuration;
     private String daysToAlarm;
-//    private String imagePath;
     private String imagePath;
+    private int isDeleted;
+    private int isSynchronized;
 
     public int getLocalId() {
         return localId;
@@ -78,6 +79,7 @@ public class Plan {
     public void setDaysToAlarm(String pDaysToAlarm){ //DOW
         this.daysToAlarm = pDaysToAlarm;
     }
+
     public String getDaysToAlarm(){   //DOW
         return this.daysToAlarm;
     }
@@ -90,4 +92,19 @@ public class Plan {
         this.imagePath = imagePath;
     }
 
+    public int getIsSynchronized() {
+        return isSynchronized;
+    }
+
+    public void setIsSynchronized(int isSynchronized) {
+        this.isSynchronized = isSynchronized;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

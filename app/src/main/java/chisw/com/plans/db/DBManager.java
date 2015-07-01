@@ -33,6 +33,13 @@ public class DBManager extends java.util.Observable implements DbBridge {
         return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, null, null, null, null, null);
     }
 
+    //get only not deleted plans
+    @Override
+    public Cursor getNotDeletedPlans() {
+        return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.IS_DELETED + "=?",
+                new String[]{String.valueOf(0)}, null, null, null);
+    }
+
     //clears all writings in plans_database SQL
     @Override
     public void clearPlans() {

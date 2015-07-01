@@ -27,6 +27,8 @@ public class Mapper {
         CV.put(PlansEntity.AUDIO_DURATION, model.getAudioDuration());
         CV.put(PlansEntity.IMAGE_PATH, model.getImagePath());
         CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
+        CV.put(PlansEntity.IS_DELETED, model.getIsDeleted());
+        CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
         return CV;
     }
 
@@ -57,6 +59,12 @@ public class Mapper {
         if(model.getImagePath() != null )
             CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
 
+        if(model.getIsDeleted() != -1 )
+            CV.put(PlansEntity.IS_DELETED, model.getIsDeleted());
+
+        if(model.getIsSynchronized() != -1 )
+            CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
+
         return CV;
     }
 
@@ -72,6 +80,8 @@ public class Mapper {
         int audioDuration = cursor.getColumnIndex(PlansEntity.AUDIO_DURATION);
         int imagePathIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         int daysToAlarm = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
+        int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
+        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -84,6 +94,8 @@ public class Mapper {
         plan.setAudioDuration(cursor.getInt(audioDuration));
         plan.setImagePath(cursor.getString(imagePathIndex));
         plan.setDaysToAlarm(cursor.getString(daysToAlarm));
+        plan.setIsDeleted(cursor.getInt(isDeletedIndex));
+        plan.setIsSynchronized(cursor.getInt(isSynchronizedIndex));
         return plan;
     }
 
