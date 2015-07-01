@@ -1,6 +1,5 @@
 package chisw.com.plans.ui.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -10,7 +9,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -225,27 +223,25 @@ public class AlarmActivity extends ToolbarActivity{
     }
 
     public void startAlarm() {
-        if (ValidData.isTextValid(mEtTitle.getText().toString())) {
-            if ((DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() > 0)) {
-                writePlanToDB(DataUtils.getCalendar());
-                int pendingId = dbManager.getLastPlanID();
-                if (mIsEdit)
-                    pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
-                PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
-                if (!mSwitchRepeating.isChecked()) {
-                    mAlarmManager.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
-                } else {
-                    mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                }
-                finish();
-            } else if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
-                showToast("Time is incorrect.");
-            } else {
-                showToast("Choose audio for notification.");
-            }
-        } else {
-            showToast("Field is empty");
+        if (!ValidData.isTextValid(mEtTitle.getText().toString())) {
+            showToast("Title is empty");
+            return;
         }
+        if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
+            showToast("Time is incorrect.");
+            return;
+        }
+        writePlanToDB(DataUtils.getCalendar());
+        int pendingId = dbManager.getLastPlanID();
+        if (mIsEdit)
+            pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+        PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
+        if (!mSwitchRepeating.isChecked()) {
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
+        } else {
+            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+        finish();
     }
 
     @Override
@@ -259,28 +255,23 @@ public class AlarmActivity extends ToolbarActivity{
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 mPath = getPath(data);
+                mIsDialogExist = false;
+                String buf;
+                Uri u = data.getData();
+                buf = getName(u, mPath);
+                if (!isValidFormat(buf)) {
+                    mTvSoundDuration.setText("00:00");
+                    mTextValue.setText("");
+                    showToast("File is not valid");
+                    return;
+                }
                 if (SystemUtils.isKitKatHigher()) {
-                    mTextValue.setText(getName(null, mPath));
-                    if (!isValidFormat(mTextValue.getText().toString())) {
-                        mIsDialogExist = false;
-                        mTextValue.setText("--");
-                        showToast("File is not valid");
-                        return;
-                    }
                     mDurationBuf = getAudioDuration(data.getData(), this);
                 } else {
-                    Uri u = data.getData();
-                    mTextValue.setText(getName(u, null));
-                    if (!isValidFormat(mTextValue.getText().toString())) {
-                        mIsDialogExist = false;
-                        mTextValue.setText("--");
-                        showToast("File is not valid");
-                        return;
-                    }
                     mDurationBuf = getAudioDuration(u, this);
-                    duration(mSeekBar);
                 }
-                mIsDialogExist = false;
+                mTextValue.setText(buf);
+                duration(mSeekBar);
                 break;
 
             case GALLERY_REQUEST:
@@ -318,23 +309,22 @@ public class AlarmActivity extends ToolbarActivity{
         return arrPath[arrPath.length - 1];
     }
 
-    private String getPath(Intent str) throws IllegalArgumentException {
-        if (SystemUtils.isKitKatHigher()) {
-            Uri data = str.getData();
-            final String docId = DocumentsContract.getDocumentId(data);
-            final String[] split = docId.split(":");
-            Uri contentUri = null;
-            if ("com.android.providers.media.documents".equals(data.getAuthority())) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            }
-            final String selection = "_id=?";
-            final String[] selectionArgs = new String[]{
-                    split[1]
-            };
-            return getDataColumn(this, contentUri, selection, selectionArgs);
-        } else {
+    private String getPath(Intent str) {
+        Uri data = str.getData();
+        if (!SystemUtils.isKitKatHigher() || !DocumentsContract.isDocumentUri(this, data)) {
             return str.getDataString();
         }
+        final String docId = DocumentsContract.getDocumentId(data);
+        final String[] split = docId.split(":");
+        Uri contentUri = null;
+        if ("com.android.providers.media.documents".equals(data.getAuthority())) {
+            contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        }
+        final String selection = "_id=?";
+        final String[] selectionArgs = new String[]{
+                split[1]
+        };
+        return getDataColumn(this, contentUri, selection, selectionArgs);
     }
 
     private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
