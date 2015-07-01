@@ -7,7 +7,11 @@
 
     <!-- Planner list view colors -->
     <color name="color_pa_list_item_normal">#F44336</color>
-    <color name="color_pa_list_item_pressed">#E57373</color>
+    <color name="color_pa_list_item_pressed">#EF5350</color>
+    <color name="color_pa_list_item_not_sync_normal">#E57373</color>
+    <color name="color_pa_list_item_not_sync_pressed">#EF9A9A</color>
+    <color name="color_pa_list_item_old_normal">#78909C</color>
+    <color name="color_pa_list_item_old_pressed">#90A4AE</color>90A4AE
     <color name="color_pa_list_item_text_view_text">#ffffff</color>
 
     <!-- Plan View activity colors -->

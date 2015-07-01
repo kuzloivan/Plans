@@ -3,6 +3,7 @@ package chisw.com.plans.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -63,6 +64,14 @@ public class PlannerCursorAdapter extends CursorAdapter {
         //Toast.makeText(context, "mSelectedImagePath = " + mSelectedImagePath , Toast.LENGTH_LONG).show();
         Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource( mSelectedImagePath, 60, 60);
         viewHolder.ivPicture.setImageBitmap(bitmap);
+
+/*        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
+        int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
+        if(cursor.getInt(isSynchronizedIndex) == 0) {
+            view.setBackgroundColor(Color.parseColor("#EF5350"));
+        } else if(timeStamp - System.currentTimeMillis() <= 0) {
+            view.setBackgroundColor(Color.parseColor("#BDBDBD"));
+        }*/
     }
 
     private static class ViewHolder{

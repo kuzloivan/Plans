@@ -98,6 +98,8 @@ public class AlarmActivity extends ToolbarActivity{
         mTvDate.setOnClickListener(clicker);
         mTvTime = (TextView) findViewById(R.id.setTime_textview);
         mTvTime.setOnClickListener(clicker);
+        mTvDate.setText(DataUtils.getDateStrFromCalendar());
+        mTvTime.setText(DataUtils.getTimeStrFromCalendar());
         mTvSoundDuration = (TextView) findViewById(R.id.tv_sound_duration);
         mTvSoundDuration.setOnClickListener(clicker);
         mTextValue = (TextView) findViewById(R.id.alarmSoundTitle_textview);
