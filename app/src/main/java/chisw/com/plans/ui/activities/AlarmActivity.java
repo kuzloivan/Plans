@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.core.callback.OnSaveCallback;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 
 import android.view.KeyEvent;
@@ -389,6 +389,9 @@ public class AlarmActivity extends ToolbarActivity{
         mSelectedImagePath = p.getImagePath();
         Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
         mIvImage.setImageBitmap(bitmap);
+        if(mSelectedImagePath == null){
+            mIvImage.setImageResource(R.drawable.aa_icon);
+        }
 
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
         mPath = p.getAudioPath();

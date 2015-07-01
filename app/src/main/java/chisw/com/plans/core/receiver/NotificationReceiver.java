@@ -1,4 +1,4 @@
-package chisw.com.plans.core.Receivers;
+package chisw.com.plans.core.receiver;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -7,21 +7,15 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Path;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import chisw.com.plans.R;
 import chisw.com.plans.core.PApplication;
-import chisw.com.plans.db.Mapper;
-import chisw.com.plans.model.Plan;
 import chisw.com.plans.others.Multimedia;
-import chisw.com.plans.ui.activities.AlarmActivity;
 import chisw.com.plans.ui.activities.PlannerActivity;
-import chisw.com.plans.ui.activities.ViewPlanActivity;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 

@@ -3,9 +3,7 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -21,19 +19,17 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.plans.R;
-import chisw.com.plans.core.bridge.OnGetPlansCallback;
-import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.core.callback.OnGetPlansCallback;
+import chisw.com.plans.core.callback.OnSaveCallback;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
-import chisw.com.plans.others.FloatingActionButton;
+import chisw.com.plans.ui.custom_element.FloatingActionButton;
 import chisw.com.plans.others.RestartManager;
 import chisw.com.plans.ui.adapters.PlannerCursorAdapter;
-import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 

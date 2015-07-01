@@ -1,16 +1,14 @@
 package chisw.com.plans.core.bridge;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseObject;
 import com.parse.SignUpCallback;
 
-import java.util.List;
-
+import chisw.com.plans.core.callback.OnGetPlansCallback;
+import chisw.com.plans.core.callback.OnSaveCallback;
 import chisw.com.plans.model.Plan;
-import chisw.com.plans.ui.activities.AlarmActivity;
 
 public interface NetBridge {
 

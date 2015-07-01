@@ -4,7 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import chisw.com.plans.core.Receivers.NotificationReceiver;
+import chisw.com.plans.core.receiver.NotificationReceiver;
 import chisw.com.plans.core.bridge.AlarmBridge;
 
 public class AlarmManager implements AlarmBridge {

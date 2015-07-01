@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.database.Cursor;
 
 import chisw.com.plans.core.PApplication;
-import chisw.com.plans.core.Receivers.NotificationReceiver;
+import chisw.com.plans.core.receiver.NotificationReceiver;
 import chisw.com.plans.db.DBManager;
 import chisw.com.plans.db.entity.PlansEntity;
-import chisw.com.plans.utils.DataUtils;
 
 /**
  * Created by Kos on 22.06.2015.

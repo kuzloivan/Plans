@@ -1,15 +1,11 @@
-package chisw.com.plans.core.Receivers;
+package chisw.com.plans.core.receiver;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import chisw.com.plans.core.PApplication;
 import chisw.com.plans.others.Multimedia;
-import chisw.com.plans.ui.activities.AlarmActivity;
-import chisw.com.plans.ui.activities.PlannerActivity;
 
 /**
  * Created by Yuriy on 25.06.2015.

@@ -14,10 +14,10 @@ import com.parse.SignUpCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-import chisw.com.plans.core.bridge.GetPlanCallback;
+import chisw.com.plans.core.callback.GetPlanCallback;
 import chisw.com.plans.core.bridge.NetBridge;
-import chisw.com.plans.core.bridge.OnGetPlansCallback;
-import chisw.com.plans.core.bridge.OnSaveCallback;
+import chisw.com.plans.core.callback.OnGetPlansCallback;
+import chisw.com.plans.core.callback.OnSaveCallback;
 import chisw.com.plans.db.entity.PlansEntity;
 import chisw.com.plans.model.Plan;
 import chisw.com.plans.utils.ValidData;

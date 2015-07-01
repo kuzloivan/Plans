@@ -1,4 +1,4 @@
-package chisw.com.plans.others;
+package chisw.com.plans.ui.custom_element;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

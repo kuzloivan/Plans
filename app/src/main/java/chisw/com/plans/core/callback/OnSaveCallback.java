@@ -1,4 +1,4 @@
-package chisw.com.plans.core.bridge;
+package chisw.com.plans.core.callback;
 
 import com.parse.SaveCallback;
 

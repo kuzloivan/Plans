@@ -1,4 +1,4 @@
-package chisw.com.plans.core.Receivers;
+package chisw.com.plans.core.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,12 +1,9 @@
 package chisw.com.plans.ui.activities;
 
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import chisw.com.plans.R;
-import chisw.com.plans.core.Receivers.NotificationReceiver;
 
 
 /**
