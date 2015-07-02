@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="Password"
-            android:inputType="textPassword"
             android:textColorHint="#bbbbbb"/>
 
         <!--<EditText-->
