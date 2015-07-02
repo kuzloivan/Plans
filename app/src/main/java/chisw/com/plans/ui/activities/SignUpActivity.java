@@ -67,7 +67,7 @@ public class SignUpActivity extends ToolbarActivity {
                     netManager.registerUser(login, password, new CallbackSignUp());
                     break;
                 case R.id.btn_back_to_log_in:
-                    LogInActivity.start(SignUpActivity.this);
+                    onBackPressed();
                     break;
             }
         }
