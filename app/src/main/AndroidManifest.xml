@@ -49,6 +49,8 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".ui.activities.SignUpActivity"
+            android:screenOrientation="portrait"/>
 
         <receiver android:name=".core.receiver.NotificationCancelReceiver">
             <intent-filter>
