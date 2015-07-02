@@ -6,14 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import java.util.List;
 
 import chisw.com.plans.R;
 import chisw.com.plans.utils.SystemUtils;
@@ -68,11 +64,11 @@ public class LogInActivity extends ToolbarActivity {
             }
             String login = mLogin.getText().toString().toLowerCase();
             String password = mPassword.getText().toString();
-            if(!ValidData.isCredntialsValid(login,getString(R.string.login_pttrn))){
+            if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
                 showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
                 return;
             }
-            if(!ValidData.isCredntialsValid(password,getString(R.string.pass_pttrn))){
+            if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
                 showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
                 return;
             }
