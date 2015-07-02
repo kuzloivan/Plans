@@ -112,31 +112,9 @@ public class AlarmActivity extends ToolbarActivity{
         mSeekBar.setOnSeekBarChangeListener(sb);
         mSeekBar.setEnabled(false);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
-        mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-                    if (((EditText) v).getLineCount() >= 5)
-                        return true;
-                }
-                return false;
-            }
-        });
+        mTvSetDetails.setOnKeyListener(new PlanInfoClicker(5));
         mEtTitle = (EditText) findViewById(R.id.setTitle_textview);
-        mEtTitle.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-                    if (((EditText) v).getLineCount() >= 2)
-                        return true;
-                }
-                return false;
-            }
-        });
+        mEtTitle.setOnKeyListener(new PlanInfoClicker(2));
     }
 
     @Override
@@ -509,6 +487,25 @@ public class AlarmActivity extends ToolbarActivity{
         @Override
         public void onDaysOfWeekNegativeClick(String pString) {
 
+        }
+    }
+
+    private final class PlanInfoClicker implements View.OnKeyListener {
+        private int lines;
+
+        public PlanInfoClicker(int pLines) {
+            lines = pLines;
+        }
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                if (((EditText) v).getLineCount() >= lines)
+                    return true;
+            }
+            return false;
         }
     }
 }
