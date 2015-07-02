@@ -255,13 +255,14 @@ public class AlarmActivity extends ToolbarActivity{
                 break;
 
             case GALLERY_REQUEST:
-                final String[] proj = {MediaStore.Images.Media.DATA};
+                /*final String[] proj = {MediaStore.Images.Media.DATA};
                 final Cursor cursor;
                 mSelectedImageURI = data.getData();
                 cursor = getContentResolver().query(mSelectedImageURI, proj, null, null, null);
                 final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToLast();
-                mSelectedImagePath = cursor.getString(column_index_i);
+                mSelectedImagePath = cursor.getString(column_index_i);*/
+                mSelectedImagePath = getPath(data);
                 Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
                 mIvImage.setImageBitmap(bitmap);
                 break;
@@ -296,9 +297,15 @@ public class AlarmActivity extends ToolbarActivity{
         }
         final String docId = DocumentsContract.getDocumentId(data);
         final String[] split = docId.split(":");
+        final String type = split[0];
         Uri contentUri = null;
         if ("com.android.providers.media.documents".equals(data.getAuthority())) {
             contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            if ("image".equals(type)) {
+                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            } else if ("audio".equals(type)) {
+                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            }
         }
         final String selection = "_id=?";
         final String[] selectionArgs = new String[]{
