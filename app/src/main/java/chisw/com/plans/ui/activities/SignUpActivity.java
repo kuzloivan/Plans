@@ -12,15 +12,14 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import chisw.com.plans.R;
+import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
 /**
  * Created by Oksana on 30.06.2015.
  */
-public class SignUpActivity extends ToolbarActivity {
+public class SignUpActivity extends AuthorizationActivity {
 
-    private EditText mLogin;
-    private EditText mPassword;
     private Clicker mClicker;
 
     public static void start(Activity a) {
@@ -39,6 +38,12 @@ public class SignUpActivity extends ToolbarActivity {
         return R.layout.activity_sign_up;
     }
 
+    @Override
+    protected void startSomeActivity() {
+        PlannerActivity.start(SignUpActivity.this);
+        SignUpActivity.this.finish();
+    }
+
     private void initView() {
         mClicker = new Clicker();
         mLogin = (EditText) findViewById(R.id.new_user_login);
@@ -51,20 +56,13 @@ public class SignUpActivity extends ToolbarActivity {
 
         @Override
         public void onClick(View v) {
-            String login = mLogin.getText().toString().toLowerCase();
-            String password = mPassword.getText().toString();
+            prepareForClick();
             switch (v.getId()) {
                 case R.id.btn_sign_up:
-                    if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
-                        showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
-                        return;
+                    if(isValidFields()) {
+                        showProgressDialog("Signing Up", "Please, wait...");
+                        netManager.registerUser(login, password, new CallbackSignUp());
                     }
-                    if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
-                        showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
-                        return;
-                    }
-                    showProgressDialog("Signing Up", "Please, wait...");
-                    netManager.registerUser(login, password, new CallbackSignUp());
                     break;
                 case R.id.btn_back_to_log_in:
                     onBackPressed();
@@ -94,30 +92,6 @@ public class SignUpActivity extends ToolbarActivity {
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
             hideProgressDialog();
             showToast("SignUp was successful");
-        }
-    }
-
-    public final class CallbackLogIn implements LogInCallback {
-        String error = "Error";
-        @Override
-        public void done(ParseUser parseUser, ParseException e) {
-            if (e != null) {
-                /* Is username already exist */
-                switch(e.getCode()) {
-                    case ParseException.OBJECT_NOT_FOUND:
-                        error = "Unable to log in. Check your username and password";
-                        break;
-                }
-                showToast(error); //test
-                hideProgressDialog();
-                return;
-            }
-            sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
-            sharedHelper.setDefaultPass(mPassword.getText().toString());
-            hideProgressDialog();
-            showToast("Login was successful");
-            PlannerActivity.start(SignUpActivity.this);
-            SignUpActivity.this.finish();
         }
     }
 }

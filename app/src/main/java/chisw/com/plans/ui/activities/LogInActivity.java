@@ -16,11 +16,9 @@ import chisw.com.plans.R;
 import chisw.com.plans.utils.SystemUtils;
 import chisw.com.plans.utils.ValidData;
 
-public class LogInActivity extends ToolbarActivity {
+public class LogInActivity extends AuthorizationActivity {
 
-    private EditText mLogin;
-    private EditText mPassword;
-    private ClickerNet mClicker;
+    private Clicker mClicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,7 @@ public class LogInActivity extends ToolbarActivity {
     }
 
     private void initView(){
-        mClicker = new ClickerNet();
+        mClicker = new Clicker();
         findViewById(R.id.btn_to_sign_up).setOnClickListener(mClicker);
         findViewById(R.id.btn_log_in).setOnClickListener(mClicker);
     }
@@ -56,57 +54,27 @@ public class LogInActivity extends ToolbarActivity {
         return R.layout.activity_log_in;
     }
 
-    public final class ClickerNet implements View.OnClickListener {
+    @Override
+    protected void startSomeActivity() {
+        PlannerActivity.start(LogInActivity.this);
+        LogInActivity.this.finish();
+    }
+
+    public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(!SystemUtils.checkNetworkStatus(getApplicationContext()))
-            {
-                showToast("No internet connection");
-                return;
-            }
-            String login = mLogin.getText().toString().toLowerCase();
-            String password = mPassword.getText().toString();
+            prepareForClick();
             switch (v.getId()) {
                 case R.id.btn_to_sign_up:
                     SignUpActivity.start(LogInActivity.this);
                     break;
                 case R.id.btn_log_in:
-                    if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
-                        showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
-                        return;
+                    if(isValidFields()) {
+                        showProgressDialog("Logging In", "Please, wait...");
+                        netManager.loginUser(login, password, new CallbackLogIn());
                     }
-                    if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
-                        showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
-                        return;
-                    }
-                    showProgressDialog("Logging In", "Please, wait...");
-                    netManager.loginUser(login, password, new CallbackLogIn());
                     break;
             }
-        }
-    }
-
-    public final class CallbackLogIn implements LogInCallback {
-        String error = "Error";
-        @Override
-        public void done(ParseUser parseUser, ParseException e) {
-            if (e != null) {
-                /* Is username already exist */
-                switch(e.getCode()) {
-                    case ParseException.OBJECT_NOT_FOUND:
-                        error = "Unable to log in. Check your username and password";
-                        break;
-                }
-                showToast(error); //test
-                hideProgressDialog();
-                return;
-            }
-            sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
-            sharedHelper.setDefaultPass(mPassword.getText().toString());
-            hideProgressDialog();
-            showToast("Login was successful");
-            PlannerActivity.start(LogInActivity.this);
-            LogInActivity.this.finish();
         }
     }
 }
