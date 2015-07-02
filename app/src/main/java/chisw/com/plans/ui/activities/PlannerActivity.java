@@ -207,7 +207,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     }
                     if (!lPlans.isEmpty()) {
                         RestartManager restartManager = new RestartManager(getApplication().getApplicationContext());
-                        restartManager.Reload();
+                        restartManager.reload();
                     }
                 }
             });

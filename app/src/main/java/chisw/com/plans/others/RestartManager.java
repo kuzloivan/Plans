@@ -23,7 +23,7 @@ public class RestartManager {
         this.ctx = ctx;
     }
 
-    public void Reload() {
+    public void reload() {
         DBManager dbManager = ((PApplication) ctx.getApplicationContext()).getDbManager();
         Cursor cursor = dbManager.getPlans();
         cursor.moveToFirst();

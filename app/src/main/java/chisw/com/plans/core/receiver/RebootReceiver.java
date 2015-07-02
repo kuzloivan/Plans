@@ -15,7 +15,7 @@ public class RebootReceiver extends BroadcastReceiver {
     public void onReceive(Context ctx, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             RestartManager rm = new RestartManager(ctx);
-            rm.Reload();
+            rm.reload();
         }
     }
 }
