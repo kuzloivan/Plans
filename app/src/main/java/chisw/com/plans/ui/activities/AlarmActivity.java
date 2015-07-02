@@ -340,6 +340,9 @@ public class AlarmActivity extends ToolbarActivity{
 
     private String getPath(Intent str) {
         Uri data = str.getData();
+        if(data.getScheme().equals("file")){
+            return data.getPath();
+        }
         if (!SystemUtils.isKitKatHigher() || !DocumentsContract.isDocumentUri(this, data)) {
             return str.getDataString();
         }
