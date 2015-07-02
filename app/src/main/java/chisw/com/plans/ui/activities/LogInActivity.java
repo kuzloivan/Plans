@@ -64,49 +64,23 @@ public class LogInActivity extends ToolbarActivity {
             }
             String login = mLogin.getText().toString().toLowerCase();
             String password = mPassword.getText().toString();
-            if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
-                showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
-                return;
-            }
-            if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
-                showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
-                return;
-            }
             switch (v.getId()) {
                 case R.id.btn_to_sign_up:
-//                    showProgressDialog("Signing Up", "Please, wait...");
-//                    netManager.registerUser(login, password, new CallbackSignUp());
                     SignUpActivity.start(LogInActivity.this);
                     break;
                 case R.id.btn_log_in:
+                    if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
+                        showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+                        return;
+                    }
+                    if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
+                        showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
+                        return;
+                    }
                     showProgressDialog("Logging In", "Please, wait...");
                     netManager.loginUser(login, password, new CallbackLogIn());
                     break;
             }
-        }
-    }
-
-    public final class CallbackSignUp implements SignUpCallback {
-        String error = "Error";
-        @Override
-        public void done(ParseException e) {
-            if (e != null) {
-                /* Is username already exist */
-                switch(e.getCode()) {
-                    case ParseException.USERNAME_TAKEN:
-                        error = "Username is already taken";
-                        break;
-                }
-                showToast(error); //test
-                hideProgressDialog();
-                return;
-            }
-            /* Save user credentials and then Log In */
-            sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
-            sharedHelper.setDefaultPass(mPassword.getText().toString());
-            netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
-            hideProgressDialog();
-            showToast("SignUp was successful");
         }
     }
 
