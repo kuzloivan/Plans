@@ -3,6 +3,7 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -29,6 +30,7 @@ public class LogInActivity extends ToolbarActivity {
         mLogin.setSingleLine();
         mPassword = (EditText) findViewById(R.id.net_user_password);
         mPassword.setSingleLine();
+        mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
