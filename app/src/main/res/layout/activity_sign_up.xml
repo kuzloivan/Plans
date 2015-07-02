@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="chisw.com.plans.ui.NetManagementActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context="chisw.com.plans.ui.NetManagementActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,28 +16,50 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/new_user_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="User name"
-            android:textColorHint="#bbbbbb" />
+            android:textColorHint="#bbbbbb"/>
 
         <EditText
-            android:id="@+id/net_user_login"
+            android:id="@+id/new_user_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="Password"
-            android:textColorHint="#bbbbbb" />
+            android:inputType="textPassword"
+            android:textColorHint="#bbbbbb"/>
 
-        <Button
-            android:id="@+id/btn_sign_up"
-            style="@style/style_registration_btns"
-            android:layout_width="match_parent"
+        <!--<EditText-->
+        <!--android:id="@+id/new_user_phone_number"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="@dimen/margin8"-->
+        <!--android:hint="Phone number"-->
+        <!--android:textColorHint="#bbbbbb"/>-->
+        <LinearLayout
+            style="@style/style_linearlayout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin8"
-            android:text="Sign Up" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                style="@style/style_registration_btns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Sign_up"/>
+
+            <Button
+                android:id="@+id/btn_back_to_log_in"
+                style="@style/style_registration_btns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

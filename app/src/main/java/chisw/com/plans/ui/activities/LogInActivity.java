@@ -30,7 +30,9 @@ public class LogInActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         initView();
         mLogin = (EditText) findViewById(R.id.net_user_login);
+        mLogin.setSingleLine();
         mPassword = (EditText) findViewById(R.id.net_user_password);
+        mPassword.setSingleLine();
         if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
@@ -47,7 +49,7 @@ public class LogInActivity extends ToolbarActivity {
 
     private void initView(){
         mClicker = new ClickerNet();
-        findViewById(R.id.btn_sign_up).setOnClickListener(mClicker);
+        findViewById(R.id.btn_to_sign_up).setOnClickListener(mClicker);
         findViewById(R.id.btn_log_in).setOnClickListener(mClicker);
     }
 
@@ -75,9 +77,10 @@ public class LogInActivity extends ToolbarActivity {
                 return;
             }
             switch (v.getId()) {
-                case R.id.btn_sign_up:
-                    showProgressDialog("Signing Up", "Please, wait...");
-                    netManager.registerUser(login, password, new CallbackSignUp());
+                case R.id.btn_to_sign_up:
+//                    showProgressDialog("Signing Up", "Please, wait...");
+//                    netManager.registerUser(login, password, new CallbackSignUp());
+                    SignUpActivity.start(LogInActivity.this);
                     break;
                 case R.id.btn_log_in:
                     showProgressDialog("Logging In", "Please, wait...");

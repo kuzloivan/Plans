@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="chisw.com.plans.ui.NetManagementActivity">
-    <include layout="@layout/toolbar" />
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="chisw.com.plans.ui.NetManagementActivity">
+
+    <include layout="@layout/toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="User name"
-            android:textColorHint="#bbbbbb" />
+            android:textColorHint="#bbbbbb"/>
 
         <EditText
             android:id="@+id/net_user_password"
@@ -26,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="Password"
-            android:textColorHint="#bbbbbb"
-            android:password="true"/>
+            android:inputType="textPassword"
+            android:textColorHint="#bbbbbb"/>
 
         <TextView
             android:id="@+id/forgotPassword_textview"
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin16"
             android:text="Forgot password?"
-            android:textColor="@color/toolbar_background_color" />
+            android:textColor="@color/toolbar_background_color"/>
 
         <LinearLayout
             style="@style/style_linearlayout"
@@ -44,18 +45,18 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_sign_up"
+                android:id="@+id/btn_to_sign_up"
                 style="@style/style_registration_btns"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Sign_up" />
+                android:text="@string/Sign_up"/>
 
             <Button
                 android:id="@+id/btn_log_in"
                 style="@style/style_registration_btns"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/log_in" />
+                android:text="@string/log_in"/>
         </LinearLayout>
 
     </LinearLayout>

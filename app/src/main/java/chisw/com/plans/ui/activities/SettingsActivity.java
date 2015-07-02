@@ -9,7 +9,6 @@ import chisw.com.plans.R;
 
 
 public class SettingsActivity extends ToolbarActivity {
-    private CompoundButton mCbNotification;
     private CompoundButton mCbVibration;
     private CompoundButton mCbSynchronization;
 
@@ -22,7 +21,6 @@ public class SettingsActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBackButton();
-        mCbNotification = (CompoundButton) findViewById(R.id.sa_notification_switch);
         mCbVibration = (CompoundButton) findViewById(R.id.sa_vibration_switch);
         mCbSynchronization = (CompoundButton) findViewById(R.id.sa_autoSync_switch);
 
@@ -30,12 +28,6 @@ public class SettingsActivity extends ToolbarActivity {
             mCbVibration.setChecked(true);
         }else{
             mCbVibration.setChecked(false);
-        }
-
-        if(sharedHelper.getNotificationOn()){
-            mCbNotification.setChecked(true);
-        }else{
-            mCbNotification.setChecked(false);
         }
 
         if(sharedHelper.getSynchronization()){
@@ -49,7 +41,6 @@ public class SettingsActivity extends ToolbarActivity {
     protected void onStop() {
         super.onStop();
         sharedHelper.setVibrationOn(mCbVibration.isChecked());
-        sharedHelper.setNotificationOn(mCbNotification.isChecked());
         sharedHelper.setSynchronization(mCbSynchronization.isChecked());
     }
 
