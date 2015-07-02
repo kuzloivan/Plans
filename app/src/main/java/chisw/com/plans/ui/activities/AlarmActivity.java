@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -112,9 +113,31 @@ public class AlarmActivity extends ToolbarActivity{
         mSeekBar.setOnSeekBarChangeListener(sb);
         mSeekBar.setEnabled(false);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
-        mTvSetDetails.setOnKeyListener(new PlanInfoClicker(5));
+        mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                    if (((EditText) v).getLineCount() >= 5)
+                        return true;
+                }
+                return false;
+            }
+        });
         mEtTitle = (EditText) findViewById(R.id.setTitle_textview);
-        mEtTitle.setOnKeyListener(new PlanInfoClicker(2));
+        mEtTitle.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+                    if (((EditText) v).getLineCount() >= 2)
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -262,9 +285,34 @@ public class AlarmActivity extends ToolbarActivity{
                 final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToLast();
                 mSelectedImagePath = cursor.getString(column_index_i);*/
+
                 mSelectedImagePath = getPath(data);
-                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
+
+                //Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
+
+                int targetW = mIvImage.getWidth();
+                int targetH = mIvImage.getHeight();
+
+                // Get the dimensions of the bitmap
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(mSelectedImagePath, bmOptions);
+                int photoW = bmOptions.outWidth;
+                int photoH = bmOptions.outHeight;
+
+                // Determine how much to scale down the image
+                int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+                // Decode the image file into a Bitmap sized to fill the View
+                bmOptions.inJustDecodeBounds = false;
+                bmOptions.inSampleSize = scaleFactor;
+                bmOptions.inPurgeable = true;
+
+                //Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath, bmOptions);
+                Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
                 mIvImage.setImageBitmap(bitmap);
+
+                //mIvImage.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_add_white_18dp));
                 break;
         }
     }
@@ -346,10 +394,15 @@ public class AlarmActivity extends ToolbarActivity{
     }
 
     private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
+
+
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
     }
 
     private void duration(SeekBar seekBar) {
@@ -472,7 +525,7 @@ public class AlarmActivity extends ToolbarActivity{
                         mDaysOfWeekDialog = new DaysOfWeekDialog();
                         mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
                         mDaysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
-                    }   
+                    }
                     break;
                 case R.id.aa_setAudio_btn:
                     chooseAudio();
@@ -494,25 +547,6 @@ public class AlarmActivity extends ToolbarActivity{
         @Override
         public void onDaysOfWeekNegativeClick(String pString) {
 
-        }
-    }
-
-    private final class PlanInfoClicker implements View.OnKeyListener {
-        private int lines;
-
-        public PlanInfoClicker(int pLines) {
-            lines = pLines;
-        }
-
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-
-                if (((EditText) v).getLineCount() >= lines)
-                    return true;
-            }
-            return false;
         }
     }
 }

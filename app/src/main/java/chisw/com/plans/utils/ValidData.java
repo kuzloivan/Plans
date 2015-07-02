@@ -33,8 +33,7 @@ public class ValidData
         if (pDaysToAlarmBundle.charAt(0) == '0')
             return true;
         else {
-            Calendar calendar = Calendar.getInstance();
-            return (pDaysToAlarmBundle.charAt((calendar.get(Calendar.DAY_OF_WEEK))) == '1');
+            return (pDaysToAlarmBundle.charAt((Calendar.getInstance().get(Calendar.DAY_OF_WEEK))) == '1');
         }
     }
 }

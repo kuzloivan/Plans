@@ -62,8 +62,8 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
         mSelectedImagePath = cursor.getString(imageIndex);
         //Toast.makeText(context, "mSelectedImagePath = " + mSelectedImagePath , Toast.LENGTH_LONG).show();
-        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource( mSelectedImagePath, 60, 60);
-        viewHolder.ivPicture.setImageBitmap(bitmap);
+        //Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource( mSelectedImagePath, 60, 60);
+        //viewHolder.ivPicture.setImageBitmap(bitmap);
 
 /*        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
         int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
