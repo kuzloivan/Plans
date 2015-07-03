@@ -23,21 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/pa_tv_title"
-            android:layout_alignBottom="@+id/image_view_pictures"
-            android:layout_toRightOf="@+id/image_view_pictures"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:text="Details of plan, details of plan,details of plan,details of plan."
             android:textColor="@color/color_pa_list_item_text_view_text" />
-
-        <ImageView
-            android:id="@+id/image_view_pictures"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/pa_tv_title"
-            android:src="@drawable/aa_icon"
-            android:padding="3dp"/>
 
         <LinearLayout
             android:id="@+id/pa_la_image"

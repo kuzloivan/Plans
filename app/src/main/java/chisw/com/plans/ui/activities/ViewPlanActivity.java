@@ -2,13 +2,17 @@ package chisw.com.plans.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import chisw.com.plans.R;
 import chisw.com.plans.model.Plan;
+import chisw.com.plans.utils.BitmapUtils;
 import chisw.com.plans.utils.DataUtils;
 import chisw.com.plans.utils.SystemUtils;
 
@@ -23,6 +27,7 @@ public class ViewPlanActivity extends ToolbarActivity {
     private TextView mTv_time;
     private TextView mTv_date;
     private TextView mTv_details;
+    public ImageView mIvPicture;
     private Plan mPlan;
     private int mPlanId;
 
@@ -86,11 +91,16 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_time = (TextView) findViewById(R.id.pv_tv_time);
         mTv_date = (TextView) findViewById(R.id.pv_tv_date);
         mTv_details = (TextView) findViewById(R.id.pv_tv_details);
+        mIvPicture = (ImageView) findViewById(R.id.imageView);
         mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         mPlan = dbManager.getPlanById(mPlanId);
         setTitle(mPlan.getTitle());
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_details.setText(mPlan.getDetails());
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
+        mIvPicture.setImageBitmap(bitmap);
     }
+
 }

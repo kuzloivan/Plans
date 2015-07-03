@@ -1,72 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <include layout="@layout/plan_view_toolbar"/>
 
     <RelativeLayout
         android:id="@+id/pv_bottom_layout"
-        android:padding="10dp"
-        android:background="@color/color_pa_list_item_normal"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_pa_list_item_normal"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/pv_tv_time_info"
-            android:textColor="#95ffffff"
-            android:text="Due time: "
-            android:textStyle="italic"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Due time: "
+            android:textColor="#95ffffff"
+            android:textSize="16sp"
+            android:textStyle="italic"/>
 
         <TextView
             android:id="@+id/pv_tv_time"
-            android:textColor="@color/color_pv_text_view_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/pv_tv_time_info"
             android:text="15:40"
-            android:textStyle="bold"
+            android:textColor="@color/color_pv_text_view_date_time"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/pv_tv_date"
-            android:textColor="@color/color_pv_text_view_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="26.06.2015"
-            android:textStyle="bold"
+            android:textColor="@color/color_pv_text_view_date_time"
             android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/pv_tv_date_info"
-            android:textColor="#95ffffff"
-            android:text="Due date: "
-            android:layout_toLeftOf="@id/pv_tv_date"
-            android:textStyle="italic"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/pv_tv_date"
+            android:text="Due date: "
+            android:textColor="#95ffffff"
+            android:textSize="16sp"
+            android:textStyle="italic"/>
 
     </RelativeLayout>
 
 
     <ScrollView
-        android:layout_below="@id/toolbar"
-        android:layout_above="@id/pv_bottom_layout"
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/pv_tv_details"
-            android:layout_margin="10dp"
-            android:textSize="16sp"
-            android:text="Details"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/pv_bottom_layout"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/pv_tv_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/imageView"
+                android:text="Details"
+                android:textSize="16sp"
+                />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+
+
+                android:src="@drawable/aa_icon"
+                android:padding="3dp"/>
+
+        </RelativeLayout>
+
+
     </ScrollView>
+
 
 </RelativeLayout>

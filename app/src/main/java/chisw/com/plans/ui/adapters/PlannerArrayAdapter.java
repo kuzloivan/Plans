@@ -50,7 +50,7 @@ public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
 //            viewHolder.tvDate = (TextView)convertView.findViewById(R.id.pa_tv_date);
 //            viewHolder.tvTime = (TextView)convertView.findViewById(R.id.pa_tv_time);
 //            viewHolder.tvTitle = (TextView)convertView.findViewById(R.id.pa_tv_title);
-//            viewHolder.ivPicture = (ImageView)convertView.findViewById(R.id.image_view_pictures);
+//            viewHolder.mIvPicture = (ImageView)convertView.findViewById(R.id.image_view_pictures);
 //            // todo: add DetailsView
 //            convertView.setTag(viewHolder);
 //        }
@@ -71,7 +71,7 @@ public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
 //        cursor.moveToLast();
 //        mSelectedImagePath = cursor.getString(column_index_i);
 //        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
-//        viewHolder.ivPicture.setImageResource(R.drawable.ic_alarm);
+//        viewHolder.mIvPicture.setImageResource(R.drawable.ic_alarm);
 //
 //
 //
@@ -83,7 +83,7 @@ public class PlannerArrayAdapter extends ArrayAdapter<Plan> {
 //        public TextView tvTime;
 //        public TextView tvDate;
 //        public TextView tvDetails;
-//        public ImageView ivPicture;
+//        public ImageView mIvPicture;
 //    }
 
 }

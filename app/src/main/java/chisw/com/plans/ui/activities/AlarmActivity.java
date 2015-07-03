@@ -8,23 +8,35 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import chisw.com.plans.core.PApplication;
 import chisw.com.plans.core.callback.OnSaveCallback;
 import chisw.com.plans.ui.dialogs.DatePickDialog;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.EditText;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +59,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class AlarmActivity extends ToolbarActivity{
+public class AlarmActivity extends ToolbarActivity {
 
     public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.alarm_activity.id";
     public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.alarm_activity.bundle";
@@ -72,7 +84,6 @@ public class AlarmActivity extends ToolbarActivity{
     private ImageView mIvImage;
     private TextView mTextValue;
     private SeekBar mSeekBar;
-    private Uri mSelectedImageURI;
     private String mSelectedImagePath;
     private String mDaysToAlarm;
 
@@ -153,7 +164,7 @@ public class AlarmActivity extends ToolbarActivity{
             fillIn(mSeekBar);
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             String daysToAlarm = dbManager.getDaysToAlarmById(id);
-            if(daysToAlarm.charAt(0) == '1') {
+            if (daysToAlarm.charAt(0) == '1') {
                 mSwitchRepeating.setChecked(true);
                 mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
             }
@@ -168,8 +179,8 @@ public class AlarmActivity extends ToolbarActivity{
         DataUtils.setCalendar(Calendar.getInstance());
     }
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_alarm, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -254,9 +265,24 @@ public class AlarmActivity extends ToolbarActivity{
         finish();
     }
 
+    public String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = getContentResolver().query(contentUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+        super.onActivityResult(requestCode, resultCode, returnedIntent);
         if (resultCode != RESULT_OK) {
             mIsDialogExist = false;
             return;
@@ -264,63 +290,57 @@ public class AlarmActivity extends ToolbarActivity{
         mSeekBar.setEnabled(true);
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
-                mPath = getPath(data);
-                mIsDialogExist = false;
-                String buf;
-                Uri u = data.getData();
-                buf = getName(u, mPath);
-                if (!isValidFormat(buf)) {
-                    mTvSoundDuration.setText("00:00");
-                    mTextValue.setText("");
-                    showToast("File is not valid");
-                    return;
-                }
-                if (SystemUtils.isKitKatHigher()) {
-                    mDurationBuf = getAudioDuration(data.getData(), this);
-                } else {
-                    mDurationBuf = getAudioDuration(u, this);
-                }
-                mTextValue.setText(buf);
-                duration(mSeekBar);
+                setAudioFromSDCard(returnedIntent);
                 break;
-
             case GALLERY_REQUEST:
-                /*final String[] proj = {MediaStore.Images.Media.DATA};
-                final Cursor cursor;
-                mSelectedImageURI = data.getData();
-                cursor = getContentResolver().query(mSelectedImageURI, proj, null, null, null);
-                final int column_index_i = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToLast();
-                mSelectedImagePath = cursor.getString(column_index_i);*/
-
-                mSelectedImagePath = getPath(data);
-
-                //Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
-
-                int targetW = mIvImage.getWidth();
-                int targetH = mIvImage.getHeight();
-
-                // Get the dimensions of the bitmap
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                bmOptions.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(mSelectedImagePath, bmOptions);
-                int photoW = bmOptions.outWidth;
-                int photoH = bmOptions.outHeight;
-
-                // Determine how much to scale down the image
-                int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-                // Decode the image file into a Bitmap sized to fill the View
-                bmOptions.inJustDecodeBounds = false;
-                bmOptions.inSampleSize = scaleFactor;
-                bmOptions.inPurgeable = true;
-
-                //Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath, bmOptions);
-                Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
-                mIvImage.setImageBitmap(bitmap);
-
-                //mIvImage.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_add_white_18dp));
+                setImageFromGallery(returnedIntent);
                 break;
+        }
+    }
+
+    private void setAudioFromSDCard(Intent audioIntent) {
+        mPath = getPath(audioIntent);
+        mIsDialogExist = false;
+        String buf;
+        Uri u = audioIntent.getData();
+        buf = getName(u, mPath);
+        if (!isValidFormat(buf)) {
+            mTvSoundDuration.setText("00:00");
+            mTextValue.setText("");
+            showToast("File is not valid");
+            return;
+        }
+        if (SystemUtils.isKitKatHigher()) {
+            mDurationBuf = getAudioDuration(audioIntent.getData(), this);
+        } else {
+            mDurationBuf = getAudioDuration(u, this);
+        }
+        mTextValue.setText(buf);
+        duration(mSeekBar);
+    }
+
+    private void setImageFromGallery(Intent imageIntent) {
+
+        int targetW = mIvImage.getWidth();
+        int targetH = mIvImage.getHeight();
+
+        if (imageIntent.getScheme().equals("file")) {
+
+            Uri imageUri = imageIntent.getData();
+            String strImageUri = imageUri.toString();
+            StringBuffer strBuf = new StringBuffer(strImageUri);
+            strBuf = strBuf.delete(0, 5);
+            mSelectedImagePath = strBuf.toString();
+            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+            mIvImage.setImageBitmap(bitmap);
+        }
+
+        if (imageIntent.getScheme().equals("content")) {
+
+            Uri selectedImageUri = imageIntent.getData();
+            mSelectedImagePath = getRealPathFromURI(selectedImageUri);
+            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+            mIvImage.setImageBitmap(bitmap);
         }
     }
 
@@ -345,13 +365,11 @@ public class AlarmActivity extends ToolbarActivity{
         return arrPath[arrPath.length - 1];
     }
 
-    private String getPath(Intent str) {
-        Uri data = str.getData();
-        if(data.getScheme().equals("file")){
-            return data.getPath();
-        }
+    private String getPath(Intent strIntent) {
+
+        Uri data = strIntent.getData();
         if (!SystemUtils.isKitKatHigher() || !DocumentsContract.isDocumentUri(this, data)) {
-            return str.getDataString();
+            return strIntent.getDataString();
         }
         final String docId = DocumentsContract.getDocumentId(data);
         final String[] split = docId.split(":");
@@ -404,12 +422,6 @@ public class AlarmActivity extends ToolbarActivity{
     }
 
     private void chooseImage() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_REQUEST);
-
-
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
@@ -426,6 +438,7 @@ public class AlarmActivity extends ToolbarActivity{
 
     private void fillIn(SeekBar seekbar) {
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+;
         Plan p = dbManager.getPlanById(id);
         mEtTitle.setText(p.getTitle());
         seekbar.setEnabled(true);
@@ -435,9 +448,9 @@ public class AlarmActivity extends ToolbarActivity{
         mTvTime.setText(DataUtils.getTimeStringFromTimeStamp(p.getTimeStamp()));
 
         mSelectedImagePath = p.getImagePath();
-        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 110, 110);
+        Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
         mIvImage.setImageBitmap(bitmap);
-        if(mSelectedImagePath == null){
+        if (mSelectedImagePath == null) {
             mIvImage.setImageResource(R.drawable.aa_icon);
         }
 
@@ -487,6 +500,7 @@ public class AlarmActivity extends ToolbarActivity{
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
         private final Plan plan;
+
         public CallbackEditPlan(Plan plan) {
             this.plan = plan;
         }
@@ -499,7 +513,7 @@ public class AlarmActivity extends ToolbarActivity{
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
-                if (ValidData.isTextValid(plan.getImagePath())){
+                if (ValidData.isTextValid(plan.getImagePath())) {
                     parseObject.put("imagePath", plan.getImagePath());
                 }
                 parseObject.put("audioDuration", plan.getAudioDuration());
@@ -552,7 +566,7 @@ public class AlarmActivity extends ToolbarActivity{
         }
     }
 
-    private final class DialogDaysOfWeekClicker implements  DaysOfWeekDialog.DaysOfWeekDialogListener{
+    private final class DialogDaysOfWeekClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener {
 
         @Override
         public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
