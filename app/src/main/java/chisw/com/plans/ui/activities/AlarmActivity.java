@@ -151,6 +151,12 @@ public class AlarmActivity extends ToolbarActivity{
         }
         if (mIsEdit) {
             fillIn(mSeekBar);
+            int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+            String daysToAlarm = dbManager.getDaysToAlarmById(id);
+            if(daysToAlarm.charAt(0) == '1') {
+                mSwitchRepeating.setChecked(true);
+                mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
+            }
         } else {
             mTvSoundDuration.setText("00:00");
         }
