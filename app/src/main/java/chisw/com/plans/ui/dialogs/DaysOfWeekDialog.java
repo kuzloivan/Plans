@@ -27,6 +27,7 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
     private DaysOfWeekDialogListener mListener;
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
+        initializeDays();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.days_of_week_choose)
                 .setCancelable(false)
@@ -95,4 +96,9 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
         mListener = pDaysOfWeekDialogListener;
     }
 
+    public void initializeDays(){
+        for (int i = 0; i < getArguments().getString("mDaysToAlarm").length() ; i++){
+            mCheckedItems[i] = (getArguments().getString("mDaysToAlarm").charAt(i) == '1');
+        }
+    }
 }

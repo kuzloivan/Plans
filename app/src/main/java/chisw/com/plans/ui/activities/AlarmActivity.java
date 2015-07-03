@@ -113,6 +113,7 @@ public class AlarmActivity extends ToolbarActivity{
         mSeekBar.setOnSeekBarChangeListener(sb);
         mSeekBar.setEnabled(false);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
+        mDaysToAlarm = "0000000";
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -161,8 +162,8 @@ public class AlarmActivity extends ToolbarActivity{
         DataUtils.setCalendar(Calendar.getInstance());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_alarm, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -526,7 +527,12 @@ public class AlarmActivity extends ToolbarActivity{
                 case R.id.switch_repeating:
                     if (mSwitchRepeating.isChecked()) {
                         mDaysOfWeekDialog = new DaysOfWeekDialog();
-                        mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysPicker");
+
+                        Bundle days = new Bundle();
+                        days.putString("mDaysToAlarm", mDaysToAlarm);
+                        mDaysOfWeekDialog.setArguments(days);
+
+                        mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysOfWeekPicker");
                         mDaysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
                     }
                     break;
@@ -549,7 +555,7 @@ public class AlarmActivity extends ToolbarActivity{
 
         @Override
         public void onDaysOfWeekNegativeClick(String pString) {
-
+            mSwitchRepeating.setChecked(false);
         }
     }
 }
