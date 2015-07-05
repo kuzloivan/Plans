@@ -63,17 +63,18 @@ public class LogInActivity extends AuthorizationActivity {
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            prepareForClick();
-            switch (v.getId()) {
-                case R.id.btn_to_sign_up:
-                    SignUpActivity.start(LogInActivity.this);
-                    break;
-                case R.id.btn_log_in:
-                    if(isValidFields()) {
-                        showProgressDialog("Logging In", "Please, wait...");
-                        netManager.loginUser(login, password, new CallbackLogIn());
-                    }
-                    break;
+            if(prepareForClick()) {
+                switch (v.getId()) {
+                    case R.id.btn_to_sign_up:
+                        SignUpActivity.start(LogInActivity.this);
+                        break;
+                    case R.id.btn_log_in:
+                        if (isValidFields()) {
+                            showProgressDialog("Logging In", "Please, wait...");
+                            netManager.loginUser(login, password, new CallbackLogIn());
+                        }
+                        break;
+                }
             }
         }
     }

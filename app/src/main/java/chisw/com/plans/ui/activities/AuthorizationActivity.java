@@ -50,14 +50,15 @@ public abstract class AuthorizationActivity extends ToolbarActivity {
         }
     }
 
-    protected void prepareForClick() {
+    protected boolean prepareForClick() {
         if(!SystemUtils.checkNetworkStatus(getApplicationContext()))
         {
             showToast("No internet connection");
-            return;
+            return false;
         }
         login = mLogin.getText().toString().toLowerCase();
         password = mPassword.getText().toString();
+        return true;
     }
 
     protected boolean isValidFields() {

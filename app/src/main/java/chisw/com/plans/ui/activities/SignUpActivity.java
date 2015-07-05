@@ -56,17 +56,18 @@ public class SignUpActivity extends AuthorizationActivity {
 
         @Override
         public void onClick(View v) {
-            prepareForClick();
-            switch (v.getId()) {
-                case R.id.btn_sign_up:
-                    if(isValidFields()) {
-                        showProgressDialog("Signing Up", "Please, wait...");
-                        netManager.registerUser(login, password, new CallbackSignUp());
-                    }
-                    break;
-                case R.id.btn_back_to_log_in:
-                    onBackPressed();
-                    break;
+            if(prepareForClick()) {
+                switch (v.getId()) {
+                    case R.id.btn_sign_up:
+                        if (isValidFields()) {
+                            showProgressDialog("Signing Up", "Please, wait...");
+                            netManager.registerUser(login, password, new CallbackSignUp());
+                        }
+                        break;
+                    case R.id.btn_back_to_log_in:
+                        onBackPressed();
+                        break;
+                }
             }
         }
     }
