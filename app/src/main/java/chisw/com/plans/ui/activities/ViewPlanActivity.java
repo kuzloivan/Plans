@@ -4,6 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,6 +89,32 @@ public class ViewPlanActivity extends ToolbarActivity {
         }
     }
 
+//    public static Bitmap getCircleMaskedBitmapUsingShader(Bitmap source, int radius)
+//    {
+//        if (source == null)
+//        {
+//            return null;
+//        }
+//
+//        int diam = radius << 1;
+//
+//        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//
+//        Bitmap scaledBitmap = scaleTo(source, diam);
+//        final Shader shader = new BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+//        paint.setShader(shader);
+//
+//        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(targetBitmap);
+//
+//        canvas.drawCircle(radius, radius, radius, paint);
+//
+//
+//        return targetBitmap;
+//    }
+
+
+
     @Override
     protected int contentViewResId() {
         return R.layout.activity_view_plan;
@@ -91,7 +124,7 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_time = (TextView) findViewById(R.id.pv_tv_time);
         mTv_date = (TextView) findViewById(R.id.pv_tv_date);
         mTv_details = (TextView) findViewById(R.id.pv_tv_details);
-        mIvPicture = (ImageView) findViewById(R.id.imageView);
+        mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
         mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         mPlan = dbManager.getPlanById(mPlanId);
         setTitle(mPlan.getTitle());
@@ -101,6 +134,7 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
         mIvPicture.setImageBitmap(bitmap);
+
     }
 
 }

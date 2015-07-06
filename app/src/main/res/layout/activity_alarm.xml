@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/aa_rellay_top"
                 android:hint="@string/alarm_title_hint"
-                android:maxLines="2" />
+                android:maxLines="1" />
 
 
             <EditText

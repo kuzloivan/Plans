@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="User name"
-            android:textColorHint="#bbbbbb"/>
+            android:textColorHint="#bbbbbb"
+            android:maxLines="1"/>
 
 
         <EditText
@@ -28,7 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="Password"
-            android:textColorHint="#bbbbbb"/>
+            android:textColorHint="#bbbbbb"
+            android:maxLines="1"
+            android:password="true"/>
 
         <TextView
             android:id="@+id/forgotPassword_textview"
