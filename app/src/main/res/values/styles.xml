@@ -27,7 +27,7 @@
     </style>
 
     <style name="PlannerViewPlanToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">@color/color_pv_toolbar</item>
+        <item name="android:background">@color/color_on_plan_view_toolbar</item>
         <!--<item name="android:colorPrimaryDark">#ffffff</item>-->
         <!--<item name="text">@color/background_material_dark</item>-->
     </style>
@@ -87,11 +87,6 @@
     <style name="style_aa_btns" parent="style_btns">
         <item name="android:background">@drawable/aa_btns_selector</item>
         <item name="android:textColor">@color/color_aa_btn_text</item>
-    </style>
-
-    <style name="aa_testview" >
-        <item name="android:layout_margin">@dimen/margin8</item>
-        <item name="android:textColor">@color/toolbar_background_color</item>
     </style>
 
     <style name="style_aa_et">

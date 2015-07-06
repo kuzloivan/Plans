@@ -89,29 +89,30 @@ public class ViewPlanActivity extends ToolbarActivity {
         }
     }
 
-//    public static Bitmap getCircleMaskedBitmapUsingShader(Bitmap source, int radius)
-//    {
-//        if (source == null)
-//        {
-//            return null;
-//        }
-//
-//        int diam = radius << 1;
-//
-//        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//
-//        Bitmap scaledBitmap = scaleTo(source, diam);
-//        final Shader shader = new BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-//        paint.setShader(shader);
-//
-//        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(targetBitmap);
-//
-//        canvas.drawCircle(radius, radius, radius, paint);
-//
-//
-//        return targetBitmap;
-//    }
+    public static Bitmap getCircleMaskedBitmapUsingShader(Bitmap source, int radius)
+    {
+
+        if (source == null)
+        {
+            return null;
+        }
+
+        int diam = radius << 1;
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(source,100,100, true );
+        final Shader shader = new BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        paint.setShader(shader);
+
+        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(targetBitmap);
+
+        canvas.drawCircle(radius, radius, radius, paint);
+
+
+        return targetBitmap;
+    }
 
 
 
@@ -133,6 +134,7 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_details.setText(mPlan.getDetails());
 
         Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
+
         mIvPicture.setImageBitmap(bitmap);
 
     }

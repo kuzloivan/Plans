@@ -4,7 +4,9 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <include layout="@layout/plan_view_toolbar"  />
+    <include layout="@layout/plan_view_toolbar"
+             android:id="@+id/plan_toolbar"
+        />
 
     <RelativeLayout
         android:id="@+id/pv_bottom_layout"
@@ -61,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pv_bottom_layout"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/plan_toolbar">
 
         <RelativeLayout
             android:layout_width="match_parent"
