@@ -44,7 +44,7 @@
                         android:clickable="true"
                         android:paddingLeft="24dp"
                         android:text="@string/set_date"
-                        android:textColor="#00796B"
+                        android:textColor="@color/color_aa_edit_text"
                         android:textSize="20sp" />
 
                     <TextView
@@ -55,7 +55,7 @@
                         android:clickable="true"
                         android:paddingLeft="24dp"
                         android:text="@string/set_time"
-                        android:textColor="#00796B"
+                        android:textColor="@color/color_aa_edit_text"
                         android:textSize="20sp" />
 
                 </LinearLayout>

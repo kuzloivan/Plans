@@ -72,19 +72,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_toRightOf="@+id/imageView"
                 android:text="Details"
                 android:textSize="16sp"
                 />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
-
-
-                android:src="@drawable/aa_icon"
-                android:padding="3dp"/>
 
         </RelativeLayout>
 

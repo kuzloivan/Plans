@@ -9,6 +9,10 @@
 
     </style>
 
+    <!--<style name="MyMaterialTheme" parent="Theme.Material">-->
+
+    <!--</style>-->
+
     <style name="AppTheme.Fullscreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -93,5 +97,6 @@
     <style name="style_aa_et">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_margin">8dp</item>
+        <item name="android:textColor">@color/color_aa_edit_text</item>
     </style>
 </resources>

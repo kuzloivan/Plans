@@ -69,9 +69,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         dbManager.addObserver(this);
         FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
-                .withButtonColor(getResources().getColor(R.color.toolbar_background_color))
+                .withButtonColor(getResources().getColor(R.color.color_floating_action_button))
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 16, 16)
+                .withMargins(0, 0, 15, 15)
                 .create();
         fabButton.setId(R.id.fab);
         fabButton.setOnClickListener(clicker);

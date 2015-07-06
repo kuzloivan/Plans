@@ -6,6 +6,15 @@
     app:theme="@style/PlannerViewPlanToolbar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#64010101">
+
+    <com.parse.ParseImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:src="@drawable/aa_icon"
+        android:scaleType="centerCrop"
+        />
 
 </android.support.v7.widget.Toolbar>

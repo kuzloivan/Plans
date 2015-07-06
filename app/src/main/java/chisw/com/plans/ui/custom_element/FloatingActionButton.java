@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
+
+import chisw.com.plans.R;
+
 /**
  * Created by Yuriy on 23.06.2015.
  */
@@ -62,7 +65,7 @@ public class FloatingActionButton extends View{
         mButtonPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mButtonPaint.setColor(FloatingActionButtonColor);
         mButtonPaint.setStyle(Paint.Style.FILL);
-        mButtonPaint.setShadowLayer(10.0f, 0.0f, 3.5f, Color.argb(100, 0, 0, 0));
+        mButtonPaint.setShadowLayer(11.0f, 0.0f, 4.0f, Color.argb(150, 1, 1, 1));
         mDrawablePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         invalidate();

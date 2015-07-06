@@ -1,21 +1,33 @@
 <resources>
     <!-- Common colors -->
-    <color name="toolbar_background_color">#00796B</color>
+    <color name="toolbar_background_color">#512DA8</color>
 
     <color name="color_white">#ffffff</color>
     <color name="color_linear_layout">#ffffff</color>
 
+    <!--Color Floating Action Button-->
+    <color name="color_floating_action_button">#ffcc1c1e</color>
+
+    <!--Color Button on Alart Activity-->
+    <color name="color_aa_btn_normal">#ffcc1c1e</color>
+    <color name="color_aa_btn_pressed">#98cc1c1e</color>
+    <color name="color_aa_btn_text">#ffffff</color>
+
+    <!--Color Edit Text on Alarm Activity-->
+    <color name="color_aa_edit_text">#512DA8</color>
+
     <!-- Planner list view colors -->
-    <color name="color_pa_list_item_normal">#F44336</color>
+    <color name="color_pa_list_item_normal">#512DA8</color>
     <color name="color_pa_list_item_pressed">#EF5350</color>
     <color name="color_pa_list_item_not_sync_normal">#E57373</color>
     <color name="color_pa_list_item_not_sync_pressed">#EF9A9A</color>
     <color name="color_pa_list_item_old_normal">#78909C</color>
     <color name="color_pa_list_item_old_pressed">#90A4AE</color>90A4AE
-    <color name="color_pa_list_item_text_view_text">#ffffff</color>
+    <color name="color_pa_list_item_text_view_text">#ff000000</color>
+    <color name="color_pa_list_item_details">#ff878787</color>
 
     <!-- Plan View activity colors -->
-    <color name="color_pv_toolbar">#F44336</color>
+    <color name="color_pv_toolbar">#673AB7</color>
     <color name="color_pv_text_view_date_time">#ffffff</color>
 
     <!-- Net Management activity colors -->
@@ -23,14 +35,12 @@
     <color name="color_reg_btn_pressed">#E57373</color>
     <color name="color_reg_btn_text">#ffffff</color>
     <color name="color_reg_et_normal">#ffffff</color>
-    <color name="color_reg_et_focused">#00796B</color>
+    <color name="color_reg_et_focused">#512DA8</color>
 
     <!-- Media activity colors -->
     <color name="color_ma_btn_normal">#F44336</color>
     <color name="color_ma_btn_pressed">#E57373</color>
     <color name="color_ma_btn_text">#ffffff</color>
 
-    <color name="color_aa_btn_normal">#F44336</color>
-    <color name="color_aa_btn_pressed">#E57373</color>
-    <color name="color_aa_btn_text">#ffffff</color>
+
 </resources>
