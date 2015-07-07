@@ -3,6 +3,7 @@ package chisw.com.dayit.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 
 import com.parse.ParseUser;
 
@@ -176,6 +177,14 @@ public class DBManager extends java.util.Observable implements DbBridge {
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(PlansEntity.IMAGE_PATH));
         return path;
+    }
+
+    public Cursor getAllContacts(Context ctx){
+        Cursor cursor = ctx.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                        ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
+
+        return cursor;
     }
 
     @Override
