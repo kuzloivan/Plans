@@ -133,6 +133,7 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_details.setText(mPlan.getDetails());
 
+
         Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
 
         mIvPicture.setImageBitmap(bitmap);

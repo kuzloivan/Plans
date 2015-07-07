@@ -3,6 +3,8 @@ package chisw.com.plans.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.GetCallback;
@@ -37,6 +40,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
+    private ImageView mIvPicture;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -285,7 +289,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 }
                 if(ValidData.isTextValid(plan.getImagePath())){
                     parseObject.put("imagePath", plan.getImagePath());
+//
+//                    mIvPicture = (ImageView) findViewById(R.id.image_view_in_list_view);
+//                    Bitmap bitmap = BitmapFactory.decodeFile(plan.getImagePath());
+//                    mIvPicture.setImageBitmap(bitmap);
+
                 }
+
+
+
                 parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());

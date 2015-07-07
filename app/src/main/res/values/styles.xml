@@ -27,7 +27,7 @@
     </style>
 
     <style name="PlannerViewPlanToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">@color/color_on_plan_view_toolbar</item>
+        <item name="android:background">@android:color/transparent</item>
         <!--<item name="android:colorPrimaryDark">#ffffff</item>-->
         <!--<item name="text">@color/background_material_dark</item>-->
     </style>

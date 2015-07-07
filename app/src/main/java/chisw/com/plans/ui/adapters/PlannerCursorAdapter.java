@@ -1,6 +1,7 @@
 package chisw.com.plans.ui.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -49,7 +50,12 @@ public class PlannerCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolder viewHolder = (ViewHolder)view.getTag();
+
+
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+
+        int targetW = viewHolder.ivPicture.getWidth();
+        int targetH = viewHolder.ivPicture.getHeight();
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
@@ -59,11 +65,24 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
-        viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+
+        if (cursor.getString(detailsIndex).isEmpty()) {
+            viewHolder.tvDetails.setVisibility(View.GONE);
+        } else {
+            viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+        }
+
         mSelectedImagePath = cursor.getString(imageIndex);
-        //Toast.makeText(context, "mSelectedImagePath = " + mSelectedImagePath , Toast.LENGTH_LONG).show();
-        //Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource( mSelectedImagePath, 60, 60);
-        //viewHolder.mIvPicture.setImageBitmap(bitmap);
+
+        if (mSelectedImagePath != null) {
+            viewHolder.tvTitle.setTextColor(Color.WHITE);
+        }
+        else {
+            viewHolder.tvTitle.setTextColor(Color.BLACK);
+        }
+
+        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+        viewHolder.ivPicture.setImageBitmap(bitmap);
 
 /*        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
         int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
@@ -74,18 +93,19 @@ public class PlannerCursorAdapter extends CursorAdapter {
         }*/
     }
 
-    private static class ViewHolder{
+    private static class ViewHolder {
         public TextView tvTitle;
         public TextView tvTime;
         public TextView tvDate;
         public TextView tvDetails;
         public ImageView ivPicture;
 
-        public  ViewHolder (View view) {
-            tvDate = (TextView)view.findViewById(R.id.pa_tv_date);
-            tvTime = (TextView)view.findViewById(R.id.pa_tv_time);
-            tvTitle = (TextView)view.findViewById(R.id.pa_tv_title);
-            tvDetails = (TextView)view.findViewById(R.id.pa_tv_details);
+        public ViewHolder(View view) {
+            tvDate = (TextView) view.findViewById(R.id.pa_tv_date);
+            tvTime = (TextView) view.findViewById(R.id.pa_tv_time);
+            tvTitle = (TextView) view.findViewById(R.id.pa_tv_title);
+            tvDetails = (TextView) view.findViewById(R.id.pa_tv_details);
+            ivPicture = (ImageView) view.findViewById(R.id.image_view_in_list_view);
         }
     }
 }
