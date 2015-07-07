@@ -55,7 +55,7 @@ public class Mapper {
         if(model.getImagePath() != null )
             CV.put(PlansEntity.IMAGE_PATH, model.getImagePath());
 
-        if(model.getImagePath() != null )
+        if(model.getDaysToAlarm() != null )
             CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
 
         if(model.getIsDeleted() != -1 )
