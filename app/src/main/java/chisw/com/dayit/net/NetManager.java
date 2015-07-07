@@ -143,7 +143,7 @@ public class NetManager implements NetBridge {
         public void done(List<ParseUser> list, ParseException e) {
             if (e == null) {
                 for (ParseUser obj : list) {
-                    numbers.put(obj.getString("username"), obj.getString("phone"));
+                    numbers.put(obj.getString("phone"), obj.getString("username"));
                 }
                 onGetNumbersCallback.getNumbers(numbers);
                 return;
