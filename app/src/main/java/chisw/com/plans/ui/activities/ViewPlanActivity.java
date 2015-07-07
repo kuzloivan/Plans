@@ -133,11 +133,12 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_details.setText(mPlan.getDetails());
 
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
-
-        mIvPicture.setImageBitmap(bitmap);
-
+        if(mPlan.getImagePath() != null){
+            Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
+            mIvPicture.setImageBitmap(bitmap);
+        }else {
+            mIvPicture.setImageResource(R.drawable.default_example_material);
+        }
     }
 
 }

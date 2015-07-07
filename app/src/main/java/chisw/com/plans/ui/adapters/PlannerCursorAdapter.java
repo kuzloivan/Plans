@@ -66,11 +66,13 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
 
-        if (cursor.getString(detailsIndex).isEmpty()) {
-            viewHolder.tvDetails.setVisibility(View.GONE);
-        } else {
-            viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-        }
+//
+//        if (cursor.getString(detailsIndex) != null || cursor.getString(detailsIndex) != " ") {
+//         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+//        } else {
+//            viewHolder.tvDetails.setVisibility(View.GONE);
+//        }
+        viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
 
         mSelectedImagePath = cursor.getString(imageIndex);
 
