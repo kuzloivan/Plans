@@ -3,7 +3,9 @@ package chisw.com.dayit.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.EditText;
 
@@ -14,13 +16,27 @@ import chisw.com.dayit.utils.ValidData;
 public class LogInActivity extends AuthorizationActivity {
 
     private Clicker mClicker;
+    private InputFilter mInputFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mLogin.setSingleLine();
+        mInputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++){
+                    if(!Character.isLetterOrDigit(source.charAt(i))){
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        mLogin.setFilters(new InputFilter[] { mInputFilter });
         mPassword = (EditText) findViewById(R.id.net_user_password);
         mPassword.setSingleLine();
         mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
