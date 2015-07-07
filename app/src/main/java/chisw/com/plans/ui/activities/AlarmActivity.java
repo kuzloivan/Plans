@@ -304,16 +304,16 @@ public class AlarmActivity extends ToolbarActivity {
         String buf;
         Uri u = audioIntent.getData();
         buf = getName(u, mPath);
-        if (!isValidFormat(buf)) {
+        if (!ValidData.isValidFormat(buf)) {
             mTvSoundDuration.setText("00:00");
             mTextValue.setText("");
             showToast("File is not valid");
             return;
         }
         if (SystemUtils.isKitKatHigher()) {
-            mDurationBuf = getAudioDuration(audioIntent.getData(), this);
+            mDurationBuf = getAudioDuration(audioIntent.getData());
         } else {
-            mDurationBuf = getAudioDuration(u, this);
+            mDurationBuf = getAudioDuration(u);
         }
         mTextValue.setText(buf);
         duration(mSeekBar);
@@ -342,12 +342,6 @@ public class AlarmActivity extends ToolbarActivity {
             Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
             mIvImage.setImageBitmap(bitmap);
         }
-    }
-
-    private boolean isValidFormat(String path) {
-        Pattern p = Pattern.compile(".*\\.mp3$");
-        Matcher m = p.matcher(path);
-        return m.matches();
     }
 
     private String getName(Uri pathUri, String pathName) {
@@ -387,15 +381,15 @@ public class AlarmActivity extends ToolbarActivity {
         final String[] selectionArgs = new String[]{
                 split[1]
         };
-        return getDataColumn(this, contentUri, selection, selectionArgs);
+        return getDataColumn(contentUri, selection, selectionArgs);
     }
 
-    private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    private String getDataColumn(Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {column};
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+            cursor = this.getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
@@ -461,7 +455,7 @@ public class AlarmActivity extends ToolbarActivity {
         }
         Uri u = Uri.parse(mPath);
         mAudioDuration = p.getAudioDuration();
-        mDurationBuf = getAudioDuration(u, this);
+        mDurationBuf = getAudioDuration(u);
         Uri tmpUri = Uri.parse(mPath);
         mTextValue.setText(getName(tmpUri, mPath));
         seekbar.setProgress(getPercent((int) mAudioDuration, mPath));
@@ -470,12 +464,12 @@ public class AlarmActivity extends ToolbarActivity {
 
     private int getPercent(int val, String path) {
         Uri u = Uri.parse(path);
-        return (val * 100) / getAudioDuration(u, this);
+        return (val * 100) / getAudioDuration(u);
     }
 
-    private int getAudioDuration(Uri path, Context ctx) {
+    private int getAudioDuration(Uri path) {
         MediaMetadataRetriever mm = new MediaMetadataRetriever();
-        mm.setDataSource(ctx, path);
+        mm.setDataSource(this, path);
         int durationMs = Integer.parseInt(mm.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
         return durationMs / 1000;
     }
