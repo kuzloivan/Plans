@@ -1,5 +1,7 @@
 package chisw.com.dayit.net;
 
+import android.support.annotation.NonNull;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -11,11 +13,18 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import chisw.com.dayit.core.bridge.NetBridge;
 import chisw.com.dayit.core.callback.GetPlanCallback;
+import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.entity.PlansEntity;
@@ -50,6 +59,13 @@ public class NetManager implements NetBridge {
     @Override
     public void logoutUser(String name, String pPassword, LogOutCallback logoutCallback) {
         ParseUser.logOutInBackground(logoutCallback);
+    }
+
+    @Override
+    public void getUsersByNumbers(List<String> phoneNums, OnGetNumbersCallback onGetNumbersCallback) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("phone", phoneNums);
+        query.findInBackground(new CallbackGetNumbers(onGetNumbersCallback));
     }
 
     @Override
@@ -111,6 +127,29 @@ public class NetManager implements NetBridge {
                 parseObject.deleteInBackground();
             }
         });
+    }
+
+    public final class CallbackGetNumbers implements FindCallback<ParseUser> {
+
+        private HashMap<String, String> numbers;
+        private OnGetNumbersCallback onGetNumbersCallback;
+
+        public CallbackGetNumbers(OnGetNumbersCallback onGetNumbersCallback) {
+            this.onGetNumbersCallback = onGetNumbersCallback;
+            numbers = new HashMap<>();
+        }
+
+        @Override
+        public void done(List<ParseUser> list, ParseException e) {
+            if (e == null) {
+                for (ParseUser obj : list) {
+                    numbers.put(obj.getString("phone"), obj.getString("username"));
+                }
+                onGetNumbersCallback.getNumbers(numbers);
+                return;
+            }
+            e.getMessage();
+        }
     }
 
     public final class CallbackGetPlan implements GetCallback<ParseObject>{

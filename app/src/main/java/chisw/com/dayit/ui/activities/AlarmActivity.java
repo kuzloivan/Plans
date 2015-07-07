@@ -466,10 +466,10 @@ public class AlarmActivity extends ToolbarActivity {
         {
             while (cursor.moveToNext())
             {
-                list.add(cursor.getString(0) + " " + cursor.getString(1));
+                if(cursor.getString(1).charAt(0) == '+' || cursor.getString(1).length() > 7)
+                    list.add(cursor.getString(0) + " " + cursor.getString(1));
             }
         }
-
         return list;
     }
 
@@ -563,7 +563,6 @@ public class AlarmActivity extends ToolbarActivity {
                     contactsBundle.putStringArrayList("contactsArrayList", contactsArrayList);
                     cld.setArguments(contactsBundle);
                     cld.show(getSupportFragmentManager(), "ContactListDialog");
-
                 break;
             }
         }

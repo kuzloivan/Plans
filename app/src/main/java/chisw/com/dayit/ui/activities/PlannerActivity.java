@@ -20,10 +20,12 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.dayit.R;
+import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.entity.PlansEntity;
@@ -140,6 +142,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 if(SystemUtils.checkNetworkStatus(getApplicationContext())) {
                     startSynchronization();
                 }
+
                 break;
 
             case R.id.pa_menu_settings:
