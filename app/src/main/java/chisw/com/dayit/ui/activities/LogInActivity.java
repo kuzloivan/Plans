@@ -23,23 +23,14 @@ public class LogInActivity extends AuthorizationActivity {
         super.onCreate(savedInstanceState);
         initView();
 
+        mInputFilter = initializeInputFilter();
         mLogin = (EditText) findViewById(R.id.net_user_login);
         mLogin.setSingleLine();
-        mInputFilter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++){
-                    if(!Character.isLetterOrDigit(source.charAt(i))){
-                        return "";
-                    }
-                }
-                return null;
-            }
-        };
-        mLogin.setFilters(new InputFilter[] { mInputFilter });
+        mLogin.setFilters(new InputFilter[]{mInputFilter});
         mPassword = (EditText) findViewById(R.id.net_user_password);
         mPassword.setSingleLine();
         mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        mPassword.setFilters(new InputFilter[] {mInputFilter});
         if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
         {
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
@@ -60,6 +51,20 @@ public class LogInActivity extends AuthorizationActivity {
         findViewById(R.id.btn_log_in).setOnClickListener(mClicker);
     }
 
+    private InputFilter initializeInputFilter(){
+        InputFilter inpF = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++){
+                    if(!Character.isLetterOrDigit(source.charAt(i))){
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        return inpF;
+    }
     @Override
     protected int contentViewResId() {
         return R.layout.activity_log_in;
