@@ -21,7 +21,8 @@
     <string name="days_of_week_choose">Choose days of week</string>
     <string name="cancel">Cancel</string>
     <string name="alarmTitle_hint">Alarm title</string>
-
+    <string name="get_contact_list">Get contact list</string>
+    <string name="contact_list">Contact list</string>
     <!-- Net activity -->
     <string name="login">User login</string>
     <string name="password">Password</string>

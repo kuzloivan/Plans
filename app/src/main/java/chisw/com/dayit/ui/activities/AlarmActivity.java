@@ -28,11 +28,13 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.ui.dialogs.ContactListDialog;
 import chisw.com.dayit.ui.dialogs.DatePickDialog;
 import chisw.com.dayit.ui.dialogs.DaysOfWeekDialog;
 import chisw.com.dayit.ui.dialogs.TimePickDialog;
@@ -88,6 +90,8 @@ public class AlarmActivity extends ToolbarActivity {
         initBackButton();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
+        findViewById(R.id.get_contact_list_bt).setOnClickListener(clicker);
+
         mTvDate = (TextView) findViewById(R.id.setDate_textview);
         mTvDate.setOnClickListener(clicker);
         mTvTime = (TextView) findViewById(R.id.setTime_textview);
@@ -107,6 +111,7 @@ public class AlarmActivity extends ToolbarActivity {
         mSeekBar.setEnabled(false);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
         mDaysToAlarm = "0000000";
+
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -150,6 +155,8 @@ public class AlarmActivity extends ToolbarActivity {
                 mSwitchRepeating.setChecked(true);
                 mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
             }
+            mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
+            mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
         } else {
             mTvSoundDuration.setText("00:00");
         }
@@ -451,6 +458,21 @@ public class AlarmActivity extends ToolbarActivity {
         return durationMs / 1000;
     }
 
+    private ArrayList<String> initializeList(){
+        ArrayList<String> list = new ArrayList<>();
+        Cursor cursor = dbManager.getAllContacts(AlarmActivity.this);
+
+        if (cursor.getCount() > 0)
+        {
+            while (cursor.moveToNext())
+            {
+                if(cursor.getString(1).charAt(0) == '+' || cursor.getString(1).length() > 7)
+                    list.add(cursor.getString(0) + " " + cursor.getString(1));
+            }
+        }
+        return list;
+    }
+
     public final class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
 
         @Override
@@ -533,6 +555,15 @@ public class AlarmActivity extends ToolbarActivity {
                 case R.id.aa_image:
                     chooseImage();
                     break;
+                case R.id.get_contact_list_bt:
+                    ArrayList<String> contactsArrayList = initializeList();
+
+                    ContactListDialog cld = new ContactListDialog();
+                    Bundle contactsBundle = new Bundle();
+                    contactsBundle.putStringArrayList("contactsArrayList", contactsArrayList);
+                    cld.setArguments(contactsBundle);
+                    cld.show(getSupportFragmentManager(), "ContactListDialog");
+                break;
             }
         }
     }
