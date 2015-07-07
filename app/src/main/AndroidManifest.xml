@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="chisw.com.plans"
+    package="chisw.com.dayit"
     android:versionCode="2"
     android:versionName="0.9.3">
 
