@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "chisw.com.plans"
+        applicationId "chisw.com.dayit"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
