@@ -36,4 +36,10 @@ public class ValidData
             return (pDaysToAlarmBundle.charAt((Calendar.getInstance().get(Calendar.DAY_OF_WEEK))) == '1');
         }
     }
+
+    public static boolean isValidFormat(String path) {
+        Pattern p = Pattern.compile(".*\\.mp3$");
+        Matcher m = p.matcher(path);
+        return m.matches();
+    }
 }
