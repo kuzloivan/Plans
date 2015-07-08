@@ -78,7 +78,7 @@ public class Plan {
     }
 
     public String getDaysToAlarm(){   //DOW
-        return this.daysToAlarm;
+        return daysToAlarm;
     }
 
     public String getImagePath(){

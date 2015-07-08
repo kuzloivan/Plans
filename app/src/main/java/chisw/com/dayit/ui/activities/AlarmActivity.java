@@ -70,6 +70,7 @@ public class AlarmActivity extends ToolbarActivity {
     private SeekBar mSeekBar;
     private String mSelectedImagePath;
     private String mDaysToAlarm;
+    private ArrayList<String> mContactArrayList;
 
     public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
@@ -151,12 +152,14 @@ public class AlarmActivity extends ToolbarActivity {
             fillIn(mSeekBar);
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             String daysToAlarm = dbManager.getDaysToAlarmById(id);
-            if (daysToAlarm.length() > 0 && daysToAlarm.charAt(0) == '1') {
-                mSwitchRepeating.setChecked(true);
+            if(daysToAlarm != null) {
+                if (daysToAlarm.charAt(0) == '1') {
+                    mSwitchRepeating.setChecked(true);
+                    mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
+                }
+                mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
                 mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
             }
-            mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
-            mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
         } else {
             mTvSoundDuration.setText("00:00");
         }
@@ -237,7 +240,7 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("Title is empty");
             return;
         }
-        if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
+        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
             showToast("Time is incorrect.");
             return;
         }
@@ -472,6 +475,7 @@ public class AlarmActivity extends ToolbarActivity {
                 if(phone.charAt(0) == '+' && phone.length() > 9) {
                     phone = phone.replaceAll(" ", "");
                     list.add(name + " " + phone);
+                    mContactArrayList.add(phone);
                 }
             }
         }

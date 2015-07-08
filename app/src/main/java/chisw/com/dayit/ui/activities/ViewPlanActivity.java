@@ -111,8 +111,6 @@ public class ViewPlanActivity extends ToolbarActivity {
         return targetBitmap;
     }
 
-
-
     @Override
     protected int contentViewResId() {
         return R.layout.activity_view_plan;
@@ -138,5 +136,4 @@ public class ViewPlanActivity extends ToolbarActivity {
 //            mIvPicture.setImageResource(R.drawable.default_example_material);
 //        }
     }
-
 }

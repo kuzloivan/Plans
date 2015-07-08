@@ -41,6 +41,7 @@ public class NetManager implements NetBridge {
     public static final String AUDIO_PATH = "audioPath";
     public static final String AUDIO_DURATION = "audioDuration";
     public static final String IMAGE_PATH = "imagePath";
+    public static final String DAYS_TO_ALARM = "daysToAlarm";
     public static final String PLAN_ID = "objectId";
 
     @Override
@@ -82,6 +83,7 @@ public class NetManager implements NetBridge {
         pPlan.put(DETAILS, plan.getDetails());
         pPlan.put(USER_ID, ParseUser.getCurrentUser().getObjectId());
         pPlan.put(AUDIO_DURATION, plan.getAudioDuration());
+        pPlan.put(DAYS_TO_ALARM, plan.getDaysToAlarm());
         pPlan.saveInBackground(new CallbackAddPlan(pPlan, callback));
     }
 
@@ -93,7 +95,7 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public Plan getPlan(String parseId) {
+    public Plan getPlan(final String parseId) {
         final Plan p = new Plan();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
         query.whereEqualTo(PLAN_ID, parseId);
@@ -106,6 +108,7 @@ public class NetManager implements NetBridge {
                 p.setDetails(parseObject.getString(PlansEntity.DETAILS));
                 p.setTitle(parseObject.getString(PlansEntity.TITLE));
                 p.setTimeStamp(parseObject.getLong(PlansEntity.TIMESTAMP));
+                p.setDaysToAlarm(parseObject.getString(PlansEntity.DAYS_TO_ALARM));
             }
         }));
         return p;
@@ -207,6 +210,7 @@ public class NetManager implements NetBridge {
                     p.setTitle(obj.getString(PlansEntity.TITLE));
                     p.setTimeStamp(obj.getLong(PlansEntity.TIMESTAMP));
                     p.setAudioDuration(obj.getInt(PlansEntity.AUDIO_DURATION));
+                    p.setDaysToAlarm(obj.getString(PlansEntity.DAYS_TO_ALARM));
                     p.setParseId(obj.getObjectId());
                     plans.add(p);
                 }
