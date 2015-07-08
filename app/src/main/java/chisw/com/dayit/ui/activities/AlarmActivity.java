@@ -576,8 +576,9 @@ public class AlarmActivity extends ToolbarActivity {
                     netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
                         @Override
                         public void getNumbers(Map<String, String> numbers) {
+                            mContactArrayList.clear();
                             for (Map.Entry<String, String> nums : numbers.entrySet()) {
-                                mContactArrayList.clear();
+
                                 String contactInfo = nums.getValue() + " " + nums.getKey();
                                 mContactArrayList.add(contactInfo);
                             }
