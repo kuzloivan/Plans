@@ -476,10 +476,14 @@ public class AlarmActivity extends ToolbarActivity {
             while (cursor.moveToNext())
             {
                 String phone = cursor.getString(1);
-                String name = cursor.getString(0);
+               // String name = cursor.getString(0);
 
                 if(phone.charAt(0) == '+' && phone.length() > 9) {
                     phone = phone.replaceAll(" ", "");
+                    list.add(phone);
+                }
+                else if (phone.charAt(0) != '+' && phone.length() > 9){
+                    phone = "+38" + phone.replaceAll(" ", "");
                     list.add(phone);
                 }
             }
@@ -578,7 +582,6 @@ public class AlarmActivity extends ToolbarActivity {
                         public void getNumbers(Map<String, String> numbers) {
                             mContactArrayList.clear();
                             for (Map.Entry<String, String> nums : numbers.entrySet()) {
-
                                 String contactInfo = nums.getValue() + " " + nums.getKey();
                                 mContactArrayList.add(contactInfo);
                             }
