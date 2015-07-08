@@ -56,6 +56,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
         int imageIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         long timeStamp = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
+        //int phoneNumbIndex = cursor.getColumnIndex(PlansEntity.PHONE);
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
@@ -96,6 +97,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
         public TextView tvDate;
         public TextView tvDetails;
         public ImageView ivPicture;
+        //public TextView tvPhone;
 
         public ViewHolder(View view) {
             tvDate = (TextView) view.findViewById(R.id.pa_tv_date);
@@ -103,6 +105,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
             tvTitle = (TextView) view.findViewById(R.id.pa_tv_title);
             tvDetails = (TextView) view.findViewById(R.id.pa_tv_details);
             ivPicture = (ImageView) view.findViewById(R.id.image_view_in_list_view);
+            //tvPhone = (TextView) view.findViewById(R.id.pa_phoneNumber_tv);
         }
     }
 }

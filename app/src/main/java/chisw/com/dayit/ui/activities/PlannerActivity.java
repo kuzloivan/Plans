@@ -33,6 +33,7 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.others.RestartManager;
 import chisw.com.dayit.ui.adapters.PlannerCursorAdapter;
 import chisw.com.dayit.ui.custom_element.FloatingActionButton;
+import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
@@ -41,6 +42,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
+    private ImageView mIvPicture;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -141,7 +143,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 if(SystemUtils.checkNetworkStatus(getApplicationContext())) {
                     startSynchronization();
                 }
-
                 break;
 
             case R.id.pa_menu_settings:
@@ -268,7 +269,13 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.fab:
-                    AlarmActivity.start(PlannerActivity.this);
+                    if(SystemUtils.checkNetworkStatus(PlannerActivity.this)){
+                        new TaskTypeDialog().show(getFragmentManager(),"TaskType");
+                    }
+                    else
+                    {
+                        AlarmActivity.start(PlannerActivity.this);
+                    }
                     break;
             }
         }

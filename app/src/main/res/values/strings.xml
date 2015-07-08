@@ -65,4 +65,8 @@
     <string name="temp_date">2015.06.12</string>
     <string name="set_sound">Set sound</string>
 
+    <!-- TaskTypeDialog -->
+    <string name="task_type_local">Local task</string>
+    <string name="task_type_remote">Remote task</string>
+    <string name="task_type_title">Choose alarm type</string>
 </resources>
