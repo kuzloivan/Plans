@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -77,6 +78,7 @@ public class AlarmActivity extends ToolbarActivity {
     private String mDaysToAlarm;
     private ArrayList<String> mContactArrayList;
     private ContactListDialog mContactListDialog;
+    private RelativeLayout mRelativeLayoutDuration;
 
     public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
@@ -99,6 +101,7 @@ public class AlarmActivity extends ToolbarActivity {
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
         findViewById(R.id.get_contact_list_bt).setOnClickListener(clicker);
 
+        mRelativeLayoutDuration = (RelativeLayout) findViewById(R.id.relative_layout_duration);
         mTvDate = (TextView) findViewById(R.id.setDate_textview);
         mTvDate.setOnClickListener(clicker);
         mTvTime = (TextView) findViewById(R.id.setTime_textview);
@@ -292,6 +295,7 @@ public class AlarmActivity extends ToolbarActivity {
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 setAudioFromSDCard(returnedIntent);
+                mRelativeLayoutDuration.setVisibility(View.VISIBLE);
                 break;
             case GALLERY_REQUEST:
                 setImageFromGallery(returnedIntent);

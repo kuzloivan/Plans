@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -27,7 +27,7 @@
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_margin="10dp"
-                    android:src="@drawable/aa_icon" />
+                    android:src="@drawable/aa_icon"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                         android:paddingLeft="24dp"
                         android:text="@string/set_date"
                         android:textColor="@color/color_aa_edit_text"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:id="@+id/setTime_textview"
@@ -56,7 +56,7 @@
                         android:paddingLeft="24dp"
                         android:text="@string/set_time"
                         android:textColor="@color/color_aa_edit_text"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
 
                 </LinearLayout>
 
@@ -70,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/aa_rellay_top"
                 android:hint="@string/alarm_title_hint"
-                android:maxLines="1" />
+                android:maxLength="21"
+                android:maxLines="1"/>
 
 
             <EditText
@@ -80,71 +81,91 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/setTitle_textview"
                 android:hint="@string/alarm_details_hint"
-                android:maxLines="5" />
+                android:maxLines="5"/>
 
 
-            <LinearLayout
-                android:id="@+id/linear_layout_duration"
+            <RelativeLayout
+                android:id="@+id/relative_layout_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/setDetails_textview"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_duration_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin16"
-                    android:text="Sound duration" />
+                <LinearLayout
+                    android:id="@+id/layout_sound_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_duration_sound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/margin16"
+                        android:text="Sound duration"/>
 
-                <TextView
-                    android:id="@+id/tv_sound_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin16"
-                    android:text="--" />
+                    <TextView
+                        android:id="@+id/tv_sound_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/margin16"
+                        android:text="--"/>
 
-                <SeekBar
-                    android:id="@+id/sb_duration_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin8"
-                    android:layout_weight="100"
-                    android:max="100" />
-            </LinearLayout>
+                    <SeekBar
+                        android:id="@+id/sb_duration_sound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin8"
+                        android:layout_weight="100"
+                        android:max="100"/>
 
-            <TextView
-                android:id="@+id/alarmSound_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/linear_layout_duration"
-                android:layout_margin="@dimen/margin16"
-                android:text="Alarm sound: " />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/alarmSoundTitle_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/linear_layout_duration"
-                android:layout_margin="@dimen/margin16"
-                android:layout_toRightOf="@+id/alarmSound_textview"
-                android:ellipsize="marquee"
-                android:lines="2"
-                android:text="--" />
+                <LinearLayout
+                    android:layout_below="@id/layout_sound_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/alarmSound_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/relative_layout_duration"
+                        android:layout_margin="@dimen/margin16"
+                        android:text="Alarm sound: "/>
+
+                    <TextView
+                        android:id="@+id/alarmSoundTitle_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/relative_layout_duration"
+                        android:layout_margin="@dimen/margin16"
+                        android:layout_toRightOf="@+id/alarmSound_textview"
+                        android:ellipsize="marquee"
+                        android:lines="2"
+                        android:text="--"/>
+
+                </LinearLayout>
+
+
+
+
+            </RelativeLayout>
+
+
 
             <TextView
                 android:id="@+id/alarmRepearing_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/alarmSoundTitle_textview"
+                android:layout_below="@+id/relative_layout_duration"
                 android:layout_margin="@dimen/margin16"
-                android:text="Repeating" />
+                android:text="Repeating"/>
 
             <Switch
                 android:id="@+id/switch_repeating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/alarmSoundTitle_textview"
+                android:layout_below="@+id/relative_layout_duration"
                 android:layout_margin="@dimen/margin16"
                 android:layout_toRightOf="@+id/alarmRepearing_textview"
                 android:textOff="OFF"
@@ -162,8 +183,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_choose_sound"
-                    android:paddingLeft="8dp"
-                    android:text="Set sound" />
+                    android:text="Set sound"/>
 
                 <Button
                     android:id="@+id/bt_save_alarm"
@@ -171,22 +191,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_save"
-                    android:paddingLeft="8dp"
-                    android:text="@string/save_alarm" />
+                    android:text="Save alarm"/>
+
                 <Button
-                    style="@style/style_aa_btns"
                     android:id="@+id/get_contact_list_bt"
+                    style="@style/style_aa_btns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/get_contact_list"/>
+                    android:text="Get contact list"/>
+
             </LinearLayout>
 
         </RelativeLayout>
 
 
-
     </ScrollView>
-
 
 
 </RelativeLayout>
