@@ -20,7 +20,6 @@ import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.parse.SendCallback;
 
 import java.util.ArrayList;
 import java.util.Observable;

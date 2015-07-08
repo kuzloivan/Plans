@@ -4,7 +4,9 @@ import android.widget.EditText;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.utils.SystemUtils;
@@ -43,6 +45,19 @@ public abstract class AuthorizationActivity extends ToolbarActivity {
             }
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
+
+            //Testing parse's pushes
+/*            ParsePush.subscribeInBackground(sharedHelper.getDefaultLogin(), new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        showToast("Bind to channel was successful");
+                        return;
+                    }
+                    showToast(e.getMessage());
+                }
+            });*/
+
             hideProgressDialog();
             showToast("Login was successful");
             startSomeActivity();
