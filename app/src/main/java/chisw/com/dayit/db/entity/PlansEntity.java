@@ -28,7 +28,7 @@ public class PlansEntity {
             AUDIO_PATH + " TEXT, " +
             AUDIO_DURATION + " INTEGER, " +
             IMAGE_PATH + " TEXT, " +
-            DAYS_TO_ALARM + " TEXT, " + //Coma!   DOW
+            DAYS_TO_ALARM + " TEXT, " +
             IS_DELETED + " INTEGER, " +
             IS_SYNCHRONIZED + " INTEGER " +
             ")";

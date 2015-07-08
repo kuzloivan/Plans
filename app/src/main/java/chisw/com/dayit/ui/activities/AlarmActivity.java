@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -30,8 +32,11 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.Map;
 
 import chisw.com.dayit.R;
+import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
@@ -70,6 +75,8 @@ public class AlarmActivity extends ToolbarActivity {
     private SeekBar mSeekBar;
     private String mSelectedImagePath;
     private String mDaysToAlarm;
+    private ArrayList<String> mContactArrayList;
+    private ContactListDialog mContactListDialog;
 
     public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
@@ -151,12 +158,14 @@ public class AlarmActivity extends ToolbarActivity {
             fillIn(mSeekBar);
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             String daysToAlarm = dbManager.getDaysToAlarmById(id);
-            if (daysToAlarm.charAt(0) == '1') {
-                mSwitchRepeating.setChecked(true);
+            if(daysToAlarm != null) {
+                if (daysToAlarm.charAt(0) == '1') {
+                    mSwitchRepeating.setChecked(true);
+                    mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
+                }
+                mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
                 mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
             }
-            mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
-            mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
         } else {
             mTvSoundDuration.setText("00:00");
         }
@@ -237,7 +246,7 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("Title is empty");
             return;
         }
-        if (DataUtils.getCalendar().getTimeInMillis() - System.currentTimeMillis() <= 0) {
+        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
             showToast("Time is incorrect.");
             return;
         }
@@ -466,8 +475,17 @@ public class AlarmActivity extends ToolbarActivity {
         {
             while (cursor.moveToNext())
             {
-                if(cursor.getString(1).charAt(0) == '+' || cursor.getString(1).length() > 7)
-                    list.add(cursor.getString(0) + " " + cursor.getString(1));
+                String phone = cursor.getString(1);
+               // String name = cursor.getString(0);
+
+                if(phone.charAt(0) == '+' && phone.length() > 9) {
+                    phone = phone.replaceAll(" ", "");
+                    list.add(phone);
+                }
+                else if (phone.charAt(0) != '+' && phone.length() > 9){
+                    phone = "+38" + phone.replaceAll(" ", "");
+                    list.add(phone);
+                }
             }
         }
         return list;
@@ -557,12 +575,23 @@ public class AlarmActivity extends ToolbarActivity {
                     break;
                 case R.id.get_contact_list_bt:
                     ArrayList<String> contactsArrayList = initializeList();
+                    mContactArrayList = new ArrayList<String>();
 
-                    ContactListDialog cld = new ContactListDialog();
-                    Bundle contactsBundle = new Bundle();
-                    contactsBundle.putStringArrayList("contactsArrayList", contactsArrayList);
-                    cld.setArguments(contactsBundle);
-                    cld.show(getSupportFragmentManager(), "ContactListDialog");
+                    netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
+                        @Override
+                        public void getNumbers(Map<String, String> numbers) {
+                            mContactArrayList.clear();
+                            for (Map.Entry<String, String> nums : numbers.entrySet()) {
+                                String contactInfo = nums.getValue() + " " + nums.getKey();
+                                mContactArrayList.add(contactInfo);
+                            }
+                            mContactListDialog = new ContactListDialog();
+                            Bundle contactsBundle = new Bundle();
+                            contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
+                            mContactListDialog.setArguments(contactsBundle);
+                            mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                        }
+                    });
                 break;
             }
         }

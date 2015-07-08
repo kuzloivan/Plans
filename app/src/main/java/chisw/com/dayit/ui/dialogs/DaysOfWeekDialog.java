@@ -9,7 +9,6 @@ import android.util.Log;
 
 import chisw.com.dayit.R;
 
-
 /**
  * Created by Kuzlo on 23.06.2015.
  */
@@ -44,7 +43,6 @@ public class DaysOfWeekDialog extends DialogFragment implements DialogInterface.
                         mListener.onDaysOfWeekPositiveClick(getStringSunToSatDaysToAlarm());
                     }
                 });
-        ;
 
         return builder.create();
     }
