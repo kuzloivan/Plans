@@ -151,7 +151,7 @@ public class AlarmActivity extends ToolbarActivity {
             fillIn(mSeekBar);
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             String daysToAlarm = dbManager.getDaysToAlarmById(id);
-            if (daysToAlarm.charAt(0) == '1') {
+            if (daysToAlarm.length() > 0 && daysToAlarm.charAt(0) == '1') {
                 mSwitchRepeating.setChecked(true);
                 mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
             }
@@ -466,8 +466,13 @@ public class AlarmActivity extends ToolbarActivity {
         {
             while (cursor.moveToNext())
             {
-                if(cursor.getString(1).charAt(0) == '+' || cursor.getString(1).length() > 7)
-                    list.add(cursor.getString(0) + " " + cursor.getString(1));
+                String phone = cursor.getString(1);
+                String name = cursor.getString(0);
+
+                if(phone.charAt(0) == '+' && phone.length() > 9) {
+                    phone = phone.replaceAll(" ", "");
+                    list.add(name + " " + phone);
+                }
             }
         }
         return list;
