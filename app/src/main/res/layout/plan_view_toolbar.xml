@@ -9,7 +9,7 @@
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/aa_icon"
+        android:src="@drawable/default_example_material"
         />
 
     <android.support.v7.widget.Toolbar

@@ -33,6 +33,16 @@
             android:password="true"
             />
 
+        <EditText
+            android:id="@+id/new_user_password_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin8"
+            android:hint="Password"
+            android:textColorHint="#bbbbbb"
+            android:password="true"
+            />
+
         <!--<EditText-->
         <!--android:id="@+id/new_user_phone_number"-->
         <!--android:layout_width="match_parent"-->

@@ -41,7 +41,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
-    private ImageView mIvPicture;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -291,15 +290,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 }
                 if(ValidData.isTextValid(plan.getImagePath())){
                     parseObject.put("imagePath", plan.getImagePath());
-//
-//                    mIvPicture = (ImageView) findViewById(R.id.image_view_in_list_view);
-//                    Bitmap bitmap = BitmapFactory.decodeFile(plan.getImagePath());
-//                    mIvPicture.setImageBitmap(bitmap);
-
                 }
-
-
-
                 parseObject.put("audioDuration", plan.getAudioDuration());
                 parseObject.put("details", plan.getDetails());
                 parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
