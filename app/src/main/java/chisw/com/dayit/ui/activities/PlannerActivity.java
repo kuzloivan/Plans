@@ -17,7 +17,9 @@ import com.parse.GetCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -56,6 +58,17 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         if(SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
             startSynchronization();
         }
+
+        ParsePush.subscribeInBackground("Test", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    showToast("successfully subscribed to the broadcast channel.");
+                } else {
+                    showToast(e.getMessage());
+                }
+            }
+        });
     }
 
     @Override
