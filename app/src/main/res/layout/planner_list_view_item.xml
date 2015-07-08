@@ -24,7 +24,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/aa_icon"/>
+                    android:src="@drawable/default_example_material"/>
 
                 <TextView
                     android:id="@+id/pa_tv_title"

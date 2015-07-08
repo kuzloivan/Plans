@@ -52,7 +52,7 @@ public class SignUpActivity extends AuthorizationActivity {
 
         @Override
         public void onClick(View v) {
-            if(prepareForClick()) {
+            if (prepareForClick()) {
                 switch (v.getId()) {
                     case R.id.btn_sign_up:
                         if (isValidFields()) {
@@ -74,7 +74,7 @@ public class SignUpActivity extends AuthorizationActivity {
         public void done(ParseException e) {
             if (e != null) {
                 /* Is username already exist */
-                switch(e.getCode()) {
+                switch (e.getCode()) {
                     case ParseException.USERNAME_TAKEN:
                         error = "Username is already taken";
                         break;
@@ -87,8 +87,8 @@ public class SignUpActivity extends AuthorizationActivity {
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
-            hideProgressDialog();
             showToast("SignUp was successful");
+            hideProgressDialog();
         }
     }
 }
