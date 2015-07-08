@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,7 +99,6 @@ public class AlarmActivity extends ToolbarActivity {
         initBackButton();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
-        findViewById(R.id.get_contact_list_bt).setOnClickListener(clicker);
 
         mRelativeLayoutDuration = (RelativeLayout) findViewById(R.id.relative_layout_duration);
         mTvDate = (TextView) findViewById(R.id.setDate_textview);
@@ -119,7 +120,7 @@ public class AlarmActivity extends ToolbarActivity {
         mSeekBar.setEnabled(false);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
         mDaysToAlarm = "0000000";
-        mTvPhone = (TextView)findViewById(R.id.aa_phone_tv);
+        mTvPhone = (TextView) findViewById(R.id.aa_phone_tv);
 
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -134,6 +135,8 @@ public class AlarmActivity extends ToolbarActivity {
             }
         });
         mEtTitle = (EditText) findViewById(R.id.setTitle_textview);
+        InputFilter inputFilter = initializeInputFilter();
+        mEtTitle.setFilters(new InputFilter[]{inputFilter});
         mEtTitle.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -249,6 +252,11 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("Title is empty");
             return;
         }
+        if (getIntent().getBooleanExtra("isRemote", false)) {
+            showContactList();
+            if(mContactArrayList.isEmpty())
+                return;
+        }
 
 //        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
 //            showToast("Time is incorrect.");
@@ -265,7 +273,24 @@ public class AlarmActivity extends ToolbarActivity {
         } else {
             mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
+
         finish();
+    }
+
+
+    private InputFilter initializeInputFilter() {
+        InputFilter inpF = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetterOrDigit(source.charAt(i))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
+        return inpF;
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -477,6 +502,32 @@ public class AlarmActivity extends ToolbarActivity {
         return durationMs / 1000;
     }
 
+    private void showContactList() {
+        ArrayList<String> contactsArrayList = initializeList();
+        mContactArrayList = new ArrayList<String>();
+
+        netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
+            @Override
+            public void getNumbers(Map<String, String> numbers) {
+                mContactArrayList.clear();
+                for (Map.Entry<String, String> nums : numbers.entrySet()) {
+                    String contactInfo = nums.getValue() + " " + nums.getKey();
+                    mContactArrayList.add(contactInfo);
+                }
+                if (mContactArrayList.size() > 0) {
+                    mContactListDialog = new ContactListDialog();
+                    mContactListDialog.setIContact(new ContactDialog());
+                    Bundle contactsBundle = new Bundle();
+                    contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
+                    mContactListDialog.setArguments(contactsBundle);
+                    mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                } else {
+                    showToast("Contact list is empty : (");
+                }
+            }
+        });
+    }
+
     private ArrayList<String> initializeList() {
         ArrayList<String> list = new ArrayList<>();
         Cursor cursor = dbManager.getAllContacts(AlarmActivity.this);
@@ -498,133 +549,112 @@ public class AlarmActivity extends ToolbarActivity {
         return list;
     }
 
-    public final class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
+public final class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
 
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            duration(mSeekBar);
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
-
-        }
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
-            duration(mSeekBar);
-        }
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        duration(mSeekBar);
     }
 
-    public final class CallbackEditPlan implements GetCallback<ParseObject> {
-        private final Plan plan;
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
 
-        public CallbackEditPlan(Plan plan) {
-            this.plan = plan;
-        }
+    }
 
-        @Override
-        public void done(ParseObject parseObject, ParseException e) {
-            if (e == null) {
-                parseObject.put("title", plan.getTitle());
-                parseObject.put("timeStamp", plan.getTimeStamp());
-                if (ValidData.isTextValid(plan.getAudioPath())) {
-                    parseObject.put("audioPath", plan.getAudioPath());
-                }
-                if (ValidData.isTextValid(plan.getImagePath())) {
-                    parseObject.put("imagePath", plan.getImagePath());
-                }
-                parseObject.put("audioDuration", plan.getAudioDuration());
-                parseObject.put("details", plan.getDetails());
-                parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
-                parseObject.saveInBackground();
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        duration(mSeekBar);
+    }
+}
 
+public final class CallbackEditPlan implements GetCallback<ParseObject> {
+    private final Plan plan;
 
-            } else {
-                showToast(e.getMessage());
+    public CallbackEditPlan(Plan plan) {
+        this.plan = plan;
+    }
+
+    @Override
+    public void done(ParseObject parseObject, ParseException e) {
+        if (e == null) {
+            parseObject.put("title", plan.getTitle());
+            parseObject.put("timeStamp", plan.getTimeStamp());
+            if (ValidData.isTextValid(plan.getAudioPath())) {
+                parseObject.put("audioPath", plan.getAudioPath());
             }
-        }
-    }
-
-    public final class Clicker implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.bt_save_alarm:
-                    startAlarm();
-                    break;
-                case R.id.setDate_textview:
-                    mDatePickDialog = new DatePickDialog();
-                    mDatePickDialog.show(getSupportFragmentManager(), "datePicker");
-                    break;
-                case R.id.setTime_textview:
-                    mTimeDialog = new TimePickDialog();
-                    mTimeDialog.show(getSupportFragmentManager(), "timePicker");
-                    break;
-                case R.id.switch_repeating:
-                    if (mSwitchRepeating.isChecked()) {
-                        mDaysOfWeekDialog = new DaysOfWeekDialog();
-
-                        Bundle days = new Bundle();
-                        days.putString("mDaysToAlarm", mDaysToAlarm);
-                        mDaysOfWeekDialog.setArguments(days);
-
-                        mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysOfWeekPicker");
-                        mDaysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
-                    }
-                    break;
-                case R.id.aa_setAudio_btn:
-                    chooseAudio();
-                    break;
-                case R.id.aa_image:
-                    chooseImage();
-                    break;
-                case R.id.get_contact_list_bt:
-                    ArrayList<String> contactsArrayList = initializeList();
-                    mContactArrayList = new ArrayList<String>();
-
-                    netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
-                        @Override
-                        public void getNumbers(Map<String, String> numbers) {
-                            mContactArrayList.clear();
-                            for (Map.Entry<String, String> nums : numbers.entrySet()) {
-                                String contactInfo = nums.getValue() + " " + nums.getKey();
-                                mContactArrayList.add(contactInfo);
-                            }
-                            mContactListDialog = new ContactListDialog();
-                            mContactListDialog.setIContact(new ContactDialog());
-                            Bundle contactsBundle = new Bundle();
-                            contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
-                            mContactListDialog.setArguments(contactsBundle);
-                            mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
-                        }
-                    });
-                    break;
+            if (ValidData.isTextValid(plan.getImagePath())) {
+                parseObject.put("imagePath", plan.getImagePath());
             }
+            parseObject.put("audioDuration", plan.getAudioDuration());
+            parseObject.put("details", plan.getDetails());
+            parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
+            parseObject.saveInBackground();
+
+
+        } else {
+            showToast(e.getMessage());
         }
     }
+}
 
-    private final class DialogDaysOfWeekClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener {
+public final class Clicker implements View.OnClickListener {
 
-        @Override
-        public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
-            mDaysToAlarm = pDaysOfWeek; //DOW
-        }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_save_alarm:
+                startAlarm();
+                break;
+            case R.id.setDate_textview:
+                mDatePickDialog = new DatePickDialog();
+                mDatePickDialog.show(getSupportFragmentManager(), "datePicker");
+                break;
+            case R.id.setTime_textview:
+                mTimeDialog = new TimePickDialog();
+                mTimeDialog.show(getSupportFragmentManager(), "timePicker");
+                break;
+            case R.id.switch_repeating:
+                if (mSwitchRepeating.isChecked()) {
+                    mDaysOfWeekDialog = new DaysOfWeekDialog();
 
-        @Override
-        public void onDaysOfWeekNegativeClick(String pString) {
-            mSwitchRepeating.setChecked(false);
+                    Bundle days = new Bundle();
+                    days.putString("mDaysToAlarm", mDaysToAlarm);
+                    mDaysOfWeekDialog.setArguments(days);
+
+                    mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysOfWeekPicker");
+                    mDaysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
+                }
+                break;
+            case R.id.aa_setAudio_btn:
+                chooseAudio();
+                break;
+            case R.id.aa_image:
+                chooseImage();
+                break;
         }
     }
+}
 
-    private final class ContactDialog implements ContactListDialog.IContact {
+private final class DialogDaysOfWeekClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener {
 
-        @Override
-        public void getPhone(String pPhoneNumber) {
-            //Chosen phone number
-            mTvPhone.setText(pPhoneNumber);
-        }
+    @Override
+    public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
+        mDaysToAlarm = pDaysOfWeek; //DOW
     }
+
+    @Override
+    public void onDaysOfWeekNegativeClick(String pString) {
+        mSwitchRepeating.setChecked(false);
+    }
+}
+
+private final class ContactDialog implements ContactListDialog.IContact {
+
+    @Override
+    public void getPhone(String pPhoneNumber) {
+        //Chosen phone number
+        mTvPhone.setText(pPhoneNumber);
+    }
+}
 
 }

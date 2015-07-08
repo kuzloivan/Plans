@@ -3,6 +3,7 @@ package chisw.com.dayit.ui.dialogs;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import chisw.com.dayit.R;
@@ -24,10 +25,14 @@ public class TaskTypeDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                AlarmActivity.start(getActivity());
+                                Intent i = new Intent(getActivity(), AlarmActivity.class);
+                                i.putExtra("isRemote", false);
+                                getActivity().startActivity(i);
                                 break;
                             case 1:
-                                AlarmActivity.start(getActivity());
+                                Intent ii = new Intent(getActivity(), AlarmActivity.class);
+                                ii.putExtra("isRemote", true);
+                                getActivity().startActivity(ii);
                                 break;
                         }
                     }
