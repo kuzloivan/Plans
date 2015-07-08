@@ -20,12 +20,10 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.dayit.R;
-import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.entity.PlansEntity;
@@ -33,6 +31,7 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.others.RestartManager;
 import chisw.com.dayit.ui.adapters.PlannerCursorAdapter;
 import chisw.com.dayit.ui.custom_element.FloatingActionButton;
+import chisw.com.dayit.ui.dialogs.DeleteDialog;
 import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
@@ -42,6 +41,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
+    private int mWantToDelete;
     private ImageView mIvPicture;
 
     public static void start(Activity pActivity) {
@@ -53,7 +53,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         initView();
-        if(SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
+        if (SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
             startSynchronization();
         }
     }
@@ -109,7 +109,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     AlarmActivity.start(this, p.getLocalId());
                     break;
                 case R.id.pa_context_delete:
-                    deleteEntirely(cursor.getInt(idIndex));
+                    DeleteDialog dial = new DeleteDialog();
+                    dial.setIDelete(new DeleteDialogClicker());
+                    dial.show(getFragmentManager(), "Delete dialog");
+                    mWantToDelete = cursor.getInt(idIndex);
                     break;
             }
         }
@@ -140,7 +143,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
         switch (pMenuItem.getItemId()) {
             case R.id.pa_menu_sync:
-                if(SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                if (SystemUtils.checkNetworkStatus(getApplicationContext())) {
                     startSynchronization();
                 }
                 break;
@@ -269,11 +272,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.fab:
-                    if(SystemUtils.checkNetworkStatus(PlannerActivity.this)){
-                        new TaskTypeDialog().show(getFragmentManager(),"TaskType");
-                    }
-                    else
-                    {
+                    if (SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
+                        new TaskTypeDialog().show(getFragmentManager(), "TaskType");
+                    } else {
                         AlarmActivity.start(PlannerActivity.this);
                     }
                     break;
@@ -283,6 +284,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     public final class CallbackEditPlan implements GetCallback<ParseObject> {
         private final Plan plan;
+
         public CallbackEditPlan(Plan plan) {
             this.plan = plan;
         }
@@ -295,7 +297,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 if (ValidData.isTextValid(plan.getAudioPath())) {
                     parseObject.put("audioPath", plan.getAudioPath());
                 }
-                if(ValidData.isTextValid(plan.getImagePath())){
+                if (ValidData.isTextValid(plan.getImagePath())) {
                     parseObject.put("imagePath", plan.getImagePath());
                 }
                 parseObject.put("audioDuration", plan.getAudioDuration());
@@ -305,6 +307,14 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             } else {
                 showToast(e.getMessage());
             }
+        }
+    }
+
+    private final class DeleteDialogClicker implements DeleteDialog.IDelete {
+
+        @Override
+        public void onDeleteOkClick() {
+            deleteEntirely(mWantToDelete);
         }
     }
 }

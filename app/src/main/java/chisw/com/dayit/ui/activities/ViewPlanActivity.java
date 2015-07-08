@@ -3,7 +3,6 @@ package chisw.com.dayit.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.ui.dialogs.DeleteDialog;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 
@@ -58,22 +58,22 @@ public class ViewPlanActivity extends ToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
-
         switch (pMenuItem.getItemId()) {
             case R.id.vp_menu_delete:
-                deleteEntirely();
+                DeleteDialog dial = new DeleteDialog();
+                dial.setIDelete(new DeleteDialogClicker());
+                dial.show(getFragmentManager(), "Delete dialog");
                 break;
             case R.id.vp_menu_edit:
                 AlarmActivity.start(this, mPlanId);
+                finish();
                 break;
         }
-        finish();
         return super.onOptionsItemSelected(pMenuItem);
     }
 
     public void deleteEntirely() {
         alarmManager.cancelAlarm(mPlanId);
-
         Plan plan = dbManager.getPlanById(mPlanId);
         if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
             plan.setIsSynchronized(0);
@@ -84,13 +84,12 @@ public class ViewPlanActivity extends ToolbarActivity {
             dbManager.deletePlanById(mPlanId);
             plan.setIsSynchronized(1);
         }
+        finish();
     }
 
-    public static Bitmap getCircleMaskedBitmapUsingShader(Bitmap source, int radius)
-    {
+    public static Bitmap getCircleMaskedBitmapUsingShader(Bitmap source, int radius) {
 
-        if (source == null)
-        {
+        if (source == null) {
             return null;
         }
 
@@ -98,7 +97,7 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(source,100,100, true );
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(source, 100, 100, true);
         final Shader shader = new BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         paint.setShader(shader);
 
@@ -110,7 +109,6 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         return targetBitmap;
     }
-
 
 
     @Override
@@ -139,4 +137,11 @@ public class ViewPlanActivity extends ToolbarActivity {
 //        }
     }
 
+    private final class DeleteDialogClicker implements DeleteDialog.IDelete {
+
+        @Override
+        public void onDeleteOkClick() {
+            deleteEntirely();
+        }
+    }
 }

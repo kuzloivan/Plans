@@ -69,4 +69,8 @@
     <string name="task_type_local">Local task</string>
     <string name="task_type_remote">Remote task</string>
     <string name="task_type_title">Choose alarm type</string>
+
+    <!-- DeleteDialog -->
+    <string name="delete_dialog_title">Delete task?</string>
+    <string name="delete_dialog_delete">Delete</string>
 </resources>

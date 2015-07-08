@@ -16,8 +16,8 @@ public class TaskTypeDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String[] s = new String[2];
-        s[0] = Integer.toString(R.string.task_type_local);
-        s[1] = Integer.toString(R.string.task_type_remote);
+        s[0] = getString(R.string.task_type_local);
+        s[1] = getString(R.string.task_type_remote);
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.task_type_title)
                 .setItems(s, new DialogInterface.OnClickListener() {
