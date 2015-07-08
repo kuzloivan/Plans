@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -30,8 +32,11 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.Map;
 
 import chisw.com.dayit.R;
+import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
@@ -71,6 +76,7 @@ public class AlarmActivity extends ToolbarActivity {
     private String mSelectedImagePath;
     private String mDaysToAlarm;
     private ArrayList<String> mContactArrayList;
+    private ContactListDialog mContactListDialog;
 
     public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
@@ -474,8 +480,7 @@ public class AlarmActivity extends ToolbarActivity {
 
                 if(phone.charAt(0) == '+' && phone.length() > 9) {
                     phone = phone.replaceAll(" ", "");
-                    list.add(name + " " + phone);
-                    mContactArrayList.add(phone);
+                    list.add(phone);
                 }
             }
         }
@@ -566,12 +571,23 @@ public class AlarmActivity extends ToolbarActivity {
                     break;
                 case R.id.get_contact_list_bt:
                     ArrayList<String> contactsArrayList = initializeList();
+                    mContactArrayList = new ArrayList<String>();
 
-                    ContactListDialog cld = new ContactListDialog();
-                    Bundle contactsBundle = new Bundle();
-                    contactsBundle.putStringArrayList("contactsArrayList", contactsArrayList);
-                    cld.setArguments(contactsBundle);
-                    cld.show(getSupportFragmentManager(), "ContactListDialog");
+                    netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
+                        @Override
+                        public void getNumbers(Map<String, String> numbers) {
+                            for (Map.Entry<String, String> nums : numbers.entrySet()) {
+                                mContactArrayList.clear();
+                                String contactInfo = nums.getValue() + " " + nums.getKey();
+                                mContactArrayList.add(contactInfo);
+                            }
+                            mContactListDialog = new ContactListDialog();
+                            Bundle contactsBundle = new Bundle();
+                            contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
+                            mContactListDialog.setArguments(contactsBundle);
+                            mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                        }
+                    });
                 break;
             }
         }
