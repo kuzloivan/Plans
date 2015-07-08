@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -33,7 +31,6 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.Map;
 
 import chisw.com.dayit.R;
@@ -66,7 +63,7 @@ public class AlarmActivity extends ToolbarActivity {
     private TextView mTvDate;
     private TextView mTvTime;
     private AlarmManager mAlarmManager;
-    private String mPath;
+    private String mAudioPath;
     private DatePickDialog mDatePickDialog;
     private DaysOfWeekDialog mDaysOfWeekDialog;
     private DialogFragment mTimeDialog;
@@ -79,6 +76,7 @@ public class AlarmActivity extends ToolbarActivity {
     private ArrayList<String> mContactArrayList;
     private ContactListDialog mContactListDialog;
     private RelativeLayout mRelativeLayoutDuration;
+    private TextView mTvPhone;
 
     public static void start(Activity a, int id) {
         Intent i = new Intent(a, AlarmActivity.class);
@@ -121,6 +119,7 @@ public class AlarmActivity extends ToolbarActivity {
         mSeekBar.setEnabled(false);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
         mDaysToAlarm = "0000000";
+        mTvPhone = (TextView)findViewById(R.id.aa_phone_tv);
 
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -158,11 +157,11 @@ public class AlarmActivity extends ToolbarActivity {
             mIsEdit = true;
         }
         if (mIsEdit) {
-            showToast("SeekBar = "+ mSeekBar.isEnabled());
+            showToast("SeekBar = " + mSeekBar.isEnabled());
             fillIn(mSeekBar);
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             String daysToAlarm = dbManager.getDaysToAlarmById(id);
-            if(daysToAlarm != null) {
+            if (daysToAlarm != null) {
                 if (daysToAlarm.charAt(0) == '1') {
                     mSwitchRepeating.setChecked(true);
                     mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
@@ -207,7 +206,7 @@ public class AlarmActivity extends ToolbarActivity {
         p.setDetails(mTvSetDetails.getText().toString());
         p.setTitle(mEtTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
-        p.setAudioPath(mPath);
+        p.setAudioPath(mAudioPath);
         p.setImagePath(mSelectedImagePath);
         p.setAudioDuration((int) mAudioDuration);
         p.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
@@ -289,6 +288,8 @@ public class AlarmActivity extends ToolbarActivity {
         super.onActivityResult(requestCode, resultCode, returnedIntent);
         if (resultCode != RESULT_OK) {
             mIsDialogExist = false;
+            mRelativeLayoutDuration.setVisibility(View.GONE);
+            mAudioPath = null;
             return;
         }
         mSeekBar.setEnabled(true);
@@ -304,11 +305,11 @@ public class AlarmActivity extends ToolbarActivity {
     }
 
     private void setAudioFromSDCard(Intent audioIntent) {
-        mPath = getPath(audioIntent);
+        mAudioPath = getPath(audioIntent);
         mIsDialogExist = false;
         String buf;
         Uri u = audioIntent.getData();
-        buf = getName(u, mPath);
+        buf = getName(u, mAudioPath);
         if (!ValidData.isValidFormat(buf)) {
             mTvSoundDuration.setText("00:00");
             mTextValue.setText("");
@@ -434,10 +435,9 @@ public class AlarmActivity extends ToolbarActivity {
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         Plan p = dbManager.getPlanById(id);
         mEtTitle.setText(p.getTitle());
-        if(p.getAudioPath() == null){
+        if (p.getAudioPath() == null) {
             seekbar.setEnabled(false);
-        }
-        else {
+        } else {
             seekbar.setEnabled(true);
         }
         mTvSetDetails.setText(p.getDetails());
@@ -452,16 +452,16 @@ public class AlarmActivity extends ToolbarActivity {
         }
 
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
-        mPath = p.getAudioPath();
-        if (mPath == null) {
+        mAudioPath = p.getAudioPath();
+        if (mAudioPath == null) {
             return;
         }
-        Uri u = Uri.parse(mPath);
+        Uri u = Uri.parse(mAudioPath);
         mAudioDuration = p.getAudioDuration();
         mDurationBuf = getAudioDuration(u);
-        Uri tmpUri = Uri.parse(mPath);
-        mTextValue.setText(getName(tmpUri, mPath));
-        seekbar.setProgress(getPercent((int) mAudioDuration, mPath));
+        Uri tmpUri = Uri.parse(mAudioPath);
+        mTextValue.setText(getName(tmpUri, mAudioPath));
+        seekbar.setProgress(getPercent((int) mAudioDuration, mAudioPath));
         timeFormat();
     }
 
@@ -477,22 +477,19 @@ public class AlarmActivity extends ToolbarActivity {
         return durationMs / 1000;
     }
 
-    private ArrayList<String> initializeList(){
+    private ArrayList<String> initializeList() {
         ArrayList<String> list = new ArrayList<>();
         Cursor cursor = dbManager.getAllContacts(AlarmActivity.this);
 
-        if (cursor.getCount() > 0)
-        {
-            while (cursor.moveToNext())
-            {
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
                 String phone = cursor.getString(1);
-               // String name = cursor.getString(0);
+                // String name = cursor.getString(0);
 
-                if(phone.charAt(0) == '+' && phone.length() > 9) {
+                if (phone.charAt(0) == '+' && phone.length() > 9) {
                     phone = phone.replaceAll(" ", "");
                     list.add(phone);
-                }
-                else if (phone.charAt(0) != '+' && phone.length() > 9){
+                } else if (phone.charAt(0) != '+' && phone.length() > 9) {
                     phone = "+38" + phone.replaceAll(" ", "");
                     list.add(phone);
                 }
@@ -596,13 +593,14 @@ public class AlarmActivity extends ToolbarActivity {
                                 mContactArrayList.add(contactInfo);
                             }
                             mContactListDialog = new ContactListDialog();
+                            mContactListDialog.setIContact(new ContactDialog());
                             Bundle contactsBundle = new Bundle();
                             contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
                             mContactListDialog.setArguments(contactsBundle);
                             mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
                         }
                     });
-                break;
+                    break;
             }
         }
     }
@@ -619,4 +617,14 @@ public class AlarmActivity extends ToolbarActivity {
             mSwitchRepeating.setChecked(false);
         }
     }
+
+    private final class ContactDialog implements ContactListDialog.IContact {
+
+        @Override
+        public void getPhone(String pPhoneNumber) {
+            //Chosen phone number
+            mTvPhone.setText(pPhoneNumber);
+        }
+    }
+
 }

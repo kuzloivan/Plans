@@ -18,8 +18,9 @@ import chisw.com.dayit.R;
  * Created by alex on 07.07.15.
  */
 public class ContactListDialog extends DialogFragment implements AdapterView.OnItemClickListener {
-    ListView mContactsLV;
-    String[] mListItems;
+    private ListView mContactsLV;
+    private String[] mListItems;
+    private IContact mIContact;
 
     @Override
     public View onCreateView(LayoutInflater pInflater, ViewGroup pContainer, Bundle pSavedInstanceState){
@@ -45,7 +46,16 @@ public class ContactListDialog extends DialogFragment implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> pParent,View pView, int pPosition, long pId){
+        mIContact.getPhone(mListItems[pPosition]);
         dismiss();
         Toast.makeText(getActivity(), mListItems[pPosition],Toast.LENGTH_SHORT).show();
+    }
+
+    public interface IContact{
+        void getPhone(String pPhoneNumber);
+    }
+
+    public void setIContact(IContact pIContact) {
+        mIContact = pIContact;
     }
 }
