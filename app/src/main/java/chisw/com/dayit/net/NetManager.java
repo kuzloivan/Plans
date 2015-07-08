@@ -1,7 +1,5 @@
 package chisw.com.dayit.net;
 
-import android.support.annotation.NonNull;
-
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -13,14 +11,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import chisw.com.dayit.core.bridge.NetBridge;
 import chisw.com.dayit.core.callback.GetPlanCallback;
@@ -43,12 +36,14 @@ public class NetManager implements NetBridge {
     public static final String IMAGE_PATH = "imagePath";
     public static final String DAYS_TO_ALARM = "daysToAlarm";
     public static final String PLAN_ID = "objectId";
+    public static final String PHONE= "phone";
 
     @Override
-    public void registerUser(String name, String password, SignUpCallback signUpCallback) {
+    public void registerUser(String name, String password,String pPhone, SignUpCallback signUpCallback) {
         ParseUser user = new ParseUser();
         user.setUsername(name);
         user.setPassword(password);
+        user.put(PHONE, pPhone);
         user.signUpInBackground(signUpCallback);
     }
 

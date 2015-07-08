@@ -17,7 +17,7 @@ import chisw.com.dayit.model.Plan;
 public interface NetBridge {
 
     /* Sing Up and Log In */
-    void registerUser(String pName, String pPassword, SignUpCallback signUpCallback);
+    void registerUser(String pName, String pPassword, String pPhone, SignUpCallback signUpCallback);
     void loginUser(String pName, String pPassword, LogInCallback logInCallback);
     void logoutUser(String pName, String pPassword, LogOutCallback logOutCallback);
 

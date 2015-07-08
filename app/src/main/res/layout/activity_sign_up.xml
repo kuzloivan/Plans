@@ -16,6 +16,15 @@
         android:padding="10dp">
 
         <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone number"
+            android:id="@+id/new_user_phone"
+            android:layout_margin="8dp"
+            android:textColorHint="#bbbbbb"
+            />
+
+        <EditText
             android:id="@+id/new_user_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,14 +51,6 @@
             android:textColorHint="#bbbbbb"
             android:password="true"
             />
-
-        <!--<EditText-->
-        <!--android:id="@+id/new_user_phone_number"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/margin8"-->
-        <!--android:hint="Phone number"-->
-        <!--android:textColorHint="#bbbbbb"/>-->
 
         <LinearLayout
             style="@style/style_linearlayout"

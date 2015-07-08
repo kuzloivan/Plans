@@ -17,6 +17,8 @@ import chisw.com.dayit.R;
 public class SignUpActivity extends AuthorizationActivity {
 
     private Clicker mClicker;
+    private EditText mPhone;
+    private String phone;
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, SignUpActivity.class);
@@ -44,8 +46,15 @@ public class SignUpActivity extends AuthorizationActivity {
         mClicker = new Clicker();
         mLogin = (EditText) findViewById(R.id.new_user_login);
         mPassword = (EditText) findViewById(R.id.new_user_password);
+        mPhone = (EditText) findViewById(R.id.new_user_phone);
         findViewById(R.id.btn_sign_up).setOnClickListener(mClicker);
         findViewById(R.id.btn_back_to_log_in).setOnClickListener(mClicker);
+    }
+
+    @Override
+    protected boolean prepareForClick() {
+        phone = mPhone.getText().toString();
+        return super.prepareForClick();
     }
 
     public final class Clicker implements View.OnClickListener {
@@ -57,7 +66,7 @@ public class SignUpActivity extends AuthorizationActivity {
                     case R.id.btn_sign_up:
                         if (isValidFields()) {
                             showProgressDialog("Signing Up", "Please, wait...");
-                            netManager.registerUser(login, password, new CallbackSignUp());
+                            netManager.registerUser(login, password, phone, new CallbackSignUp());
                         }
                         break;
                     case R.id.btn_back_to_log_in:
