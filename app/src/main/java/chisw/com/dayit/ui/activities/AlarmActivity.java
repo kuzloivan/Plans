@@ -155,6 +155,7 @@ public class AlarmActivity extends ToolbarActivity {
             mIsEdit = true;
         }
         if (mIsEdit) {
+            showToast("SeekBar = "+ mSeekBar.isEnabled());
             fillIn(mSeekBar);
             int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
             String daysToAlarm = dbManager.getDaysToAlarmById(id);
@@ -246,10 +247,12 @@ public class AlarmActivity extends ToolbarActivity {
             showToast("Title is empty");
             return;
         }
-        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
-            showToast("Time is incorrect.");
-            return;
-        }
+
+//        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
+//            showToast("Time is incorrect.");
+//            return;
+//        }
+
         writePlanToDB(DataUtils.getCalendar());
         int pendingId = dbManager.getLastPlanID();
         if (mIsEdit)
@@ -425,12 +428,15 @@ public class AlarmActivity extends ToolbarActivity {
 
     private void fillIn(SeekBar seekbar) {
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
-;
         Plan p = dbManager.getPlanById(id);
         mEtTitle.setText(p.getTitle());
-        seekbar.setEnabled(true);
+        if(p.getAudioPath() == null){
+            seekbar.setEnabled(false);
+        }
+        else {
+            seekbar.setEnabled(true);
+        }
         mTvSetDetails.setText(p.getDetails());
-
         mTvDate.setText(DataUtils.getDateStringFromTimeStamp(p.getTimeStamp()));
         mTvTime.setText(DataUtils.getTimeStringFromTimeStamp(p.getTimeStamp()));
 

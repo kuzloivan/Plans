@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.db.entity.PlansEntity;
@@ -61,26 +62,20 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
-
-//
-//        if (cursor.getString(detailsIndex) != null || cursor.getString(detailsIndex) != " ") {
-//         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-//        } else {
-//            viewHolder.tvDetails.setVisibility(View.GONE);
-//        }
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-
-        mSelectedImagePath = cursor.getString(imageIndex);
-
-        if (mSelectedImagePath != null) {
-            viewHolder.tvTitle.setTextColor(Color.WHITE);
+        if(viewHolder.tvDetails.getText().length()==0) {
+            viewHolder.tvDetails.setVisibility(View.GONE);
         }
         else {
-            viewHolder.tvTitle.setTextColor(Color.BLACK);
+            viewHolder.tvDetails.setVisibility(View.VISIBLE);
         }
-
-        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
-        viewHolder.ivPicture.setImageBitmap(bitmap);
+        mSelectedImagePath = cursor.getString(imageIndex);
+        if (mSelectedImagePath != null) {
+            viewHolder.tvTitle.setTextColor(Color.WHITE);
+            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+            viewHolder.ivPicture.setImageBitmap(bitmap);
+            mSelectedImagePath = null;
+        }
 
 /*        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
         int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
