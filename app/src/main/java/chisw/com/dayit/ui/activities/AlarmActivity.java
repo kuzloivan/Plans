@@ -688,21 +688,6 @@ public class AlarmActivity extends ToolbarActivity {
             //Chosen phone number
             mTvPhone.setText(pPhoneNumber);
             mIsContactDialogExist = false;
-
-            String[] splited = pPhoneNumber.split("\\s+");
-            ParsePush push = new ParsePush();
-            push.setChannel(splited[0]);
-            push.setMessage(mEtTitle.getText().toString());
-            push.sendInBackground(new SendCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        showToast("Sending was successful");
-                        return;
-                    }
-                    showToast(e.getMessage());
-                }
-            });
         }
 
         @Override
