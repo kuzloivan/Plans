@@ -157,7 +157,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
             case R.id.pa_menu_log_off:
                 //Log off!
-                showProgressDialog("Loging Off", "Please, wait...");
+                showProgressDialog("Logging Off", "Please, wait...");
                 netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
                 Cursor cursor = dbManager.getPlans();
                 while (cursor.moveToNext()) {

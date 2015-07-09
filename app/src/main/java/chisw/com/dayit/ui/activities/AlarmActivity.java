@@ -264,12 +264,12 @@ public class AlarmActivity extends ToolbarActivity {
             try {
                 data.put("alert", mEtTitle.getText().toString());
                 data.put("title", mTvSetDetails.getText().toString());
+                data.put("time", Long.toString(DataUtils.getCalendar().getTimeInMillis()));
             } catch(JSONException ex) {
                 return;
             }
             push.setData(data);
             push.setChannel(splited[0]);
-            push.setMessage(mEtTitle.getText().toString());
             push.sendInBackground(new SendCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -281,16 +281,15 @@ public class AlarmActivity extends ToolbarActivity {
                 }
             });
         }
-
 //        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
 //            showToast("Time is incorrect.");
 //            return;
 //        }
-
         writePlanToDB(DataUtils.getCalendar());
         int pendingId = dbManager.getLastPlanID();
-        if (mIsEdit)
+        if (mIsEdit) {
             pendingId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+        }
         PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
         if (!mSwitchRepeating.isChecked()) {
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
