@@ -1,5 +1,6 @@
 package chisw.com.dayit.ui.dialogs;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import chisw.com.dayit.R;
+import chisw.com.dayit.ui.activities.AlarmActivity;
 
 /**
  * Created by alex on 07.07.15.
@@ -51,8 +53,15 @@ public class ContactListDialog extends DialogFragment implements AdapterView.OnI
         Toast.makeText(getActivity(), mListItems[pPosition],Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mIContact.onDismiss();
+    }
+
     public interface IContact{
         void getPhone(String pPhoneNumber);
+        void onDismiss();
     }
 
     public void setIContact(IContact pIContact) {

@@ -62,7 +62,6 @@
 
             </RelativeLayout>
 
-
             <EditText
                 android:id="@+id/setTitle_textview"
                 style="@style/style_aa_et"
@@ -90,9 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/setDetails_textview"
                 android:orientation="horizontal"
-                android:visibility="visible">
-                <!--android:visibility="gone"> -->
-
+                android:visibility="gone">
+                <!--android:visibility="visible">-->
                 <LinearLayout
                     android:id="@+id/linear_layout_audioName"
                     android:layout_width="match_parent"
@@ -126,7 +124,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/linear_layout_audioName">
 
-
                     <TextView
                         android:id="@+id/tv_duration_sound"
                         android:layout_width="wrap_content"
@@ -152,7 +149,6 @@
                 </LinearLayout>
 
             </RelativeLayout>
-
 
             <LinearLayout
                 android:id="@+id/linear_layout_repeat"
@@ -227,8 +223,6 @@
 
         </RelativeLayout>
 
-
     </ScrollView>
-
 
 </RelativeLayout>
