@@ -1,6 +1,7 @@
 package chisw.com.dayit.utils;
 
 import android.text.TextUtils;
+import android.util.Patterns;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -21,8 +22,12 @@ public class ValidData
         return true;
     }
 
-    public static boolean isCredentialsValid(String arg, String pattern)
-    {
+    public static boolean isPhoneNumberValid(String arg){
+        Pattern pattern = Patterns.PHONE;
+        return pattern.matcher(arg).matches();
+    }
+
+    public static boolean isCredentialsValid(String arg, String pattern){
         return Pattern.matches(pattern, arg);
     }
 

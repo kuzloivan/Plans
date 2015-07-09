@@ -78,17 +78,17 @@ public abstract class AuthorizationActivity extends ToolbarActivity {
         return true;
     }
 
-    protected boolean isValidFields() {
-        if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
-            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
-            return false;
-        }
-        if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
-            showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
-            return false;
-        }
-        return true;
-    }
+//    protected boolean isValidFields() {
+//        if(!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))){
+//            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+//            return false;
+//        }
+//        if(!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))){
+//            showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
+//            return false;
+//        }
+//        return true;
+//    }
 
     protected abstract void startSomeActivity();
 }

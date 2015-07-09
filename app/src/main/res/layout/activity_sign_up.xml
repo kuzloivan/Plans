@@ -43,7 +43,7 @@
             />
 
         <EditText
-            android:id="@+id/new_user_password_confirm"
+            android:id="@+id/sua_new_user_password_confirm_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"

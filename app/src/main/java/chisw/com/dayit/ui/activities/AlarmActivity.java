@@ -59,6 +59,9 @@ public class AlarmActivity extends ToolbarActivity {
     private final int REQUEST_AUDIO_GET = 1;
     private final int GALLERY_REQUEST = 2;
     private boolean mIsDialogExist;
+
+    private boolean mIsContactDialogExist;
+
     private int mDurationBuf;
     private long mAudioDuration;
     private boolean mIsEdit;
@@ -463,12 +466,8 @@ public class AlarmActivity extends ToolbarActivity {
     private void fillIn(SeekBar seekbar) {
         int id = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         Plan p = dbManager.getPlanById(id);
+
         mEtTitle.setText(p.getTitle());
-        if (p.getAudioPath() == null) {
-            seekbar.setEnabled(false);
-        } else {
-            seekbar.setEnabled(true);
-        }
         mTvSetDetails.setText(p.getDetails());
         mTvDate.setText(DataUtils.getDateStringFromTimeStamp(p.getTimeStamp()));
         mTvTime.setText(DataUtils.getTimeStringFromTimeStamp(p.getTimeStamp()));
@@ -483,8 +482,12 @@ public class AlarmActivity extends ToolbarActivity {
         DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
         mAudioPath = p.getAudioPath();
         if (mAudioPath == null) {
+            seekbar.setEnabled(false);
+            mRelativeLayoutDuration.setVisibility(View.GONE);
             return;
         }
+        mRelativeLayoutDuration.setVisibility(View.VISIBLE);
+        seekbar.setEnabled(true);
         Uri u = Uri.parse(mAudioPath);
         mAudioDuration = p.getAudioDuration();
         mDurationBuf = getAudioDuration(u);
@@ -636,6 +639,11 @@ public class AlarmActivity extends ToolbarActivity {
                     chooseImage();
                     break;
                 case R.id.get_contact_list_bt:
+                    if(mIsContactDialogExist)
+                    {
+                        return;
+                    }
+                    mIsContactDialogExist = true;
                     ArrayList<String> contactsArrayList = initializeList();
                     mContactArrayList = new ArrayList<String>();
                     netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
@@ -654,6 +662,7 @@ public class AlarmActivity extends ToolbarActivity {
                             mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
                         }
                     });
+
                     break;
             }
         }
@@ -678,6 +687,27 @@ public class AlarmActivity extends ToolbarActivity {
         public void getPhone(String pPhoneNumber) {
             //Chosen phone number
             mTvPhone.setText(pPhoneNumber);
+            mIsContactDialogExist = false;
+
+            String[] splited = pPhoneNumber.split("\\s+");
+            ParsePush push = new ParsePush();
+            push.setChannel(splited[0]);
+            push.setMessage(mEtTitle.getText().toString());
+            push.sendInBackground(new SendCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        showToast("Sending was successful");
+                        return;
+                    }
+                    showToast(e.getMessage());
+                }
+            });
+        }
+
+        @Override
+        public void onDismiss() {
+            mIsContactDialogExist = false;
         }
     }
 }
