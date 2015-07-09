@@ -51,7 +51,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             String jsonData = extras.getString("com.parse.Data");
             JSONObject jObj = new JSONObject(jsonData);
             mTitle = jObj.getString("alert");
-            mDetails = jObj.getString("mTitle");
+            mDetails = jObj.getString("title");
             time = jObj.getLong("time");
         } catch (JSONException ex) {
             return;
