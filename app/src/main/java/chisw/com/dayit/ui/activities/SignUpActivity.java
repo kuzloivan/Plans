@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParsePush;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
@@ -98,19 +100,6 @@ public class SignUpActivity extends AuthorizationActivity {
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
-
-            //Testing parse's pushes
-            ParsePush.subscribeInBackground(sharedHelper.getDefaultLogin(), new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        showToast("Bind to channel was successful");
-                        return;
-                    }
-                    showToast(e.getMessage());
-                }
-            });
-
             showToast("SignUp was successful");
             hideProgressDialog();
         }

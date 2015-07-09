@@ -31,6 +31,9 @@ import com.parse.ParsePush;
 import com.parse.ParseUser;
 import com.parse.SendCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
@@ -251,9 +254,29 @@ public class AlarmActivity extends ToolbarActivity {
             return;
         }
         if (getIntent().getBooleanExtra("isRemote", false)) {
-            showContactList();
-            if(mContactArrayList.isEmpty())
+            String[] splited = mTvPhone.getText().toString().split("\\s+");
+
+            ParsePush push = new ParsePush();
+            JSONObject data = new JSONObject();
+            try {
+                data.put("alert", mEtTitle.getText().toString());
+                data.put("title", mTvSetDetails.getText().toString());
+            } catch(JSONException ex) {
                 return;
+            }
+            push.setData(data);
+            push.setChannel(splited[0]);
+            push.setMessage(mEtTitle.getText().toString());
+            push.sendInBackground(new SendCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        showToast("Sending was successful");
+                        return;
+                    }
+                    showToast(e.getMessage());
+                }
+            });
         }
 
 //        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
@@ -655,20 +678,6 @@ public class AlarmActivity extends ToolbarActivity {
         public void getPhone(String pPhoneNumber) {
             //Chosen phone number
             mTvPhone.setText(pPhoneNumber);
-            String[] splited = pPhoneNumber.split("\\s+");
-            ParsePush push = new ParsePush();
-            push.setChannel(splited[0]);
-            push.setMessage(mEtTitle.getText().toString());
-            push.sendInBackground(new SendCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        showToast("Sending was successful");
-                        return;
-                    }
-                    showToast(e.getMessage());
-                }
-            });
         }
     }
 }
