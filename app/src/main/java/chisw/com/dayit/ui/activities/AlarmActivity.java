@@ -13,8 +13,6 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +26,6 @@ import android.widget.TextView;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseUser;
@@ -102,6 +99,7 @@ public class AlarmActivity extends ToolbarActivity {
         initBackButton();
         findViewById(R.id.bt_save_alarm).setOnClickListener(clicker);
         findViewById(R.id.aa_setAudio_btn).setOnClickListener(clicker);
+        findViewById(R.id.get_contact_list_bt).setOnClickListener(clicker);
 
         mRelativeLayoutDuration = (RelativeLayout) findViewById(R.id.relative_layout_duration);
         mTvDate = (TextView) findViewById(R.id.setDate_textview);
@@ -550,8 +548,8 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-public final class CallbackEditPlan implements GetCallback<ParseObject> {
-    private final Plan plan;
+    public final class CallbackEditPlan implements GetCallback<ParseObject> {
+        private final Plan plan;
 
         public CallbackEditPlan(Plan plan) {
             this.plan = plan;
@@ -614,6 +612,26 @@ public final class CallbackEditPlan implements GetCallback<ParseObject> {
                 case R.id.aa_image:
                     chooseImage();
                     break;
+                case R.id.get_contact_list_bt:
+                    ArrayList<String> contactsArrayList = initializeList();
+                    mContactArrayList = new ArrayList<String>();
+                    netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
+                        @Override
+                        public void getNumbers(Map<String, String> numbers) {
+                            mContactArrayList.clear();
+                            for (Map.Entry<String, String> nums : numbers.entrySet()) {
+                                String contactInfo = nums.getValue() + " " + nums.getKey();
+                                mContactArrayList.add(contactInfo);
+                            }
+                            mContactListDialog = new ContactListDialog();
+                            mContactListDialog.setIContact(new ContactDialog());
+                            Bundle contactsBundle = new Bundle();
+                            contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
+                            mContactListDialog.setArguments(contactsBundle);
+                            mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                        }
+                    });
+                    break;
             }
         }
     }
@@ -653,5 +671,4 @@ public final class CallbackEditPlan implements GetCallback<ParseObject> {
             });
         }
     }
-
 }
