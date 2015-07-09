@@ -254,22 +254,6 @@ public class AlarmActivity extends ToolbarActivity {
         }
         if (getIntent().getBooleanExtra("isRemote", false)) {
             showContactList();
-
-            //Testing parse's pushes
-/*            ParsePush push = new ParsePush();
-            push.setChannel("Test");
-            push.setMessage(mEtTitle.getText().toString());
-            push.sendInBackground(new SendCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        showToast("Sending was successful");
-                        return;
-                    }
-                    showToast(e.getMessage());
-                }
-            });*/
-
             if(mContactArrayList.isEmpty())
                 return;
         }
@@ -653,6 +637,20 @@ public final class CallbackEditPlan implements GetCallback<ParseObject> {
         public void getPhone(String pPhoneNumber) {
             //Chosen phone number
             mTvPhone.setText(pPhoneNumber);
+            String[] splited = pPhoneNumber.split("\\s+");
+            ParsePush push = new ParsePush();
+            push.setChannel(splited[0]);
+            push.setMessage(mEtTitle.getText().toString());
+            push.sendInBackground(new SendCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        showToast("Sending was successful");
+                        return;
+                    }
+                    showToast(e.getMessage());
+                }
+            });
         }
     }
 
