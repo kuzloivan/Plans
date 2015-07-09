@@ -138,8 +138,6 @@ public class AlarmActivity extends ToolbarActivity {
             }
         });
         mEtTitle = (EditText) findViewById(R.id.setTitle_textview);
-        InputFilter inputFilter = initializeInputFilter();
-        mEtTitle.setFilters(new InputFilter[]{inputFilter});
         mEtTitle.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -183,7 +181,6 @@ public class AlarmActivity extends ToolbarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        DataUtils.setCalendar(Calendar.getInstance());
     }
 
     @Override
@@ -292,23 +289,7 @@ public class AlarmActivity extends ToolbarActivity {
         } else {
             mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
-
         finish();
-    }
-
-    private InputFilter initializeInputFilter() {
-        InputFilter inpF = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++) {
-                    if (!Character.isLetterOrDigit(source.charAt(i))) {
-                        return "";
-                    }
-                }
-                return null;
-            }
-        };
-        return inpF;
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -585,8 +566,8 @@ public class AlarmActivity extends ToolbarActivity {
         }
     }
 
-    public final class CallbackEditPlan implements GetCallback<ParseObject> {
-        private final Plan plan;
+public final class CallbackEditPlan implements GetCallback<ParseObject> {
+    private final Plan plan;
 
         public CallbackEditPlan(Plan plan) {
             this.plan = plan;
