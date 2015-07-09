@@ -98,8 +98,8 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
 
     public void setPlanToDB(Context context) {
         final Plan p = new Plan();
-        p.setDetails(mTitle);
-        p.setTitle(mDetails);
+        p.setTitle(mTitle);
+        p.setDetails(mDetails);
         p.setTimeStamp(time);
         p.setIsDeleted(0);
 
