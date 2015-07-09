@@ -12,6 +12,7 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import chisw.com.dayit.R;
+import chisw.com.dayit.utils.ValidData;
 
 /**
  * Created by Oksana on 30.06.2015.
@@ -20,6 +21,7 @@ public class SignUpActivity extends AuthorizationActivity {
 
     private Clicker mClicker;
     private EditText mPhone;
+    private EditText mPasswordConfirm;
     private String phone;
 
     public static void start(Activity a) {
@@ -49,6 +51,7 @@ public class SignUpActivity extends AuthorizationActivity {
         mLogin = (EditText) findViewById(R.id.new_user_login);
         mPassword = (EditText) findViewById(R.id.new_user_password);
         mPhone = (EditText) findViewById(R.id.new_user_phone);
+        mPasswordConfirm = (EditText) findViewById(R.id.sua_new_user_password_confirm_et);
         findViewById(R.id.btn_sign_up).setOnClickListener(mClicker);
         findViewById(R.id.btn_back_to_log_in).setOnClickListener(mClicker);
     }
@@ -81,6 +84,7 @@ public class SignUpActivity extends AuthorizationActivity {
 
     public final class CallbackSignUp implements SignUpCallback {
         String error = "Error";
+
         @Override
         public void done(ParseException e) {
             if (e != null) {
@@ -110,9 +114,28 @@ public class SignUpActivity extends AuthorizationActivity {
                     showToast(e.getMessage());
                 }
             });
-
             showToast("SignUp was successful");
             hideProgressDialog();
         }
+    }
+
+    private boolean isValidFields() {
+        if(!ValidData.isPhoneNumberValid(phone)){
+            showToast("Phone number is not valid!");
+            return false;
+        }
+        if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {
+            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+            return false;
+        }
+        if (!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))) {
+            showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
+            return false;
+        }
+        if (!mPassword.getText().toString().equals(mPasswordConfirm.getText().toString())) {
+            showToast("Passwords don't match!");
+            return false;
+        }
+        return true;
     }
 }

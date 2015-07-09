@@ -30,9 +30,8 @@ public class LogInActivity extends AuthorizationActivity {
         mPassword = (EditText) findViewById(R.id.net_user_password);
         mPassword.setSingleLine();
         mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        mPassword.setFilters(new InputFilter[] {mInputFilter});
-        if (ValidData.isTextValid(sharedHelper.getDefaultLogin()))
-        {
+        mPassword.setFilters(new InputFilter[]{mInputFilter});
+        if (ValidData.isTextValid(sharedHelper.getDefaultLogin())) {
             if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
                 PlannerActivity.start(LogInActivity.this);
                 LogInActivity.this.finish();
@@ -45,18 +44,18 @@ public class LogInActivity extends AuthorizationActivity {
         a.startActivity(intent);
     }
 
-    private void initView(){
+    private void initView() {
         mClicker = new Clicker();
         findViewById(R.id.btn_to_sign_up).setOnClickListener(mClicker);
         findViewById(R.id.btn_log_in).setOnClickListener(mClicker);
     }
 
-    private InputFilter initializeInputFilter(){
+    private InputFilter initializeInputFilter() {
         InputFilter inpF = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                for (int i = start; i < end; i++){
-                    if(!Character.isLetterOrDigit(source.charAt(i))){
+                for (int i = start; i < end; i++) {
+                    if (!Character.isLetterOrDigit(source.charAt(i))) {
                         return "";
                     }
                 }
@@ -65,6 +64,7 @@ public class LogInActivity extends AuthorizationActivity {
         };
         return inpF;
     }
+
     @Override
     protected int contentViewResId() {
         return R.layout.activity_log_in;
@@ -79,7 +79,7 @@ public class LogInActivity extends AuthorizationActivity {
     public final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(prepareForClick()) {
+            if (prepareForClick()) {
                 switch (v.getId()) {
                     case R.id.btn_to_sign_up:
                         SignUpActivity.start(LogInActivity.this);
@@ -93,5 +93,17 @@ public class LogInActivity extends AuthorizationActivity {
                 }
             }
         }
+    }
+
+    private boolean isValidFields() {
+        if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {
+            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+            return false;
+        }
+        if (!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))) {
+            showToast("Password must be at least 6 characters length.(a-z,A-Z,0-9)");
+            return false;
+        }
+        return true;
     }
 }
