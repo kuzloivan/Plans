@@ -7,14 +7,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.Button;
-import android.widget.TextView;
-import java.util.Calendar;
 
-import chisw.com.dayit.R;
-import chisw.com.dayit.utils.DataUtils;
+import java.util.Calendar;
 
 public class DatePickDialog extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
+    private DatePickListener mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -39,13 +37,14 @@ public class DatePickDialog extends DialogFragment
 
     @Override
     public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
+        mListener.onDatePickPositiveClick(year,month,day);
+    }
 
-        TextView tvDate = (TextView) getActivity().findViewById(R.id.setDate_textview);
+    public interface DatePickListener {
+        void onDatePickPositiveClick(int year, int month, int day);
+    }
 
-        DataUtils.setCalendarDay(day);
-        DataUtils.setCalendarMonth(month);
-        DataUtils.setCalendarYear(year);
-
-        tvDate.setText(DataUtils.getDateStrFromCalendar());
+    public void setListener(DatePickListener pDatePickListener){
+        mListener = pDatePickListener;
     }
 }

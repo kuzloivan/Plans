@@ -23,7 +23,6 @@ import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
-import chisw.com.dayit.utils.DataUtils;
 
 public class RemoteTaskActivity extends TaskActivity {
     private static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.id";
@@ -72,7 +71,7 @@ public class RemoteTaskActivity extends TaskActivity {
     @Override
     protected void startAlarm() {
         sendRemotePlan();
-        writePlanToDB(DataUtils.getCalendar());
+        writePlanToDB(mMyLovelyCalendar);
         super.startAlarm();
     }
 
@@ -128,7 +127,7 @@ public class RemoteTaskActivity extends TaskActivity {
         try {
             data.put("alert", mEtTitle.getText().toString());
             data.put("title", mTvSetDetails.getText().toString());
-            data.put("time", Long.toString(DataUtils.getCalendar().getTimeInMillis()));
+            data.put("time", Long.toString(mMyLovelyCalendar.getTimeInMillis()));
         } catch (JSONException ex) {
             return;
         }

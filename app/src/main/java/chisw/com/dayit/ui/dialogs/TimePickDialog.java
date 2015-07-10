@@ -11,16 +11,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import chisw.com.dayit.R;
-import chisw.com.dayit.utils.DataUtils;
-
 public class TimePickDialog extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
+    private TimePickListener mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -45,13 +42,14 @@ public class TimePickDialog extends DialogFragment
 
     @Override
     public void onTimeSet(TimePicker view, int hours, int minute) {
-
-        TextView tvTime = (TextView) getActivity().findViewById(R.id.setTime_textview);
-
-        DataUtils.setCalendarHour(hours);
-        DataUtils.setCalendarMinute(minute);
-
-        tvTime.setText(DataUtils.getTimeStrFromCalendar());
+        mListener.onTimePickPositiveClick(hours,minute);
     }
 
+    public interface TimePickListener{
+        void onTimePickPositiveClick(int pHours, int mMinute);
+    }
+
+    public void setListener(TimePickListener pTimePickListener){
+        mListener = pTimePickListener;
+    }
 }

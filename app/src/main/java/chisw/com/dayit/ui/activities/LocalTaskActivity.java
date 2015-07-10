@@ -114,7 +114,7 @@ public class LocalTaskActivity extends TaskActivity {
 
     @Override
     protected void startAlarm() {
-        writePlanToDB(DataUtils.getCalendar());
+        writePlanToDB(mMyLovelyCalendar);
         super.startAlarm();
     }
 

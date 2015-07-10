@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,25 +53,25 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected Switch mSwitchRepeating;
     protected DatePickDialog mDatePickDialog;
     protected DaysOfWeekDialog mDaysOfWeekDialog;
-    protected DialogFragment mTimeDialog;
+    protected TimePickDialog mTimeDialog;
     protected AlarmManager mAlarmManager;
     protected boolean mIsEdit;
     protected ImageView mIvImage;
     protected String mDaysToAlarm;
     protected int mPlanId;
+    protected Calendar mMyLovelyCalendar;
 
     protected void initViews() {
         initBackButton();
         mTvDate = (TextView) findViewById(R.id.setDate_textview);
         mTvTime = (TextView) findViewById(R.id.setTime_textview);
-        mTvDate.setText(DataUtils.getDateStrFromCalendar());
-        mTvTime.setText(DataUtils.getTimeStrFromCalendar());
+        mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
+        mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
         mIvImage = (ImageView) findViewById(R.id.aa_image);
         mSwitchRepeating = (Switch) findViewById(R.id.switch_repeating);
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
         mDaysToAlarm = "0000000";
-
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -92,8 +91,8 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBackButton();
-        DataUtils.initializeCalendar();
-
+        mMyLovelyCalendar = Calendar.getInstance();
+        mMyLovelyCalendar.set(Calendar.SECOND, 0);
     }
 
     protected void dateFillIn() {
@@ -188,9 +187,9 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
         PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
         if (!mSwitchRepeating.isChecked()) {
-            mAlarmManager.set(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), pendingIntent);
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, mMyLovelyCalendar.getTimeInMillis(), pendingIntent);
         } else {
-            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, DataUtils.getCalendar().getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, mMyLovelyCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
         finish();
     }
@@ -291,7 +290,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             mIvImage.setImageResource(R.drawable.aa_icon);
         }
 
-        DataUtils.setCalendar(DataUtils.getCalendarByTimeStamp(p.getTimeStamp()));
+        mMyLovelyCalendar = DataUtils.getCalendarByTimeStamp(p.getTimeStamp());
     }
 
     protected final class CallbackEditPlan implements GetCallback<ParseObject> {
@@ -332,10 +331,12 @@ public abstract class TaskActivity extends ToolbarActivity {
                 case R.id.setDate_textview:
                     mDatePickDialog = new DatePickDialog();
                     mDatePickDialog.show(getSupportFragmentManager(), "datePicker");
+                    mDatePickDialog.setListener(new DialogClicker());
                     break;
                 case R.id.setTime_textview:
                     mTimeDialog = new TimePickDialog();
                     mTimeDialog.show(getSupportFragmentManager(), "timePicker");
+                    mTimeDialog.setListener(new DialogClicker());
                     break;
                 case R.id.switch_repeating:
                     if (mSwitchRepeating.isChecked()) {
@@ -346,7 +347,7 @@ public abstract class TaskActivity extends ToolbarActivity {
                         mDaysOfWeekDialog.setArguments(days);
 
                         mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysOfWeekPicker");
-                        mDaysOfWeekDialog.setListener(new DialogDaysOfWeekClicker());
+                        mDaysOfWeekDialog.setListener(new DialogClicker());
                     }
                     break;
                 case R.id.aa_image:
@@ -357,7 +358,8 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
     }
 
-    protected final class DialogDaysOfWeekClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener {
+    protected final class DialogClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener,
+            DatePickDialog.DatePickListener, TimePickDialog.TimePickListener {
 
         @Override
         public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
@@ -368,5 +370,25 @@ public abstract class TaskActivity extends ToolbarActivity {
         public void onDaysOfWeekNegativeClick(String pString) {
             mSwitchRepeating.setChecked(false);
         }
+
+        @Override
+        public void onDatePickPositiveClick(int pYear, int pMonth, int pDay){
+
+            mMyLovelyCalendar.set(Calendar.YEAR, pYear);
+            mMyLovelyCalendar.set(Calendar.MONTH, pMonth);
+            mMyLovelyCalendar.set(Calendar.DAY_OF_MONTH, pDay);
+
+            mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
+        }
+
+        @Override
+        public void onTimePickPositiveClick(int pHour, int pMinute){
+
+            mMyLovelyCalendar.set(Calendar.HOUR_OF_DAY, pHour);
+            mMyLovelyCalendar.set(Calendar.MINUTE, pMinute);
+
+            mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
+        }
     }
+
 }
