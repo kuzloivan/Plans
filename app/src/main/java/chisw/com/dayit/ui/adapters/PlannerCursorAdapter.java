@@ -63,15 +63,14 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-        if (viewHolder.tvDetails.getText().length()==0) {
-            viewHolder.tvDetails.setVisibility(View.GONE);
-        }
-        else {
-            viewHolder.tvDetails.setVisibility(View.VISIBLE);
-        }
+//        if (viewHolder.tvDetails.getText().length()==0) {
+//            viewHolder.tvDetails.setVisibility(View.GONE);
+//        }
+//        else {
+//            viewHolder.tvDetails.setVisibility(View.VISIBLE);
+//        }
         mSelectedImagePath = cursor.getString(imageIndex);
         if (mSelectedImagePath != null) {
-            viewHolder.tvTitle.setTextColor(Color.WHITE);
             Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
             viewHolder.ivPicture.setImageBitmap(bitmap);
             mSelectedImagePath = null;
