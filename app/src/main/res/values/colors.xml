@@ -7,7 +7,7 @@
     <color name="color_linear_layout">#ffffff</color>
 
     <!--Color Floating Action Button-->
-    <color name="color_floating_action_button">#ffcc1c1e</color>
+    <color name="color_floating_action_button">#E91E63</color>
 
     <!--Color Button on Alart Activity-->
     <color name="color_aa_btn_normal">#ffcc1c1e</color>
