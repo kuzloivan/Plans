@@ -22,6 +22,7 @@ import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.net.NetManager;
+import chisw.com.dayit.ui.activities.PlannerActivity;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 
@@ -53,22 +54,34 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             return;
         }
 
-        if (SystemUtils.isJellyBeanHigher()) {
-            sendNotificationForJBAndHigher(context, sharedHelper.getVibrationOn());
-        } else {
-            sendNotificationForICSAndLower(context, sharedHelper.getVibrationOn());
-        }
+        sendNotification(context, sharedHelper.getVibrationOn());
 
         setPlanToDB(context, dbManager, netManager, sharedHelper.getSynchronization());
         setPlanToExecute(dbManager, alarmManager, context);
     }
 
-    private void sendNotificationForJBAndHigher(Context pContext, boolean pVibration) {
+    private void sendNotification(Context pContext, boolean pVibration) {
+        Notification notification;
         Notification.Builder builder = new Notification.Builder(pContext);
+
+        Intent openPlannerIntent = new Intent(pContext, PlannerActivity.class);
+        openPlannerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent openPlannerPendingIntent = PendingIntent.getActivity(pContext, 20,  openPlannerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         builder.setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle(mTitle)
-                .setContentText(mDetails);
-        Notification notification = builder.build();
+                .setContentText(mDetails)
+
+                .setContentIntent(openPlannerPendingIntent)
+                .addAction(R.drawable.ic_launcher, "Открыть", openPlannerPendingIntent)
+                .addAction(R.drawable.ic_launcher, "Отказаться", openPlannerPendingIntent)
+                .addAction(R.drawable.ic_launcher, "Другой вариант", openPlannerPendingIntent);
+
+        if(SystemUtils.isJellyBeanHigher()) {
+            notification = builder.build();
+        } else {
+            notification = builder.getNotification();
+        }
         notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager notificationManager = (NotificationManager) pContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -76,21 +89,6 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             notification.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
         }
         notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);
-    }
-
-    private void sendNotificationForICSAndLower(Context pContext, boolean pVibration) {
-        Intent stopMusicIntent = new Intent(pContext, NotificationCancelReceiver.class);
-        stopMusicIntent.setAction("notification_cancelled");
-        PendingIntent stopMusicPIntent = PendingIntent.getBroadcast(pContext, 0, stopMusicIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        NotificationManager nm = (NotificationManager) pContext.getSystemService(pContext.NOTIFICATION_SERVICE);
-        Notification notif = new Notification(R.drawable.ic_alarm, mDetails, time);
-        notif.flags |= Notification.FLAG_AUTO_CANCEL;
-        notif.setLatestEventInfo(pContext, mTitle, mDetails, stopMusicPIntent);
-
-        if (pVibration) {
-            notif.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
-        }
-        nm.notify(101 + (int) System.currentTimeMillis(), notif);
     }
 
     private void setPlanToDB(Context context, final DBManager pDBManager, NetManager pNetManager, boolean pSynchronization) {
