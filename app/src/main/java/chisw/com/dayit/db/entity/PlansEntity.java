@@ -1,9 +1,5 @@
 package chisw.com.dayit.db.entity;
 
-/**
- * Created by Darina on 17.06.2015.
- */
-
 public class PlansEntity {
     public static final String TABLE_NAME = "Plans";
     public static final String PARSE_ID = "parseId";
@@ -17,6 +13,7 @@ public class PlansEntity {
     public static final String DAYS_TO_ALARM = "daysToAlarm";
     public static final String IS_DELETED = "isDeleted";
     public static final String IS_SYNCHRONIZED = "isSynchronized";
+    public static final String IS_REMOTE = "type";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -30,6 +27,7 @@ public class PlansEntity {
             IMAGE_PATH + " TEXT, " +
             DAYS_TO_ALARM + " TEXT, " +
             IS_DELETED + " INTEGER, " +
-            IS_SYNCHRONIZED + " INTEGER " +
+            IS_SYNCHRONIZED + " INTEGER, " +
+            IS_REMOTE + " INTEGER " +
             ")";
 }

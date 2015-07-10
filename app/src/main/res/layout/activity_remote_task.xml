@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/activity_task_layout"
+                layout="@layout/activity_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <!--ask about id-->
+
+            <Button
+                android:id="@+id/rta_get_contact_list_btn"
+                style="@style/style_aa_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_task_layout"
+                android:text="Get contact list"/>
+
+            <TextView
+                android:id="@+id/rta_phone_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone number"
+                android:layout_below="@+id/rta_get_contact_list_btn"/>
+
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ar_contact"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/get_contact_list_bt"
+                    style="@style/style_aa_btns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Get contact list"/>
+
+            </LinearLayout>-->
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

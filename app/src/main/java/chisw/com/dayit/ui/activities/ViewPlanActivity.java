@@ -65,7 +65,14 @@ public class ViewPlanActivity extends ToolbarActivity {
                 dial.show(getFragmentManager(), "Delete dialog");
                 break;
             case R.id.vp_menu_edit:
-                AlarmActivity.start(this, mPlanId);
+                if(mPlan.getIsRemote() == 0)
+                {
+                    LocalTaskActivity.start(this, mPlanId);
+                }
+                if(mPlan.getIsRemote() == 1)
+                {
+                    RemoteTaskActivity.start(this, mPlanId);
+                }
                 finish();
                 break;
         }
@@ -105,7 +112,6 @@ public class ViewPlanActivity extends ToolbarActivity {
         Canvas canvas = new Canvas(targetBitmap);
 
         canvas.drawCircle(radius, radius, radius, paint);
-
 
         return targetBitmap;
     }

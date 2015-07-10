@@ -1,8 +1,5 @@
 package chisw.com.dayit.model;
 
-/**
- * Created by Alexander on 17.06.2015.
- */
 public class Plan {
     private String parseId;
     private String title;
@@ -15,6 +12,7 @@ public class Plan {
     private String imagePath;
     private int isDeleted;
     private int isSynchronized;
+    private int isRemote;
 
     public int getLocalId() {
         return localId;
@@ -103,5 +101,13 @@ public class Plan {
 
     public void setIsDeleted(int isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public int getIsRemote() {
+        return isRemote;
+    }
+
+    public void setIsRemote(int pIsRemote) {
+        isRemote = pIsRemote;
     }
 }

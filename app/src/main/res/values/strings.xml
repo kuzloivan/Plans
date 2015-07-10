@@ -5,24 +5,30 @@
     <string name="title_activity_planner">Planner</string>
     <string name="title_activity_settings">Settings Activity</string>
     <string name="title_activity_login">DayIt</string>
-    <string name="title_activity_media">Media</string>
-    
+
     <!-- Alarm activity -->
     <string name="wakeUp">Wake up !!!</string>
     <string name="set_date">Date</string>
     <string name="set_time">Time</string>
     <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
-    <string name="alarm_title_hint">Alarm title</string>
-    <string name="alarm_sound_duration">Sound duration</string>
+    <string name="alarm_title_hint">Plan title</string>
     <string name="alarm_details_hint">Details</string>
     <string name="aa_save_alarm">Save alarm</string>
     <string name="ok">Ok</string>
     <string name="days_of_week_choose">Choose days of week</string>
     <string name="cancel">Cancel</string>
     <string name="alarmTitle_hint">Alarm title</string>
+
+    <!--Local activity-->
+    <string name="local_plan_title">Local plan</string>
+    <string name="alarm_sound_duration">Sound duration</string>
+
+    <!--Remote activity-->
+    <string name="remote_plan_title">Remote plan</string>
     <string name="get_contact_list">Get contact list</string>
     <string name="contact_list">Contact list</string>
+
     <!-- Net activity -->
     <string name="login">User login</string>
     <string name="password">Password</string>
@@ -52,7 +58,6 @@
 
     <!-- Names of buttons from main menu -->
     <string name="s_planner_act">Open Planner</string>
-    <string name="s_media_act">Media Activity</string>
     <string name="s_alarm_act">Alarm</string>
     <string name="s_settings_act">Settings Activity</string>
 
@@ -66,11 +71,9 @@
     <string name="set_sound">Set sound</string>
 
     <!-- TaskTypeDialog -->
-    <string name="task_type_local">Local task</string>
-    <string name="task_type_remote">Remote task</string>
-    <string name="task_type_title">Choose alarm type</string>
+    <string name="plan_type_title">Choose plan type</string>
 
     <!-- DeleteDialog -->
-    <string name="delete_dialog_title">Delete task?</string>
+    <string name="delete_dialog_title">Delete plan?</string>
     <string name="delete_dialog_delete">Delete</string>
 </resources>

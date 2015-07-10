@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/activity_task_layout"
+                layout="@layout/activity_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/lta_audio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_task_layout"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_audioName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--android:layout_below="@id/layout_sound_duration">-->
+
+                    <TextView
+                        android:id="@+id/alarmSound_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/linear_layout_audioName"
+                        android:layout_margin="@dimen/margin16"
+                        android:text="Alarm sound: "/>
+
+                    <TextView
+                        android:id="@+id/alarmSoundTitle_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/linear_layout_audioName"
+                        android:layout_margin="@dimen/margin16"
+                        android:layout_toRightOf="@+id/alarmSound_textview"
+                        android:ellipsize="marquee"
+                        android:lines="2"
+                        android:text="--"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_sound_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/linear_layout_audioName">
+
+                    <TextView
+                        android:id="@+id/tv_duration_sound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/margin16"
+                        android:text="Sound duration"/>
+
+                    <TextView
+                        android:id="@+id/tv_sound_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/margin16"
+                        android:text="--"/>
+
+                    <SeekBar
+                        android:id="@+id/sb_duration_sound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin8"
+                        android:layout_weight="100"
+                        android:max="100"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lta_audio_layout"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/lta_setAudio_btn"
+                    style="@style/style_aa_btns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_choose_sound"
+                    android:text="Set sound"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

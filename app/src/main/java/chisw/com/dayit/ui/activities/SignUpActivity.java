@@ -16,9 +16,6 @@ import com.parse.SignUpCallback;
 import chisw.com.dayit.R;
 import chisw.com.dayit.utils.ValidData;
 
-/**
- * Created by Oksana on 30.06.2015.
- */
 public class SignUpActivity extends AuthorizationActivity {
 
     private Clicker mClicker;

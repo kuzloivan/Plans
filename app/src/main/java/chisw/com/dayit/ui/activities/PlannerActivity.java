@@ -109,7 +109,14 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             switch (pMenuItem.getItemId()) {
                 case R.id.pa_context_edit:
                     Plan p = dbManager.getPlanById(cursor.getInt(idIndex));
-                    AlarmActivity.start(this, p.getLocalId());
+                    if(p.getIsRemote() == 0)
+                    {
+                        LocalTaskActivity.start(this, p.getLocalId());
+                    }
+                    if(p.getIsRemote() == 1)
+                    {
+                        RemoteTaskActivity.start(this, p.getLocalId());
+                    }
                     break;
                 case R.id.pa_context_delete:
                     DeleteDialog dial = new DeleteDialog();
@@ -278,7 +285,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     if (SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
                         new TaskTypeDialog().show(getFragmentManager(), "TaskType");
                     } else {
-                        AlarmActivity.start(PlannerActivity.this);
+                        LocalTaskActivity.start(PlannerActivity.this);
                     }
                     break;
             }

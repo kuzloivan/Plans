@@ -26,9 +26,6 @@ import chisw.com.dayit.ui.activities.PlannerActivity;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 
-/**
- * Created by vdboo_000 on 08.07.2015.
- */
 public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     private String mTitle;
     private String mDetails;
@@ -72,10 +69,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
                 .setContentTitle(mTitle)
                 .setContentText(mDetails)
 
-                .setContentIntent(openPlannerPendingIntent)
-                .addAction(R.drawable.ic_launcher, "Открыть", openPlannerPendingIntent)
-                .addAction(R.drawable.ic_launcher, "Отказаться", openPlannerPendingIntent)
-                .addAction(R.drawable.ic_launcher, "Другой вариант", openPlannerPendingIntent);
+                .setContentIntent(openPlannerPendingIntent);
 
         if(SystemUtils.isJellyBeanHigher()) {
             notification = builder.build();

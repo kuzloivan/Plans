@@ -47,8 +47,14 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activities.AlarmActivity"
-            android:label="@string/title_activity_alarm"
+            android:name=".ui.activities.LocalTaskActivity"
+            android:label="@string/local_plan_title"
+            android:theme="@style/AppTheme.PlannerTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activities.RemoteTaskActivity"
+            android:label="@string/remote_plan_title"
             android:theme="@style/AppTheme.PlannerTheme"
             android:screenOrientation="portrait" />
 

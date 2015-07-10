@@ -9,16 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import chisw.com.dayit.R;
-import chisw.com.dayit.ui.activities.AlarmActivity;
 
-/**
- * Created by alex on 07.07.15.
- */
 public class ContactListDialog extends DialogFragment implements AdapterView.OnItemClickListener {
     private ListView mContactsLV;
     private String[] mListItems;
@@ -50,7 +45,6 @@ public class ContactListDialog extends DialogFragment implements AdapterView.OnI
     public void onItemClick(AdapterView<?> pParent,View pView, int pPosition, long pId){
         mIContact.getPhone(mListItems[pPosition]);
         dismiss();
-        Toast.makeText(getActivity(), mListItems[pPosition],Toast.LENGTH_SHORT).show();
     }
 
     @Override

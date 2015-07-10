@@ -9,11 +9,6 @@ import chisw.com.dayit.db.entity.PlansEntity;
 import chisw.com.dayit.db.entity.UserEntity;
 import chisw.com.dayit.model.Plan;
 
-
-/**
- * Created by andrey on 17.06.15.
- */
-
 public class Mapper {
 
     public static ContentValues parsePlan(Plan model) {
@@ -28,6 +23,7 @@ public class Mapper {
         CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
         CV.put(PlansEntity.IS_DELETED, model.getIsDeleted());
         CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
+        CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
         return CV;
     }
 
@@ -63,6 +59,8 @@ public class Mapper {
 
         if(model.getIsSynchronized() != -1 )
             CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
+        if(model.getIsRemote() != -1)
+            CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
 
         return CV;
     }
@@ -81,6 +79,7 @@ public class Mapper {
         int daysToAlarm = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
         int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
         int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
+        int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -95,6 +94,7 @@ public class Mapper {
         plan.setDaysToAlarm(cursor.getString(daysToAlarm));
         plan.setIsDeleted(cursor.getInt(isDeletedIndex));
         plan.setIsSynchronized(cursor.getInt(isSynchronizedIndex));
+        plan.setIsRemote(cursor.getInt(isRemoteIndex));
         return plan;
     }
 
