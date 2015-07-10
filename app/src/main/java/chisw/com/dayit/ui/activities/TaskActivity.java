@@ -125,7 +125,6 @@ public abstract class TaskActivity extends ToolbarActivity {
                 startAlarm();
                 break;
         }
-        //finish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -183,6 +182,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
         if (dbManager.getPlanById(pendingId).getIsRemote() == 1) {
             finish();
+            return;
         }
         PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
         if (!mSwitchRepeating.isChecked()) {
