@@ -63,6 +63,8 @@ public abstract class TaskActivity extends ToolbarActivity {
 
     protected void initViews() {
         initBackButton();
+        mMyLovelyCalendar = Calendar.getInstance();
+        mMyLovelyCalendar.set(Calendar.SECOND, 0);
         mTvDate = (TextView) findViewById(R.id.setDate_textview);
         mTvTime = (TextView) findViewById(R.id.setTime_textview);
         mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
@@ -91,8 +93,7 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBackButton();
-        mMyLovelyCalendar = Calendar.getInstance();
-        mMyLovelyCalendar.set(Calendar.SECOND, 0);
+
     }
 
     protected void dateFillIn() {
