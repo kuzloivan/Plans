@@ -36,9 +36,6 @@ import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
-/**
- * Created by Kos on 09.07.2015.
- */
 public abstract class TaskActivity extends ToolbarActivity {
 
     protected final int GALLERY_REQUEST = 2;
@@ -128,6 +125,7 @@ public abstract class TaskActivity extends ToolbarActivity {
                 startAlarm();
                 break;
         }
+        //finish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -184,7 +182,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             pendingId = mPlanId;
         }
         if (dbManager.getPlanById(pendingId).getIsRemote() == 1) {
-            return;
+            finish();
         }
         PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
         if (!mSwitchRepeating.isChecked()) {
@@ -214,7 +212,6 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
         super.onActivityResult(requestCode, resultCode, returnedIntent);
         if (resultCode != RESULT_OK) {
-            /*mIsDialogExist = false;*/
             return;
         }
         switch (requestCode) {

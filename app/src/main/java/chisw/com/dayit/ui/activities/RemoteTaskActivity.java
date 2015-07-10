@@ -64,7 +64,6 @@ public class RemoteTaskActivity extends TaskActivity {
         mTvTime.setOnClickListener(mRClicker);
         mSwitchRepeating.setOnClickListener(mRClicker);
         mIvImage.setOnClickListener(mRClicker);
-
         mTvPhone = (TextView) findViewById(R.id.rta_phone_tv);
     }
 
@@ -149,9 +148,6 @@ public class RemoteTaskActivity extends TaskActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.aa_save_alarm:
-                    startAlarm();
-                    break;
                 case R.id.rta_get_contact_list_btn:
                     if (mIsContactDialogExist) {
                         return;

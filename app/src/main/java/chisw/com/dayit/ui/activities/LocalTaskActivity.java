@@ -65,7 +65,6 @@ public class LocalTaskActivity extends TaskActivity {
         super.initViews();
 
         mLClicker = new LClicker();
-
         findViewById(R.id.lta_setAudio_btn).setOnClickListener(mLClicker);
 
         mTvDate.setOnClickListener(mLClicker);
@@ -182,7 +181,6 @@ public class LocalTaskActivity extends TaskActivity {
     }
 
     private String getPath(Intent strIntent) {
-
         Uri data = strIntent.getData();
         if (!SystemUtils.isKitKatHigher() || !DocumentsContract.isDocumentUri(this, data)) {
             return strIntent.getDataString();
@@ -255,9 +253,6 @@ public class LocalTaskActivity extends TaskActivity {
                 case R.id.lta_setAudio_btn:
                     chooseAudio();
                     break;
-                case R.id.aa_save_alarm:
-                    startAlarm();
-                    break;
                 default:
                     super.onClick(v);
             }
@@ -281,4 +276,5 @@ public class LocalTaskActivity extends TaskActivity {
             duration(mSeekBar);
         }
     }
+
 }
