@@ -25,9 +25,6 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
 import chisw.com.dayit.utils.DataUtils;
 
-/**
- * Created by Kos on 09.07.2015.
- */
 public class RemoteTaskActivity extends TaskActivity {
     private static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.id";
     private static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.bundle";
@@ -72,6 +69,23 @@ public class RemoteTaskActivity extends TaskActivity {
         mTvPhone = (TextView) findViewById(R.id.rta_phone_tv);
     }
 
+    @Override
+    protected void startAlarm() {
+        sendRemotePlan();
+        writePlanToDB(DataUtils.getCalendar());
+        super.startAlarm();
+    }
+
+    @Override
+    protected int contentViewResId() {
+        return R.layout.activity_remote_task;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
     private final class ContactDialog implements ContactListDialog.IContact {
 
         @Override
@@ -107,13 +121,6 @@ public class RemoteTaskActivity extends TaskActivity {
         return list;
     }
 
-    @Override
-    protected void startAlarm() {
-        sendRemotePlan();
-        writePlanToDB(DataUtils.getCalendar());
-        super.startAlarm();
-    }
-
     private void sendRemotePlan() {
         String[] splited = mTvPhone.getText().toString().split("\\s+");
         ParsePush push = new ParsePush();
@@ -122,7 +129,7 @@ public class RemoteTaskActivity extends TaskActivity {
             data.put("alert", mEtTitle.getText().toString());
             data.put("title", mTvSetDetails.getText().toString());
             data.put("time", Long.toString(DataUtils.getCalendar().getTimeInMillis()));
-        } catch(JSONException ex) {
+        } catch (JSONException ex) {
             return;
         }
         push.setData(data);
@@ -131,8 +138,7 @@ public class RemoteTaskActivity extends TaskActivity {
     }
 
     private void writePlanToDB(Calendar calendar) {
-        if(!super.checkFields())
-        {
+        if (!super.checkFields()) {
             return;
         }
         Plan p = new Plan();
@@ -140,7 +146,7 @@ public class RemoteTaskActivity extends TaskActivity {
         super.writePlanToDB(calendar, p);
     }
 
-    private final class RClicker extends TaskActivity.Clicker{
+    private final class RClicker extends TaskActivity.Clicker {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -148,8 +154,7 @@ public class RemoteTaskActivity extends TaskActivity {
                     startAlarm();
                     break;
                 case R.id.rta_get_contact_list_btn:
-                    if(mIsContactDialogExist)
-                    {
+                    if (mIsContactDialogExist) {
                         return;
                     }
                     mIsContactDialogExist = true;
@@ -176,16 +181,6 @@ public class RemoteTaskActivity extends TaskActivity {
                     super.onClick(v);
             }
         }
-    }
-
-    @Override
-    protected int contentViewResId() {
-        return R.layout.activity_remote_task;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     private final class CallbackRemotePlan implements SendCallback {

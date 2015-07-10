@@ -22,15 +22,12 @@ import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
-/**
- * Created by Kos on 09.07.2015.
- */
 public class LocalTaskActivity extends TaskActivity {
     private static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.localTask_activity.id";
     private static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.localTask_activity.bundle";
     private final int REQUEST_AUDIO_GET = 1;
 
-    private TextView mTextValue;
+    private TextView mAlarmSoundTitle;
     private int mDurationBuf;
     private long mAudioDuration;
     private String mAudioPath;
@@ -81,10 +78,56 @@ public class LocalTaskActivity extends TaskActivity {
         SeekBarListener sb = new SeekBarListener();
 
         mRelativeLayoutDuration = (RelativeLayout) findViewById(R.id.lta_audio_layout);
-        mTextValue = (TextView) findViewById(R.id.alarmSoundTitle_textview);
+        mAlarmSoundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
         mSeekBar = (SeekBar) findViewById(R.id.sb_duration_sound);
         mSeekBar.setOnSeekBarChangeListener(sb);
         mSeekBar.setEnabled(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
+        if (resultCode != RESULT_OK) {
+            mIsDialogExist = false;
+            return;
+        }
+        mSeekBar.setEnabled(true);
+        switch (requestCode) {
+            case REQUEST_AUDIO_GET:
+                setAudioFromSDCard(returnedIntent);
+                mRelativeLayoutDuration.setVisibility(View.VISIBLE);
+                break;
+            default:
+                super.onActivityResult(requestCode, resultCode, returnedIntent);
+                break;
+        }
+    }
+
+    @Override
+    protected int contentViewResId() {
+        return R.layout.activity_local_task;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void startAlarm() {
+        writePlanToDB(DataUtils.getCalendar());
+        super.startAlarm();
+    }
+
+    private void writePlanToDB(Calendar calendar) {
+        if(!super.checkFields())
+        {
+            return;
+        }
+        Plan p = new Plan();
+        p.setAudioPath(mAudioPath);
+        p.setAudioDuration((int) mAudioDuration);
+        p.setIsRemote(0);
+        super.writePlanToDB(calendar, p);
     }
 
     private void setAudioFromSDCard(Intent audioIntent) {
@@ -95,7 +138,7 @@ public class LocalTaskActivity extends TaskActivity {
         buf = getName(u, mAudioPath);
         if (!ValidData.isValidFormat(buf)) {
             mTvSoundDuration.setText("00:00");
-            mTextValue.setText("");
+            mAlarmSoundTitle.setText("");
             showToast("File is not valid");
             return;
         }
@@ -104,7 +147,7 @@ public class LocalTaskActivity extends TaskActivity {
         } else {
             mDurationBuf = getAudioDuration(u);
         }
-        mTextValue.setText(buf);
+        mAlarmSoundTitle.setText(buf);
         duration(mSeekBar);
     }
 
@@ -199,56 +242,10 @@ public class LocalTaskActivity extends TaskActivity {
         mAudioDuration = p.getAudioDuration();
         mDurationBuf = getAudioDuration(u);
         Uri tmpUri = Uri.parse(mAudioPath);
-        mTextValue.setText(getName(tmpUri, mAudioPath));
+        mAlarmSoundTitle.setText(getName(tmpUri, mAudioPath));
         seekbar.setProgress(getPercent((int) mAudioDuration, mAudioPath));
         timeFormat();
         super.fillIn(p);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent returnedIntent) {
-        if (resultCode != RESULT_OK) {
-            mIsDialogExist = false;
-            return;
-        }
-        mSeekBar.setEnabled(true);
-        switch (requestCode) {
-            case REQUEST_AUDIO_GET:
-                setAudioFromSDCard(returnedIntent);
-                mRelativeLayoutDuration.setVisibility(View.VISIBLE);
-                break;
-            default:
-                super.onActivityResult(requestCode, resultCode, returnedIntent);
-                break;
-        }
-    }
-
-    @Override
-    protected int contentViewResId() {
-        return R.layout.activity_local_task;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void startAlarm() {
-        writePlanToDB(DataUtils.getCalendar());
-        super.startAlarm();
-    }
-
-    private void writePlanToDB(Calendar calendar) {
-        if(!super.checkFields())
-        {
-            return;
-        }
-        Plan p = new Plan();
-        p.setAudioPath(mAudioPath);
-        p.setAudioDuration((int) mAudioDuration);
-        p.setIsRemote(0);
-        super.writePlanToDB(calendar, p);
     }
 
     private final class LClicker extends TaskActivity.Clicker {
