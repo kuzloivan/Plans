@@ -29,6 +29,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
 import org.json.JSONException;
@@ -257,29 +258,7 @@ public class AlarmActivity extends ToolbarActivity {
             return;
         }
         if (getIntent().getBooleanExtra("isRemote", false)) {
-            String[] splited = mTvPhone.getText().toString().split("\\s+");
-
-            ParsePush push = new ParsePush();
-            JSONObject data = new JSONObject();
-            try {
-                data.put("alert", mEtTitle.getText().toString());
-                data.put("title", mTvSetDetails.getText().toString());
-                data.put("time", Long.toString(DataUtils.getCalendar().getTimeInMillis()));
-            } catch(JSONException ex) {
-                return;
-            }
-            push.setData(data);
-            push.setChannel(splited[0]);
-            push.sendInBackground(new SendCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        showToast("Sending was successful");
-                        return;
-                    }
-                    showToast(e.getMessage());
-                }
-            });
+            sendRemotePlan();
         }
 //        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
 //            showToast("Time is incorrect.");
@@ -432,6 +411,22 @@ public class AlarmActivity extends ToolbarActivity {
                 cursor.close();
         }
         return null;
+    }
+
+    public void sendRemotePlan() {
+        String[] splited = mTvPhone.getText().toString().split("\\s+");
+        ParsePush push = new ParsePush();
+        JSONObject data = new JSONObject();
+        try {
+            data.put("alert", mEtTitle.getText().toString());
+            data.put("title", mTvSetDetails.getText().toString());
+            data.put("time", Long.toString(DataUtils.getCalendar().getTimeInMillis()));
+        } catch(JSONException ex) {
+            return;
+        }
+        push.setData(data);
+        push.setChannel(splited[0]);
+        push.sendInBackground(new CallbackRemotePlan());
     }
 
     private void chooseAudio() {
@@ -600,6 +595,18 @@ public class AlarmActivity extends ToolbarActivity {
             } else {
                 showToast(e.getMessage());
             }
+        }
+    }
+
+    public final class CallbackRemotePlan implements SendCallback {
+
+        @Override
+        public void done(ParseException e) {
+            if (e == null) {
+                showToast("Your remote plan was sending successfully!");
+                return;
+            }
+            showToast(e.getMessage());
         }
     }
 
