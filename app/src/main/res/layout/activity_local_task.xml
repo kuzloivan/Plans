@@ -7,7 +7,7 @@
     <include layout="@layout/toolbar"/>
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/lta_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
             <include
-                android:id="@+id/activity_task_layout"
+                android:id="@+id/taskActivity_layout"
                 layout="@layout/activity_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -27,44 +27,42 @@
                 android:id="@+id/lta_audio_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_task_layout"
+                android:layout_below="@+id/taskActivity_layout"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
-                    android:id="@+id/linear_layout_audioName"
+                    android:id="@+id/lta_audioName_linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <!--android:layout_below="@id/layout_sound_duration">-->
 
                     <TextView
-                        android:id="@+id/alarmSound_textview"
+                        android:id="@+id/lta_alarmSound_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/linear_layout_audioName"
                         android:layout_margin="@dimen/margin16"
                         android:text="Alarm sound: "/>
 
                     <TextView
-                        android:id="@+id/alarmSoundTitle_textview"
+                        android:id="@+id/lta_alarmSoundName_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/linear_layout_audioName"
+                        android:layout_below="@+id/lta_audioName_linearLayout"
                         android:layout_margin="@dimen/margin16"
-                        android:layout_toRightOf="@+id/alarmSound_textview"
+                        android:layout_toRightOf="@+id/lta_alarmSound_textView"
                         android:ellipsize="marquee"
                         android:lines="2"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_sound_duration"
+                    android:id="@+id/lta_layout_sound_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/linear_layout_audioName">
+                    android:layout_below="@+id/lta_audioName_linearLayout">
 
                     <TextView
-                        android:id="@+id/tv_duration_sound"
+                        android:id="@+id/lta_soundDurText_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="@dimen/margin16"
@@ -78,7 +76,7 @@
                         android:text="--"/>
 
                     <SeekBar
-                        android:id="@+id/sb_duration_sound"
+                        android:id="@+id/lta_soundDuration_seekBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin8"

@@ -24,10 +24,10 @@ public class LogInActivity extends AuthorizationActivity {
         initView();
 
         mInputFilter = initializeInputFilter();
-        mLogin = (EditText) findViewById(R.id.net_user_login);
+        mLogin = (EditText) findViewById(R.id.la_userName_editText);
         mLogin.setSingleLine();
         mLogin.setFilters(new InputFilter[]{mInputFilter});
-        mPassword = (EditText) findViewById(R.id.net_user_password);
+        mPassword = (EditText) findViewById(R.id.la_userPassword_editText);
         mPassword.setSingleLine();
         mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         mPassword.setFilters(new InputFilter[]{mInputFilter});
@@ -46,8 +46,8 @@ public class LogInActivity extends AuthorizationActivity {
 
     private void initView() {
         mClicker = new Clicker();
-        findViewById(R.id.btn_to_sign_up).setOnClickListener(mClicker);
-        findViewById(R.id.btn_log_in).setOnClickListener(mClicker);
+        findViewById(R.id.la_signUp_btn).setOnClickListener(mClicker);
+        findViewById(R.id.la_logIn_btn).setOnClickListener(mClicker);
     }
 
     private InputFilter initializeInputFilter() {
@@ -81,10 +81,10 @@ public class LogInActivity extends AuthorizationActivity {
         public void onClick(View v) {
             if (prepareForClick()) {
                 switch (v.getId()) {
-                    case R.id.btn_to_sign_up:
+                    case R.id.la_signUp_btn:
                         SignUpActivity.start(LogInActivity.this);
                         break;
-                    case R.id.btn_log_in:
+                    case R.id.la_logIn_btn:
                         if (isValidFields()) {
                             showProgressDialog("Logging In", "Please, wait...");
                             netManager.loginUser(login, password, new CallbackLogIn());

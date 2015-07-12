@@ -19,10 +19,6 @@ import chisw.com.dayit.ui.dialogs.DeleteDialog;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 
-
-/**
- * Created by Alexander on 20.06.2015.
- */
 public class ViewPlanActivity extends ToolbarActivity {
 
     public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.view_plan_activity.id";
