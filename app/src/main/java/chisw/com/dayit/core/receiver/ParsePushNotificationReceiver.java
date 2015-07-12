@@ -25,6 +25,7 @@ import chisw.com.dayit.net.NetManager;
 import chisw.com.dayit.ui.activities.PlannerActivity;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
+import chisw.com.dayit.utils.ValidData;
 
 public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     private String mTitle;
@@ -102,11 +103,12 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         pNetManager.addPlan(p, new OnSaveCallback() {
             @Override
             public void getId(String id) {
-
-                p.setParseId(id);
-                int planId = pDBManager.getPlanById(pDBManager.getLastPlanID()).getLocalId();
-                p.setLocalId(planId);
-                pDBManager.editPlan(p, planId);
+                if(ValidData.isTextValid(id)) {
+                    p.setParseId(id);
+                    int planId = pDBManager.getPlanById(pDBManager.getLastPlanID()).getLocalId();
+                    p.setLocalId(planId);
+                    pDBManager.editPlan(p, planId);
+                }
             }
         });
     }
