@@ -36,7 +36,8 @@ public class NetManager implements NetBridge {
     public static final String IMAGE_PATH = "imagePath";
     public static final String DAYS_TO_ALARM = "daysToAlarm";
     public static final String PLAN_ID = "objectId";
-    public static final String PHONE= "phone";
+    public static final String USERNAME = "username";
+    public static final String PHONE = "phone";
 
     @Override
     public void registerUser(String name, String password,String pPhone, SignUpCallback signUpCallback) {
@@ -60,7 +61,7 @@ public class NetManager implements NetBridge {
     @Override
     public void getUsersByNumbers(List<String> phoneNums, OnGetNumbersCallback onGetNumbersCallback) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn("phone", phoneNums);
+        query.whereContainedIn(PHONE, phoneNums);
         query.findInBackground(new CallbackGetNumbers(onGetNumbersCallback));
     }
 
@@ -141,12 +142,12 @@ public class NetManager implements NetBridge {
         public void done(List<ParseUser> list, ParseException e) {
             if (e == null) {
                 for (ParseUser obj : list) {
-                    numbers.put(obj.getString("phone"), obj.getString("username"));
+                    numbers.put(obj.getString(PHONE), obj.getString(USERNAME));
                 }
                 onGetNumbersCallback.getNumbers(numbers);
                 return;
             }
-            e.getMessage();
+            onGetNumbersCallback.getNumbers(null);
         }
     }
 
@@ -159,7 +160,7 @@ public class NetManager implements NetBridge {
 
         @Override
         public void done(ParseObject parseObject, ParseException e) {
-            if (e==null){
+            if (e == null){
                 getPlanCallback.getPlan(parseObject);
             }
         }
@@ -180,7 +181,7 @@ public class NetManager implements NetBridge {
                 onSaveCallback.getId(parsePlan.getObjectId());
                 return;
             }
-            e.getMessage();
+            onSaveCallback.getId(null);
         }
 
     }
@@ -212,7 +213,7 @@ public class NetManager implements NetBridge {
                 onGetPlansCallback.getPlans(plans);
                 return;
             }
-            e.getMessage();
+            onGetPlansCallback.getPlans(null);
         }
     }
 }

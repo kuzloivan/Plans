@@ -23,6 +23,7 @@ import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
+import chisw.com.dayit.utils.ValidData;
 
 public class RemoteTaskActivity extends TaskActivity {
     private static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.id";
@@ -69,9 +70,13 @@ public class RemoteTaskActivity extends TaskActivity {
 
     @Override
     protected void startAlarm() {
-        sendRemotePlan();
-        writePlanToDB(mMyLovelyCalendar);
-        super.startAlarm();
+        if(!mTvPhone.getText().toString().equals("Phone number")) {
+            sendRemotePlan();
+            writePlanToDB(mMyLovelyCalendar);
+            super.startAlarm();
+        } else {
+            showToast("Please, choose a contact person");
+        }
     }
 
     @Override
@@ -155,20 +160,27 @@ public class RemoteTaskActivity extends TaskActivity {
                     mIsContactDialogExist = true;
                     ArrayList<String> contactsArrayList = initializeList();
                     mContactArrayList = new ArrayList<String>();
+                    showProgressDialog("Contacts", "Getting numbers...");
                     netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
                         @Override
                         public void getNumbers(Map<String, String> numbers) {
-                            mContactArrayList.clear();
-                            for (Map.Entry<String, String> nums : numbers.entrySet()) {
-                                String contactInfo = nums.getValue() + " " + nums.getKey();
-                                mContactArrayList.add(contactInfo);
+                            hideProgressDialog();
+                            if(numbers != null) {
+                                mContactArrayList.clear();
+                                for (Map.Entry<String, String> nums : numbers.entrySet()) {
+                                    String contactInfo = nums.getValue() + " " + nums.getKey();
+                                    mContactArrayList.add(contactInfo);
+                                }
+                                mContactListDialog = new ContactListDialog();
+                                mContactListDialog.setIContact(new ContactDialog());
+                                Bundle contactsBundle = new Bundle();
+                                contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
+                                mContactListDialog.setArguments(contactsBundle);
+                                mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                                return;
                             }
-                            mContactListDialog = new ContactListDialog();
-                            mContactListDialog.setIContact(new ContactDialog());
-                            Bundle contactsBundle = new Bundle();
-                            contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
-                            mContactListDialog.setArguments(contactsBundle);
-                            mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                            mIsContactDialogExist = false;
+                            showToast("Can't get contacts now");
                         }
                     });
                     break;
@@ -183,7 +195,7 @@ public class RemoteTaskActivity extends TaskActivity {
         @Override
         public void done(ParseException e) {
             if (e == null) {
-                showToast("Your remote plan was sending successfully!");
+                showToast("Your remote plan was sent successfully!");
                 return;
             }
             showToast(e.getMessage());

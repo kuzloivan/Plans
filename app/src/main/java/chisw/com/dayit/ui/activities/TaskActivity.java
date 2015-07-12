@@ -166,10 +166,12 @@ public abstract class TaskActivity extends ToolbarActivity {
             netManager.addPlan(p, new OnSaveCallback() {
                 @Override
                 public void getId(String id) {
-                    p.setParseId(id);
-                    int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
-                    p.setLocalId(planId);
-                    dbManager.editPlan(p, planId);
+                    if(ValidData.isTextValid(id)) {
+                        p.setParseId(id);
+                        int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                        p.setLocalId(planId);
+                        dbManager.editPlan(p, planId);
+                    }
                 }
             });
         }

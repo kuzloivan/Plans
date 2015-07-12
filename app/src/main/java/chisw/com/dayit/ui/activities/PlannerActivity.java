@@ -203,10 +203,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                             netManager.addPlan(plan, new OnSaveCallback() {
                                 @Override
                                 public void getId(String id) {
-                                    plan.setParseId(id);
-                                    int planId = plan.getLocalId();
-                                    plan.setIsSynchronized(1);
-                                    dbManager.editPlan(plan, planId);
+                                    if(ValidData.isTextValid(id)) {
+                                        plan.setParseId(id);
+                                        int planId = plan.getLocalId();
+                                        plan.setIsSynchronized(1);
+                                        dbManager.editPlan(plan, planId);
+                                    }
                                 }
                             });
                         }
@@ -220,13 +222,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             netManager.getAllPlans(new OnGetPlansCallback() {
                 @Override
                 public void getPlans(ArrayList<Plan> lPlans) {
-                    for (Plan plan : lPlans) {
-                        plans.add(plan);
-                        dbManager.saveNewPlan(plan);
-                    }
-                    if (!lPlans.isEmpty()) {
-                        RestartManager restartManager = new RestartManager(getApplication().getApplicationContext());
-                        restartManager.reload();
+                    if(lPlans != null) {
+                        for (Plan plan : lPlans) {
+                            plans.add(plan);
+                            dbManager.saveNewPlan(plan);
+                        }
+                        if (!lPlans.isEmpty()) {
+                            RestartManager restartManager = new RestartManager(getApplication().getApplicationContext());
+                            restartManager.reload();
+                        }
                     }
                 }
             });
