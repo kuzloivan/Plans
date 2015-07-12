@@ -7,10 +7,10 @@
     <include layout="@layout/toolbar"/>
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/rta_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@id/toolbar"
         >
 
         <RelativeLayout
@@ -18,41 +18,27 @@
             android:layout_height="match_parent">
 
             <include
-                android:id="@+id/activity_task_layout"
+                android:id="@+id/taskActivity_layout"
                 layout="@layout/activity_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <!--ask about id-->
+
+            <!--rename style for buttons-->
 
             <Button
-                android:id="@+id/rta_get_contact_list_btn"
+                android:id="@+id/rta_contactList_btn"
                 style="@style/style_aa_btns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_task_layout"
+                android:layout_below="@id/taskActivity_layout"
                 android:text="Get contact list"/>
 
             <TextView
-                android:id="@+id/rta_phone_tv"
+                android:id="@+id/rta_phone_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone number"
-                android:layout_below="@+id/rta_get_contact_list_btn"/>
-
-            <!--<LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ar_contact"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/get_contact_list_bt"
-                    style="@style/style_aa_btns"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Get contact list"/>
-
-            </LinearLayout>-->
+                android:layout_below="@id/rta_contactList_btn"/>
 
         </RelativeLayout>
 

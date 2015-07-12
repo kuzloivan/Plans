@@ -27,12 +27,12 @@ public class LocalTaskActivity extends TaskActivity {
     private static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.localTask_activity.bundle";
     private final int REQUEST_AUDIO_GET = 1;
 
-    private TextView mAlarmSoundTitle;
+    private TextView mAlarmSoundName;
     private int mDurationBuf;
     private long mAudioDuration;
     private String mAudioPath;
     private SeekBar mSeekBar;
-    private RelativeLayout mRelativeLayoutDuration;
+    private RelativeLayout mAudioLayout;
     private LClicker mLClicker;
 
     public static void start(Activity a) {
@@ -76,9 +76,10 @@ public class LocalTaskActivity extends TaskActivity {
         mTvSoundDuration.setOnClickListener(mLClicker);
         SeekBarListener sb = new SeekBarListener();
 
-        mRelativeLayoutDuration = (RelativeLayout) findViewById(R.id.lta_audio_layout);
-        mAlarmSoundTitle = (TextView) findViewById(R.id.alarmSoundTitle_textview);
-        mSeekBar = (SeekBar) findViewById(R.id.sb_duration_sound);
+        mAudioLayout = (RelativeLayout) findViewById(R.id.lta_audio_layout);
+        mAudioLayout.setVisibility(View.GONE);
+        mAlarmSoundName = (TextView) findViewById(R.id.lta_alarmSoundName_textView);
+        mSeekBar = (SeekBar) findViewById(R.id.lta_soundDuration_seekBar);
         mSeekBar.setOnSeekBarChangeListener(sb);
         mSeekBar.setEnabled(false);
     }
@@ -93,7 +94,7 @@ public class LocalTaskActivity extends TaskActivity {
         switch (requestCode) {
             case REQUEST_AUDIO_GET:
                 setAudioFromSDCard(returnedIntent);
-                mRelativeLayoutDuration.setVisibility(View.VISIBLE);
+                mAudioLayout.setVisibility(View.VISIBLE);
                 break;
             default:
                 super.onActivityResult(requestCode, resultCode, returnedIntent);
@@ -137,7 +138,7 @@ public class LocalTaskActivity extends TaskActivity {
         buf = getName(u, mAudioPath);
         if (!ValidData.isValidFormat(buf)) {
             mTvSoundDuration.setText("00:00");
-            mAlarmSoundTitle.setText("");
+            mAlarmSoundName.setText("");
             showToast("File is not valid");
             return;
         }
@@ -146,7 +147,7 @@ public class LocalTaskActivity extends TaskActivity {
         } else {
             mDurationBuf = getAudioDuration(u);
         }
-        mAlarmSoundTitle.setText(buf);
+        mAlarmSoundName.setText(buf);
         duration(mSeekBar);
     }
 
@@ -231,16 +232,16 @@ public class LocalTaskActivity extends TaskActivity {
         mAudioPath = p.getAudioPath();
         if (mAudioPath == null) {
             seekbar.setEnabled(false);
-            mRelativeLayoutDuration.setVisibility(View.GONE);
+            mAudioLayout.setVisibility(View.GONE);
             return;
         }
-        mRelativeLayoutDuration.setVisibility(View.VISIBLE);
+        mAudioLayout.setVisibility(View.VISIBLE);
         seekbar.setEnabled(true);
         Uri u = Uri.parse(mAudioPath);
         mAudioDuration = p.getAudioDuration();
         mDurationBuf = getAudioDuration(u);
         Uri tmpUri = Uri.parse(mAudioPath);
-        mAlarmSoundTitle.setText(getName(tmpUri, mAudioPath));
+        mAlarmSoundName.setText(getName(tmpUri, mAudioPath));
         seekbar.setProgress(getPercent((int) mAudioDuration, mAudioPath));
         timeFormat();
         super.fillIn(p);

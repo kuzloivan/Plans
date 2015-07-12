@@ -5,26 +5,20 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        >
 
         <RelativeLayout
-            android:id="@+id/mainlayout"
+            android:id="@+id/ta_main_relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
 
             <RelativeLayout
-                android:id="@+id/aa_rellay_top"
+                android:id="@+id/ta_top_relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/aa_image"
+                    android:id="@+id/ta_planImage_imageView"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_margin="10dp"
@@ -34,11 +28,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/aa_image"
+                    android:layout_toRightOf="@id/ta_planImage_imageView"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/setDate_textview"
+                        android:id="@+id/ta_setDate_textView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin8"
@@ -49,7 +43,7 @@
                         android:textSize="20sp"/>
 
                     <TextView
-                        android:id="@+id/setTime_textview"
+                        android:id="@+id/ta_setTime_textView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin8"
@@ -64,51 +58,48 @@
             </RelativeLayout>
 
             <EditText
-                android:id="@+id/setTitle_textview"
+                android:id="@+id/ta_title_textView"
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/aa_rellay_top"
+                android:layout_below="@id/ta_top_relativeLayout"
                 android:hint="@string/alarm_title_hint"
                 android:maxLength="21"
                 android:maxLines="1"/>
 
 
             <EditText
-                android:id="@+id/setDetails_textview"
+                android:id="@+id/ta_details_textView"
                 style="@style/style_aa_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/setTitle_textview"
+                android:layout_below="@id/ta_title_textView"
                 android:hint="@string/alarm_details_hint"
                 android:maxLines="5"/>
 
             <LinearLayout
-                android:id="@+id/linear_layout_repeat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/setDetails_textview">
+                android:layout_below="@id/ta_details_textView">
 
                 <TextView
-                    android:id="@+id/alarmRepearing_textview"
+                    android:id="@+id/ta_repeating_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/margin16"
                     android:text="Repeating"/>
 
                 <Switch
-                    android:id="@+id/switch_repeating"
+                    android:id="@+id/ta_repeatingTrig_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin16"
-                    android:layout_toRightOf="@+id/alarmRepearing_textview"
+                    android:layout_toRightOf="@id/ta_repeating_textView"
                     android:textOff="OFF"
                     android:textOn="ON"/>
 
             </LinearLayout>
 
         </RelativeLayout>
-
-    </ScrollView>
 
 </RelativeLayout>

@@ -15,12 +15,9 @@ import android.widget.ListView;
 
 import com.parse.GetCallback;
 import com.parse.LogOutCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -70,7 +67,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     private void initView() {
         Clicker clicker = new Clicker();
         ItemClicker itemClicker = new ItemClicker();
-        mLvPlanner = (ListView) findViewById(R.id.pa_planner_listview);
+        mLvPlanner = (ListView) findViewById(R.id.pa_planner_listView);
         mAdapter = new PlannerCursorAdapter(this);
         mLvPlanner.setAdapter(mAdapter);
         mLvPlanner.setOnItemClickListener(itemClicker);

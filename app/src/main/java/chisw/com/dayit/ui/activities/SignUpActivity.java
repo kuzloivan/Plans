@@ -7,10 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import chisw.com.dayit.R;
@@ -47,12 +43,12 @@ public class SignUpActivity extends AuthorizationActivity {
 
     private void initView() {
         mClicker = new Clicker();
-        mLogin = (EditText) findViewById(R.id.new_user_login);
-        mPassword = (EditText) findViewById(R.id.new_user_password);
-        mPhone = (EditText) findViewById(R.id.new_user_phone);
-        mPasswordConfirm = (EditText) findViewById(R.id.sua_new_user_password_confirm_et);
-        findViewById(R.id.btn_sign_up).setOnClickListener(mClicker);
-        findViewById(R.id.btn_back_to_log_in).setOnClickListener(mClicker);
+        mLogin = (EditText) findViewById(R.id.sua_userName_editText);
+        mPassword = (EditText) findViewById(R.id.sua_userPassword_editText);
+        mPhone = (EditText) findViewById(R.id.sua_userPhone_editText);
+        mPasswordConfirm = (EditText) findViewById(R.id.sua_userPasswordConfirm_editText);
+        findViewById(R.id.sua_signUp_btn).setOnClickListener(mClicker);
+        findViewById(R.id.sua_back_btn).setOnClickListener(mClicker);
     }
 
     @Override
@@ -67,13 +63,13 @@ public class SignUpActivity extends AuthorizationActivity {
         public void onClick(View v) {
             if (prepareForClick()) {
                 switch (v.getId()) {
-                    case R.id.btn_sign_up:
+                    case R.id.sua_signUp_btn:
                         if (isValidFields()) {
                             showProgressDialog("Signing Up", "Please, wait...");
                             netManager.registerUser(login, password, phone, new CallbackSignUp());
                         }
                         break;
-                    case R.id.btn_back_to_log_in:
+                    case R.id.sua_back_btn:
                         onBackPressed();
                         break;
                 }

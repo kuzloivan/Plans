@@ -62,14 +62,14 @@ public abstract class TaskActivity extends ToolbarActivity {
         initBackButton();
         mMyLovelyCalendar = Calendar.getInstance();
         mMyLovelyCalendar.set(Calendar.SECOND, 0);
-        mTvDate = (TextView) findViewById(R.id.setDate_textview);
-        mTvTime = (TextView) findViewById(R.id.setTime_textview);
+        mTvDate = (TextView) findViewById(R.id.ta_setDate_textView);
+        mTvTime = (TextView) findViewById(R.id.ta_setTime_textView);
         mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
         mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
-        mIvImage = (ImageView) findViewById(R.id.aa_image);
-        mSwitchRepeating = (Switch) findViewById(R.id.switch_repeating);
+        mIvImage = (ImageView) findViewById(R.id.ta_planImage_imageView);
+        mSwitchRepeating = (Switch) findViewById(R.id.ta_repeatingTrig_switch);
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        mTvSetDetails = (EditText) findViewById(R.id.setDetails_textview);
+        mTvSetDetails = (EditText) findViewById(R.id.ta_details_textView);
         mDaysToAlarm = "0000000";
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -83,7 +83,7 @@ public abstract class TaskActivity extends ToolbarActivity {
                 return false;
             }
         });
-        mEtTitle = (EditText) findViewById(R.id.setTitle_textview);
+        mEtTitle = (EditText) findViewById(R.id.ta_title_textView);
     }
 
     @Override
@@ -326,17 +326,17 @@ public abstract class TaskActivity extends ToolbarActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.setDate_textview:
+                case R.id.ta_setDate_textView:
                     mDatePickDialog = new DatePickDialog();
                     mDatePickDialog.show(getSupportFragmentManager(), "datePicker");
                     mDatePickDialog.setListener(new DialogClicker());
                     break;
-                case R.id.setTime_textview:
+                case R.id.ta_setTime_textView:
                     mTimeDialog = new TimePickDialog();
                     mTimeDialog.show(getSupportFragmentManager(), "timePicker");
                     mTimeDialog.setListener(new DialogClicker());
                     break;
-                case R.id.switch_repeating:
+                case R.id.ta_repeatingTrig_switch:
                     if (mSwitchRepeating.isChecked()) {
                         mDaysOfWeekDialog = new DaysOfWeekDialog();
 
@@ -348,7 +348,7 @@ public abstract class TaskActivity extends ToolbarActivity {
                         mDaysOfWeekDialog.setListener(new DialogClicker());
                     }
                     break;
-                case R.id.aa_image:
+                case R.id.ta_planImage_imageView:
                     chooseImage();
                     break;
 

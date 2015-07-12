@@ -19,13 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone number"
-            android:id="@+id/new_user_phone"
+            android:id="@+id/sua_userPhone_editText"
             android:layout_margin="8dp"
-            android:textColorHint="#bbbbbb"
-            />
+            android:textColorHint="#bbbbbb"/>
 
         <EditText
-            android:id="@+id/new_user_login"
+            android:id="@+id/sua_userName_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
@@ -33,24 +32,22 @@
             android:textColorHint="#bbbbbb"/>
 
         <EditText
-            android:id="@+id/new_user_password"
+            android:id="@+id/sua_userPassword_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="Password"
             android:textColorHint="#bbbbbb"
-            android:password="true"
-            />
+            android:password="true"/>
 
         <EditText
-            android:id="@+id/sua_new_user_password_confirm_et"
+            android:id="@+id/sua_userPasswordConfirm_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin8"
             android:hint="Password"
             android:textColorHint="#bbbbbb"
-            android:password="true"
-            />
+            android:password="true"/>
 
         <LinearLayout
             style="@style/style_linearlayout"
@@ -59,18 +56,19 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_sign_up"
+                android:id="@+id/sua_signUp_btn"
                 style="@style/style_registration_btns"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Sign_up"/>
 
             <Button
-                android:id="@+id/btn_back_to_log_in"
+                android:id="@+id/sua_back_btn"
                 style="@style/style_registration_btns"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/back"/>
+
         </LinearLayout>
 
     </LinearLayout>
