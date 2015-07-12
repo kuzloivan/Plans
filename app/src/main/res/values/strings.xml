@@ -26,7 +26,8 @@
 
     <!--Remote activity-->
     <string name="remote_plan_title">Remote plan</string>
-    <string name="get_contact_list">Get contact list</string>
+    <string name="contact_info_hint">Contact info</string>
+    <string name="get_contact">Get contact</string>
     <string name="contact_list">Contact list</string>
 
     <!-- Net activity -->

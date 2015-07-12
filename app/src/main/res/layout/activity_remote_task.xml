@@ -24,20 +24,32 @@
                 android:layout_height="wrap_content"/>
             <!--ask about id-->
 
-            <Button
-                android:id="@+id/rta_get_contact_list_btn"
-                style="@style/style_aa_btns"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_task_layout"
-                android:text="Get contact list"/>
+                android:orientation="horizontal"
+                android:layout_below="@id/activity_task_layout">
 
-            <TextView
-                android:id="@+id/rta_phone_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phone number"
-                android:layout_below="@+id/rta_get_contact_list_btn"/>
+                <EditText
+                    android:id="@+id/et_contact"
+                    style="@style/style_aa_et"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="@string/contact_info_hint"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:maxLines="1"
+                    android:enabled="false"/>
+
+                <Button
+                    android:id="@+id/rta_get_contact_list_btn"
+                    style="@style/style_aa_btns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:text="@string/get_contact"/>
+
+            </LinearLayout>
 
             <!--<LinearLayout
                 android:layout_width="match_parent"

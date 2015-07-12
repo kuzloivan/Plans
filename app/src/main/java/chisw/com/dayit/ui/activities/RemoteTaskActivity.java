@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.parse.ParseException;
 import com.parse.ParsePush;
@@ -30,7 +30,7 @@ public class RemoteTaskActivity extends TaskActivity {
     private static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.bundle";
 
     private boolean mIsContactDialogExist;
-    private TextView mTvPhone;
+    private EditText mTextContact;
     private ContactListDialog mContactListDialog;
     private ArrayList<String> mContactArrayList;
     private RClicker mRClicker;
@@ -65,12 +65,12 @@ public class RemoteTaskActivity extends TaskActivity {
         mTvTime.setOnClickListener(mRClicker);
         mSwitchRepeating.setOnClickListener(mRClicker);
         mIvImage.setOnClickListener(mRClicker);
-        mTvPhone = (TextView) findViewById(R.id.rta_phone_tv);
+        mTextContact = (EditText) findViewById(R.id.et_contact);
     }
 
     @Override
     protected void startAlarm() {
-        if(!mTvPhone.getText().toString().equals("Phone number")) {
+        if(ValidData.isTextValid(mTextContact.getText().toString())) {
             sendRemotePlan();
             writePlanToDB(mMyLovelyCalendar);
             super.startAlarm();
@@ -93,7 +93,7 @@ public class RemoteTaskActivity extends TaskActivity {
 
         @Override
         public void getPhone(String pPhoneNumber) {
-            mTvPhone.setText(pPhoneNumber);
+            mTextContact.setText(pPhoneNumber);
             mIsContactDialogExist = false;
         }
 
@@ -125,7 +125,7 @@ public class RemoteTaskActivity extends TaskActivity {
     }
 
     private void sendRemotePlan() {
-        String[] splited = mTvPhone.getText().toString().split("\\s+");
+        String[] splited = mTextContact.getText().toString().split("\\s+");
         ParsePush push = new ParsePush();
         JSONObject data = new JSONObject();
         try {
