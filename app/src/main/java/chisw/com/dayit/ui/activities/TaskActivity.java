@@ -270,10 +270,12 @@ public abstract class TaskActivity extends ToolbarActivity {
             return false;
         }
 
-//        if (System.currentTimeMillis() > DataUtils.getCalendar().getTimeInMillis()) {
+       //todo Make time verification
+//        if (System.currentTimeMillis() > DataUtils.getCalendarByTimeStamp(p)) {
 //            showToast("Time is incorrect.");
 //            return false;
 //        }
+
         return true;
     }
 

@@ -1,8 +1,10 @@
 package chisw.com.dayit.ui.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -13,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.ExecutionException;
+
 import chisw.com.dayit.R;
+import chisw.com.dayit.core.PApplication;
 import chisw.com.dayit.db.entity.PlansEntity;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
@@ -36,7 +41,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
         View view = layoutInflater.inflate(R.layout.planner_list_view_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
@@ -46,7 +50,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
@@ -70,22 +73,38 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //            viewHolder.tvDetails.setVisibility(View.VISIBLE);
 //        }
         mSelectedImagePath = cursor.getString(imageIndex);
+
         if (mSelectedImagePath != null) {
-            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
-            viewHolder.ivPicture.setImageBitmap(bitmap);
+
+            try {
+                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+                viewHolder.ivPicture.setImageBitmap(BitmapUtils.getRoundCornerBitmap(bitmap, 5, targetW, targetH));
+                //viewHolder.ivPicture.setImageBitmap(bitmap);
+            }
+            catch (Exception e){
+                //todo Make delete mSelectedImagePath and ask why image don't set first
+                Toast.makeText(context, "Exeption, picture don't set", Toast.LENGTH_SHORT).show();
+
+            }
             mSelectedImagePath = null;
-        }
-        else {
+        } else {
             viewHolder.ivPicture.setImageResource(R.drawable.default_example_material);
         }
+        //logMemory(context);
 
-/*        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
-        int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
-        if(cursor.getInt(isSynchronizedIndex) == 0) {
-            view.setBackgroundColor(Color.parseColor("#EF5350"));
-        } else if(timeStamp - System.currentTimeMillis() <= 0) {
-            view.setBackgroundColor(Color.parseColor("#BDBDBD"));
-        }*/
+
+//        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
+//        int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
+//        if(cursor.getInt(isSynchronizedIndex) == 0) {
+//            view.setBackgroundColor(Color.parseColor("#EF5350"));
+//        } else if(timeStamp - System.currentTimeMillis() <= 0) {
+//            view.setBackgroundColor(Color.parseColor("#BDBDBD"));
+//        }
+    }
+
+    private void logMemory(Context context) {
+        Toast.makeText(context, "Total memory = "+ (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
+
     }
 
     private static class ViewHolder {
