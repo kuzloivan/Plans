@@ -71,6 +71,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mTvSetDetails = (EditText) findViewById(R.id.ta_details_textView);
         mDaysToAlarm = "0000000";
+
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

@@ -6,100 +6,94 @@
                 android:orientation="vertical">
 
 
+    <RelativeLayout
+        android:id="@+id/ta_main_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
         <RelativeLayout
-            android:id="@+id/ta_main_relativeLayout"
+            android:id="@+id/ta_top_relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/ta_top_relativeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/ta_planImage_imageView"
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/aa_icon"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/ta_planImage_imageView"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/ta_setDate_textView"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin8"
-                        android:clickable="true"
-                        android:paddingLeft="24dp"
-                        android:text="@string/set_date"
-                        android:textColor="@color/color_aa_edit_text"
-                        android:textSize="20sp"/>
-
-                    <TextView
-                        android:id="@+id/ta_setTime_textView"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin8"
-                        android:clickable="true"
-                        android:paddingLeft="24dp"
-                        android:text="@string/set_time"
-                        android:textColor="@color/color_aa_edit_text"
-                        android:textSize="20sp"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/ta_title_textView"
-                style="@style/style_aa_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ta_top_relativeLayout"
-                android:hint="@string/alarm_title_hint"
-                android:maxLength="21"
-                android:maxLines="1"/>
-
-
-            <EditText
-                android:id="@+id/ta_details_textView"
-                style="@style/style_aa_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ta_title_textView"
-                android:hint="@string/alarm_details_hint"
-                android:maxLines="5"/>
+            <ImageView
+                android:id="@+id/ta_planImage_imageView"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/aa_icon"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ta_details_textView">
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/ta_planImage_imageView"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/ta_repeating_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/margin16"
-                    android:text="Repeating"/>
-
-                <Switch
-                    android:id="@+id/ta_repeatingTrig_switch"
-                    android:layout_width="match_parent"
+                    android:id="@+id/ta_setDate_textView"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin16"
-                    android:layout_toRightOf="@id/ta_repeating_textView"
-                    android:textOff="OFF"
-                    android:textOn="ON"/>
+                    android:layout_margin="@dimen/margin8"
+                    android:clickable="true"
+                    android:paddingLeft="24dp"
+                    android:text="@string/set_date"
+                    android:textColor="@color/color_aa_edit_text"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/ta_setTime_textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin8"
+                    android:clickable="true"
+                    android:paddingLeft="24dp"
+                    android:text="@string/set_time"
+                    android:textColor="@color/color_aa_edit_text"
+                    android:textSize="20sp"/>
 
             </LinearLayout>
 
         </RelativeLayout>
+
+        <EditText
+            android:id="@+id/ta_title_textView"
+            style="@style/style_aa_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ta_top_relativeLayout"
+            android:hint="@string/alarm_title_hint"
+            android:maxLength="21"
+            android:maxLines="1"/>
+
+
+        <EditText
+            android:id="@+id/ta_details_textView"
+            style="@style/style_aa_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ta_title_textView"
+            android:hint="@string/alarm_details_hint"
+            android:maxLines="5"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ta_details_textView">
+
+            <Switch
+                android:id="@+id/ta_repeatingTrig_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin16"
+                android:text="Repeating"
+                android:textOff="OFF"
+                android:textOn="ON"/>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -26,8 +26,8 @@ import chisw.com.dayit.ui.dialogs.ContactListDialog;
 import chisw.com.dayit.utils.ValidData;
 
 public class RemoteTaskActivity extends TaskActivity {
-    private static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.id";
-    private static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.remoteTask_activity.bundle";
+    private static final String BUNDLE_ID_KEY = "chisw.com.DayIt.ui.activities.remoteTask_activity.id";
+    private static final String BUNDLE_KEY = "chisw.com.DayIt.ui.activities.remoteTask_activity.bundle";
 
     private boolean mIsContactDialogExist;
     private EditText mTextContact;
@@ -61,6 +61,7 @@ public class RemoteTaskActivity extends TaskActivity {
 
         mRClicker = new RClicker();
         findViewById(R.id.rta_contactList_btn).setOnClickListener(mRClicker);
+
         mTvDate.setOnClickListener(mRClicker);
         mTvTime.setOnClickListener(mRClicker);
         mSwitchRepeating.setOnClickListener(mRClicker);
@@ -165,7 +166,7 @@ public class RemoteTaskActivity extends TaskActivity {
                         @Override
                         public void getNumbers(Map<String, String> numbers) {
                             hideProgressDialog();
-                            if(numbers != null) {
+                            if (numbers.size() != 0) {
                                 mContactArrayList.clear();
                                 for (Map.Entry<String, String> nums : numbers.entrySet()) {
                                     String contactInfo = nums.getValue() + " " + nums.getKey();
@@ -179,10 +180,10 @@ public class RemoteTaskActivity extends TaskActivity {
                                 mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
                                 return;
                             }
-                            mIsContactDialogExist = false;
-                            showToast("Can't get contacts now");
+                            showToast("Contact list is empty");
                         }
                     });
+                    mIsContactDialogExist = false;
                     break;
                 default:
                     super.onClick(v);

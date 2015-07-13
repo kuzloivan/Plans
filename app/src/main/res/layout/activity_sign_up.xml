@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:hint="Phone number"
             android:id="@+id/sua_userPhone_editText"
+            android:inputType="phone"
             android:layout_margin="8dp"
             android:textColorHint="#bbbbbb"/>
 

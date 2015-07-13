@@ -21,8 +21,8 @@ import chisw.com.dayit.utils.SystemUtils;
 
 public class ViewPlanActivity extends ToolbarActivity {
 
-    public static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.view_plan_activity.id";
-    public static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.view_plan_activity.bundle";
+    public static final String BUNDLE_ID_KEY = "chisw.com.DayIt.ui.activities.view_plan_activity.id";
+    public static final String BUNDLE_KEY = "chisw.com.DayIt.ui.activities.view_plan_activity.bundle";
 
     private TextView mTv_time;
     private TextView mTv_date;

@@ -23,8 +23,8 @@ import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
 public class LocalTaskActivity extends TaskActivity {
-    private static final String BUNDLE_ID_KEY = "chisw.com.plans.ui.activities.localTask_activity.id";
-    private static final String BUNDLE_KEY = "chisw.com.plans.ui.activities.localTask_activity.bundle";
+    private static final String BUNDLE_ID_KEY = "chisw.com.DayIt.ui.activities.localTask_activity.id";
+    private static final String BUNDLE_KEY = "chisw.com.DayIt.ui.activities.localTask_activity.bundle";
     private final int REQUEST_AUDIO_GET = 1;
 
     private TextView mAlarmSoundName;
