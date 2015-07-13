@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import chisw.com.dayit.core.PApplication;
 import chisw.com.dayit.core.SharedHelper;
-import chisw.com.dayit.db.AlarmManager;
+import chisw.com.dayit.others.AlarmManager;
 import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.net.NetManager;
 import chisw.com.dayit.others.Multimedia;

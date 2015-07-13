@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 
-import chisw.com.dayit.db.AlarmManager;
+import chisw.com.dayit.others.AlarmManager;
 import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.net.NetManager;
 import chisw.com.dayit.others.Multimedia;

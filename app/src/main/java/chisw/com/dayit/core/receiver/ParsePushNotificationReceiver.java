@@ -23,7 +23,6 @@ import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.net.NetManager;
 import chisw.com.dayit.ui.activities.PlannerActivity;
-import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
@@ -39,7 +38,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         SharedHelper sharedHelper = ((PApplication) context.getApplicationContext()).getSharedHelper();
         DBManager dbManager = ((PApplication) context.getApplicationContext()).getDbManager();
         NetManager netManager = ((PApplication) context.getApplicationContext()).getNetManager();
-        chisw.com.dayit.db.AlarmManager alarmManager = ((PApplication) context.getApplicationContext()).getAlarmManager();
+        chisw.com.dayit.others.AlarmManager alarmManager = ((PApplication) context.getApplicationContext()).getAlarmManager();
 
         try {
             Bundle extras = intent.getExtras();
@@ -113,7 +112,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         });
     }
 
-    private void setPlanToExecute(DBManager pDBManager, chisw.com.dayit.db.AlarmManager pAlarmManager, Context pContext) {
+    private void setPlanToExecute(DBManager pDBManager, chisw.com.dayit.others.AlarmManager pAlarmManager, Context pContext) {
         int pendingId = pDBManager.getLastPlanID();
         PendingIntent pendingIntent = pAlarmManager.createPendingIntent(Integer.toString(pendingId));
         ((AlarmManager) pContext.getSystemService(pContext.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, time, pendingIntent);

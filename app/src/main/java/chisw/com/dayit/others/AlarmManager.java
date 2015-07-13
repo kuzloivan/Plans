@@ -1,4 +1,4 @@
-package chisw.com.dayit.db;
+package chisw.com.dayit.others;
 
 import android.app.PendingIntent;
 import android.content.Context;

@@ -149,7 +149,7 @@ public class LocalTaskActivity extends TaskActivity {
             mDurationBuf = getAudioDuration(u);
         }
         mAlarmSoundName.setText(buf);
-        duration(mSeekBar);
+        duration();
     }
 
     private void chooseAudio() {
@@ -177,8 +177,8 @@ public class LocalTaskActivity extends TaskActivity {
         return durationMs / 1000;
     }
 
-    private void duration(SeekBar seekBar) {
-        mAudioDuration = (mDurationBuf * seekBar.getProgress()) / 100;
+    private void duration() {
+        mAudioDuration = (mDurationBuf * mSeekBar.getProgress()) / 100;
         timeFormat();
     }
 
@@ -211,7 +211,7 @@ public class LocalTaskActivity extends TaskActivity {
         final String column = "_data";
         final String[] projection = {column};
         try {
-            cursor = this.getContentResolver().query(uri, projection, selection, selectionArgs,
+            cursor = getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
@@ -265,7 +265,7 @@ public class LocalTaskActivity extends TaskActivity {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            duration(mSeekBar);
+            duration();
         }
 
         @Override
@@ -275,7 +275,7 @@ public class LocalTaskActivity extends TaskActivity {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            duration(mSeekBar);
+            duration();
         }
     }
 
