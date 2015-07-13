@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -24,6 +25,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnSaveCallback;
@@ -123,7 +126,10 @@ public abstract class TaskActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.aa_save_alarm:
-                startAlarm();
+                if(!checkWithRegExp(mEtTitle.getText().toString(), getString(R.string.title_pttrn)))
+                    startAlarm();
+                else
+                    Toast.makeText(this, "No title has been detected", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -394,4 +400,9 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
     }
 
+    public static boolean checkWithRegExp(String userNameString, String regularExpr){
+        Pattern p = Pattern.compile(regularExpr);
+        Matcher m = p.matcher(userNameString);
+        return m.matches();
+    }
 }

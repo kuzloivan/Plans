@@ -11,4 +11,9 @@
         android:title="@string/pa_context_delete">
     </item>
 
+    <item
+        android:id="@+id/pa_context_delete_all"
+        android:title="@string/delete_all_plans">
+    </item>
+
 </menu>

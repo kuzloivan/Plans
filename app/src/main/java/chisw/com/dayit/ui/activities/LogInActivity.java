@@ -97,7 +97,7 @@ public class LogInActivity extends AuthorizationActivity {
 
     private boolean isValidFields() {
         if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {
-            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+            showToast("Login must be at least 4 characters length and start with letter.(a-z,A-Z,0-9)");
             return false;
         }
         if (!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))) {
