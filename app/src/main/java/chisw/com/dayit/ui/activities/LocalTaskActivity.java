@@ -114,15 +114,16 @@ public class LocalTaskActivity extends TaskActivity {
 
     @Override
     protected void startAlarm() {
+        if(!super.checkFields())
+        {
+            return;
+        }
         writePlanToDB(mMyLovelyCalendar);
         super.startAlarm();
     }
 
     private void writePlanToDB(Calendar calendar) {
-        if(!super.checkFields())
-        {
-            return;
-        }
+
         Plan p = new Plan();
         p.setAudioPath(mAudioPath);
         p.setAudioDuration((int) mAudioDuration);

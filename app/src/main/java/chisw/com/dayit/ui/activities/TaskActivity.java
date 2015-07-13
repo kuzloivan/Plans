@@ -167,7 +167,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             netManager.addPlan(p, new OnSaveCallback() {
                 @Override
                 public void getId(String id) {
-                    if(ValidData.isTextValid(id)) {
+                    if (ValidData.isTextValid(id)) {
                         p.setParseId(id);
                         int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
                         p.setLocalId(planId);
@@ -271,7 +271,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             return false;
         }
 
-       //todo Make time verification
+        //todo Make time verification
 //        if (System.currentTimeMillis() > DataUtils.getCalendarByTimeStamp(p)) {
 //            showToast("Time is incorrect.");
 //            return false;
@@ -375,7 +375,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
 
         @Override
-        public void onDatePickPositiveClick(int pYear, int pMonth, int pDay){
+        public void onDatePickPositiveClick(int pYear, int pMonth, int pDay) {
 
             mMyLovelyCalendar.set(Calendar.YEAR, pYear);
             mMyLovelyCalendar.set(Calendar.MONTH, pMonth);
@@ -385,7 +385,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
 
         @Override
-        public void onTimePickPositiveClick(int pHour, int pMinute){
+        public void onTimePickPositiveClick(int pHour, int pMinute) {
 
             mMyLovelyCalendar.set(Calendar.HOUR_OF_DAY, pHour);
             mMyLovelyCalendar.set(Calendar.MINUTE, pMinute);
