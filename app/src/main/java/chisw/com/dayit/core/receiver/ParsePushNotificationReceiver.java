@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 
 import com.parse.ParseBroadcastReceiver;
 
@@ -29,7 +30,8 @@ import chisw.com.dayit.utils.ValidData;
 public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     private String mTitle;
     private String mDetails;
-    private Long time;
+    private Long mTime;
+    private String mFrom;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,19 +48,48 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             JSONObject jObj = new JSONObject(jsonData);
             mTitle = jObj.getString("alert");
             mDetails = jObj.getString("title");
-            time = jObj.getLong("time");
+            mTime = jObj.getLong("time");
+            mFrom = jObj.getString("from");
         } catch (JSONException ex) {
             return;
         }
 
         sendNotification(context, sharedHelper.getVibrationOn());
-
         setPlanToDB(context, dbManager, netManager, sharedHelper.getSynchronization());
         setPlanToExecute(dbManager, alarmManager, context);
     }
 
     private void sendNotification(Context pContext, boolean pVibration) {
+        RemoteViews remoteViews = new RemoteViews(pContext.getPackageName(), R.layout.notification_remote_plan);
         Notification notification;
+        Notification.Builder builder = new Notification.Builder(pContext);
+
+        Intent openPlannerIntent = new Intent(pContext, PlannerActivity.class);
+        openPlannerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent openPlannerPendingIntent = PendingIntent.getActivity(pContext, 20,  openPlannerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        remoteViews.setTextViewText(R.id.tv_title, mTitle);
+        remoteViews.setTextViewText(R.id.tv_details, "from " + mFrom);
+
+        builder.setSmallIcon(R.drawable.ic_alarm)
+                .setContent(remoteViews)
+                .setContentIntent(openPlannerPendingIntent);
+
+        if (SystemUtils.isJellyBeanHigher()) {
+            notification = builder.build();
+        } else {
+            notification = builder.getNotification();
+        }
+        notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationManager notificationManager = (NotificationManager) pContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (pVibration) {
+            notification.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
+        }
+        notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);
+
+        /* PLEASE DON'T REMOVE IT */
+        /*Notification notification;
         Notification.Builder builder = new Notification.Builder(pContext);
 
         Intent openPlannerIntent = new Intent(pContext, PlannerActivity.class);
@@ -82,14 +113,14 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         if (pVibration) {
             notification.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
         }
-        notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);
+        notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);*/
     }
 
     private void setPlanToDB(Context context, final DBManager pDBManager, NetManager pNetManager, boolean pSynchronization) {
         final Plan p = new Plan();
         p.setTitle(mTitle);
         p.setDetails(mDetails);
-        p.setTimeStamp(time);
+        p.setTimeStamp(mTime);
         p.setDaysToAlarm("0000000");
         p.setIsDeleted(0);
         if (!pSynchronization || !SystemUtils.checkNetworkStatus(context)) {
@@ -115,6 +146,6 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     private void setPlanToExecute(DBManager pDBManager, chisw.com.dayit.others.AlarmManager pAlarmManager, Context pContext) {
         int pendingId = pDBManager.getLastPlanID();
         PendingIntent pendingIntent = pAlarmManager.createPendingIntent(Integer.toString(pendingId));
-        ((AlarmManager) pContext.getSystemService(pContext.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        ((AlarmManager) pContext.getSystemService(pContext.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, mTime, pendingIntent);
     }
 }
