@@ -130,10 +130,11 @@ public class LocalTaskActivity extends TaskActivity {
     private void setAudioFromSDCard(Intent audioIntent) {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         String type = mime.getExtensionFromMimeType(getContentResolver().getType(audioIntent.getData()));
+        String typ = mime.getMimeTypeFromExtension(type);
 
         mIsDialogExist = false;
 
-        if (!"audio/mpeg".equalsIgnoreCase(type)) {
+        if (!"audio/mpeg".equalsIgnoreCase(typ)) {
             showToast("File is not valid");
             return;
         }
