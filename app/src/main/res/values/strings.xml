@@ -37,8 +37,9 @@
     <string name="Sign_up">Sign up</string>
     <string name="go_to_sph">Go to Splash</string>
     <!-- Regex patterns -->
-    <string name="login_pttrn">[a-zA-Z0-9]{4,15}</string>
+    <string name="login_pttrn">^[a-zA-Z][a-zA-Z0-9]{3,14}$</string>
     <string name="pass_pttrn">[a-zA-Z0-9]{6,15}</string>
+    <string name="title_pttrn">^\\s*$</string>
 
     <string name="back">Back</string>
     <string name="sa_vibration">Vibration</string>
@@ -77,4 +78,7 @@
     <!-- DeleteDialog -->
     <string name="delete_dialog_title">Delete plan?</string>
     <string name="delete_dialog_delete">Delete</string>
+
+    <!-- SettingActivity -->
+    <string name="delete_all_plans">Delete all plans</string>
 </resources>

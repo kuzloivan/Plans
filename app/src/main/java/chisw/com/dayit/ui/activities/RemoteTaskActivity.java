@@ -23,6 +23,8 @@ import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
+import chisw.com.dayit.utils.DataUtils;
+import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
 public class RemoteTaskActivity extends TaskActivity {
@@ -72,8 +74,12 @@ public class RemoteTaskActivity extends TaskActivity {
     @Override
     protected void startAlarm() {
         if(ValidData.isTextValid(mTextContact.getText().toString())) {
-            sendRemotePlan();
-            writePlanToDB(mMyLovelyCalendar);
+            try {
+                writePlanToDB(mMyLovelyCalendar);
+                sendRemotePlan();
+            } catch (Exception ex) {
+                return;
+            }
             super.startAlarm();
         } else {
             showToast("Please, choose a contact person");
@@ -125,7 +131,12 @@ public class RemoteTaskActivity extends TaskActivity {
         return list;
     }
 
-    private void sendRemotePlan() {
+    private void sendRemotePlan() throws Exception {
+        long interval = (mMyLovelyCalendar.getTimeInMillis() - System.currentTimeMillis())/1000;
+        if (interval < 0) {
+            showToast("Time is wrong");
+            throw new Exception();
+        }
         String[] splited = mTextContact.getText().toString().split("\\s+");
         ParsePush push = new ParsePush();
         JSONObject data = new JSONObject();
@@ -133,17 +144,19 @@ public class RemoteTaskActivity extends TaskActivity {
             data.put("alert", mEtTitle.getText().toString());
             data.put("title", mTvSetDetails.getText().toString());
             data.put("time", Long.toString(mMyLovelyCalendar.getTimeInMillis()));
+            data.put("from", sharedHelper.getDefaultLogin());
         } catch (JSONException ex) {
             return;
         }
         push.setData(data);
+        push.setExpirationTimeInterval(interval);
         push.setChannel(splited[0]);
         push.sendInBackground(new CallbackRemotePlan());
     }
 
-    private void writePlanToDB(Calendar calendar) {
+    private void writePlanToDB(Calendar calendar) throws Exception {
         if (!super.checkFields()) {
-            return;
+            throw new Exception();
         }
         Plan p = new Plan();
         p.setIsRemote(1);

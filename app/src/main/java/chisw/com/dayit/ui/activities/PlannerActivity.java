@@ -69,8 +69,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         ItemClicker itemClicker = new ItemClicker();
         mLvPlanner = (ListView) findViewById(R.id.pa_planner_listView);
         mAdapter = new PlannerCursorAdapter(this);
+
         mLvPlanner.setAdapter(mAdapter);
         mLvPlanner.setOnItemClickListener(itemClicker);
+
         registerForContextMenu(mLvPlanner);
         dbManager.addObserver(this);
         FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
@@ -87,6 +89,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         Cursor cursor = dbManager.getNotDeletedPlans();
         mAdapter.swapCursor(cursor);
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void deleteAllItems(){
+        Cursor cursor = dbManager.getNotDeletedPlans();
+        cursor.moveToFirst();
+        do{
+            deleteEntirely(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
+        }
+        while(cursor.moveToNext());
     }
 
     @Override
@@ -120,6 +131,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     dial.setIDelete(new DeleteDialogClicker());
                     dial.show(getFragmentManager(), "Delete dialog");
                     mWantToDelete = cursor.getInt(idIndex);
+                    break;
+                case R.id.pa_context_delete_all:
+                    deleteAllItems();
+                    showToast("All plans have been deleted");
                     break;
             }
         }

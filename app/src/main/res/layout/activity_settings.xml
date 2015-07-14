@@ -16,20 +16,15 @@
             android:layout_margin="@dimen/margin8"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/sa_vibration_textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:text="@string/sa_vibration" />
-
             <Switch
                 android:id="@+id/sa_vibration_switch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
                 android:textOff="OFF"
-                android:textOn="ON" />
+                android:textOn="ON"
+                android:text="@string/sa_vibration"/>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
@@ -44,20 +39,15 @@
             android:layout_margin="@dimen/margin8"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/sa_autoSync_textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="50"
-                android:text="Auto synchronization" />
-
             <Switch
                 android:id="@+id/sa_autoSync_switch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
                 android:textOff="OFF"
-                android:textOn="ON" />
+                android:textOn="ON"
+                android:text="Auto synchronization"/>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
