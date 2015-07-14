@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.util.Patterns;
 
 import java.util.Calendar;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidData
@@ -37,11 +36,5 @@ public class ValidData
         else {
             return (pDaysToAlarmBundle.charAt((Calendar.getInstance().get(Calendar.DAY_OF_WEEK))) == '1');
         }
-    }
-
-    public static boolean isValidFormat(String path) {
-        Pattern p = Pattern.compile(".*\\.mp3$");
-        Matcher m = p.matcher(path);
-        return m.matches();
     }
 }

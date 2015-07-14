@@ -2,12 +2,17 @@ package chisw.com.dayit.ui.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -212,21 +217,9 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void setImageFromGallery(Intent imageIntent) {
         int targetW = mIvImage.getWidth();
         int targetH = mIvImage.getHeight();
-        if (imageIntent.getScheme().equals("file")) {
-            Uri imageUri = imageIntent.getData();
-            String strImageUri = imageUri.toString();
-            StringBuffer strBuf = new StringBuffer(strImageUri);
-            strBuf = strBuf.delete(0, 5);
-            mSelectedImagePath = strBuf.toString();
-            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
-            mIvImage.setImageBitmap(bitmap);
-        }
-        if (imageIntent.getScheme().equals("content")) {
-            Uri selectedImageUri = imageIntent.getData();
-            mSelectedImagePath = getRealPathFromURI(selectedImageUri);
-            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
-            mIvImage.setImageBitmap(bitmap);
-        }
+        mSelectedImagePath = getPath(imageIntent.getData());
+        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+        mIvImage.setImageBitmap(bitmap);
     }
 
     protected String getName(Uri pathUri, String pathName) {
@@ -244,19 +237,94 @@ public abstract class TaskActivity extends ToolbarActivity {
         return arrPath[arrPath.length - 1];
     }
 
-    protected String getRealPathFromURI(Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = getContentResolver().query(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
+    protected String getPath(Uri data) {
+
+        if (SystemUtils.isKitKatHigher() && DocumentsContract.isDocumentUri(this, data)) {
+            // ExternalStorageProvider
+
+            if (isExternalStorageDocument(data)) {
+                final String docId = DocumentsContract.getDocumentId(data);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(data)) {
+
+                final String id = DocumentsContract.getDocumentId(data);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(this, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(data)) {
+                final String docId = DocumentsContract.getDocumentId(data);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+
+                return getDataColumn(this, contentUri, selection, selectionArgs);
             }
         }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(data.getScheme())) {
+            return getDataColumn(this, data, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(data.getScheme())) {
+            return data.getPath();
+        }
+
+        return null;
+    }
+
+    protected String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    private boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
     protected void chooseImage() {
