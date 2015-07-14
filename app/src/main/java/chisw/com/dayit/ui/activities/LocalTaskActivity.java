@@ -183,6 +183,7 @@ public class LocalTaskActivity extends TaskActivity {
 
     private void fillIn(SeekBar seekbar) {
         Plan p = dbManager.getPlanById(mPlanId);
+        super.fillIn(p);
         mAudioPath = p.getAudioPath();
         if (mAudioPath == null) {
             seekbar.setEnabled(false);
@@ -198,7 +199,6 @@ public class LocalTaskActivity extends TaskActivity {
         mAlarmSoundName.setText(getName(tmpUri, mAudioPath));
         seekbar.setProgress(getPercent((int) mAudioDuration, mAudioPath));
         timeFormat();
-        super.fillIn(p);
     }
 
     private final class LClicker extends TaskActivity.Clicker {
