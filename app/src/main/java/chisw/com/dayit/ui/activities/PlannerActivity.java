@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.GetCallback;
@@ -34,6 +35,7 @@ import chisw.com.dayit.ui.dialogs.DeleteDialog;
 import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
+
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
@@ -66,7 +68,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         ItemClicker itemClicker = new ItemClicker();
         mLvPlanner = (ListView) findViewById(R.id.pa_planner_listView);
         mAdapter = new PlannerCursorAdapter(this);
-
         mLvPlanner.setAdapter(mAdapter);
         mLvPlanner.setOnItemClickListener(itemClicker);
 
@@ -354,6 +355,5 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             showToast("All plans have been deleted");
         }
     }
-
 }
 

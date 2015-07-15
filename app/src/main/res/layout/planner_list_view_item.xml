@@ -133,7 +133,7 @@
                     android:id="@+id/image_view_in_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/default_example_material"
+
                     android:scaleType="centerCrop"
                     />
 
