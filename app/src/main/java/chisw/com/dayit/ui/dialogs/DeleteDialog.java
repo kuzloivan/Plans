@@ -11,6 +11,7 @@ import chisw.com.dayit.R;
 /**
  * Created by Kos on 08.07.2015.
  */
+
 public class DeleteDialog extends DialogFragment {
 
     private IDelete mIDelete;
@@ -26,7 +27,6 @@ public class DeleteDialog extends DialogFragment {
                         else if (getTag().equals(getString(R.string.pa_delete_all_plans))){
                             mIDelete.onDeleteAllOkClick();
                         }
-
                         dismiss();
                     }
                 })

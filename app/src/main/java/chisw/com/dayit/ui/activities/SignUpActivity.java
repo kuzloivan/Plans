@@ -93,6 +93,7 @@ public class SignUpActivity extends AuthorizationActivity {
                 hideProgressDialog();
                 return;
             }
+
             /* Save user credentials and then Log In */
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
             sharedHelper.setDefaultPhone(mPhone.getText().toString());
@@ -109,7 +110,7 @@ public class SignUpActivity extends AuthorizationActivity {
             return false;
         }
         if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {
-            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+            showToast("Login must be at least 4 characters length and start with letter.(a-z,A-Z,0-9)");
             return false;
         }
         if (!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))) {

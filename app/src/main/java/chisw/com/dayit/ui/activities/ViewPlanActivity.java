@@ -148,7 +148,7 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         @Override
         public void onDeleteAllOkClick(){
-
+            // this option is disabled. No need in this option
         }
     }
 }
