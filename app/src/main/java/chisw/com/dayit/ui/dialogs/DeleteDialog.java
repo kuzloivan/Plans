@@ -20,12 +20,15 @@ public class DeleteDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.delete_dialog_title)
-                .setPositiveButton(R.string.delete_dialog_delete, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete_dialog_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if(getTag().equals(getString(R.string.pa_delete_plan)))
                             mIDelete.onDeleteOkClick();
                         else if (getTag().equals(getString(R.string.pa_delete_all_plans))){
                             mIDelete.onDeleteAllOkClick();
+                        }
+                        else if (getTag().equals(getString(R.string.ua_save))){
+                            mIDelete.onSaveUser();
                         }
                         dismiss();
                     }
@@ -41,6 +44,7 @@ public class DeleteDialog extends DialogFragment {
     public interface IDelete{
         void onDeleteOkClick();
         void onDeleteAllOkClick();
+        void onSaveUser();
     }
 
     public void setIDelete(IDelete pIDelete) {

@@ -21,6 +21,7 @@ import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.entity.PlansEntity;
+import chisw.com.dayit.db.entity.UserEntity;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.utils.ValidData;
 
@@ -121,6 +122,13 @@ public class NetManager implements NetBridge {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
         query.whereEqualTo(PLAN_ID, plan.getParseId());
         query.getInBackground(plan.getParseId(), callbackEditPlan);
+    }
+
+    @Override
+    public void editUser(ParseUser pParseUser, GetCallback<ParseUser> callBackEditUser){
+        ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+        query.whereEqualTo("objectId" ,pParseUser.getObjectId());
+        query.getInBackground(pParseUser.getObjectId(), callBackEditUser);
     }
 
     @Override

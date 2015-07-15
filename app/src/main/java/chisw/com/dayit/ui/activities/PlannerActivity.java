@@ -354,6 +354,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             deleteAllItems();
             showToast("All plans have been deleted");
         }
+
+        @Override
+        public void onSaveUser(){ }
     }
 }
 

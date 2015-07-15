@@ -6,48 +6,51 @@
 
     <include layout="@layout/toolbar"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="16dp">
 
-        <TextView
-            android:id="@+id/ua_login_tv"
+        <EditText
+            android:id="@+id/ua_login_et"
+            android:hint="@string/ua_login_hint"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/toolbar_background_color"
             android:textSize="20sp"
-            android:gravity="center"
-            android:layout_width="26dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="User Login"/>
 
-        <TextView
-            android:id="@+id/ua_phone_number_tv"
+        <EditText
+            android:id="@+id/ua_phone_number_et"
+            android:hint="@string/ua_phone_hint"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:textColor="@color/toolbar_background_color"
             android:textSize="20sp"
-            android:gravity="center"
             android:layout_weight="1"
-            android:layout_width="26dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="User Number"/>
 
-    </LinearLayout>
+    <EditText
+        android:id="@+id/ua_password_et"
+        android:hint="@string/ua_password_hint"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:textColor="@color/toolbar_background_color"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password"/>
 
         <Button
+            android:id="@+id/ua_save_bt"
             style="@style/style_aa_btns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ua_edit_password"/>
-
-        <Button
-            style="@style/style_aa_btns"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ua_get_contact_list"/>
+            android:text="@string/ua_save"/>
 
 </LinearLayout>
