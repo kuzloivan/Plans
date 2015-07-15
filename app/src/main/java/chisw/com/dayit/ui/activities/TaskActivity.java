@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,7 +29,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -126,6 +124,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             String daysToAlarm = dbManager.getDaysToAlarmById(mPlanId);
             if (daysToAlarm != null) {
                 setEnabledCheckBoxes(daysToAlarm.charAt(0) == '1');
+                mTvDate.setVisibility((daysToAlarm.charAt(0) == '1') ? View.INVISIBLE : View.VISIBLE);
                 mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
                 mDaysToAlarm = daysToAlarm.substring(1);
                 initializeCheckBoxes();
@@ -383,21 +382,30 @@ public abstract class TaskActivity extends ToolbarActivity {
             return false;
         }
 
-        //todo Make time verification
-//        if (System.currentTimeMillis() > DataUtils.getCalendarByTimeStamp(p)) {
-//            showToast("Time is incorrect.");
-//            return false;
-//        }
+        if (!mSwitchRepeating.isChecked() && System.currentTimeMillis() > mMyLovelyCalendar.getTimeInMillis()) {
+            showToast("Time is incorrect.");
+            return false;
+        }
+        else if(mSwitchRepeating.isChecked() && mMyLovelyCalendar.getTimeInMillis() < System.currentTimeMillis()){
+            fixCalendarForRepeat();
+        }
 
         return true;
     }
 
+    protected void fixCalendarForRepeat(){
+        Calendar calendar = Calendar.getInstance();
+
+        mMyLovelyCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
+        mMyLovelyCalendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+        mMyLovelyCalendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+    }
 
     protected void fillIn(Plan p) {
         mEtTitle.setText(p.getTitle());
         mTvSetDetails.setText(p.getDetails());
-        mTvDate.setText(DataUtils.getDateStringFromTimeStamp(p.getTimeStamp()));
-        mTvTime.setText(DataUtils.getTimeStringFromTimeStamp(p.getTimeStamp()));
+        mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
+        mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
 
         mSelectedImagePath = p.getImagePath();
         Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
@@ -457,9 +465,11 @@ public abstract class TaskActivity extends ToolbarActivity {
                 case R.id.ta_repeatingTrig_switch:
                     if (!mSwitchRepeating.isChecked()) {
                         setEnabledCheckBoxes(false);
+                        mTvDate.setVisibility(View.VISIBLE);
                    }
                     else {
                         setEnabledCheckBoxes(true);
+                        mTvDate.setVisibility(View.INVISIBLE);
                     }
                     break;
                 case R.id.ta_planImage_imageView:
