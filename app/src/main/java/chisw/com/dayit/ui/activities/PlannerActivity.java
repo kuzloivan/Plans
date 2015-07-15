@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.GetCallback;
@@ -36,13 +35,11 @@ import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
-
 public class PlannerActivity extends ToolbarActivity implements Observer {
 
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
     private int mWantToDelete;
-    private ImageView mIvPicture;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -137,7 +134,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     dialDeleteAll.setIDelete(new DeleteDialogClicker());
                     dialDeleteAll.show(getFragmentManager(), "Delete dialog");
                     mWantToDelete = -1;
-                    deleteAllItems();
                     showToast("All plans have been deleted");
                     break;
             }
@@ -191,6 +187,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 dbManager.eraseMe(sharedHelper.getDefaultLogin());
                 sharedHelper.clearData();
                 LogInActivity.start(PlannerActivity.this);
+                break;
+            case R.id.pa_user_activity:
+                SettingsActivity.start(UserActivity.this);
                 break;
         }
         return super.onOptionsItemSelected(pMenuItem);
@@ -352,5 +351,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             }
         }
     }
+
 }
 

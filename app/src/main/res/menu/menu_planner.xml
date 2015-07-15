@@ -17,8 +17,16 @@
     </item>
 
     <item
+        android:id="@+id/pa_user_activity"
+        app:showAsAction="never"
+        android:title="@string/pa_user_activity">
+    </item>
+
+    <item
         android:id="@+id/pa_menu_log_off"
         app:showAsAction="never"
         android:title="@string/pa_log_out">
     </item>
+
+
 </menu>

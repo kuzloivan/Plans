@@ -54,6 +54,7 @@
     <string name="pa_log_out">Log out</string>
     <string name="pa_context_edit">Edit</string>
     <string name="pa_context_delete">Delete</string>
+    <string name="pa_user_activity">Edit profile</string>
 
     <!-- View plan activity -->
     <string name="title_activity_view_plan">Plan view</string>
