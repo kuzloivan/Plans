@@ -17,7 +17,9 @@ import com.parse.GetCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -184,7 +186,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 cursor.close();
                 dbManager.clearPlans();
                 dbManager.eraseMe(sharedHelper.getDefaultLogin());
-                sharedHelper.clearData();
                 LogInActivity.start(PlannerActivity.this);
                 break;
             case R.id.pa_user_activity:
@@ -271,8 +272,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             }
             dbManager.clearPlans();
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
-            sharedHelper.clearData();
 
+            ParsePush.unsubscribeInBackground(sharedHelper.getDefaultLogin());
+
+            sharedHelper.clearData();
             PlannerActivity.this.finish();
 
             hideProgressDialog();
