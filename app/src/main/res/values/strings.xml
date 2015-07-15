@@ -76,7 +76,7 @@
     <string name="plan_type_title">Choose plan type</string>
 
     <!-- DeleteDialog -->
-    <string name="delete_dialog_title">Delete plan?</string>
+    <string name="delete_dialog_title">Are you sure ?</string>
     <string name="delete_dialog_delete">Delete</string>
 
     <!-- SettingActivity -->

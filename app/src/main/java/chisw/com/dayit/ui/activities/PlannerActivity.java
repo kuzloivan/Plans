@@ -133,6 +133,10 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     mWantToDelete = cursor.getInt(idIndex);
                     break;
                 case R.id.pa_context_delete_all:
+                    DeleteDialog dialDeleteAll = new DeleteDialog();
+                    dialDeleteAll.setIDelete(new DeleteDialogClicker());
+                    dialDeleteAll.show(getFragmentManager(), "Delete dialog");
+                    mWantToDelete = -1;
                     deleteAllItems();
                     showToast("All plans have been deleted");
                     break;
@@ -340,7 +344,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void onDeleteOkClick() {
-            deleteEntirely(mWantToDelete);
+            if (mWantToDelete != -1){
+                deleteEntirely(mWantToDelete);
+            }
+            else {
+                deleteAllItems();
+            }
         }
     }
 }
