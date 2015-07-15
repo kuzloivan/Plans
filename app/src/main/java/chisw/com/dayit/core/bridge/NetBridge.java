@@ -29,5 +29,6 @@ public interface NetBridge {
     Plan getPlan(String pId);
     void editPlan(Plan plan, GetCallback<ParseObject> callbackEditPlan);
     void deletePlan(String pId);
+    void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback);
 
 }

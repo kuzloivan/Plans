@@ -95,6 +95,7 @@ public class SignUpActivity extends AuthorizationActivity {
             }
             /* Save user credentials and then Log In */
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
+            sharedHelper.setDefaultPhone(mPhone.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
             showToast("SignUp was successful");

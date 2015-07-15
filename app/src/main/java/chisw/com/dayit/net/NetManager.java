@@ -66,6 +66,12 @@ public class NetManager implements NetBridge {
     }
 
     @Override
+    public void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn(USERNAME, userNames);
+        query.findInBackground(new CallbackGetNumbers(onGetNumbersCallback));
+    }
+    @Override
     public void addPlan(Plan plan, OnSaveCallback callback) {
         ParseObject pPlan = new ParseObject(TABLE_NAME);
         pPlan.put(TITLE, plan.getTitle());

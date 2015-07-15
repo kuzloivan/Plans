@@ -1,7 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
+    <include layout="@layout/toolbar"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/ua_login_tv"
+            android:textColor="@color/toolbar_background_color"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="User Login"/>
+
+        <TextView
+            android:id="@+id/ua_phone_number_tv"
+            android:textColor="@color/toolbar_background_color"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:text="User Number"/>
+
+    </LinearLayout>
+
+        <Button
+            style="@style/style_aa_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ua_edit_password"/>
+
+        <Button
+            style="@style/style_aa_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ua_get_contact_list"/>
 
 </LinearLayout>

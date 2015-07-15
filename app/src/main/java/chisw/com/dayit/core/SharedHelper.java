@@ -15,6 +15,7 @@ public class SharedHelper {
     public static final String APP_PREFERENCES_DURATION_SONG = "duration_song";
     public static final String APP_PREFERENCES_USER_SONG = "user_song";
     public static final String APP_PREFERENCE_SYNCHRONIZATION = "sync_on";
+    public static final String APP_PREFERENCE_USER_PHONE = "user_phone";
 
     private SharedPreferences sharedPreferences;
 
@@ -36,6 +37,14 @@ public class SharedHelper {
 
     public void setDefaultLogin(String appPreferencesLogin) {
         sharedPreferences.edit().putString(APP_PREFERENCE_LOGIN, appPreferencesLogin).apply();
+    }
+
+    public String getDefaultPhone(){
+        return sharedPreferences.getString(APP_PREFERENCE_USER_PHONE, "");
+    }
+
+    public void setDefaultPhone(String appPreferencesPhone){
+        sharedPreferences.edit().putString(APP_PREFERENCE_USER_PHONE, appPreferencesPhone).apply();
     }
 
     //pass
