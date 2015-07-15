@@ -1,7 +1,6 @@
 package chisw.com.dayit.ui.activities;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -126,7 +125,6 @@ public class LocalTaskActivity extends TaskActivity {
     }
 
     private void writePlanToDB(Calendar calendar) {
-
         Plan p = new Plan();
         p.setAudioPath(mAudioPath);
         p.setAudioDuration((int) mAudioDuration);
