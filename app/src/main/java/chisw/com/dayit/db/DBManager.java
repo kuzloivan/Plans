@@ -59,6 +59,19 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
+    public Plan getPlanByTitleAndSender(String pTitle, String pSender) {
+        Plan plan = null;
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.TITLE + "=? AND " + PlansEntity.SENDER + "=?",
+                new String[]{pTitle, pSender}, null, null, null );
+        if(cursor.moveToFirst()) {
+            plan = Mapper.parseCursor(cursor);
+            cursor.close();
+        }
+        return plan;
+    }
+
+
+    @Override
     public Cursor getCursorById(int id) {
         return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);

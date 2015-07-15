@@ -13,6 +13,7 @@ public class Plan {
     private int isDeleted;
     private int isSynchronized;
     private int isRemote;
+    private String sender;
 
     public int getLocalId() {
         return localId;
@@ -110,4 +111,8 @@ public class Plan {
     public void setIsRemote(int pIsRemote) {
         isRemote = pIsRemote;
     }
+
+    public String getSender() { return sender; }
+
+    public void setSender(String pSender) { sender = pSender; }
 }
