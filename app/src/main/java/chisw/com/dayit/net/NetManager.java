@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import chisw.com.dayit.core.bridge.NetBridge;
+
+import chisw.com.dayit.core.callback.CheckPhoneCallback;
 import chisw.com.dayit.core.callback.GetPlanCallback;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
@@ -41,7 +43,7 @@ public class NetManager implements NetBridge {
     public static final String PHONE = "phone";
 
     @Override
-    public void registerUser(String name, String password,String pPhone, SignUpCallback signUpCallback) {
+    public void registerUser(String name, String password, String pPhone, SignUpCallback signUpCallback) {
         ParseUser user = new ParseUser();
         user.setUsername(name);
         user.setPassword(password);
@@ -77,10 +79,10 @@ public class NetManager implements NetBridge {
         ParseObject pPlan = new ParseObject(TABLE_NAME);
         pPlan.put(TITLE, plan.getTitle());
         pPlan.put(TIMESTAMP, plan.getTimeStamp());
-        if(ValidData.isTextValid(plan.getAudioPath())) {
+        if (ValidData.isTextValid(plan.getAudioPath())) {
             pPlan.put(AUDIO_PATH, plan.getAudioPath());
         }
-        if (ValidData.isTextValid(plan.getImagePath())){
+        if (ValidData.isTextValid(plan.getImagePath())) {
             pPlan.put(IMAGE_PATH, plan.getImagePath());
         }
         pPlan.put(DETAILS, plan.getDetails());
@@ -115,6 +117,13 @@ public class NetManager implements NetBridge {
             }
         }));
         return p;
+    }
+
+    @Override
+    public void checkPhone(String phone, CheckPhoneCallback checkPhoneCallback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+        query.whereEqualTo(PHONE, phone);
+        query.findInBackground(new CallBackPhone(checkPhoneCallback));
     }
 
     @Override
@@ -165,18 +174,36 @@ public class NetManager implements NetBridge {
         }
     }
 
-    public final class CallbackGetPlan implements GetCallback<ParseObject>{
+    public final class CallbackGetPlan implements GetCallback<ParseObject> {
         private final GetPlanCallback getPlanCallback;
 
-        public CallbackGetPlan( GetPlanCallback callback){
-            this.getPlanCallback=callback;
+        public CallbackGetPlan(GetPlanCallback callback) {
+            this.getPlanCallback = callback;
         }
 
         @Override
         public void done(ParseObject parseObject, ParseException e) {
-            if (e == null){
+            if (e == null) {
                 getPlanCallback.getPlan(parseObject);
             }
+        }
+    }
+
+    private final class CallBackPhone implements FindCallback<ParseObject>{
+        private CheckPhoneCallback checkPhoneCallback;
+
+        public CallBackPhone(CheckPhoneCallback checkPhoneCallback) {
+            this.checkPhoneCallback = checkPhoneCallback;
+        }
+
+        @Override
+        public void done(List<ParseObject> list, ParseException e) {
+           if(e == null && !list.isEmpty())
+           {
+               checkPhoneCallback.isNumberTaken(true);
+               return;
+           }
+            checkPhoneCallback.isNumberTaken(false);
         }
     }
 

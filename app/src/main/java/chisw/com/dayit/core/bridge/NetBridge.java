@@ -9,6 +9,7 @@ import com.parse.SignUpCallback;
 
 import java.util.List;
 
+import chisw.com.dayit.core.callback.CheckPhoneCallback;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
@@ -21,9 +22,8 @@ public interface NetBridge {
     void registerUser(String pName, String pPassword, String pPhone, SignUpCallback signUpCallback);
     void loginUser(String pName, String pPassword, LogInCallback logInCallback);
     void logoutUser(String pName, String pPassword, LogOutCallback logOutCallback);
-
     void getUsersByNumbers(List<String> phoneNums, OnGetNumbersCallback onGetNumbersCallback);
-
+    void checkPhone(String phone, CheckPhoneCallback checkPhoneCallback);
     /* Plan */
     void addPlan(Plan plan, OnSaveCallback callback);
     void getAllPlans(OnGetPlansCallback callback);
