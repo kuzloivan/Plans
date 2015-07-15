@@ -75,8 +75,8 @@ public class RemoteTaskActivity extends TaskActivity {
     protected void startAlarm() {
         if(ValidData.isTextValid(mTextContact.getText().toString())) {
             try {
-                writePlanToDB(mMyLovelyCalendar);
                 sendRemotePlan();
+                writePlanToDB(mMyLovelyCalendar);
             } catch (Exception ex) {
                 return;
             }
