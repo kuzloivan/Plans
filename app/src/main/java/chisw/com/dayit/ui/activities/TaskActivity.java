@@ -83,6 +83,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         mSwitchRepeating = (Switch) findViewById(R.id.ta_repeatingTrig_switch);
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mTvSetDetails = (EditText) findViewById(R.id.ta_details_textView);
+
         mDaysToAlarm = "0000000";
 
         mCheckBoxesArr = new ArrayList<CheckBox>();
@@ -94,7 +95,8 @@ public abstract class TaskActivity extends ToolbarActivity {
         mCheckBoxesArr.add((CheckBox) findViewById(R.id.friday));
         mCheckBoxesArr.add((CheckBox) findViewById(R.id.saturday));
 
-        initializeCheckBoxed();
+        setEnabledCheckBoxes(false);
+
 
 
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
@@ -123,12 +125,10 @@ public abstract class TaskActivity extends ToolbarActivity {
         if (mIsEdit) {
             String daysToAlarm = dbManager.getDaysToAlarmById(mPlanId);
             if (daysToAlarm != null) {
-                if (daysToAlarm.charAt(0) == '1') {
-                    mSwitchRepeating.setChecked(true);
-                    mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
-                }
+                setEnabledCheckBoxes(daysToAlarm.charAt(0) == '1');
                 mSwitchRepeating.setChecked(daysToAlarm.charAt(0) == '1');
-                mDaysToAlarm = daysToAlarm.substring(1, daysToAlarm.length() - 1);
+                mDaysToAlarm = daysToAlarm.substring(1);
+                initializeCheckBoxes();
             }
         }
     }
@@ -162,6 +162,24 @@ public abstract class TaskActivity extends ToolbarActivity {
         return R.layout.activity_task;
     }
 
+    protected void setEnabledCheckBoxes(boolean pIsEnabled){
+        for (CheckBox c : mCheckBoxesArr){
+            c.setEnabled(pIsEnabled);
+        }
+    }
+
+    protected void initializeDaysOfWeek(){
+        mDaysToAlarm = "";
+        for (CheckBox c : mCheckBoxesArr){
+            mDaysToAlarm += c.isChecked() ? "1" : "0";
+        }
+    }
+
+    protected void initializeCheckBoxes(){
+        for(int i = 0; i < 7; i++){
+            mCheckBoxesArr.get(i).setChecked(mDaysToAlarm.charAt(i) == '1');
+        }
+    }
     protected void writePlanToDB(Calendar calendar, Plan plan) {
 
         final Plan p = plan;
@@ -169,6 +187,9 @@ public abstract class TaskActivity extends ToolbarActivity {
         p.setTitle(mEtTitle.getText().toString());
         p.setTimeStamp(calendar.getTimeInMillis());
         p.setImagePath(mSelectedImagePath);
+
+        initializeDaysOfWeek();
+
         p.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
         p.setIsDeleted(0);
 
@@ -371,11 +392,6 @@ public abstract class TaskActivity extends ToolbarActivity {
         return true;
     }
 
-    protected void initializeCheckBoxed(){
-        for(int i = 0; i < 7; i++){
-            mCheckBoxesArr.get(i).setChecked(mDaysToAlarm.charAt(i) == '1');
-        }
-    }
 
     protected void fillIn(Plan p) {
         mEtTitle.setText(p.getTitle());
@@ -438,24 +454,13 @@ public abstract class TaskActivity extends ToolbarActivity {
                     mTimeDialog.show(getSupportFragmentManager(), "timePicker");
                     mTimeDialog.setListener(new DialogClicker());
                     break;
-                case R.id.sunday:
-                case R.id.monday:
-                case R.id.tuesday:
-                case R.id.wednesday:
-                case R.id.thursday:
-                case R.id.friday:
-                case R.id.saturday:
                 case R.id.ta_repeatingTrig_switch:
-                    if (mSwitchRepeating.isChecked()) {
-                        mDaysOfWeekDialog = new DaysOfWeekDialog();
-
-                        Bundle days = new Bundle();
-                        days.putString("mDaysToAlarm", mDaysToAlarm);
-                        mDaysOfWeekDialog.setArguments(days);
-                        mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysOfWeekPicker");
-                        mDaysOfWeekDialog.setListener(new DialogClicker());
-
+                    if (!mSwitchRepeating.isChecked()) {
+                        setEnabledCheckBoxes(false);
                    }
+                    else {
+                        setEnabledCheckBoxes(true);
+                    }
                     break;
                 case R.id.ta_planImage_imageView:
                     chooseImage();
@@ -471,7 +476,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         @Override
         public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
             mDaysToAlarm = pDaysOfWeek; //DOW
-            initializeCheckBoxed();
+            initializeCheckBoxes();
         }
 
         @Override

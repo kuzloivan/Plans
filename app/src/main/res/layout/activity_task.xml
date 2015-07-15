@@ -59,7 +59,6 @@
 
         <EditText
             android:id="@+id/ta_title_textView"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ta_top_relativeLayout"
@@ -88,6 +87,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin16"
+                android:textColor="@color/toolbar_background_color"
+                android:textSize="20sp"
                 android:text="Repeating"
                 android:textOff="OFF"
                 android:textOn="ON"/>
