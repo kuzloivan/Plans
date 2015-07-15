@@ -80,13 +80,15 @@
 
     <!-- DeleteDialog -->
     <string name="delete_dialog_title">Are you sure ?</string>
-    <string name="delete_dialog_delete">Delete</string>
+    <string name="delete_dialog_ok">Ok</string>
 
     <!-- SettingActivity -->
     <string name="delete_all_plans">Delete all plans</string>
 
     <!-- UserActivity -->
-    <string name="ua_edit_password">Edit password</string>
-    <string name="ua_get_contact_list">Get contact list</string>
+    <string name="ua_save">Save changes</string>
+    <string name="ua_password_hint">Password</string>
+    <string name="ua_login_hint">Login</string>
+    <string name="ua_phone_hint">Phone number</string>
 
 </resources>

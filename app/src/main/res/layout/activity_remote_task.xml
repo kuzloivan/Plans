@@ -38,7 +38,7 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:maxLines="1"
-                    android:enabled="false"/>
+                    android:enabled="true"/>
 
                 <Button
                     android:id="@+id/rta_contactList_btn"

@@ -4,6 +4,7 @@ import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.List;
@@ -30,5 +31,5 @@ public interface NetBridge {
     void editPlan(Plan plan, GetCallback<ParseObject> callbackEditPlan);
     void deletePlan(String pId);
     void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback);
-
+    void editUser(ParseUser pParseUser, GetCallback<ParseUser> callBackEditUser);
 }
