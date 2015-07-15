@@ -15,6 +15,7 @@ import chisw.com.dayit.R;
 public class DeleteDialog extends DialogFragment {
 
     private IDelete mIDelete;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

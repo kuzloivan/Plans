@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -29,6 +30,8 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,9 +68,11 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected String mDaysToAlarm;
     protected int mPlanId;
     protected Calendar mMyLovelyCalendar;
+    protected ArrayList<CheckBox> mCheckBoxesArr;
 
     protected void initViews() {
         initBackButton();
+
         mMyLovelyCalendar = Calendar.getInstance();
         mMyLovelyCalendar.set(Calendar.SECOND, 0);
         mTvDate = (TextView) findViewById(R.id.ta_setDate_textView);
@@ -79,6 +84,18 @@ public abstract class TaskActivity extends ToolbarActivity {
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mTvSetDetails = (EditText) findViewById(R.id.ta_details_textView);
         mDaysToAlarm = "0000000";
+
+        mCheckBoxesArr = new ArrayList<CheckBox>();
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.sunday));
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.monday));
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.tuesday));
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.wednesday));
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.thursday));
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.friday));
+        mCheckBoxesArr.add((CheckBox) findViewById(R.id.saturday));
+
+        initializeCheckBoxed();
+
 
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -354,6 +371,12 @@ public abstract class TaskActivity extends ToolbarActivity {
         return true;
     }
 
+    protected void initializeCheckBoxed(){
+        for(int i = 0; i < 7; i++){
+            mCheckBoxesArr.get(i).setChecked(mDaysToAlarm.charAt(i) == '1');
+        }
+    }
+
     protected void fillIn(Plan p) {
         mEtTitle.setText(p.getTitle());
         mTvSetDetails.setText(p.getDetails());
@@ -415,6 +438,13 @@ public abstract class TaskActivity extends ToolbarActivity {
                     mTimeDialog.show(getSupportFragmentManager(), "timePicker");
                     mTimeDialog.setListener(new DialogClicker());
                     break;
+                case R.id.sunday:
+                case R.id.monday:
+                case R.id.tuesday:
+                case R.id.wednesday:
+                case R.id.thursday:
+                case R.id.friday:
+                case R.id.saturday:
                 case R.id.ta_repeatingTrig_switch:
                     if (mSwitchRepeating.isChecked()) {
                         mDaysOfWeekDialog = new DaysOfWeekDialog();
@@ -422,10 +452,10 @@ public abstract class TaskActivity extends ToolbarActivity {
                         Bundle days = new Bundle();
                         days.putString("mDaysToAlarm", mDaysToAlarm);
                         mDaysOfWeekDialog.setArguments(days);
-
                         mDaysOfWeekDialog.show(getSupportFragmentManager(), "daysOfWeekPicker");
                         mDaysOfWeekDialog.setListener(new DialogClicker());
-                    }
+
+                   }
                     break;
                 case R.id.ta_planImage_imageView:
                     chooseImage();
@@ -441,6 +471,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         @Override
         public void onDaysOfWeekPositiveClick(String pDaysOfWeek) {
             mDaysToAlarm = pDaysOfWeek; //DOW
+            initializeCheckBoxed();
         }
 
         @Override

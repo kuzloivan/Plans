@@ -59,6 +59,8 @@ public class UserActivity extends ToolbarActivity {
         mPasswordET.setText(sharedHelper.getDefaultPass());
 
     }
+
+
     private final class DeleteDialogClicker implements DeleteDialog.IDelete {
 
         @Override

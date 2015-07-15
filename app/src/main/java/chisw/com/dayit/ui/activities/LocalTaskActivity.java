@@ -63,6 +63,13 @@ public class LocalTaskActivity extends TaskActivity {
 
         mLClicker = new LClicker();
         findViewById(R.id.lta_setAudio_btn).setOnClickListener(mLClicker);
+        findViewById(R.id.sunday).setOnClickListener(mLClicker);
+        findViewById(R.id.monday).setOnClickListener(mLClicker);
+        findViewById(R.id.tuesday).setOnClickListener(mLClicker);
+        findViewById(R.id.wednesday).setOnClickListener(mLClicker);
+        findViewById(R.id.thursday).setOnClickListener(mLClicker);
+        findViewById(R.id.friday).setOnClickListener(mLClicker);
+        findViewById(R.id.saturday).setOnClickListener(mLClicker);
 
         mTvDate.setOnClickListener(mLClicker);
         mTvTime.setOnClickListener(mLClicker);
