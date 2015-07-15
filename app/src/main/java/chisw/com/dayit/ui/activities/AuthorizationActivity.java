@@ -23,6 +23,7 @@ import chisw.com.dayit.utils.ValidData;
 /**
  * Created by vdbo on 02.07.15.
  */
+
 public abstract class AuthorizationActivity extends ToolbarActivity {
 
     protected EditText mLogin;

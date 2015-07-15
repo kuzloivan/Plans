@@ -35,5 +35,4 @@ public class UserActivity extends ToolbarActivity {
         mLoginTV.setText(sharedHelper.getDefaultLogin());
         mPhoneTV.setText(sharedHelper.getDefaultPhone());
     }
-
 }

@@ -145,5 +145,10 @@ public class ViewPlanActivity extends ToolbarActivity {
         public void onDeleteOkClick() {
             deleteEntirely();
         }
+
+        @Override
+        public void onDeleteAllOkClick(){
+
+        }
     }
 }
