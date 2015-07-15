@@ -189,7 +189,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 LogInActivity.start(PlannerActivity.this);
                 break;
             case R.id.pa_user_activity:
-                SettingsActivity.start(UserActivity.this);
+               // SettingsActivity.start(UserActivity.this);
                 break;
         }
         return super.onOptionsItemSelected(pMenuItem);
