@@ -2,9 +2,7 @@
 
     <!-- Common -->
     <string name="app_name">DayIt</string>
-    <string name="title_activity_planner">Planner</string>
     <string name="title_activity_settings">Settings Activity</string>
-    <string name="title_activity_login">DayIt</string>
 
     <!-- Alarm activity -->
     <string name="wakeUp">Wake up !!!</string>

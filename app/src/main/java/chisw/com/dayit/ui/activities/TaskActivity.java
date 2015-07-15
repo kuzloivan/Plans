@@ -140,47 +140,36 @@ public abstract class TaskActivity extends ToolbarActivity {
         return R.layout.activity_task;
     }
 
-    protected void writePlanToDB(Calendar calendar, Plan plan) {
+    protected void writePlanToDB(Calendar calendar, Plan pPlan) {
 
-        final Plan p = plan;
-        p.setDetails(mTvSetDetails.getText().toString());
-        p.setTitle(mEtTitle.getText().toString());
-        p.setTimeStamp(calendar.getTimeInMillis());
-        p.setImagePath(mSelectedImagePath);
-        p.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
-        p.setIsDeleted(0);
+        final Plan plan = pPlan;
+        plan.setDetails(mTvSetDetails.getText().toString());
+        plan.setTitle(mEtTitle.getText().toString());
+        plan.setTimeStamp(calendar.getTimeInMillis());
+        plan.setImagePath(mSelectedImagePath);
+        plan.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
+        plan.setIsDeleted(0);
 
         if (mIsEdit) {
-
-            p.setParseId(dbManager.getPlanById(mPlanId).getParseId());
-            p.setLocalId(dbManager.getPlanById(mPlanId).getLocalId());
-            if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
-                p.setIsSynchronized(0);
-                dbManager.editPlan(p, mPlanId);
+            plan.setParseId(dbManager.getPlanById(mPlanId).getParseId());
+            plan.setLocalId(dbManager.getPlanById(mPlanId).getLocalId());
+            if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                plan.setIsSynchronized(0);
+                dbManager.editPlan(plan, mPlanId);
                 return;
             }
-            p.setIsSynchronized(1);
-            dbManager.editPlan(p, mPlanId);
-            netManager.editPlan(p, new CallbackEditPlan(p));
+            plan.setIsSynchronized(1);
+            dbManager.editPlan(plan, mPlanId);
+            netManager.editPlan(plan, new CallbackEditPlan(plan));
         } else {
-            if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
-                p.setIsSynchronized(0);
-                dbManager.saveNewPlan(p);
+            if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                plan.setIsSynchronized(0);
+                dbManager.saveNewPlan(plan);
                 return;
             }
-            p.setIsSynchronized(1);
-            dbManager.saveNewPlan(p);
-            netManager.addPlan(p, new OnSaveCallback() {
-                @Override
-                public void getId(String id) {
-                    if (ValidData.isTextValid(id)) {
-                        p.setParseId(id);
-                        int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
-                        p.setLocalId(planId);
-                        dbManager.editPlan(p, planId);
-                    }
-                }
-            });
+            plan.setIsSynchronized(1);
+            dbManager.saveNewPlan(plan);
+            netManager.addPlan(plan, new CallbackAddPLan(plan));
         }
     }
 
@@ -300,6 +289,25 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
 
         mMyLovelyCalendar = DataUtils.getCalendarByTimeStamp(p.getTimeStamp());
+    }
+
+    protected final class CallbackAddPLan implements OnSaveCallback {
+
+        private Plan mPlan;
+
+        public CallbackAddPLan(Plan pPlan) {
+            mPlan = pPlan;
+        }
+
+        @Override
+        public void getId(String id) {
+            if (ValidData.isTextValid(id)) {
+                mPlan.setParseId(id);
+                int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                mPlan.setLocalId(planId);
+                dbManager.editPlan(mPlan, planId);
+            }
+        }
     }
 
     protected final class CallbackEditPlan implements GetCallback<ParseObject> {

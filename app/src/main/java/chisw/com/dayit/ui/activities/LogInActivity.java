@@ -72,8 +72,9 @@ public class LogInActivity extends AuthorizationActivity {
 
     @Override
     protected void startSomeActivity() {
-        PlannerActivity.start(LogInActivity.this);
-        LogInActivity.this.finish();
+        finish();
+    /*  PlannerActivity.start(LogInActivity.this);
+        LogInActivity.this.finish();*/
     }
 
     public final class Clicker implements View.OnClickListener {

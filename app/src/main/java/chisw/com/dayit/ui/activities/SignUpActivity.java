@@ -37,8 +37,9 @@ public class SignUpActivity extends AuthorizationActivity {
 
     @Override
     protected void startSomeActivity() {
-        PlannerActivity.start(SignUpActivity.this);
-        SignUpActivity.this.finish();
+        finish();
+/*        PlannerActivity.start(SignUpActivity.this);
+        SignUpActivity.this.finish();*/
     }
 
     private void initView() {

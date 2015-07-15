@@ -31,8 +31,8 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.others.RestartManager;
 import chisw.com.dayit.ui.adapters.PlannerCursorAdapter;
 import chisw.com.dayit.ui.custom_element.FloatingActionButton;
-import chisw.com.dayit.ui.dialogs.DeleteDialog;
 import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
+import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
@@ -53,14 +53,18 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         initView();
-        if (SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
+        String test = sharedHelper.getDefaultLogin();
+/*        if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
             startSynchronization();
-        }
+        }*/
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
+            startSynchronization();
+        }
         updateListView();
     }
 
@@ -91,13 +95,13 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void deleteAllItems(){
+    private void deleteAllItems() {
         Cursor cursor = dbManager.getNotDeletedPlans();
         cursor.moveToFirst();
-        do{
+        do {
             deleteEntirely(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
         }
-        while(cursor.moveToNext());
+        while (cursor.moveToNext());
     }
 
     @Override
@@ -117,18 +121,19 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             switch (pMenuItem.getItemId()) {
                 case R.id.pa_context_edit:
                     Plan p = dbManager.getPlanById(cursor.getInt(idIndex));
-                    if(p.getIsRemote() == 0)
-                    {
+                    if (p.getIsRemote() == 0) {
                         LocalTaskActivity.start(this, p.getLocalId());
                     }
-                    if(p.getIsRemote() == 1)
-                    {
+                    if (p.getIsRemote() == 1) {
                         RemoteTaskActivity.start(this, p.getLocalId());
                     }
                     break;
                 case R.id.pa_context_delete:
-                    DeleteDialog dial = new DeleteDialog();
-                    dial.setIDelete(new DeleteDialogClicker());
+                    TwoButtonsAlertDialog dial = new TwoButtonsAlertDialog();
+                    dial.setIAlertDialog(new DeleteDialogClicker());
+                    dial.setDialogTitle("Are you sure you want to delete this mPlan?");
+                    dial.setPositiveBtnText("Yes, I'm sure");
+                    dial.setNegativeBtnText("No, I'm not");
                     dial.show(getFragmentManager(), "Delete dialog");
                     mWantToDelete = cursor.getInt(idIndex);
                     break;
@@ -144,7 +149,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public void deleteEntirely(int id) {
         alarmManager.cancelAlarm(id);
         Plan plan = dbManager.getPlanById(id);
-        if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+        if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
             plan.setIsSynchronized(0);
             plan.setIsDeleted(1);
             dbManager.editPlan(plan, id);
@@ -165,8 +170,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
         switch (pMenuItem.getItemId()) {
             case R.id.pa_menu_sync:
-                if (SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
                     startSynchronization();
+                } else if (sharedHelper.getDefaultLogin().isEmpty()) {
+                    TwoButtonsAlertDialog dial = new TwoButtonsAlertDialog();
+                    dial.setIAlertDialog(new AuthorizationDialogClicker());
+                    dial.setDialogTitle("To synchronize the plans you should log in. Continue?");
+                    dial.setPositiveBtnText("Yes");
+                    dial.setNegativeBtnText("No");
+                    dial.show(getFragmentManager(), "Authorization dialog");
                 }
                 break;
 
@@ -176,18 +188,18 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
             case R.id.pa_menu_log_off:
                 //Log off!
-                showProgressDialog("Logging Off", "Please, wait...");
-                netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
-                Cursor cursor = dbManager.getPlans();
-                while (cursor.moveToNext()) {
-                    alarmManager.cancelAlarm(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
+                if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
+                    showToast("You aren't log in");
+                } else {
+                    showProgressDialog("Logging Off", "Please, wait...");
+                    netManager.logoutUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogOut());
+                    Cursor cursor = dbManager.getPlans();
+                    while (cursor.moveToNext()) {
+                        alarmManager.cancelAlarm(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
+                    }
+                    cursor.close();
+                    break;
                 }
-                cursor.close();
-                dbManager.clearPlans();
-                dbManager.eraseMe(sharedHelper.getDefaultLogin());
-                sharedHelper.clearData();
-                LogInActivity.start(PlannerActivity.this);
-                break;
         }
         return super.onOptionsItemSelected(pMenuItem);
     }
@@ -212,17 +224,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                         if (plan.getIsDeleted() == 1) {
                             dbManager.deletePlanById(plan.getLocalId());
                         } else {
-                            netManager.addPlan(plan, new OnSaveCallback() {
-                                @Override
-                                public void getId(String id) {
-                                    if(ValidData.isTextValid(id)) {
-                                        plan.setParseId(id);
-                                        int planId = plan.getLocalId();
-                                        plan.setIsSynchronized(1);
-                                        dbManager.editPlan(plan, planId);
-                                    }
-                                }
-                            });
+                            netManager.addPlan(plan, new CallbackSavePlan(plan));
                         }
                     }
 
@@ -230,22 +232,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 cursor.moveToNext();
             }
         } else {
-            final ArrayList<Plan> plans = new ArrayList<>();
-            netManager.getAllPlans(new OnGetPlansCallback() {
-                @Override
-                public void getPlans(ArrayList<Plan> lPlans) {
-                    if(lPlans != null) {
-                        for (Plan plan : lPlans) {
-                            plans.add(plan);
-                            dbManager.saveNewPlan(plan);
-                        }
-                        if (!lPlans.isEmpty()) {
-                            RestartManager restartManager = new RestartManager(getApplication().getApplicationContext());
-                            restartManager.reload();
-                        }
-                    }
-                }
-            });
+            netManager.getAllPlans(new CallbackGetAllPlans());
         }
         cursor.close();
     }
@@ -255,7 +242,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         return R.layout.activity_planner;
     }
 
-    public final class CallbackLogOut implements LogOutCallback {
+    private final class CallbackLogOut implements LogOutCallback {
         @Override
         public void done(ParseException e) {
             if (e != null) {
@@ -263,18 +250,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 hideProgressDialog();
                 return;
             }
-            dbManager.clearPlans();
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
             sharedHelper.clearData();
-
-            PlannerActivity.this.finish();
 
             hideProgressDialog();
             showToast("Logged out");
         }
     }
 
-    public final class ItemClicker implements AdapterView.OnItemClickListener {
+    private final class ItemClicker implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -293,12 +277,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         updateListView();
     }
 
-    public final class Clicker implements View.OnClickListener {
+    private final class Clicker implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.fab:
-                    if (SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
+                    if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
                         new TaskTypeDialog().show(getFragmentManager(), "TaskType");
                     } else {
                         LocalTaskActivity.start(PlannerActivity.this);
@@ -308,7 +292,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
     }
 
-    public final class CallbackEditPlan implements GetCallback<ParseObject> {
+    private final class CallbackEditPlan implements GetCallback<ParseObject> {
         private final Plan plan;
 
         public CallbackEditPlan(Plan plan) {
@@ -336,11 +320,55 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
     }
 
-    private final class DeleteDialogClicker implements DeleteDialog.IDelete {
+    private final class CallbackSavePlan implements OnSaveCallback {
+
+        private Plan mPlan;
+
+        public CallbackSavePlan(Plan pPlan) {
+            mPlan = pPlan;
+        }
 
         @Override
-        public void onDeleteOkClick() {
+        public void getId(String id) {
+            if (ValidData.isTextValid(id)) {
+                mPlan.setParseId(id);
+                int planId = mPlan.getLocalId();
+                mPlan.setIsSynchronized(1);
+                dbManager.editPlan(mPlan, planId);
+            }
+        }
+    }
+
+    private final class CallbackGetAllPlans implements OnGetPlansCallback {
+
+        @Override
+        public void getPlans(ArrayList<Plan> pListPlans) {
+            if (pListPlans != null) {
+                for (Plan plan : pListPlans) {
+                    dbManager.saveNewPlan(plan);
+                }
+                if (!pListPlans.isEmpty()) {
+                    RestartManager restartManager = new RestartManager(getApplication().getApplicationContext());
+                    restartManager.reload();
+                }
+                return;
+            }
+        }
+    }
+
+    private final class DeleteDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
+
+        @Override
+        public void onAcceptClick() {
             deleteEntirely(mWantToDelete);
+        }
+    }
+
+    private final class AuthorizationDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
+
+        @Override
+        public void onAcceptClick() {
+            LogInActivity.start(PlannerActivity.this);
         }
     }
 }
