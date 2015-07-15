@@ -142,8 +142,7 @@ public class LocalTaskActivity extends TaskActivity {
         Uri u = audioIntent.getData();
         mAudioPath = getPath(u);
         mDurationBuf = getAudioDuration(u);
-        String z = getName(u, mAudioPath);
-        mAlarmSoundName.setText(z);
+        mAlarmSoundName.setText(getName(u, mAudioPath));
         duration();
     }
 

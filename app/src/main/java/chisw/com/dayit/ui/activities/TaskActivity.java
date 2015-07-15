@@ -230,7 +230,7 @@ public abstract class TaskActivity extends ToolbarActivity {
 
     protected String getName(Uri pathUri, String pathName) {
         String[] arrPath = null;
-        if (!SystemUtils.isKitKatHigher()) {
+        if (!mIsEdit && !SystemUtils.isKitKatHigher()) {
             final String[] proj = {MediaStore.Audio.Media.DATA};
             final Cursor cursor;
             cursor = getContentResolver().query(pathUri, proj, null, null, null);
