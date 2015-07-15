@@ -52,6 +52,9 @@
     <string name="pa_log_out">Log out</string>
     <string name="pa_context_edit">Edit</string>
     <string name="pa_context_delete">Delete</string>
+    <string name="pa_user_activity">Edit profile</string>
+    <string name="pa_delete_plan">Delete plan</string>
+    <string name="pa_delete_all_plans">Delete all plans</string>
 
     <!-- View plan activity -->
     <string name="title_activity_view_plan">Plan view</string>
@@ -74,9 +77,16 @@
     <string name="plan_type_title">Choose plan type</string>
 
     <!-- DeleteDialog -->
-    <string name="delete_dialog_title">Delete plan?</string>
-    <string name="delete_dialog_delete">Delete</string>
+    <string name="delete_dialog_title">Are you sure ?</string>
+    <string name="delete_dialog_ok">Ok</string>
 
     <!-- SettingActivity -->
     <string name="delete_all_plans">Delete all plans</string>
+
+    <!-- UserActivity -->
+    <string name="ua_save">Save changes</string>
+    <string name="ua_password_hint">Password</string>
+    <string name="ua_login_hint">Login</string>
+    <string name="ua_phone_hint">Phone number</string>
+
 </resources>

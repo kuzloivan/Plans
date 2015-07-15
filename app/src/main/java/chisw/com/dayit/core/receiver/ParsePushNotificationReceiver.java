@@ -37,8 +37,8 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        SharedHelper sharedHelper = ((PApplication) context.getApplicationContext()).getSharedHelper();
         DBManager dbManager = ((PApplication) context.getApplicationContext()).getDbManager();
+        SharedHelper sharedHelper = ((PApplication) context.getApplicationContext()).getSharedHelper();
         NetManager netManager = ((PApplication) context.getApplicationContext()).getNetManager();
         chisw.com.dayit.others.AlarmManager alarmManager = ((PApplication) context.getApplicationContext()).getAlarmManager();
 
@@ -50,13 +50,15 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             mDetails = jObj.getString("title");
             mTime = jObj.getLong("time");
             mFrom = jObj.getString("from");
+            if (dbManager.getPlanByTitleAndSender(jObj.getString("alert"), jObj.getString("from")) == null) {
+                sendNotification(context, sharedHelper.getVibrationOn());
+                setPlanToDB(context, dbManager, netManager, sharedHelper.getSynchronization());
+                setPlanToExecute(dbManager, alarmManager, context);
+                return;
+            }
         } catch (JSONException ex) {
             return;
         }
-
-        sendNotification(context, sharedHelper.getVibrationOn());
-        setPlanToDB(context, dbManager, netManager, sharedHelper.getSynchronization());
-        setPlanToExecute(dbManager, alarmManager, context);
     }
 
     private void sendNotification(Context pContext, boolean pVibration) {
@@ -66,7 +68,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
 
         Intent openPlannerIntent = new Intent(pContext, PlannerActivity.class);
         openPlannerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openPlannerPendingIntent = PendingIntent.getActivity(pContext, 20,  openPlannerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openPlannerPendingIntent = PendingIntent.getActivity(pContext, 20, openPlannerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         remoteViews.setTextViewText(R.id.tv_title, mTitle);
         remoteViews.setTextViewText(R.id.tv_details, "from " + mFrom);
@@ -87,33 +89,6 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             notification.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
         }
         notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);
-
-        /* PLEASE DON'T REMOVE IT */
-        /*Notification notification;
-        Notification.Builder builder = new Notification.Builder(pContext);
-
-        Intent openPlannerIntent = new Intent(pContext, PlannerActivity.class);
-        openPlannerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent openPlannerPendingIntent = PendingIntent.getActivity(pContext, 20,  openPlannerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        builder.setSmallIcon(R.drawable.ic_alarm)
-                .setContentTitle(mTitle)
-                .setContentText(mDetails)
-
-                .setContentIntent(openPlannerPendingIntent);
-
-        if(SystemUtils.isJellyBeanHigher()) {
-            notification = builder.build();
-        } else {
-            notification = builder.getNotification();
-        }
-        notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationManager notificationManager = (NotificationManager) pContext.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (pVibration) {
-            notification.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
-        }
-        notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);*/
     }
 
     private void setPlanToDB(Context context, final DBManager pDBManager, NetManager pNetManager, boolean pSynchronization) {
@@ -123,6 +98,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         p.setTimeStamp(mTime);
         p.setDaysToAlarm("0000000");
         p.setIsDeleted(0);
+        p.setSender(mFrom);
         if (!pSynchronization || !SystemUtils.checkNetworkStatus(context)) {
             p.setIsSynchronized(0);
             pDBManager.saveNewPlan(p);
@@ -133,7 +109,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         pNetManager.addPlan(p, new OnSaveCallback() {
             @Override
             public void getId(String id) {
-                if(ValidData.isTextValid(id)) {
+                if (ValidData.isTextValid(id)) {
                     p.setParseId(id);
                     int planId = pDBManager.getPlanById(pDBManager.getLastPlanID()).getLocalId();
                     p.setLocalId(planId);

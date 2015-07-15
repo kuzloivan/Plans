@@ -14,6 +14,7 @@ public class PlansEntity {
     public static final String IS_DELETED = "isDeleted";
     public static final String IS_SYNCHRONIZED = "isSynchronized";
     public static final String IS_REMOTE = "type";
+    public static final String SENDER = "sender";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -28,6 +29,7 @@ public class PlansEntity {
             DAYS_TO_ALARM + " TEXT, " +
             IS_DELETED + " INTEGER, " +
             IS_SYNCHRONIZED + " INTEGER, " +
-            IS_REMOTE + " INTEGER " +
+            IS_REMOTE + " INTEGER, " +
+            SENDER + " TEXT " +
             ")";
 }

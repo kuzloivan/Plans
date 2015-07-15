@@ -14,6 +14,7 @@ public interface DbBridge {
     Cursor getNotDeletedPlans();
     void clearPlans();
     Plan getPlanById(int id);
+    Plan getPlanByTitleAndSender(String pTitle, String pSender);
     Cursor getCursorById(int id);
     void deletePlanById(long id);
     void eraseMe(String id);

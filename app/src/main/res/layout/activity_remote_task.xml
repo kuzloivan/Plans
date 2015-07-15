@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@id/taskActivity_layout">
+                android:layout_below="@id/taskActivity_layout"
+                android:layout_marginTop="30dp">
 
                 <EditText
                     android:id="@+id/rta_contactInfo_editText"
@@ -38,7 +39,7 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:maxLines="1"
-                    android:enabled="false"/>
+                    android:enabled="true"/>
 
                 <Button
                     android:id="@+id/rta_contactList_btn"

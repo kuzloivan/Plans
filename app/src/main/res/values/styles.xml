@@ -2,16 +2,17 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="AppTheme.PlannerTheme">
+        <item name="colorControlNormal">#3F51B5</item>
+        <item name="colorControlActivated">#3F51B5</item>
+        <item name="colorControlHighlight">#3F51B5</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="AppTheme.PlannerTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
+        <item name="colorControlNormal">#3F51B5</item>
+        <item name="colorControlActivated">#3F51B5</item>
+        <item name="colorControlHighlight">#3F51B5</item>
     </style>
-
-    <!--<style name="MyMaterialTheme" parent="Theme.Material">-->
-
-    <!--</style>-->
 
     <style name="AppTheme.Fullscreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
@@ -22,8 +23,6 @@
 
     <style name="PlannerToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@color/toolbar_background_color</item>
-        <!--<item name="android:colorPrimaryDark">#ffffff</item>-->
-        <!--<item name="text">@color/background_material_dark</item>-->
     </style>
 
     <style name="PlannerViewPlanToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -75,6 +74,9 @@
         <item name="android:textSize">18sp</item>
         <item name="android:layout_margin">4sp</item>
         <item name="android:background">@drawable/reg_btns_et_selector</item>
+        <item name="colorControlNormal">#3F51B5</item>
+        <item name="colorControlActivated">#3F51B5</item>
+        <item name="colorControlHighlight">#3F51B5</item>
     </style>
 
     <style name="style_reg_textview">
@@ -93,6 +95,9 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:textColor">@color/color_aa_edit_text</item>
+        <item name="colorControlNormal">#3F51B5</item>
+        <item name="colorControlActivated">#3F51B5</item>
+        <item name="colorControlHighlight">#3F51B5</item>
     </style>
 
     <style name="style_notif_tv">

@@ -10,6 +10,7 @@ import com.parse.ParseException;
 import com.parse.SignUpCallback;
 
 import chisw.com.dayit.R;
+import chisw.com.dayit.core.callback.CheckPhoneCallback;
 import chisw.com.dayit.utils.ValidData;
 
 public class SignUpActivity extends AuthorizationActivity {
@@ -18,6 +19,7 @@ public class SignUpActivity extends AuthorizationActivity {
     private EditText mPhone;
     private EditText mPasswordConfirm;
     private String phone;
+    private boolean phoneAlreadyTaken;
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, SignUpActivity.class);
@@ -65,7 +67,8 @@ public class SignUpActivity extends AuthorizationActivity {
             if (prepareForClick()) {
                 switch (v.getId()) {
                     case R.id.sua_signUp_btn:
-                        if (isValidFields()) {
+                        netManager.checkPhone(phone, new CallbackCheckPhone());
+                        if (isValidFields() && phoneAlreadyTaken) {
                             showProgressDialog("Signing Up", "Please, wait...");
                             netManager.registerUser(login, password, phone, new CallbackSignUp());
                         }
@@ -94,8 +97,10 @@ public class SignUpActivity extends AuthorizationActivity {
                 hideProgressDialog();
                 return;
             }
+
             /* Save user credentials and then Log In */
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
+            sharedHelper.setDefaultPhone(mPhone.getText().toString());
             sharedHelper.setDefaultPass(mPassword.getText().toString());
             netManager.loginUser(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass(), new CallbackLogIn());
             showToast("SignUp was successful");
@@ -103,13 +108,26 @@ public class SignUpActivity extends AuthorizationActivity {
         }
     }
 
+    public final class CallbackCheckPhone implements CheckPhoneCallback {
+
+        @Override
+        public void isNumberTaken(boolean result) {
+            if (result) {
+                phoneAlreadyTaken = true;
+                showToast("Phone number is already registered");
+                return;
+            }
+            phoneAlreadyTaken = false;
+        }
+    }
+
     private boolean isValidFields() {
-        if(!ValidData.isPhoneNumberValid(phone)){
+        if (!ValidData.isPhoneNumberValid(phone)) {
             showToast("Phone number is not valid!");
             return false;
         }
         if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {
-            showToast("Login must be at least 4 characters length.(a-z,A-Z,0-9)");
+            showToast("Login must be at least 4 characters length and start with letter.(a-z,A-Z,0-9)");
             return false;
         }
         if (!ValidData.isCredentialsValid(password, getString(R.string.pass_pttrn))) {

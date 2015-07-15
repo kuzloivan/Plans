@@ -11,17 +11,26 @@ import chisw.com.dayit.R;
 /**
  * Created by Kos on 08.07.2015.
  */
+
 public class DeleteDialog extends DialogFragment {
 
     private IDelete mIDelete;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.delete_dialog_title)
-                .setPositiveButton(R.string.delete_dialog_delete, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete_dialog_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mIDelete.onDeleteOkClick();
+                        if(getTag().equals(getString(R.string.pa_delete_plan)))
+                            mIDelete.onDeleteOkClick();
+                        else if (getTag().equals(getString(R.string.pa_delete_all_plans))){
+                            mIDelete.onDeleteAllOkClick();
+                        }
+                        else if (getTag().equals(getString(R.string.ua_save))){
+                            mIDelete.onSaveUser();
+                        }
                         dismiss();
                     }
                 })
@@ -35,6 +44,8 @@ public class DeleteDialog extends DialogFragment {
 
     public interface IDelete{
         void onDeleteOkClick();
+        void onDeleteAllOkClick();
+        void onSaveUser();
     }
 
     public void setIDelete(IDelete pIDelete) {

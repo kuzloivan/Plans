@@ -24,6 +24,7 @@ public class Mapper {
         CV.put(PlansEntity.IS_DELETED, model.getIsDeleted());
         CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
         CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
+        CV.put(PlansEntity.SENDER, model.getSender());
         return CV;
     }
 
@@ -62,6 +63,9 @@ public class Mapper {
         if(model.getIsRemote() != -1)
             CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
 
+        if(model.getSender() != null)
+            CV.put(PlansEntity.SENDER, model.getSender());
+
         return CV;
     }
 
@@ -80,6 +84,7 @@ public class Mapper {
         int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
         int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
         int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
+        int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -95,6 +100,7 @@ public class Mapper {
         plan.setIsDeleted(cursor.getInt(isDeletedIndex));
         plan.setIsSynchronized(cursor.getInt(isSynchronizedIndex));
         plan.setIsRemote(cursor.getInt(isRemoteIndex));
+        plan.setSender(cursor.getString(senderIndex));
         return plan;
     }
 

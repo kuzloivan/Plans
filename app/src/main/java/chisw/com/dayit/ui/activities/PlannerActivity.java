@@ -17,7 +17,9 @@ import com.parse.GetCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -42,7 +44,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
     private int mWantToDelete;
-    private ImageView mIvPicture;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -53,10 +54,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         initView();
-        String test = sharedHelper.getDefaultLogin();
-/*        if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
-            startSynchronization();
-        }*/
     }
 
     @Override
@@ -73,7 +70,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         ItemClicker itemClicker = new ItemClicker();
         mLvPlanner = (ListView) findViewById(R.id.pa_planner_listView);
         mAdapter = new PlannerCursorAdapter(this);
-
         mLvPlanner.setAdapter(mAdapter);
         mLvPlanner.setOnItemClickListener(itemClicker);
 
@@ -100,8 +96,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         cursor.moveToFirst();
         do {
             deleteEntirely(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
-        }
-        while (cursor.moveToNext());
+        } while (cursor.moveToNext());
     }
 
     @Override
@@ -138,8 +133,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     mWantToDelete = cursor.getInt(idIndex);
                     break;
                 case R.id.pa_context_delete_all:
-                    deleteAllItems();
-                    showToast("All plans have been deleted");
+                    DeleteDialog dialDeleteAll = new DeleteDialog();
+                    dialDeleteAll.setIDelete(new DeleteDialogClicker());
+                    dialDeleteAll.show(getFragmentManager(), getString(R.string.pa_delete_all_plans));
                     break;
             }
         }
@@ -198,8 +194,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                         alarmManager.cancelAlarm(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
                     }
                     cursor.close();
-                    break;
                 }
+                break;
+            case R.id.pa_user_activity:
+               // UserActivity.start(PlannerActivity.this);
+                Intent intent = new Intent(PlannerActivity.this, UserActivity.class);
+                startActivity(intent);
+
+                //SettingsActivity.start(UserActivity.this);
+                break;
         }
         return super.onOptionsItemSelected(pMenuItem);
     }
@@ -251,7 +254,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 return;
             }
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
+            ParsePush.unsubscribeInBackground(sharedHelper.getDefaultLogin());
             sharedHelper.clearData();
+            PlannerActivity.this.finish();
 
             hideProgressDialog();
             showToast("Logged out");
@@ -362,6 +367,15 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         public void onAcceptClick() {
             deleteEntirely(mWantToDelete);
         }
+
+        @Override
+        public void onDeleteAllOkClick(){
+            deleteAllItems();
+            showToast("All plans have been deleted");
+        }
+
+        @Override
+        public void onSaveUser(){ }
     }
 
     private final class AuthorizationDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {

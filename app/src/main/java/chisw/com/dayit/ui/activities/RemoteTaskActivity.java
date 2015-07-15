@@ -23,8 +23,6 @@ import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
-import chisw.com.dayit.utils.DataUtils;
-import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
 public class RemoteTaskActivity extends TaskActivity {
@@ -73,15 +71,15 @@ public class RemoteTaskActivity extends TaskActivity {
 
     @Override
     protected void startAlarm() {
-        if(ValidData.isTextValid(mTextContact.getText().toString())) {
+        if(ValidData.isTextValid(mTextContact.getText().toString()) && checkFields()) {
             try {
-                writePlanToDB(mMyLovelyCalendar);
                 sendRemotePlan();
+                writePlanToDB(mMyLovelyCalendar);
             } catch (Exception ex) {
                 return;
             }
             super.startAlarm();
-        } else {
+        } else if(!ValidData.isTextValid(mTextContact.getText().toString())) {
             showToast("Please, choose a contact person");
         }
     }

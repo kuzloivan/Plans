@@ -2,14 +2,12 @@ package chisw.com.dayit.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,8 +17,6 @@ import java.util.Calendar;
 import chisw.com.dayit.R;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.utils.DataUtils;
-import chisw.com.dayit.utils.SystemUtils;
-import chisw.com.dayit.utils.ValidData;
 
 public class LocalTaskActivity extends TaskActivity {
     private static final String BUNDLE_ID_KEY = "chisw.com.DayIt.ui.activities.localTask_activity.id";
@@ -66,6 +62,13 @@ public class LocalTaskActivity extends TaskActivity {
 
         mLClicker = new LClicker();
         findViewById(R.id.lta_setAudio_btn).setOnClickListener(mLClicker);
+        findViewById(R.id.sunday).setOnClickListener(mLClicker);
+        findViewById(R.id.monday).setOnClickListener(mLClicker);
+        findViewById(R.id.tuesday).setOnClickListener(mLClicker);
+        findViewById(R.id.wednesday).setOnClickListener(mLClicker);
+        findViewById(R.id.thursday).setOnClickListener(mLClicker);
+        findViewById(R.id.friday).setOnClickListener(mLClicker);
+        findViewById(R.id.saturday).setOnClickListener(mLClicker);
 
         mTvDate.setOnClickListener(mLClicker);
         mTvTime.setOnClickListener(mLClicker);
@@ -114,8 +117,7 @@ public class LocalTaskActivity extends TaskActivity {
 
     @Override
     protected void startAlarm() {
-        if(!super.checkFields())
-        {
+        if (!super.checkFields()) {
             return;
         }
         writePlanToDB(mMyLovelyCalendar);
@@ -123,7 +125,6 @@ public class LocalTaskActivity extends TaskActivity {
     }
 
     private void writePlanToDB(Calendar calendar) {
-
         Plan p = new Plan();
         p.setAudioPath(mAudioPath);
         p.setAudioDuration((int) mAudioDuration);
@@ -132,23 +133,21 @@ public class LocalTaskActivity extends TaskActivity {
     }
 
     private void setAudioFromSDCard(Intent audioIntent) {
-        mAudioPath = getPath(audioIntent);
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String type = mime.getExtensionFromMimeType(getContentResolver().getType(audioIntent.getData()));
+        String typ = mime.getMimeTypeFromExtension(type);
+
         mIsDialogExist = false;
-        String buf;
-        Uri u = audioIntent.getData();
-        buf = getName(u, mAudioPath);
-        if (!ValidData.isValidFormat(buf)) {
-            mTvSoundDuration.setText("00:00");
-            mAlarmSoundName.setText("");
+
+        if (!"audio/mpeg".equalsIgnoreCase(typ)) {
             showToast("File is not valid");
             return;
         }
-        if (SystemUtils.isKitKatHigher()) {
-            mDurationBuf = getAudioDuration(audioIntent.getData());
-        } else {
-            mDurationBuf = getAudioDuration(u);
-        }
-        mAlarmSoundName.setText(buf);
+
+        Uri u = audioIntent.getData();
+        mAudioPath = getPath(u);
+        mDurationBuf = getAudioDuration(u);
+        mAlarmSoundName.setText(getName(u, mAudioPath));
         duration();
     }
 
@@ -182,54 +181,13 @@ public class LocalTaskActivity extends TaskActivity {
         timeFormat();
     }
 
-    private String getPath(Intent strIntent) {
-        Uri data = strIntent.getData();
-        if (!SystemUtils.isKitKatHigher() || !DocumentsContract.isDocumentUri(this, data)) {
-            return strIntent.getDataString();
-        }
-        final String docId = DocumentsContract.getDocumentId(data);
-        final String[] split = docId.split(":");
-        final String type = split[0];
-        Uri contentUri = null;
-        if ("com.android.providers.media.documents".equals(data.getAuthority())) {
-            contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            if ("image".equals(type)) {
-                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            } else if ("audio".equals(type)) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            }
-        }
-        final String selection = "_id=?";
-        final String[] selectionArgs = new String[]{
-                split[1]
-        };
-        return getDataColumn(contentUri, selection, selectionArgs);
-    }
-
-    private String getDataColumn(Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {column};
-        try {
-            cursor = getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
-
     private void timeFormat() {
         mTvSoundDuration.setText(DataUtils.getTimeStrFromTimeStamp((int) mAudioDuration));
     }
 
     private void fillIn(SeekBar seekbar) {
         Plan p = dbManager.getPlanById(mPlanId);
+        super.fillIn(p);
         mAudioPath = p.getAudioPath();
         if (mAudioPath == null) {
             seekbar.setEnabled(false);
@@ -245,7 +203,6 @@ public class LocalTaskActivity extends TaskActivity {
         mAlarmSoundName.setText(getName(tmpUri, mAudioPath));
         seekbar.setProgress(getPercent((int) mAudioDuration, mAudioPath));
         timeFormat();
-        super.fillIn(p);
     }
 
     private final class LClicker extends TaskActivity.Clicker {
@@ -278,5 +235,4 @@ public class LocalTaskActivity extends TaskActivity {
             duration();
         }
     }
-
 }

@@ -15,6 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Request;
+import com.squareup.picasso.RequestBuilder;
+
+import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import chisw.com.dayit.R;
@@ -30,13 +35,17 @@ import chisw.com.dayit.utils.DataUtils;
 public class PlannerCursorAdapter extends CursorAdapter {
 
     private LayoutInflater layoutInflater;
-    private Uri mSelectedImageURI;
+    //private Uri mSelectedImageURI;
     private String mSelectedImagePath;
+    private Picasso mPicasso;
 
     public PlannerCursorAdapter(Context context) {
         super(context, null, false);
 
         layoutInflater = LayoutInflater.from(context);
+
+        mPicasso = Picasso.with(context);
+
     }
 
     @Override
@@ -44,7 +53,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
         View view = layoutInflater.inflate(R.layout.planner_list_view_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
-
         return view;
     }
 
@@ -52,9 +60,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-
-        int targetW = viewHolder.ivPicture.getWidth();
-        int targetH = viewHolder.ivPicture.getHeight();
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
@@ -66,45 +71,25 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
         viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-//        if (viewHolder.tvDetails.getText().length()==0) {
-//            viewHolder.tvDetails.setVisibility(View.GONE);
-//        }
-//        else {
-//            viewHolder.tvDetails.setVisibility(View.VISIBLE);
-//        }
+
         mSelectedImagePath = cursor.getString(imageIndex);
 
-        if (mSelectedImagePath != null) {
+        int targetW = viewHolder.ivPicture.getWidth();
+        int targetH = viewHolder.ivPicture.getHeight();
 
-            try {
-                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
-                viewHolder.ivPicture.setImageBitmap(BitmapUtils.getRoundCornerBitmap(bitmap, 5, targetW, targetH));
-                //viewHolder.ivPicture.setImageBitmap(bitmap);
-            }
-            catch (Exception e){
-                //todo Make delete mSelectedImagePath and ask why image don't set first
-                Toast.makeText(context, "Exeption, picture don't set", Toast.LENGTH_SHORT).show();
-
-            }
-            mSelectedImagePath = null;
-        } else {
+        try {
+            Uri imageUri;
+            imageUri = Uri.fromFile(new File(mSelectedImagePath));
+            String imageUriString = imageUri.toString();
+            mPicasso.load(imageUriString).resize(targetW, targetH).centerCrop().into(viewHolder.ivPicture);
+        } catch (Exception e) {
             viewHolder.ivPicture.setImageResource(R.drawable.default_example_material);
         }
         //logMemory(context);
-
-
-//        int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
-//        int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
-//        if(cursor.getInt(isSynchronizedIndex) == 0) {
-//            view.setBackgroundColor(Color.parseColor("#EF5350"));
-//        } else if(timeStamp - System.currentTimeMillis() <= 0) {
-//            view.setBackgroundColor(Color.parseColor("#BDBDBD"));
-//        }
     }
 
     private void logMemory(Context context) {
-        Toast.makeText(context, "Total memory = "+ (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(context, "Total memory = " + (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
     }
 
     private static class ViewHolder {
