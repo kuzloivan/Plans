@@ -124,18 +124,21 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     }
                     break;
                 case R.id.pa_context_delete:
-                    TwoButtonsAlertDialog dial = new TwoButtonsAlertDialog();
-                    dial.setIAlertDialog(new DeleteDialogClicker());
-                    dial.setDialogTitle("Are you sure you want to delete this mPlan?");
-                    dial.setPositiveBtnText("Yes, I'm sure");
-                    dial.setNegativeBtnText("No, I'm not");
-                    dial.show(getFragmentManager(), "Delete dialog");
+                    TwoButtonsAlertDialog dialDelPlan = new TwoButtonsAlertDialog();
+                    dialDelPlan.setIAlertDialog(new DeletePlanDialogClicker());
+                    dialDelPlan.setDialogTitle("Are you sure you want to delete this plan?");
+                    dialDelPlan.setPositiveBtnText("Yes, I'm sure");
+                    dialDelPlan.setNegativeBtnText("No, I'm not");
+                    dialDelPlan.show(getFragmentManager(), getString(R.string.pa_delete_plan));
                     mWantToDelete = cursor.getInt(idIndex);
                     break;
                 case R.id.pa_context_delete_all:
-                    DeleteDialog dialDeleteAll = new DeleteDialog();
-                    dialDeleteAll.setIDelete(new DeleteDialogClicker());
-                    dialDeleteAll.show(getFragmentManager(), getString(R.string.pa_delete_all_plans));
+                    TwoButtonsAlertDialog dialDelPlans = new TwoButtonsAlertDialog();
+                    dialDelPlans.setIAlertDialog(new DeleteAllPlansDialogClicker());
+                    dialDelPlans.setDialogTitle("Are you sure you want to delete all plans?");
+                    dialDelPlans.setPositiveBtnText("Yes, I'm sure");
+                    dialDelPlans.setNegativeBtnText("No, I'm not");
+                    dialDelPlans.show(getFragmentManager(), getString(R.string.pa_delete_all_plans));
                     break;
             }
         }
@@ -174,7 +177,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     dial.setDialogTitle("To synchronize the plans you should log in. Continue?");
                     dial.setPositiveBtnText("Yes");
                     dial.setNegativeBtnText("No");
-                    dial.show(getFragmentManager(), "Authorization dialog");
+                    dial.show(getFragmentManager(), getString(R.string.pa_authorization));
                 }
                 break;
 
@@ -256,7 +259,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
             ParsePush.unsubscribeInBackground(sharedHelper.getDefaultLogin());
             sharedHelper.clearData();
-            PlannerActivity.this.finish();
 
             hideProgressDialog();
             showToast("Logged out");
@@ -361,21 +363,21 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
     }
 
-    private final class DeleteDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
+    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override
         public void onAcceptClick() {
             deleteEntirely(mWantToDelete);
         }
+    }
+
+    private final class DeleteAllPlansDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override
-        public void onDeleteAllOkClick(){
+        public void onAcceptClick() {
             deleteAllItems();
             showToast("All plans have been deleted");
         }
-
-        @Override
-        public void onSaveUser(){ }
     }
 
     private final class AuthorizationDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {

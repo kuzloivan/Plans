@@ -1,12 +1,9 @@
 package chisw.com.dayit.ui.activities;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -14,7 +11,7 @@ import com.parse.ParseUser;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.net.NetManager;
-import chisw.com.dayit.ui.dialogs.DeleteDialog;
+import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 
 /**
  * Created by Kuzlo on 15.07.2015.
@@ -47,9 +44,12 @@ public class UserActivity extends ToolbarActivity {
         findViewById(R.id.ua_save_bt).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeleteDialog dialDeleteAll = new DeleteDialog();
-                dialDeleteAll.setIDelete(new DeleteDialogClicker());
-                dialDeleteAll.show(getFragmentManager(), getString(R.string.ua_save));
+                TwoButtonsAlertDialog dialDelPlans = new TwoButtonsAlertDialog();
+                dialDelPlans.setIAlertDialog(new SaveUserDialogClicker());
+                dialDelPlans.setDialogTitle("Do you want to save a user?");
+                dialDelPlans.setPositiveBtnText("Yes, I do");
+                dialDelPlans.setNegativeBtnText("No, I don't");
+                dialDelPlans.show(getFragmentManager(), getString(R.string.ua_save));
             }
 
         });
@@ -60,18 +60,10 @@ public class UserActivity extends ToolbarActivity {
 
     }
 
-
-    private final class DeleteDialogClicker implements DeleteDialog.IDelete {
-
-        @Override
-        public void onDeleteOkClick() { }
+    private final class SaveUserDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override
-        public void onDeleteAllOkClick(){ }
-
-        @Override
-        public void onSaveUser(){
-
+        public void onAcceptClick() {
             netManager.editUser(ParseUser.getCurrentUser(), new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser pParseUser, ParseException e) {

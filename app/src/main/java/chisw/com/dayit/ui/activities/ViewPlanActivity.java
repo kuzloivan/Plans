@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.model.Plan;
-import chisw.com.dayit.ui.dialogs.DeleteDialog;
+import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 
@@ -56,9 +56,12 @@ public class ViewPlanActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
         switch (pMenuItem.getItemId()) {
             case R.id.vp_menu_delete:
-                DeleteDialog dial = new DeleteDialog();
-                dial.setIDelete(new DeleteDialogClicker());
-                dial.show(getFragmentManager(), "Delete dialog");
+                TwoButtonsAlertDialog dialDelPlan = new TwoButtonsAlertDialog();
+                dialDelPlan.setIAlertDialog(new DeletePlanDialogClicker());
+                dialDelPlan.setDialogTitle("Are you sure you want to delete this plan?");
+                dialDelPlan.setPositiveBtnText("Yes, I'm sure");
+                dialDelPlan.setNegativeBtnText("No, I'm not");
+                dialDelPlan.show(getFragmentManager(), getString(R.string.pa_delete_plan));
                 break;
             case R.id.vp_menu_edit:
                 if(mPlan.getIsRemote() == 0)
@@ -78,7 +81,7 @@ public class ViewPlanActivity extends ToolbarActivity {
     public void deleteEntirely() {
         alarmManager.cancelAlarm(mPlanId);
         Plan plan = dbManager.getPlanById(mPlanId);
-        if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+        if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
             plan.setIsSynchronized(0);
             plan.setIsDeleted(1);
             dbManager.editPlan(plan, mPlanId);
@@ -129,27 +132,13 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         mTv_details.setText(mPlan.getDetails());
-
-        //        if(mPlan.getImagePath() != null){
-//            Bitmap bitmap = BitmapFactory.decodeFile(mPlan.getImagePath());
-//            showToast("ImagePath = " + mPlan.getImagePath());
-//            mIvPicture.setImageBitmap(bitmap);
-//        }else {
-//            mIvPicture.setImageResource(R.drawable.default_example_material);
-//        }
     }
 
-    private final class DeleteDialogClicker implements DeleteDialog.IDelete {
+    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override
-        public void onDeleteOkClick() {
+        public void onAcceptClick() {
             deleteEntirely();
         }
-
-        @Override
-        public void onDeleteAllOkClick(){ }
-
-        @Override
-        public void onSaveUser(){ }
     }
 }

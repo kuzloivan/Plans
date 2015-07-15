@@ -53,6 +53,7 @@
     <string name="pa_context_edit">Edit</string>
     <string name="pa_context_delete">Delete</string>
     <string name="pa_user_activity">Edit profile</string>
+    <string name="pa_authorization">Authorization</string>
     <string name="pa_delete_plan">Delete plan</string>
     <string name="pa_delete_all_plans">Delete all plans</string>
 
