@@ -19,7 +19,6 @@ public class SignUpActivity extends AuthorizationActivity {
     private EditText mPhone;
     private EditText mPasswordConfirm;
     private String phone;
-    private boolean phoneAlreadyTaken;
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, SignUpActivity.class);
@@ -68,10 +67,7 @@ public class SignUpActivity extends AuthorizationActivity {
                 switch (v.getId()) {
                     case R.id.sua_signUp_btn:
                         netManager.checkPhone(phone, new CallbackCheckPhone());
-                        if (isValidFields() && phoneAlreadyTaken) {
-                            showProgressDialog("Signing Up", "Please, wait...");
-                            netManager.registerUser(login, password, phone, new CallbackSignUp());
-                        }
+                        showProgressDialog("Verifying of phone number", "Please, wait");
                         break;
                     case R.id.sua_back_btn:
                         onBackPressed();
@@ -112,12 +108,15 @@ public class SignUpActivity extends AuthorizationActivity {
 
         @Override
         public void isNumberTaken(boolean result) {
+            hideProgressDialog();
             if (result) {
-                phoneAlreadyTaken = true;
                 showToast("Phone number is already registered");
                 return;
             }
-            phoneAlreadyTaken = false;
+            if (isValidFields()) {
+                showProgressDialog("Signing Up", "Please, wait...");
+                netManager.registerUser(login, password, phone, new CallbackSignUp());
+            }
         }
     }
 
