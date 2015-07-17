@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 import chisw.com.dayit.R;
 import chisw.com.dayit.core.PApplication;
 import chisw.com.dayit.db.entity.PlansEntity;
+import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 
@@ -65,11 +66,19 @@ public class PlannerCursorAdapter extends CursorAdapter {
         int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
         int imageIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         long timeStamp = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
+        int daysIndex = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
         //int phoneNumbIndex = cursor.getColumnIndex(PlansEntity.PHONE);
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
-        viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
+
+        if(cursor.getString(daysIndex).charAt(0) == '1'){
+            viewHolder.tvDate.setText(DataUtils.getDaysForRepeatingFromString(cursor.getString(daysIndex)));
+        }
+        else {
+            viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
+        }
+
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
 
         mSelectedImagePath = cursor.getString(imageIndex);

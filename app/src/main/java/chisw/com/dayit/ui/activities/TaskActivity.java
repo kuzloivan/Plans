@@ -58,7 +58,6 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected String mSelectedImagePath;
     protected Switch mSwitchRepeating;
     protected DatePickDialog mDatePickDialog;
-    protected DaysOfWeekDialog mDaysOfWeekDialog;
     protected TimePickDialog mTimeDialog;
     protected AlarmManager mAlarmManager;
     protected boolean mIsEdit;
@@ -71,7 +70,8 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void initViews() {
         initBackButton();
 
-        mMyLovelyCalendar = Calendar.getInstance();
+        mMyLovelyCalendar = Calendar.getInstance(); // edit bug (calendar displays incorrect)
+
         mMyLovelyCalendar.set(Calendar.SECOND, 0);
         mTvDate = (TextView) findViewById(R.id.ta_setDate_textView);
         mTvTime = (TextView) findViewById(R.id.ta_setTime_textView);
@@ -82,7 +82,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mTvSetDetails = (EditText) findViewById(R.id.ta_details_textView);
 
-        mDaysToAlarm = "0000000";
+        mDaysToAlarm = "0000000"; // edit bux(1) checkboxes are incorrect while editing
 
         mCheckBoxesArr = new ArrayList<CheckBox>();
         mCheckBoxesArr.add((CheckBox) findViewById(R.id.sunday));
@@ -94,8 +94,6 @@ public abstract class TaskActivity extends ToolbarActivity {
         mCheckBoxesArr.add((CheckBox) findViewById(R.id.saturday));
 
         setEnabledCheckBoxes(false);
-
-
 
         mTvSetDetails.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -147,8 +145,10 @@ public abstract class TaskActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.aa_save_alarm:
-                if(!checkWithRegExp(mEtTitle.getText().toString(), getString(R.string.title_pttrn)))
+                if(!checkWithRegExp(mEtTitle.getText().toString(), getString(R.string.title_pttrn))) {
+                    initializeDaysOfWeek();
                     startAlarm();
+                }
                 else
                     Toast.makeText(this, "No title has been detected", Toast.LENGTH_SHORT).show();
                 break;
@@ -193,6 +193,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         if (mIsEdit) {
             plan.setParseId(dbManager.getPlanById(mPlanId).getParseId());
             plan.setLocalId(dbManager.getPlanById(mPlanId).getLocalId());
+
             if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
                 plan.setIsSynchronized(0);
                 dbManager.editPlan(plan, mPlanId);
@@ -391,17 +392,17 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void fillIn(Plan p) {
         mEtTitle.setText(p.getTitle());
         mTvSetDetails.setText(p.getDetails());
+        mMyLovelyCalendar = DataUtils.getCalendarByTimeStamp(p.getTimeStamp());
         mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
         mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
-
+        mDaysToAlarm = p.getDaysToAlarm().substring(1); // test
+        initializeCheckBoxes();
         mSelectedImagePath = p.getImagePath();
         Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
         mIvImage.setImageBitmap(bitmap);
         if (mSelectedImagePath == null) {
             mIvImage.setImageResource(R.drawable.aa_icon);
         }
-
-        mMyLovelyCalendar = DataUtils.getCalendarByTimeStamp(p.getTimeStamp());
     }
 
     protected final class CallbackAddPLan implements OnSaveCallback {

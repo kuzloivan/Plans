@@ -130,10 +130,16 @@ public class ViewPlanActivity extends ToolbarActivity {
         mPlan = dbManager.getPlanById(mPlanId);
         setTitle(mPlan.getTitle());
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
-        mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
+
+        if(mPlan.getDaysToAlarm().charAt(0) == '1'){
+            mTv_date.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
+        }
+        else {
+            mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp())); // todo: add if for correct InView displaying
+        }
+
         mTv_details.setText(mPlan.getDetails());
     }
-
     private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override
@@ -141,4 +147,5 @@ public class ViewPlanActivity extends ToolbarActivity {
             deleteEntirely();
         }
     }
+
 }

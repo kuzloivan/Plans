@@ -200,11 +200,12 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 }
                 break;
             case R.id.pa_user_activity:
-               // UserActivity.start(PlannerActivity.this);
-                Intent intent = new Intent(PlannerActivity.this, UserActivity.class);
-                startActivity(intent);
-
-                //SettingsActivity.start(UserActivity.this);
+                if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
+                    showToast("You aren't log in");
+                } else {
+                    Intent intent = new Intent(PlannerActivity.this, UserActivity.class);
+                    startActivity(intent);
+                }
                 break;
         }
         return super.onOptionsItemSelected(pMenuItem);

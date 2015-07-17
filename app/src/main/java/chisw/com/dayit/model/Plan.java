@@ -23,6 +23,7 @@ public class Plan {
         this.localId = localId;
     }
     // todo: add field for plan status.
+    // todo: add field for plan repeating info (Example: Sun/Mon/Tue instead of 18/03/10)
 
     public String getDetails() {
         return details;

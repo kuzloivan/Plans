@@ -1,5 +1,7 @@
 package chisw.com.dayit.utils;
 
+import com.parse.ParseUser;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Formatter;
@@ -53,4 +55,40 @@ public class DataUtils {
         return  calendar;
     }
 
+    public static String getDaysForRepeatingFromString(String pDaysToRepeat){
+        pDaysToRepeat = pDaysToRepeat.substring(1);
+        String resStr = "";
+        for (int i = 0; i < 7; i++){
+            resStr += pDaysToRepeat.charAt(i) == '1' ? (getDayByItsNumber(i) + "/")  : "";
+        }
+        if(resStr.length() > 0) {
+            resStr = resStr.substring(0, resStr.length() - 1);
+        }
+        else {
+            resStr = "No days for repeating";
+        }
+        return resStr;
+    }
+
+    private static String getDayByItsNumber(int number) {
+        String day = "";
+
+        switch (number) {
+            case 0: day = "Sun";
+                break;
+            case 1: day = "Mon";
+                break;
+            case 2: day = "Tue";
+                break;
+            case 3: day = "Wed";
+                break;
+            case 4: day = "Thurs";
+                break;
+            case 5: day = "Fri";
+                break;
+            case 6: day = "Sat";
+                break;
+        }
+        return day;
+    }
 }
