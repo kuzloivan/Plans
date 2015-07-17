@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestBuilder;
 
 import java.io.File;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import chisw.com.dayit.R;
@@ -92,6 +93,12 @@ public class PlannerCursorAdapter extends CursorAdapter {
             String imageUriString = imageUri.toString();
             mPicasso.load(imageUriString).resize(targetW, targetH).centerCrop().into(viewHolder.ivPicture);
         } catch (Exception e) {
+// Don't delete
+//            Random rnd = new Random();
+//            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+//            viewHolder.ivPicture.setBackgroundColor(color);
+//            int color = Color.argb(255,63,81,181);
+//            viewHolder.ivPicture.setBackgroundColor(color);
             viewHolder.ivPicture.setImageResource(R.drawable.default_example_material);
         }
         //logMemory(context);

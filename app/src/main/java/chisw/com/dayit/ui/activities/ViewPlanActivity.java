@@ -1,21 +1,36 @@
 package chisw.com.dayit.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.util.Random;
+
 import chisw.com.dayit.R;
+import chisw.com.dayit.core.PApplication;
+import chisw.com.dayit.db.DBManager;
+import chisw.com.dayit.db.entity.PlansEntity;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.others.Multimedia;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
+import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
 
@@ -30,6 +45,8 @@ public class ViewPlanActivity extends ToolbarActivity {
     public ImageView mIvPicture;
     private Plan mPlan;
     private int mPlanId;
+    private String mSelectedImagePath;
+    private Picasso mPicasso;
 
     public static void start(Activity pActivity, int pId) {
         Intent intent = new Intent(pActivity, ViewPlanActivity.class);
@@ -44,6 +61,20 @@ public class ViewPlanActivity extends ToolbarActivity {
         super.onCreate(pSavedInstanceState);
         initView();
         initBackButton();
+        mPicasso = Picasso.with(this);
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        showToast("onResume");
+//        initPicture();
+//    }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        initPicture();
     }
 
     @Override
@@ -64,12 +95,10 @@ public class ViewPlanActivity extends ToolbarActivity {
                 dialDelPlan.show(getFragmentManager(), getString(R.string.pa_delete_plan));
                 break;
             case R.id.vp_menu_edit:
-                if(mPlan.getIsRemote() == 0)
-                {
+                if (mPlan.getIsRemote() == 0) {
                     LocalTaskActivity.start(this, mPlanId);
                 }
-                if(mPlan.getIsRemote() == 1)
-                {
+                if (mPlan.getIsRemote() == 1) {
                     RemoteTaskActivity.start(this, mPlanId);
                 }
                 finish();
@@ -93,28 +122,33 @@ public class ViewPlanActivity extends ToolbarActivity {
         finish();
     }
 
-    public static Bitmap getCircleMaskedBitmapUsingShader(Bitmap source, int radius) {
+    private void initPicture() {
+        int targetW = mIvPicture.getWidth();
+        int targetH = mIvPicture.getHeight();
 
-        if (source == null) {
-            return null;
+
+        if (mSelectedImagePath!=null){
+            Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+            mIvPicture.setImageBitmap(bitmap);
+        }else{
+            int color = Color.argb(255,63,81,181);
+            mIvPicture.setBackgroundColor(color);
         }
 
-        int diam = radius << 1;
-
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(source, 100, 100, true);
-        final Shader shader = new BitmapShader(scaledBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        paint.setShader(shader);
-
-        Bitmap targetBitmap = Bitmap.createBitmap(diam, diam, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(targetBitmap);
-
-        canvas.drawCircle(radius, radius, radius, paint);
-
-        return targetBitmap;
+// Don't delete
+//        try {
+//            Uri imageUri;
+//            imageUri = Uri.fromFile(new File(mSelectedImagePath));
+//            String imageUriString = imageUri.toString();
+//            mPicasso.load(imageUriString).resize(targetW, targetH).centerCrop().into(mIvPicture);
+//
+//
+//        } catch (Exception e) {
+//
+//            mPicasso.load(R.drawable.default_example_material).centerCrop().into(mIvPicture);
+////            mIvPicture.setImageResource(R.drawable.default_example_material);
+//        }
     }
-
 
     @Override
     protected int contentViewResId() {
@@ -122,13 +156,15 @@ public class ViewPlanActivity extends ToolbarActivity {
     }
 
     private void initView() {
+
+        mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+        mPlan = dbManager.getPlanById(mPlanId);
+        mSelectedImagePath = mPlan.getImagePath();
+        setTitle(mPlan.getTitle());
         mTv_time = (TextView) findViewById(R.id.pv_tv_time);
         mTv_date = (TextView) findViewById(R.id.pv_tv_date);
         mTv_details = (TextView) findViewById(R.id.pv_tv_details);
         mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
-        mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
-        mPlan = dbManager.getPlanById(mPlanId);
-        setTitle(mPlan.getTitle());
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
 
         if(mPlan.getDaysToAlarm().charAt(0) == '1'){

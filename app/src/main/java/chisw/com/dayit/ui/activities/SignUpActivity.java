@@ -121,8 +121,9 @@ public class SignUpActivity extends AuthorizationActivity {
     }
 
     private boolean isValidFields() {
-        if (!ValidData.isPhoneNumberValid(phone)) {
-            showToast("Phone number is not valid!");
+        if (!ValidData.isPhoneNumberValid(phone, getString(R.string.phone_pttrn))) {
+            showToast("Wrong phone number. Example: +380123456789");
+            showToast("Phone number must be: + [any digit 10-12 times]");
             return false;
         }
         if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {

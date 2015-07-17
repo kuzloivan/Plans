@@ -5,11 +5,10 @@
 
     <com.parse.ParseImageView
         android:id="@+id/image_view_on_toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_example_material"
         />
 
     <android.support.v7.widget.Toolbar
