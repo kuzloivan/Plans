@@ -48,22 +48,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <Button
+        <ImageButton
             android:id="@+id/bt_accept_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/style_aa_btns"
-            android:text="Accept" />
-
-        <Button
-            android:id="@+id/bt_dismiss_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/style_aa_btns"
-            android:text="Dismiss" />
+            android:src="@drawable/ic_check_light_48"
+            style="@style/style_aa_btns"/>
 
     </LinearLayout>
-
-
 
 </LinearLayout>
