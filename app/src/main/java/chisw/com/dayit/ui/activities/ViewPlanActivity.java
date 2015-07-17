@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +49,7 @@ public class ViewPlanActivity extends ToolbarActivity {
     private int mPlanId;
     private String mSelectedImagePath;
     private Picasso mPicasso;
+    private Button mAcceptBT;
 
     public static void start(Activity pActivity, int pId) {
         Intent intent = new Intent(pActivity, ViewPlanActivity.class);
@@ -167,11 +170,21 @@ public class ViewPlanActivity extends ToolbarActivity {
         mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
 
+        mAcceptBT = (Button) findViewById(R.id.accept_bt);
+       // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
+        mAcceptBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAcceptBT.setVisibility(View.INVISIBLE);
+                showToast("Plan has been accepted");
+            }
+        });
+
         if(mPlan.getDaysToAlarm().charAt(0) == '1'){
             mTv_date.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
         }
         else {
-            mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp())); // todo: add if for correct InView displaying
+            mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         }
 
         mTv_details.setText(mPlan.getDetails());

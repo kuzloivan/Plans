@@ -68,6 +68,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
         int imageIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         long timeStamp = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
         int daysIndex = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
+
         //int phoneNumbIndex = cursor.getColumnIndex(PlansEntity.PHONE);
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));

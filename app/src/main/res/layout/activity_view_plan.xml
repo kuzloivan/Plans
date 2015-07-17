@@ -81,7 +81,17 @@
         </RelativeLayout>
 
 
+
     </ScrollView>
 
+    <Button
+        android:id="@+id/accept_bt"
+        style="@style/style_aa_btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/accept_s"
+        android:layout_above="@+id/pv_bottom_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
