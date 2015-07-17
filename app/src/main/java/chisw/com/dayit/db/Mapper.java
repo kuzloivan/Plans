@@ -23,6 +23,7 @@ public class Mapper {
         CV.put(PlansEntity.DAYS_TO_ALARM, model.getDaysToAlarm());
         CV.put(PlansEntity.IS_DELETED, model.getIsDeleted());
         CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
+        CV.put(PlansEntity.UPDATED_AT_PARSE_TIME, model.getUpdatedAtParseTime());
         CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
         CV.put(PlansEntity.SENDER, model.getSender());
         return CV;
@@ -60,6 +61,10 @@ public class Mapper {
 
         if(model.getIsSynchronized() != -1 )
             CV.put(PlansEntity.IS_SYNCHRONIZED, model.getIsSynchronized());
+
+        if(model.getUpdatedAtParseTime() != -1)
+            CV.put(PlansEntity.UPDATED_AT_PARSE_TIME, model.getUpdatedAtParseTime());
+
         if(model.getIsRemote() != -1)
             CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
 
@@ -83,6 +88,7 @@ public class Mapper {
         int daysToAlarm = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
         int isDeletedIndex = cursor.getColumnIndex(PlansEntity.IS_DELETED);
         int isSynchronizedIndex = cursor.getColumnIndex(PlansEntity.IS_SYNCHRONIZED);
+        int changedAtParseTimeIndex = cursor.getColumnIndex(PlansEntity.UPDATED_AT_PARSE_TIME);
         int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
         int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
 
@@ -99,6 +105,7 @@ public class Mapper {
         plan.setDaysToAlarm(cursor.getString(daysToAlarm));
         plan.setIsDeleted(cursor.getInt(isDeletedIndex));
         plan.setIsSynchronized(cursor.getInt(isSynchronizedIndex));
+        plan.setUpdatedAtParseTime(cursor.getLong(changedAtParseTimeIndex));
         plan.setIsRemote(cursor.getInt(isRemoteIndex));
         plan.setSender(cursor.getString(senderIndex));
         return plan;

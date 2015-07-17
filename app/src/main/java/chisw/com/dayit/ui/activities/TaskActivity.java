@@ -64,6 +64,7 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected ImageView mIvImage;
     protected String mDaysToAlarm;
     protected int mPlanId;
+    protected long mUpdatedAtParseTime;
     protected Calendar mMyLovelyCalendar;
     protected ArrayList<CheckBox> mCheckBoxesArr;
 
@@ -188,29 +189,17 @@ public abstract class TaskActivity extends ToolbarActivity {
         plan.setTimeStamp(calendar.getTimeInMillis());
         plan.setImagePath(mSelectedImagePath);
         plan.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
+        plan.setUpdatedAtParseTime(mUpdatedAtParseTime);
         plan.setIsDeleted(0);
 
         if (mIsEdit) {
             plan.setParseId(dbManager.getPlanById(mPlanId).getParseId());
             plan.setLocalId(dbManager.getPlanById(mPlanId).getLocalId());
-
-            if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
-                plan.setIsSynchronized(0);
-                dbManager.editPlan(plan, mPlanId);
-                return;
-            }
-            plan.setIsSynchronized(1);
+            plan.setIsSynchronized(0);
             dbManager.editPlan(plan, mPlanId);
-            netManager.editPlan(plan, new CallbackEditPlan(plan));
         } else {
-            if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
-                plan.setIsSynchronized(0);
-                dbManager.saveNewPlan(plan);
-                return;
-            }
-            plan.setIsSynchronized(1);
+            plan.setIsSynchronized(0);
             dbManager.saveNewPlan(plan);
-            netManager.addPlan(plan, new CallbackAddPLan(plan));
         }
     }
 
@@ -395,6 +384,8 @@ public abstract class TaskActivity extends ToolbarActivity {
         mMyLovelyCalendar = DataUtils.getCalendarByTimeStamp(p.getTimeStamp());
         mTvDate.setText(DataUtils.getDateStrFromCalendar(mMyLovelyCalendar));
         mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
+        mUpdatedAtParseTime = p.getUpdatedAtParseTime();
+
         mDaysToAlarm = p.getDaysToAlarm().substring(1); // test
         initializeCheckBoxes();
         mSelectedImagePath = p.getImagePath();
@@ -402,55 +393,6 @@ public abstract class TaskActivity extends ToolbarActivity {
         mIvImage.setImageBitmap(bitmap);
         if (mSelectedImagePath == null) {
             mIvImage.setImageResource(R.drawable.aa_icon);
-        }
-    }
-
-    protected final class CallbackAddPLan implements OnSaveCallback {
-
-        private Plan mPlan;
-
-        public CallbackAddPLan(Plan pPlan) {
-            mPlan = pPlan;
-        }
-
-        @Override
-        public void getId(String id) {
-            if (ValidData.isTextValid(id)) {
-                mPlan.setParseId(id);
-                int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
-                mPlan.setLocalId(planId);
-                dbManager.editPlan(mPlan, planId);
-            }
-        }
-    }
-
-    protected final class CallbackEditPlan implements GetCallback<ParseObject> {
-        private final Plan plan;
-
-        public CallbackEditPlan(Plan plan) {
-            this.plan = plan;
-        }
-
-        @Override
-        public void done(ParseObject parseObject, ParseException e) {
-            if (e == null) {
-                parseObject.put("title", plan.getTitle());
-                parseObject.put("timeStamp", plan.getTimeStamp());
-                if (ValidData.isTextValid(plan.getAudioPath())) {
-                    parseObject.put("audioPath", plan.getAudioPath());
-                }
-                if (ValidData.isTextValid(plan.getImagePath())) {
-                    parseObject.put("imagePath", plan.getImagePath());
-                }
-                parseObject.put("audioDuration", plan.getAudioDuration());
-                parseObject.put("details", plan.getDetails());
-                parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
-                parseObject.saveInBackground();
-
-
-            } else {
-                showToast(e.getMessage());
-            }
         }
     }
 

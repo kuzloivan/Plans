@@ -50,7 +50,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             mDetails = jObj.getString("title");
             mTime = jObj.getLong("time");
             mFrom = jObj.getString("from");
-            if (dbManager.getPlanByTitleAndSender(jObj.getString("alert"), jObj.getString("from")) == null) {
+            if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
                 sendNotification(context, sharedHelper.getVibrationOn());
                 setPlanToDB(context, dbManager, netManager, sharedHelper.getSynchronization());
                 setPlanToExecute(dbManager, alarmManager, context);
@@ -108,9 +108,10 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         pDBManager.saveNewPlan(p);
         pNetManager.addPlan(p, new OnSaveCallback() {
             @Override
-            public void getId(String id) {
+            public void getId(String id, long updatedAtParseTime) {
                 if (ValidData.isTextValid(id)) {
                     p.setParseId(id);
+                    p.setUpdatedAtParseTime(updatedAtParseTime);
                     int planId = pDBManager.getPlanById(pDBManager.getLastPlanID()).getLocalId();
                     p.setLocalId(planId);
                     pDBManager.editPlan(p, planId);
