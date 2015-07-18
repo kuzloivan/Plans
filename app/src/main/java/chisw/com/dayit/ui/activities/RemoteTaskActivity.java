@@ -52,6 +52,10 @@ public class RemoteTaskActivity extends TaskActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+        if (getIntent().hasExtra(BUNDLE_KEY)) {   // this if is to edit remote plan // delete if it cause any problems
+            mIsEdit = true;
+            mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
+        }
         dateFillIn();
     }
 

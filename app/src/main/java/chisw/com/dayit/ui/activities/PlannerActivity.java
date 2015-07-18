@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.parse.GetCallback;
@@ -20,7 +18,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -34,6 +31,7 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.others.RestartManager;
 import chisw.com.dayit.ui.adapters.PlannerCursorAdapter;
 import chisw.com.dayit.ui.custom_element.FloatingActionButton;
+import chisw.com.dayit.ui.dialogs.PasswordCheckDialog;
 import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.SystemUtils;
@@ -204,8 +202,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
                     showToast("You aren't log in");
                 } else {
-                    Intent intent = new Intent(PlannerActivity.this, UserActivity.class);
-                    startActivity(intent);
+                    PasswordCheckDialog passwordCheckDialog = new PasswordCheckDialog();
+                    passwordCheckDialog.setListener(new DeletePlanDialogClicker());
+                    passwordCheckDialog.show(getSupportFragmentManager(), "passCheck");
                 }
                 break;
         }
@@ -365,11 +364,26 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
     }
 
-    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
+    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog, PasswordCheckDialog.IPasswordCheckDialog{
 
         @Override
         public void onAcceptClick() {
             deleteEntirely(mWantToDelete);
+        }
+
+        @Override
+        public void onDialogPositiveClick(String pPass){
+            if(pPass.equals(sharedHelper.getDefaultPass())) {
+                Intent intent = new Intent(PlannerActivity.this, UserActivity.class);
+                startActivity(intent);
+            }
+            else
+                showToast("Password is incorrect");
+        }
+
+        @Override
+        public void onDialogNegativeClick(){
+
         }
     }
 

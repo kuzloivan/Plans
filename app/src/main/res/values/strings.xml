@@ -57,6 +57,7 @@
     <string name="pa_authorization">Authorization</string>
     <string name="pa_delete_plan">Delete plan</string>
     <string name="pa_delete_all_plans">Delete all plans</string>
+    <string name="enter_your_pass">Password</string>
 
     <!-- View plan activity -->
     <string name="title_activity_view_plan">Plan view</string>
