@@ -12,6 +12,7 @@ public class Plan {
     private String imagePath;
     private int isDeleted;
     private int isSynchronized;
+    private long updatedAtParseTime;
     private int isRemote;
     private String sender;
 
@@ -95,6 +96,14 @@ public class Plan {
 
     public void setIsSynchronized(int isSynchronized) {
         this.isSynchronized = isSynchronized;
+    }
+
+    public long getUpdatedAtParseTime() {
+        return updatedAtParseTime;
+    }
+
+    public void setUpdatedAtParseTime(long updatedAtParseTime) {
+        this.updatedAtParseTime = updatedAtParseTime;
     }
 
     public int getIsDeleted() {

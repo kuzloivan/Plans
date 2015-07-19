@@ -12,6 +12,7 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.entity.PlansEntity;
-import chisw.com.dayit.db.entity.UserEntity;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.utils.ValidData;
 
@@ -57,7 +57,7 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public void logoutUser(String name, String pPassword, LogOutCallback logoutCallback) {
+    public void logoutUser(LogOutCallback logoutCallback) {
         ParseUser.logOutInBackground(logoutCallback);
     }
 
@@ -100,23 +100,10 @@ public class NetManager implements NetBridge {
     }
 
     @Override
-    public Plan getPlan(final String parseId) {
-        final Plan p = new Plan();
+    public void getPlan(final String parseId, GetCallback<ParseObject> pGetCallback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
         query.whereEqualTo(PLAN_ID, parseId);
-        query.getInBackground(parseId, new CallbackGetPlan(new GetPlanCallback() {
-            @Override
-            public void getPlan(ParseObject parseObject) {
-                p.setAudioPath(parseObject.getString(PlansEntity.AUDIO_PATH));
-                p.setImagePath(parseObject.getString(PlansEntity.IMAGE_PATH));
-                p.setLocalId(parseObject.getInt(PlansEntity.LOCAL_ID));
-                p.setDetails(parseObject.getString(PlansEntity.DETAILS));
-                p.setTitle(parseObject.getString(PlansEntity.TITLE));
-                p.setTimeStamp(parseObject.getLong(PlansEntity.TIMESTAMP));
-                p.setDaysToAlarm(parseObject.getString(PlansEntity.DAYS_TO_ALARM));
-            }
-        }));
-        return p;
+        query.getInBackground(parseId, pGetCallback);
     }
 
     @Override
@@ -146,7 +133,9 @@ public class NetManager implements NetBridge {
         query.getInBackground(parseId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
-                parseObject.deleteInBackground();
+                if (e == null) {
+                    parseObject.deleteInBackground();
+                }
             }
         });
     }
@@ -171,21 +160,6 @@ public class NetManager implements NetBridge {
                 return;
             }
             onGetNumbersCallback.getNumbers(null);
-        }
-    }
-
-    public final class CallbackGetPlan implements GetCallback<ParseObject> {
-        private final GetPlanCallback getPlanCallback;
-
-        public CallbackGetPlan(GetPlanCallback callback) {
-            this.getPlanCallback = callback;
-        }
-
-        @Override
-        public void done(ParseObject parseObject, ParseException e) {
-            if (e == null) {
-                getPlanCallback.getPlan(parseObject);
-            }
         }
     }
 
@@ -219,10 +193,10 @@ public class NetManager implements NetBridge {
         @Override
         public void done(ParseException e) {
             if (e == null) {
-                onSaveCallback.getId(parsePlan.getObjectId());
+                onSaveCallback.getId(parsePlan.getObjectId(), parsePlan.getUpdatedAt().getTime());
                 return;
             }
-            onSaveCallback.getId(null);
+            onSaveCallback.getId(null, -1);
         }
 
     }
@@ -249,6 +223,7 @@ public class NetManager implements NetBridge {
                     p.setAudioDuration(obj.getInt(PlansEntity.AUDIO_DURATION));
                     p.setDaysToAlarm(obj.getString(PlansEntity.DAYS_TO_ALARM));
                     p.setParseId(obj.getObjectId());
+                    p.setUpdatedAtParseTime(obj.getUpdatedAt().getTime());
                     plans.add(p);
                 }
                 onGetPlansCallback.getPlans(plans);

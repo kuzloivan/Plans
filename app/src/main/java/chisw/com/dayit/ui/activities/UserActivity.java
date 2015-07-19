@@ -47,8 +47,8 @@ public class UserActivity extends ToolbarActivity {
                 TwoButtonsAlertDialog dialDelPlans = new TwoButtonsAlertDialog();
                 dialDelPlans.setIAlertDialog(new SaveUserDialogClicker());
                 dialDelPlans.setDialogTitle("Do you want to save a user?");
-                dialDelPlans.setPositiveBtnText("Yes, I do");
-                dialDelPlans.setNegativeBtnText("No, I don't");
+                dialDelPlans.setPositiveBtnText("Yes");
+                dialDelPlans.setNegativeBtnText("Cancel");
                 dialDelPlans.show(getFragmentManager(), getString(R.string.ua_save));
             }
 

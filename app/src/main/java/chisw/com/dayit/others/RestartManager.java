@@ -25,19 +25,21 @@ public class RestartManager {
 
     public void reload() {
         DBManager dbManager = ((PApplication) ctx.getApplicationContext()).getDbManager();
-        Cursor cursor = dbManager.getPlans();
-        cursor.moveToFirst();
-        do {
-            long time = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
-            if(System.currentTimeMillis() > time){
-                cursor.moveToNext();
-                continue;
-            }
-            Intent intent = new Intent(ctx, NotificationReceiver.class);
-            intent.setAction(cursor.getString(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
-            PendingIntent pAlarmIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP)), pAlarmIntent);
-        } while (cursor.moveToNext());
-        cursor.close();
+        //Cursor cursor = dbManager.getPlans();
+        Cursor cursor = dbManager.getNotDeletedPlans();
+        if(cursor.moveToFirst()) {
+            do {
+                long time = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
+                if (System.currentTimeMillis() > time) {
+                    cursor.moveToNext();
+                    continue;
+                }
+                Intent intent = new Intent(ctx, NotificationReceiver.class);
+                intent.setAction(cursor.getString(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
+                PendingIntent pAlarmIntent = PendingIntent.getBroadcast(ctx, 0, intent, 0);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP)), pAlarmIntent);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
     }
 }

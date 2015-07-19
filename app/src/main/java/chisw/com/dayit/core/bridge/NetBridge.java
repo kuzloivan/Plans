@@ -21,13 +21,13 @@ public interface NetBridge {
     /* Sing Up and Log In */
     void registerUser(String pName, String pPassword, String pPhone, SignUpCallback signUpCallback);
     void loginUser(String pName, String pPassword, LogInCallback logInCallback);
-    void logoutUser(String pName, String pPassword, LogOutCallback logOutCallback);
+    void logoutUser(LogOutCallback logOutCallback);
     void getUsersByNumbers(List<String> phoneNums, OnGetNumbersCallback onGetNumbersCallback);
     void checkPhone(String phone, CheckPhoneCallback checkPhoneCallback);
     /* Plan */
     void addPlan(Plan plan, OnSaveCallback callback);
     void getAllPlans(OnGetPlansCallback callback);
-    Plan getPlan(String pId);
+    void getPlan(String pId, GetCallback<ParseObject> pGetCallback);
     void editPlan(Plan plan, GetCallback<ParseObject> callbackEditPlan);
     void deletePlan(String pId);
     void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback);

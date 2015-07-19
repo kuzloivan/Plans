@@ -13,6 +13,7 @@ public class PlansEntity {
     public static final String DAYS_TO_ALARM = "daysToAlarm";
     public static final String IS_DELETED = "isDeleted";
     public static final String IS_SYNCHRONIZED = "isSynchronized";
+    public static final String UPDATED_AT_PARSE_TIME = "updatedAt";
     public static final String IS_REMOTE = "type";
     public static final String SENDER = "sender";
 
@@ -29,6 +30,7 @@ public class PlansEntity {
             DAYS_TO_ALARM + " TEXT, " +
             IS_DELETED + " INTEGER, " +
             IS_SYNCHRONIZED + " INTEGER, " +
+            UPDATED_AT_PARSE_TIME + " DATE, " +
             IS_REMOTE + " INTEGER, " +
             SENDER + " TEXT " +
             ")";

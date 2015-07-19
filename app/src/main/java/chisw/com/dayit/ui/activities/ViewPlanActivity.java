@@ -67,13 +67,6 @@ public class ViewPlanActivity extends ToolbarActivity {
         mPicasso = Picasso.with(this);
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        showToast("onResume");
-//        initPicture();
-//    }
-
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
@@ -189,6 +182,7 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         mTv_details.setText(mPlan.getDetails());
     }
+    
     private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override
@@ -196,5 +190,4 @@ public class ViewPlanActivity extends ToolbarActivity {
             deleteEntirely();
         }
     }
-
 }

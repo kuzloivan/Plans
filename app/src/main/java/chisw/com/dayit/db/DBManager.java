@@ -59,10 +59,10 @@ public class DBManager extends java.util.Observable implements DbBridge {
     }
 
     @Override
-    public Plan getPlanByTitleAndSender(String pTitle, String pSender) {
+    public Plan getPlanByTitleAndSender(String pTitle, String pSender, long pTime) {
         Plan plan = null;
-        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.TITLE + "=? AND " + PlansEntity.SENDER + "=?",
-                new String[]{pTitle, pSender}, null, null, null );
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.TITLE + "=? AND " + PlansEntity.SENDER + "=? AND " + PlansEntity.TIMESTAMP + "=?",
+                new String[]{pTitle, pSender, Long.toString(pTime)}, null, null, null);
         if(cursor.moveToFirst()) {
             plan = Mapper.parseCursor(cursor);
             cursor.close();
@@ -70,6 +70,17 @@ public class DBManager extends java.util.Observable implements DbBridge {
         return plan;
     }
 
+    @Override
+    public Plan getPlanByParseId(String pParseId) {
+        Plan plan = null;
+        Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.PARSE_ID + "=?",
+                new String[]{pParseId}, null, null, null);
+        if(cursor.moveToFirst()) {
+            plan = Mapper.parseCursor(cursor);
+            cursor.close();
+        }
+        return plan;
+    }
 
     @Override
     public Cursor getCursorById(int id) {

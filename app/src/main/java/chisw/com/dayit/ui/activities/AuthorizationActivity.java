@@ -72,14 +72,14 @@ public abstract class AuthorizationActivity extends ToolbarActivity {
                 public void done(ParseException e) {
                     if (e == null) {
                         showToast("Bind to channel was successful");
+                        hideProgressDialog();
+                        showToast("Login was successful");
+                        startSomeActivity();
                         return;
                     }
                     showToast(e.getMessage());
                 }
             });
-            hideProgressDialog();
-            showToast("Login was successful");
-            startSomeActivity();
         }
     }
 
