@@ -1,5 +1,9 @@
 package chisw.com.dayit.model;
 
+import com.parse.ParseObject;
+
+import chisw.com.dayit.db.entity.PlansEntity;
+
 public class Plan {
     private String parseId;
     private String title;
@@ -125,4 +129,18 @@ public class Plan {
     public String getSender() { return sender; }
 
     public void setSender(String pSender) { sender = pSender; }
+
+    public Plan setPlanFromParse(ParseObject pParsePlan) {
+
+        parseId = pParsePlan.getObjectId();
+        title = pParsePlan.getString(PlansEntity.TITLE);
+        details = pParsePlan.getString(PlansEntity.DETAILS);
+        timeStamp = pParsePlan.getLong(PlansEntity.TIMESTAMP);
+        imagePath = pParsePlan.getString(PlansEntity.IMAGE_PATH);
+        audioPath = pParsePlan.getString(PlansEntity.AUDIO_PATH);
+        audioDuration = pParsePlan.getInt(PlansEntity.AUDIO_DURATION);
+        daysToAlarm = pParsePlan.getString(PlansEntity.DAYS_TO_ALARM);
+        updatedAtParseTime = pParsePlan.getUpdatedAt().getTime();
+        return this;
+    }
 }

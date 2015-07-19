@@ -12,24 +12,24 @@ import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import chisw.com.dayit.core.bridge.NetBridge;
 
 import chisw.com.dayit.core.callback.CheckPhoneCallback;
-import chisw.com.dayit.core.callback.GetPlanCallback;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
-import chisw.com.dayit.db.entity.PlansEntity;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.utils.ValidData;
 
 
 public class NetManager implements NetBridge {
-    public static final String TABLE_NAME = "Plans";
+    public static final String PLANS_TABLE_NAME = "Plans";
+    public static final String USER_TABLE_NAME = "_User";
+    public static final String PARSE_OBJECT_ID = "objectId";
+
     public static final String TITLE = "title";
     public static final String DETAILS = "details";
     public static final String TIMESTAMP = "timeStamp";
@@ -38,98 +38,104 @@ public class NetManager implements NetBridge {
     public static final String AUDIO_DURATION = "audioDuration";
     public static final String IMAGE_PATH = "imagePath";
     public static final String DAYS_TO_ALARM = "daysToAlarm";
-    public static final String PLAN_ID = "objectId";
+    public static final String IS_REMOTE = "isRemote";
+
     public static final String USERNAME = "username";
     public static final String PHONE = "phone";
 
     @Override
-    public void registerUser(String name, String password, String pPhone, SignUpCallback signUpCallback) {
+    public void registerUser(String pName, String pPassword, String pPhone, SignUpCallback pSignUpCallback) {
         ParseUser user = new ParseUser();
-        user.setUsername(name);
-        user.setPassword(password);
+        user.setUsername(pName);
+        user.setPassword(pPassword);
         user.put(PHONE, pPhone);
-        user.signUpInBackground(signUpCallback);
+        user.signUpInBackground(pSignUpCallback);
     }
 
     @Override
-    public void loginUser(String name, String password, LogInCallback logInCallback) {
-        ParseUser.logInInBackground(name, password, logInCallback);
+    public void loginUser(String pName, String pPassword, LogInCallback pLogInCallback) {
+        ParseUser.logInInBackground(pName, pPassword, pLogInCallback);
     }
 
     @Override
-    public void logoutUser(LogOutCallback logoutCallback) {
-        ParseUser.logOutInBackground(logoutCallback);
+    public void logoutUser(LogOutCallback pLogoutCallback) {
+        ParseUser.logOutInBackground(pLogoutCallback);
     }
 
     @Override
-    public void getUsersByNumbers(List<String> phoneNums, OnGetNumbersCallback onGetNumbersCallback) {
+    public void getUsersByNumbers(List<String> pPhoneNums, OnGetNumbersCallback pOnGetNumbersCallback) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn(PHONE, phoneNums);
-        query.findInBackground(new CallbackGetNumbers(onGetNumbersCallback));
+        query.whereContainedIn(PHONE, pPhoneNums);
+        query.findInBackground(new CallbackGetNumbers(pOnGetNumbersCallback));
     }
 
     @Override
-    public void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback) {
+    public void getNumbersByUsers(List<String> pUsernames, OnGetNumbersCallback pOnGetNumbersCallback) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn(USERNAME, userNames);
-        query.findInBackground(new CallbackGetNumbers(onGetNumbersCallback));
+        query.whereContainedIn(USERNAME, pUsernames);
+        query.findInBackground(new CallbackGetNumbers(pOnGetNumbersCallback));
     }
     @Override
-    public void addPlan(Plan plan, OnSaveCallback callback) {
-        ParseObject pPlan = new ParseObject(TABLE_NAME);
-        pPlan.put(TITLE, plan.getTitle());
-        pPlan.put(TIMESTAMP, plan.getTimeStamp());
-        if (ValidData.isTextValid(plan.getAudioPath())) {
-            pPlan.put(AUDIO_PATH, plan.getAudioPath());
+    public void addPlan(Plan pPlan, OnSaveCallback pOnSaveCallback) {
+        ParseObject parsePlan = new ParseObject(PLANS_TABLE_NAME);
+        parsePlan.put(TITLE, pPlan.getTitle());
+        parsePlan.put(DETAILS, pPlan.getDetails());
+        parsePlan.put(TIMESTAMP, pPlan.getTimeStamp());
+        if (ValidData.isTextValid(pPlan.getImagePath())) {
+            parsePlan.put(IMAGE_PATH, pPlan.getImagePath());
         }
-        if (ValidData.isTextValid(plan.getImagePath())) {
-            pPlan.put(IMAGE_PATH, plan.getImagePath());
+        if (ValidData.isTextValid(pPlan.getAudioPath())) {
+            parsePlan.put(AUDIO_PATH, pPlan.getAudioPath());
         }
-        pPlan.put(DETAILS, plan.getDetails());
-        pPlan.put(USER_ID, ParseUser.getCurrentUser().getObjectId());
-        pPlan.put(AUDIO_DURATION, plan.getAudioDuration());
-        pPlan.put(DAYS_TO_ALARM, plan.getDaysToAlarm());
-        pPlan.saveInBackground(new CallbackAddPlan(pPlan, callback));
+        parsePlan.put(AUDIO_DURATION, pPlan.getAudioDuration());
+        parsePlan.put(DAYS_TO_ALARM, pPlan.getDaysToAlarm());
+        if(pPlan.getIsRemote() == 1) {
+            parsePlan.put(IS_REMOTE, true);
+        } else {
+            parsePlan.put(IS_REMOTE, false);
+        }
+        parsePlan.put(USER_ID, ParseUser.getCurrentUser().getObjectId());
+        parsePlan.saveInBackground(new CallbackAddPlan(parsePlan, pOnSaveCallback));
     }
 
     @Override
-    public void getAllPlans(OnGetPlansCallback callback) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
+    public void getAllPlans(OnGetPlansCallback pOnGetPlansCallback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
         query.whereEqualTo(USER_ID, ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground(new CallbackGetPlans(callback));
+        query.findInBackground(new CallbackGetPlans(pOnGetPlansCallback));
     }
 
     @Override
-    public void getPlan(final String parseId, GetCallback<ParseObject> pGetCallback) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
-        query.whereEqualTo(PLAN_ID, parseId);
-        query.getInBackground(parseId, pGetCallback);
+    public void getPlan(final String pParseId, GetCallback<ParseObject> pGetCallback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
+        query.whereEqualTo(PARSE_OBJECT_ID, pParseId);
+        query.getInBackground(pParseId, pGetCallback);
     }
 
     @Override
-    public void checkPhone(String phone, CheckPhoneCallback checkPhoneCallback) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.whereEqualTo(PHONE, phone);
-        query.findInBackground(new CallBackPhone(checkPhoneCallback));
+    public void checkPhone(String pPhone, CheckPhoneCallback pCheckPhoneCallback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(USER_TABLE_NAME);
+        query.whereEqualTo(PHONE, pPhone);
+        query.findInBackground(new CallBackPhone(pCheckPhoneCallback));
     }
 
     @Override
-    public void editPlan(Plan plan, GetCallback<ParseObject> callbackEditPlan) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
-        query.whereEqualTo(PLAN_ID, plan.getParseId());
-        query.getInBackground(plan.getParseId(), callbackEditPlan);
+    public void editPlan(String pParseId, GetCallback<ParseObject> callbackEditPlan) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
+        query.whereEqualTo(PARSE_OBJECT_ID, pParseId);
+        query.getInBackground(pParseId, callbackEditPlan);
     }
 
     @Override
-    public void editUser(ParseUser pParseUser, GetCallback<ParseUser> callBackEditUser){
-        ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
-        query.whereEqualTo("objectId" ,pParseUser.getObjectId());
-        query.getInBackground(pParseUser.getObjectId(), callBackEditUser);
+    public void editUser(String pParseId, GetCallback<ParseUser> callBackEditUser){
+        ParseQuery<ParseUser> query = ParseQuery.getQuery(USER_TABLE_NAME);
+        query.whereEqualTo(PARSE_OBJECT_ID, pParseId);
+        query.getInBackground(pParseId, callBackEditUser);
     }
 
     @Override
     public void deletePlan(String parseId) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
         query.getInBackground(parseId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
@@ -164,6 +170,7 @@ public class NetManager implements NetBridge {
     }
 
     private final class CallBackPhone implements FindCallback<ParseObject>{
+
         private CheckPhoneCallback checkPhoneCallback;
 
         public CallBackPhone(CheckPhoneCallback checkPhoneCallback) {
@@ -172,16 +179,17 @@ public class NetManager implements NetBridge {
 
         @Override
         public void done(List<ParseObject> list, ParseException e) {
-           if(e == null && !list.isEmpty())
-           {
+            if(e == null && !list.isEmpty())
+            {
                checkPhoneCallback.isNumberTaken(true);
                return;
-           }
+            }
             checkPhoneCallback.isNumberTaken(false);
         }
     }
 
     public final class CallbackAddPlan implements SaveCallback {
+
         private final ParseObject parsePlan;
         private final OnSaveCallback onSaveCallback;
 
@@ -202,6 +210,7 @@ public class NetManager implements NetBridge {
     }
 
     public final class CallbackGetPlans implements FindCallback<ParseObject> {
+
         private final ArrayList<Plan> plans;
         private final OnGetPlansCallback onGetPlansCallback;
 
@@ -213,17 +222,9 @@ public class NetManager implements NetBridge {
         @Override
         public void done(List<ParseObject> list, ParseException e) {
             if (e == null) {
-                for (ParseObject obj : list) {
+                for (ParseObject parsePlan : list) {
                     Plan p = new Plan();
-                    p.setAudioPath(obj.getString(PlansEntity.AUDIO_PATH));
-                    p.setImagePath(obj.getString(PlansEntity.IMAGE_PATH));
-                    p.setDetails(obj.getString(PlansEntity.DETAILS));
-                    p.setTitle(obj.getString(PlansEntity.TITLE));
-                    p.setTimeStamp(obj.getLong(PlansEntity.TIMESTAMP));
-                    p.setAudioDuration(obj.getInt(PlansEntity.AUDIO_DURATION));
-                    p.setDaysToAlarm(obj.getString(PlansEntity.DAYS_TO_ALARM));
-                    p.setParseId(obj.getObjectId());
-                    p.setUpdatedAtParseTime(obj.getUpdatedAt().getTime());
+                    p.setPlanFromParse(parsePlan);
                     plans.add(p);
                 }
                 onGetPlansCallback.getPlans(plans);

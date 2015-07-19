@@ -64,7 +64,7 @@ public class UserActivity extends ToolbarActivity {
 
         @Override
         public void onAcceptClick() {
-            netManager.editUser(ParseUser.getCurrentUser(), new GetCallback<ParseUser>() {
+            netManager.editUser(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser pParseUser, ParseException e) {
                     pParseUser.setPassword(mPasswordET.getText().toString());

@@ -357,7 +357,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                                 netManager.deletePlan(localPlan.getParseId());
                                 dbManager.deletePlanById(localPlan.getLocalId());
                             } else {
-                                netManager.editPlan(localPlan, new CallbackEditPlan(localPlan));
+                                netManager.editPlan(localPlan.getParseId(), new CallbackEditPlan(localPlan));
                                 localPlan.setIsSynchronized(1);
                                 dbManager.editPlan(localPlan, localPlan.getLocalId());
                             }
@@ -366,6 +366,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                                 dbManager.deletePlanById(localPlan.getLocalId());
                             } else {
                                 netManager.addPlan(localPlan, new CallbackSavePlan(localPlan));
+                                localPlan.setIsSynchronized(1);
                             }
                         }
                     } else {
@@ -386,18 +387,11 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
 
         @Override
-        public void done(ParseObject pParseObject, ParseException e) {
+        public void done(ParseObject parsePlan, ParseException e) {
             if(e == null) {
-                if(pParseObject.getUpdatedAt().getTime() > localPlan.getUpdatedAtParseTime()) {
+                if(parsePlan.getUpdatedAt().getTime() > localPlan.getUpdatedAtParseTime()) {
                     Plan plan = new Plan();
-                    plan.setAudioPath(pParseObject.getString(PlansEntity.AUDIO_PATH));
-                    plan.setImagePath(pParseObject.getString(PlansEntity.IMAGE_PATH));
-                    plan.setLocalId(pParseObject.getInt(PlansEntity.LOCAL_ID));
-                    plan.setDetails(pParseObject.getString(PlansEntity.DETAILS));
-                    plan.setTitle(pParseObject.getString(PlansEntity.TITLE));
-                    plan.setTimeStamp(pParseObject.getLong(PlansEntity.TIMESTAMP));
-                    plan.setDaysToAlarm(pParseObject.getString(PlansEntity.DAYS_TO_ALARM));
-                    plan.setUpdatedAtParseTime(pParseObject.getUpdatedAt().getTime());
+                    plan.setPlanFromParse(parsePlan);
                     plan.setIsSynchronized(1);
                     dbManager.editPlan(plan, localPlan.getLocalId());
                 }

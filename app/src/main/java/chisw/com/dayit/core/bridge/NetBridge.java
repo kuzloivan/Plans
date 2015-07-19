@@ -19,17 +19,17 @@ import chisw.com.dayit.model.Plan;
 public interface NetBridge {
 
     /* Sing Up and Log In */
-    void registerUser(String pName, String pPassword, String pPhone, SignUpCallback signUpCallback);
-    void loginUser(String pName, String pPassword, LogInCallback logInCallback);
-    void logoutUser(LogOutCallback logOutCallback);
-    void getUsersByNumbers(List<String> phoneNums, OnGetNumbersCallback onGetNumbersCallback);
+    void registerUser(String pName, String pPassword, String pPhone, SignUpCallback pSignUpCallback);
+    void loginUser(String pName, String pPassword, LogInCallback pLogInCallback);
+    void logoutUser(LogOutCallback pLogOutCallback);
+    void getUsersByNumbers(List<String> pPhoneNums, OnGetNumbersCallback pOnGetNumbersCallback);
     void checkPhone(String phone, CheckPhoneCallback checkPhoneCallback);
     /* Plan */
-    void addPlan(Plan plan, OnSaveCallback callback);
-    void getAllPlans(OnGetPlansCallback callback);
+    void addPlan(Plan plan, OnSaveCallback pOnSaveCallback);
+    void getAllPlans(OnGetPlansCallback pOnGetCallback);
     void getPlan(String pId, GetCallback<ParseObject> pGetCallback);
-    void editPlan(Plan plan, GetCallback<ParseObject> callbackEditPlan);
+    void editPlan(String pParseId, GetCallback<ParseObject> pGetCallback);
     void deletePlan(String pId);
-    void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback);
-    void editUser(ParseUser pParseUser, GetCallback<ParseUser> callBackEditUser);
+    void getNumbersByUsers(List<String> pUsernames, OnGetNumbersCallback pOnGetNumbersCallback);
+    void editUser(String pParseId, GetCallback<ParseUser> pGetCallback);
 }
