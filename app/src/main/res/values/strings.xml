@@ -58,6 +58,7 @@
     <string name="pa_delete_plan">Delete plan</string>
     <string name="pa_delete_all_plans">Delete all plans</string>
     <string name="enter_your_pass">Password</string>
+    <string name="pa_contacts">Contacts</string>
 
     <!-- View plan activity -->
     <string name="title_activity_view_plan">Plan view</string>
@@ -87,7 +88,7 @@
     <!-- SettingActivity -->
     <string name="delete_all_plans">Delete all plans</string>
 
-    <!-- UserActivity -->
+    <!-- EditUserActivity -->
     <string name="ua_save">Save changes</string>
     <string name="ua_password_hint">Password</string>
     <string name="ua_login_hint">Login</string>

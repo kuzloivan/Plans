@@ -17,12 +17,11 @@ import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
  * Created by Kuzlo on 15.07.2015.
  */
 
-public class UserActivity extends ToolbarActivity {
+public class EditUserActivity extends ToolbarActivity {
 
     private EditText mLoginET;
     private EditText mPhoneET;
     private EditText mPasswordET;
-    private Button mSaveBT;
 
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {

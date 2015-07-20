@@ -14,19 +14,18 @@ import android.widget.ListView;
 
 import com.parse.GetCallback;
 import com.parse.LogOutCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import chisw.com.dayit.R;
-import chisw.com.dayit.core.callback.GetPlanCallback;
+import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.entity.PlansEntity;
@@ -34,6 +33,7 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.others.RestartManager;
 import chisw.com.dayit.ui.adapters.PlannerCursorAdapter;
 import chisw.com.dayit.ui.custom_element.FloatingActionButton;
+import chisw.com.dayit.ui.dialogs.ContactListDialog;
 import chisw.com.dayit.ui.dialogs.PasswordCheckDialog;
 import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
@@ -46,6 +46,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     private ListView mLvPlanner;
     private PlannerCursorAdapter mAdapter;
     private int mWantToDelete;
+    private ArrayList<String> mContactArrayList;
+    private ContactListDialog mContactListDialog;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -118,9 +120,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
     @Override
     public boolean onContextItemSelected(MenuItem pMenuItem) {
-
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) pMenuItem.getMenuInfo();
         Cursor cursor = mAdapter.getCursor();
+
         if (cursor.moveToPosition((int) (info.position))) {
             int idIndex = cursor.getColumnIndex(PlansEntity.LOCAL_ID);
 
@@ -131,7 +133,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                         LocalTaskActivity.start(this, p.getLocalId());
                     }
                     if (p.getIsRemote() == 1) {
-                        RemoteTaskActivity.start(this, p.getLocalId());
+                        showToast("You can't edit remote plan");
+                        // RemoteTaskActivity.start(this, p.getLocalId());
                     }
                     break;
                 case R.id.pa_context_delete:
@@ -192,9 +195,38 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             case R.id.pa_menu_settings:
                 SettingsActivity.start(PlannerActivity.this);
                 break;
-
+            case R.id.pa_menu_contacts:
+                if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
+                    showToast("You aren't log in");
+                }
+                else {
+                    ArrayList<String> contactsArrayList = initializeList();
+                    mContactArrayList = new ArrayList<String>();
+                    showProgressDialog("Contacts", "Getting numbers...");
+                    netManager.getUsersByNumbers(contactsArrayList, new OnGetNumbersCallback() {
+                        @Override
+                        public void getNumbers(Map<String, String> numbers) {
+                            hideProgressDialog();
+                            if (numbers.size() != 0) {
+                                mContactArrayList.clear();
+                                for (Map.Entry<String, String> nums : numbers.entrySet()) {
+                                    String contactInfo = nums.getValue() + " " + nums.getKey();
+                                    mContactArrayList.add(contactInfo);
+                                }
+                                mContactListDialog = new ContactListDialog();
+                                mContactListDialog.setIContact(new ContactDialog());
+                                Bundle contactsBundle = new Bundle();
+                                contactsBundle.putStringArrayList("contactsArrayList", mContactArrayList);
+                                mContactListDialog.setArguments(contactsBundle);
+                                mContactListDialog.show(getSupportFragmentManager(), "ContactListDialog");
+                                return;
+                            }
+                            showToast("Contact list is empty");
+                        }
+                    });
+                }
+                break;
             case R.id.pa_menu_log_off:
-                //Log off!
                 if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
                     showToast("You aren't log in");
                 } else {
@@ -207,7 +239,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     cursor.close();
                 }
                 break;
-            case R.id.pa_user_activity:
+            case R.id.pa_menu_user_activity:
                 if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
                     showToast("You aren't log in");
                 } else {
@@ -218,6 +250,37 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 break;
         }
         return super.onOptionsItemSelected(pMenuItem);
+    }
+
+    private final class ContactDialog implements ContactListDialog.IContact {
+
+        @Override
+        public void getPhone(String pPhoneNumber) {
+        }
+        @Override
+        public void onDismiss() {
+        }
+    }
+
+    private ArrayList<String> initializeList() {
+        ArrayList<String> list = new ArrayList<>();
+        Cursor cursor = dbManager.getAllContacts(this);
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String phone = cursor.getString(1);
+                // String name = cursor.getString(0);
+
+                if (phone.charAt(0) == '+' && phone.length() > 9) {
+                    phone = phone.replaceAll(" ", "");
+                    list.add(phone);
+                } else if (phone.charAt(0) != '+' && phone.length() > 9) {
+                    phone = "+38" + phone.replaceAll(" ", "");
+                    list.add(phone);
+                }
+            }
+        }
+        return list;
     }
 
     private void startSynchronization() {
@@ -411,7 +474,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         @Override
         public void onDialogPositiveClick(String pPass){
             if(pPass.equals(sharedHelper.getDefaultPass())) {
-                Intent intent = new Intent(PlannerActivity.this, UserActivity.class);
+                Intent intent = new Intent(PlannerActivity.this, EditUserActivity.class);
                 startActivity(intent);
             }
             else

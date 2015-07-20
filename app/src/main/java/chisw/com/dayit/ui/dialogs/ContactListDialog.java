@@ -26,7 +26,7 @@ public class ContactListDialog extends DialogFragment implements AdapterView.OnI
         ArrayList<String> contactsArrayList = getArguments().getStringArrayList("contactsArrayList");
         mListItems = new String[contactsArrayList.size()];
         mListItems = contactsArrayList.toArray(mListItems);
-        getDialog().getWindow().setTitle("Set alarm to:");
+        getDialog().getWindow().setTitle("Contacts :");
         return view;
     }
 
