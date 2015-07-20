@@ -63,6 +63,8 @@ public class EditUserActivity extends ToolbarActivity {
 
         @Override
         public void onAcceptClick() {
+            //showProgressDialog("Please, wait", "Changing password...");
+            //netManager.editUser(ParseUser.getCurrentUser(), new GetCallback<ParseUser>() {
             netManager.editUser(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseUser>() {
                 @Override
                 public void done(ParseUser pParseUser, ParseException e) {
@@ -70,13 +72,14 @@ public class EditUserActivity extends ToolbarActivity {
                     pParseUser.setUsername(mLoginET.getText().toString());
                     pParseUser.put(NetManager.PHONE, mPhoneET.getText().toString());
                     pParseUser.saveInBackground();
+
                 }
             });
 
             sharedHelper.setDefaultLogin(mLoginET.getText().toString().toLowerCase());
             sharedHelper.setDefaultPhone(mPhoneET.getText().toString());
             sharedHelper.setDefaultPass(mPasswordET.getText().toString());
-
+            //hideProgressDialog();
             showToast("User has been updated");
             finish();
         }

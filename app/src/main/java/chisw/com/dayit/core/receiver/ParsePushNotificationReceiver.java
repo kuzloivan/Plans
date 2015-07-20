@@ -1,5 +1,6 @@
 package chisw.com.dayit.core.receiver;
 
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -55,7 +56,8 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             mDetails = jObj.getString(context.getString(R.string.json_title));
             mTime = jObj.getLong(context.getString(R.string.json_time));
             mFrom = jObj.getString(context.getString(R.string.json_from));
-            if (jObj.getString(context.getString(R.string.json_parseId)) != null)
+            if (!jObj.isNull(context.getString(R.string.json_parseId)))
+            /*if (jObj.getString(context.getString(R.string.json_parseId)) != null)*/
                 mParseID = jObj.getString(context.getString(R.string.json_parseId));
             if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
                 sendNotification(context);
@@ -106,7 +108,13 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         p.setDaysToAlarm("0000000");
         p.setIsDeleted(0);
         p.setSender(mFrom);
-        p.setImagePath(netManager.downloadImage(mTitle, mTime, mParseID, new ImageDownload(p, context)));
+        p.setIsRemote(1);
+        if (mParseID != null) {
+            p.setImagePath(netManager.downloadImage(mTitle, mTime, mParseID, new ImageDownload(p, context)));
+
+        } else {
+            uploadPlan(p, context);
+        }
     }
 
     private void setPlanToExecute(Context pContext) {
@@ -126,26 +134,29 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
 
         @Override
         public void downloadSuccessful() {
-
-            if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(context)) {
-                p.setIsSynchronized(0);
-                dbManager.saveNewPlan(p);
-                return;
-            }
-            p.setIsSynchronized(1);
-            dbManager.saveNewPlan(p);
-            netManager.addPlan(p, new OnSaveCallback() {
-                @Override
-                public void getId(String id, long updatedAtParseTime) {
-                    if (ValidData.isTextValid(id)) {
-                        p.setParseId(id);
-                        p.setUpdatedAtParseTime(updatedAtParseTime);
-                        int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
-                        p.setLocalId(planId);
-                        dbManager.editPlan(p, planId);
-                    }
-                }
-            });
+            uploadPlan(p, context);
         }
+    }
+
+    private void uploadPlan(final Plan p, Context context) {
+        if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(context)) {
+            p.setIsSynchronized(0);
+            dbManager.saveNewPlan(p);
+            return;
+        }
+        p.setIsSynchronized(1);
+        dbManager.saveNewPlan(p);
+        netManager.addPlan(p, new OnSaveCallback() {
+            @Override
+            public void getId(String id, long updatedAtParseTime) {
+                if (ValidData.isTextValid(id)) {
+                    p.setParseId(id);
+                    p.setUpdatedAtParseTime(updatedAtParseTime);
+                    int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                    p.setLocalId(planId);
+                    dbManager.editPlan(p, planId);
+                }
+            }
+        });
     }
 }

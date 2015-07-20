@@ -36,7 +36,7 @@
     <string name="login_pttrn">^[a-zA-Z][a-zA-Z0-9]{3,14}$</string>
     <string name="pass_pttrn">[a-zA-Z0-9]{6,15}</string>
     <string name="title_pttrn">^\\s*$</string>
-    <string name="phone_pttrn">^((\+[\d.]{10,12})?)?$</string>
+    <string name="phone_pttrn">^(\\+[\\d.]{10,12})$</string>
 
     <string name="back">Back</string>
     <string name="sa_vibration">Vibration</string>

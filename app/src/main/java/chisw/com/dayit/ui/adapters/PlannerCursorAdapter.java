@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,17 +38,13 @@ import chisw.com.dayit.utils.DataUtils;
 public class PlannerCursorAdapter extends CursorAdapter {
 
     private LayoutInflater layoutInflater;
-    //private Uri mSelectedImageURI;
     private String mSelectedImagePath;
     private Picasso mPicasso;
 
     public PlannerCursorAdapter(Context context) {
         super(context, null, false);
-
         layoutInflater = LayoutInflater.from(context);
-
         mPicasso = Picasso.with(context);
-
     }
 
     @Override
@@ -68,8 +65,26 @@ public class PlannerCursorAdapter extends CursorAdapter {
         int imageIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         long timeStamp = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
         int daysIndex = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
+        int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
+        int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
 
-        //int phoneNumbIndex = cursor.getColumnIndex(PlansEntity.PHONE);
+
+
+
+        if (cursor.getInt(isRemoteIndex)==1){
+            viewHolder.tvRemote.setText("remote");
+        }
+        else{
+            viewHolder.tvRemote.setText("local");
+        }
+
+        if (cursor.getString(senderIndex)!=null || cursor.getString(senderIndex)!="" ){
+            viewHolder.tvSender.setText(cursor.getString(senderIndex));
+        }
+        else{
+            viewHolder.tvSender.setVisibility(View.GONE);
+            viewHolder.tvFromForHide.setVisibility(View.GONE);
+        }
 
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
@@ -80,21 +95,41 @@ public class PlannerCursorAdapter extends CursorAdapter {
         else {
             viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
         }
-
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-
-        mSelectedImagePath = cursor.getString(imageIndex);
-
         int targetW = viewHolder.ivPicture.getWidth();
         int targetH = viewHolder.ivPicture.getHeight();
-
+        mSelectedImagePath = cursor.getString(imageIndex);
         try {
+//             don't delete
+//            if (mSelectedImagePath != null){
+//                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+//                long redBucket = 0;
+//                long greenBucket = 0;
+//                long blueBucket = 0;
+//                long pixelCount = 0;
+//                for (int y = 1; y < bitmap.getHeight(); y++)
+//                {
+//                    for (int x = 1; x < bitmap.getWidth(); x++)
+//                    {
+//                        int c = bitmap.getPixel(x, y);
+//
+//                        pixelCount++;
+//                        redBucket += Color.red(c);
+//                        greenBucket += Color.green(c);
+//                        blueBucket += Color.blue(c);
+//                        // does alpha matter?
+//                    }
+//                }
+//                int averageColor = Color.rgb((int)redBucket / (int)pixelCount, (int)greenBucket / (int)pixelCount, (int)blueBucket / (int)pixelCount);
+//                viewHolder.mCardView.setCardBackgroundColor(averageColor);
+//            }
+
             Uri imageUri;
             imageUri = Uri.fromFile(new File(mSelectedImagePath));
             String imageUriString = imageUri.toString();
             mPicasso.load(imageUriString).resize(targetW, targetH).centerCrop().into(viewHolder.ivPicture);
         } catch (Exception e) {
-// Don't delete
+//            Don't delete
 //            Random rnd = new Random();
 //            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
 //            viewHolder.ivPicture.setBackgroundColor(color);
@@ -102,11 +137,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //            viewHolder.ivPicture.setBackgroundColor(color);
             viewHolder.ivPicture.setImageResource(R.drawable.default_example_material);
         }
-        //logMemory(context);
-    }
-
-    private void logMemory(Context context) {
-        Toast.makeText(context, "Total memory = " + (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
     }
 
     private static class ViewHolder {
@@ -115,15 +145,21 @@ public class PlannerCursorAdapter extends CursorAdapter {
         public TextView tvDate;
         public TextView tvDetails;
         public ImageView ivPicture;
-        //public TextView tvPhone;
+        public TextView tvRemote;
+        public CardView mCardView;
+        public TextView tvSender;
+        public TextView tvFromForHide;
 
         public ViewHolder(View view) {
+            tvFromForHide = (TextView) view.findViewById(R.id.pa_from_tv);
+            tvSender = (TextView) view.findViewById(R.id.pa_sender_tv);
+            mCardView = (CardView) view.findViewById(R.id.pli_card);
+            tvRemote = (TextView) view.findViewById(R.id.pa_tv_remote);
             tvDate = (TextView) view.findViewById(R.id.pa_tv_date);
             tvTime = (TextView) view.findViewById(R.id.pa_tv_time);
             tvTitle = (TextView) view.findViewById(R.id.pa_tv_title);
             tvDetails = (TextView) view.findViewById(R.id.pa_tv_details);
             ivPicture = (ImageView) view.findViewById(R.id.image_view_in_list_view);
-            //tvPhone = (TextView) view.findViewById(R.id.pa_phoneNumber_tv);
         }
     }
 }

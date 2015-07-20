@@ -8,6 +8,7 @@
     android:layout_height="fill_parent">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/pli_card"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:background="@color/color_pa_list_item_details"
@@ -39,6 +40,15 @@
                         android:text="Title"
                         android:textColor="@color/color_for_planner_list_view_title"
                         android:textSize="@dimen/abc_text_size_headline_material"/>
+                <TextView
+                    android:id="@+id/pa_tv_remote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="-"
+                    android:textColor="@color/color_pa_list_item_text_view_text"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:textStyle="italic"/>
 
                 <RelativeLayout
                     android:id="@+id/relative_lay_2"
@@ -62,7 +72,7 @@
                             android:text="From:"/>
 
                         <TextView
-                            android:id="@+id/pa_phoneNumber_tv"
+                            android:id="@+id/pa_sender_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/pa_from_tv"
@@ -103,6 +113,8 @@
                         android:textColor="@color/color_pa_list_item_text_view_text"
                         android:textSize="@dimen/abc_text_size_small_material"
                         android:textStyle="italic"/>
+
+
 
                     <TextView
                         android:id="@+id/pa_tv_date"

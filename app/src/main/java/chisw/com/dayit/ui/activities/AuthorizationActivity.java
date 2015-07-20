@@ -47,7 +47,7 @@ public abstract class AuthorizationActivity extends ToolbarActivity {
                         error = "Unable to log in. Check your username and password";
                         break;
                 }
-                showToast(error); //test
+                showToast(e.getMessage()); //test
                 hideProgressDialog();
                 return;
             }

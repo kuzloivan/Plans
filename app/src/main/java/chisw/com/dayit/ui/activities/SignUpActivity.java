@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.SignUpCallback;
@@ -39,8 +40,8 @@ public class SignUpActivity extends AuthorizationActivity {
     @Override
     protected void startSomeActivity() {
         finish();
-/*        PlannerActivity.start(SignUpActivity.this);
-        SignUpActivity.this.finish();*/
+        PlannerActivity.start(SignUpActivity.this);
+        SignUpActivity.this.finish();
     }
 
     private void initView() {
@@ -122,8 +123,8 @@ public class SignUpActivity extends AuthorizationActivity {
 
     private boolean isValidFields() {
         if (!ValidData.isPhoneNumberValid(phone, getString(R.string.phone_pttrn))) {
-            showToast("Wrong phone number. Example: +380123456789");
-            showToast("Phone number must be: + [any digit 10-12 times]");
+            Toast.makeText(getApplicationContext(),"Wrong phone number. Example: +380123456789",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Phone number must be: + [any digit 10-12 times]",Toast.LENGTH_LONG).show();
             return false;
         }
         if (!ValidData.isCredentialsValid(login, getString(R.string.login_pttrn))) {
