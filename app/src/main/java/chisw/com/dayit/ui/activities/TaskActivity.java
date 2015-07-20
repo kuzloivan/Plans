@@ -192,14 +192,13 @@ public abstract class TaskActivity extends ToolbarActivity {
         plan.setDaysToAlarm((mSwitchRepeating.isChecked() ? "1" : "0") + mDaysToAlarm);  //DOW
         plan.setUpdatedAtParseTime(mUpdatedAtParseTime);
         plan.setIsDeleted(0);
+        plan.setIsSynchronized((plan.getIsRemote() == 1) ? 1 : 0);
 
         if (mIsEdit) {
             plan.setParseId(dbManager.getPlanById(mPlanId).getParseId());
             plan.setLocalId(dbManager.getPlanById(mPlanId).getLocalId());
-            plan.setIsSynchronized(0);
             dbManager.editPlan(plan, mPlanId);
         } else {
-            plan.setIsSynchronized(0);
             dbManager.saveNewPlan(plan);
         }
     }
