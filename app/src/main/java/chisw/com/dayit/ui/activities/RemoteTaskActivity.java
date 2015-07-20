@@ -139,10 +139,13 @@ public class RemoteTaskActivity extends TaskActivity {
         ParsePush push = new ParsePush();
         JSONObject data = new JSONObject();
         try {
-            data.put("alert", mEtTitle.getText().toString());
-            data.put("title", mTvSetDetails.getText().toString());
-            data.put("time", Long.toString(mMyLovelyCalendar.getTimeInMillis()));
-            data.put("from", sharedHelper.getDefaultLogin());
+            data.put(getString(R.string.json_alert), mEtTitle.getText().toString());
+            data.put(getString(R.string.json_title), mTvSetDetails.getText().toString());
+            data.put(getString(R.string.json_time), Long.toString(mMyLovelyCalendar.getTimeInMillis()));
+            data.put(getString(R.string.json_from), sharedHelper.getDefaultLogin());
+            if (mSelectedImagePath != null) {
+                data.put(getString(R.string.json_parseId), id);
+            }
         } catch (JSONException ex) {
             return;
         }
