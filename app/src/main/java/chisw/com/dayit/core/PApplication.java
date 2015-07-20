@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 
+import chisw.com.dayit.net.PushManager;
 import chisw.com.dayit.others.AlarmManager;
 import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.net.NetManager;
@@ -16,6 +17,7 @@ public class PApplication extends Application {
     private SharedHelper sharedHelper;
     private Multimedia multimedia;
     private AlarmManager alarmManagerHelper;
+    private PushManager pushManager;
 
     private static final String APP_KEY = "fYItmKEFfg4ZxDEB1SrwVMUx82sw91XMyTeZJ0fC";
     private static final String CLNT_KEY = "QVWnE2OAOKVt5yv3KRt830rguZv22wkk8ySkLA4K";
@@ -32,6 +34,7 @@ public class PApplication extends Application {
         sharedHelper = new SharedHelper(this);
         multimedia = new Multimedia();
         dbManager = new DBManager(this);
+        pushManager = new PushManager();
     }
 
     public NetManager getNetManager() {
@@ -49,4 +52,6 @@ public class PApplication extends Application {
     public AlarmManager getAlarmManager() { return alarmManagerHelper; }
 
     public DBManager getDbManager() { return dbManager; }
+
+    public PushManager getPushManager() { return pushManager; }
 }

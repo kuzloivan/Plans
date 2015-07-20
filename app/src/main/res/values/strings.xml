@@ -57,7 +57,7 @@
     <!-- View plan activity -->
     <string name="title_activity_view_plan">Plan view</string>
     <string name="accept_s">Accept</string>
-    <string name="dismiss_s">Dismiss</string>
+    <string name="reject_s">Reject</string>
 
     <!-- Names of buttons from main menu -->
     <string name="s_planner_act">Open Planner</string>

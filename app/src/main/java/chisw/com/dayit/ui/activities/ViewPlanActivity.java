@@ -1,36 +1,22 @@
 package chisw.com.dayit.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.util.Random;
-
 import chisw.com.dayit.R;
-import chisw.com.dayit.core.PApplication;
-import chisw.com.dayit.db.DBManager;
-import chisw.com.dayit.db.entity.PlansEntity;
 import chisw.com.dayit.model.Plan;
-import chisw.com.dayit.others.Multimedia;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
@@ -49,7 +35,8 @@ public class ViewPlanActivity extends ToolbarActivity {
     private int mPlanId;
     private String mSelectedImagePath;
     private Picasso mPicasso;
-    private Button mAcceptBT;
+    private Button mBtnAccept;
+    private Button mBtnReject;
 
     public static void start(Activity pActivity, int pId) {
         Intent intent = new Intent(pActivity, ViewPlanActivity.class);
@@ -153,6 +140,8 @@ public class ViewPlanActivity extends ToolbarActivity {
 
     private void initView() {
 
+        Clicker clicker = new Clicker();
+
         mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         mPlan = dbManager.getPlanById(mPlanId);
         mSelectedImagePath = mPlan.getImagePath();
@@ -163,15 +152,12 @@ public class ViewPlanActivity extends ToolbarActivity {
         mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
 
-        mAcceptBT = (Button) findViewById(R.id.accept_bt);
+        mBtnAccept = (Button) findViewById(R.id.vp_btn_accept);
+        mBtnReject = (Button) findViewById(R.id.vp_btn_reject);
+
        // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
-        mAcceptBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAcceptBT.setVisibility(View.INVISIBLE);
-                showToast("Plan has been accepted");
-            }
-        });
+        mBtnAccept.setOnClickListener(clicker);
+        mBtnReject.setOnClickListener(clicker);
 
         if(mPlan.getDaysToAlarm().charAt(0) == '1'){
             mTv_date.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
@@ -182,7 +168,28 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         mTv_details.setText(mPlan.getDetails());
     }
-    
+
+    private final class Clicker implements View.OnClickListener {
+
+        @Override
+        public void onClick(View pView) {
+            switch(pView.getId()) {
+                case R.id.vp_btn_accept:
+                    mBtnAccept.setVisibility(View.INVISIBLE);
+                    mBtnReject.setVisibility(View.INVISIBLE);
+                    pushManager.sendAcceptAnswer(mPlan, sharedHelper.getDefaultLogin());
+                    showToast("Plan has been accepted");
+                    break;
+                case R.id.vp_btn_reject:
+                    mBtnAccept.setVisibility(View.INVISIBLE);
+                    mBtnReject.setVisibility(View.INVISIBLE);
+                    pushManager.sendRejectAnswer(mPlan, sharedHelper.getDefaultLogin());
+                    showToast("Plan has been rejected");
+                    break;
+            }
+        }
+    }
+
     private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog {
 
         @Override

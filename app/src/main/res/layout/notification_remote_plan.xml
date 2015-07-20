@@ -6,7 +6,7 @@
               android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/iv_notif_icon"
+        android:id="@+id/ntf_iv_notif_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,7 +15,7 @@
         android:src="@drawable/ic_alarm"/>
 
     <LinearLayout
-        android:id="@+id/tv_plan_info"
+        android:id="@+id/ntf_tv_plan_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -23,7 +23,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/ntf_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -33,7 +33,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/tv_details"
+            android:id="@+id/ntf_tv_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
@@ -50,14 +50,14 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/bt_accept_plan"
+            android:id="@+id/ntf_imgbtn_accept_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_check_circle_white_48dp"
             style="@style/style_aa_btns"/>
 
         <ImageButton
-            android:id="@+id/bt_dismiss_plan"
+            android:id="@+id/ntf_imgbtn_reject_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_dismiss_48dp"

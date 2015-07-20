@@ -135,24 +135,15 @@ public class RemoteTaskActivity extends TaskActivity {
             showToast("Time is wrong");
             throw new Exception();
         }
-        String[] splited = mTextContact.getText().toString().split("\\s+");
-        ParsePush push = new ParsePush();
-        JSONObject data = new JSONObject();
-        try {
-            data.put(getString(R.string.json_alert), mEtTitle.getText().toString());
-            data.put(getString(R.string.json_title), mTvSetDetails.getText().toString());
-            data.put(getString(R.string.json_time), Long.toString(mMyLovelyCalendar.getTimeInMillis()));
-            data.put(getString(R.string.json_from), sharedHelper.getDefaultLogin());
-            if (mSelectedImagePath != null) {
-                data.put(getString(R.string.json_parseId), id);
-            }
-        } catch (JSONException ex) {
-            return;
-        }
-        push.setData(data);
-        push.setExpirationTimeInterval(interval);
-        push.setChannel(splited[0]);
-        push.sendInBackground(new CallbackRemotePlan());
+        String[] splitted = mTextContact.getText().toString().split("\\s+");
+        Plan plan = new Plan();
+        plan.setTitle(mEtTitle.getText().toString());
+        plan.setDetails(mTvSetDetails.getText().toString());
+        plan.setTimeStamp(mMyLovelyCalendar.getTimeInMillis());
+        plan.setSender(sharedHelper.getDefaultLogin());
+        plan.setParseId(id);
+        plan.setImagePath(mSelectedImagePath);
+        pushManager.sendRemotePlan(getApplicationContext(), plan, interval, splitted[0], new CallbackRemotePlan());
     }
 
     private void writePlanToDB(Calendar calendar) throws Exception {

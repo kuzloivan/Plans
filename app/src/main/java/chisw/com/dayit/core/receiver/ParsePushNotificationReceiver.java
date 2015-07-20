@@ -24,6 +24,7 @@ import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.net.NetManager;
+import chisw.com.dayit.net.PushManager;
 import chisw.com.dayit.ui.activities.PlannerActivity;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
@@ -48,7 +49,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         netManager = ((PApplication) context.getApplicationContext()).getNetManager();
         alarmManager = ((PApplication) context.getApplicationContext()).getAlarmManager();
 
-        try {
+        /*try {
             Bundle extras = intent.getExtras();
             String jsonData = extras.getString("com.parse.Data");
             JSONObject jObj = new JSONObject(jsonData);
@@ -57,7 +58,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             mTime = jObj.getLong(context.getString(R.string.json_time));
             mFrom = jObj.getString(context.getString(R.string.json_from));
             if (!jObj.isNull(context.getString(R.string.json_parseId)))
-            /*if (jObj.getString(context.getString(R.string.json_parseId)) != null)*/
+            *//*if (jObj.getString(context.getString(R.string.json_parseId)) != null)*//*
                 mParseID = jObj.getString(context.getString(R.string.json_parseId));
             if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
                 sendNotification(context);
@@ -67,11 +68,47 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             }
         } catch (JSONException ex) {
             return;
+        }*/
+
+        try {
+            Bundle extras = intent.getExtras();
+            String jsonData = extras.getString("com.parse.Data");
+            JSONObject jObj = new JSONObject(jsonData);
+
+            switch(jObj.getString("type")) {
+                case PushManager.REMOTE_PLAN:
+                    mTitle = jObj.getString(context.getString(R.string.json_alert));
+                    mDetails = jObj.getString(context.getString(R.string.json_title));
+                    mTime = jObj.getLong(context.getString(R.string.json_time));
+                    mFrom = jObj.getString(context.getString(R.string.json_from));
+                    if (!jObj.isNull(context.getString(R.string.json_parseId)))
+                        mParseID = jObj.getString(context.getString(R.string.json_parseId));
+                    if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
+                        sendNotification(context, PushManager.REMOTE_PLAN);
+                        setPlanToDB(context);
+                        setPlanToExecute(context);
+                        return;
+                    }
+                    break;
+                case PushManager.ACCEPT_PLAN:
+                    mTitle = "I've accepted it";
+                    mFrom = jObj.getString(context.getString(R.string.json_from));
+                    sendNotification(context, PushManager.ACCEPT_PLAN);
+                    break;
+                case PushManager.REJECT_PLAN:
+                    mTitle = "I've rejected it";
+                    mFrom = jObj.getString(context.getString(R.string.json_from));
+                    sendNotification(context, PushManager.REJECT_PLAN);
+                    break;
+            }
+
+        } catch(JSONException ex) {
+
         }
     }
 
-    private void sendNotification(Context pContext) {
-        RemoteViews remoteViews = new RemoteViews(pContext.getPackageName(), R.layout.notification_remote_plan);
+    private void sendNotification(Context pContext, String pType) {
+
         Notification notification;
         Notification.Builder builder = new Notification.Builder(pContext);
 
@@ -79,12 +116,18 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         openPlannerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent openPlannerPendingIntent = PendingIntent.getActivity(pContext, 20, openPlannerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        remoteViews.setTextViewText(R.id.tv_title, mTitle);
-        remoteViews.setTextViewText(R.id.tv_details, "from " + mFrom);
-
-        builder.setSmallIcon(R.drawable.ic_alarm)
-                .setContent(remoteViews)
-                .setContentIntent(openPlannerPendingIntent);
+        if(pType == PushManager.REMOTE_PLAN) {
+            RemoteViews remoteViews = new RemoteViews(pContext.getPackageName(), R.layout.notification_remote_plan);
+            remoteViews.setTextViewText(R.id.ntf_tv_title, mTitle);
+            remoteViews.setTextViewText(R.id.ntf_tv_details, "from " + mFrom);
+            builder.setSmallIcon(R.drawable.ic_alarm)
+                    .setContent(remoteViews)
+                    .setContentIntent(openPlannerPendingIntent);
+        } else {
+            builder.setSmallIcon(R.drawable.ic_alarm)
+                    .setContentTitle(mTitle)
+                    .setContentText("from " + mFrom);
+        }
 
         if (SystemUtils.isJellyBeanHigher()) {
             notification = builder.build();

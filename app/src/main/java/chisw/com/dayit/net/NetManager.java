@@ -182,7 +182,7 @@ public class NetManager implements NetBridge {
                 onGetNumbersCallback.getNumbers(numbers);
                 return;
             }
-            onGetNumbersCallback.getNumbers(null);
+            onGetNumbersCallback.getNumbers(new HashMap<String, String>());
         }
     }
 
