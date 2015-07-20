@@ -43,7 +43,7 @@
 
         </activity>
 
-        <activity android:name=".ui.activities.UserActivity"
+        <activity android:name=".ui.activities.EditUserActivity"
                   android:label="@string/pa_user_activity"
                   android:theme="@style/AppTheme.PlannerTheme"
                   android:screenOrientation="portrait" />

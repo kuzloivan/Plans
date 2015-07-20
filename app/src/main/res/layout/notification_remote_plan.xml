@@ -46,13 +46,21 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/bt_accept_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_light_48"
+            android:src="@drawable/ic_check_circle_white_48dp"
+            style="@style/style_aa_btns"/>
+
+        <ImageButton
+            android:id="@+id/bt_dismiss_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_dismiss_48dp"
             style="@style/style_aa_btns"/>
 
     </LinearLayout>

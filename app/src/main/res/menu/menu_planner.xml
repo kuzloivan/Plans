@@ -17,9 +17,15 @@
     </item>
 
     <item
-        android:id="@+id/pa_user_activity"
+        android:id="@+id/pa_menu_user_activity"
         app:showAsAction="never"
         android:title="@string/pa_user_activity">
+    </item>
+
+    <item
+        android:id="@+id/pa_menu_contacts"
+        app:showAsAction="never"
+        android:title="@string/pa_contacts">
     </item>
 
     <item

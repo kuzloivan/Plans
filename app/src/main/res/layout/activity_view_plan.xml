@@ -84,14 +84,28 @@
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/accept_bt"
-        style="@style/style_aa_btns"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/accept_s"
+        android:orientation="horizontal"
         android:layout_above="@+id/pv_bottom_layout"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/accept_bt"
+            style="@style/style_aa_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accept_s"/>
+
+        <Button
+            android:id="@+id/dismiss_bt"
+            style="@style/style_aa_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dismiss_s"/>
+    </LinearLayout>
+
 
 </RelativeLayout>

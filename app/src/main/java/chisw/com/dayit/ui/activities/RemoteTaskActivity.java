@@ -118,7 +118,6 @@ public class RemoteTaskActivity extends TaskActivity {
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 String phone = cursor.getString(1);
-                // String name = cursor.getString(0);
 
                 if (phone.charAt(0) == '+' && phone.length() > 9) {
                     phone = phone.replaceAll(" ", "");
