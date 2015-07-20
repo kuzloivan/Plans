@@ -35,9 +35,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import chisw.com.dayit.R;
-import chisw.com.dayit.core.callback.OnPlanUploadedToParse;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.net.NetManager;
 import chisw.com.dayit.ui.dialogs.DatePickDialog;
 import chisw.com.dayit.ui.dialogs.DaysOfWeekDialog;
 import chisw.com.dayit.ui.dialogs.TimePickDialog;
@@ -68,7 +68,6 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected long mUpdatedAtParseTime;
     protected Calendar mMyLovelyCalendar;
     protected ArrayList<CheckBox> mCheckBoxesArr;
-    protected OnPlanUploadedToParse mOnPlanUploadedToParse;
 
     protected void initViews() {
         initBackButton();
@@ -315,7 +314,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         return null;
     }
 
-    private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+    protected String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
 
         Cursor cursor = null;
         final String column = "_data";
@@ -360,16 +359,19 @@ public abstract class TaskActivity extends ToolbarActivity {
             showToast("Title is empty");
             return false;
         }
+
         if (!mSwitchRepeating.isChecked() && System.currentTimeMillis() > mMyLovelyCalendar.getTimeInMillis()) {
             showToast("Time is incorrect.");
             return false;
-        } else if (mSwitchRepeating.isChecked() && mMyLovelyCalendar.getTimeInMillis() < System.currentTimeMillis()) {
+        }
+        else if(mSwitchRepeating.isChecked() && mMyLovelyCalendar.getTimeInMillis() < System.currentTimeMillis()){
             fixCalendarForRepeat();
         }
+
         return true;
     }
 
-    protected void fixCalendarForRepeat() {
+    protected void fixCalendarForRepeat(){
         Calendar calendar = Calendar.getInstance();
 
         mMyLovelyCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
@@ -395,59 +397,6 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
     }
 
-    protected final class CallbackAddPLan implements OnSaveCallback {
-
-        private Plan mPlan;
-
-        public CallbackAddPLan(Plan pPlan) {
-            mPlan = pPlan;
-        }
-
-        @Override
-        public void getId(String id) {
-            if (ValidData.isTextValid(id)) {
-                mPlan.setParseId(id);
-                int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
-                mPlan.setLocalId(planId);
-                dbManager.editPlan(mPlan, planId);
-                if (mPlan.getIsRemote() == 0) {
-                    return;
-                }
-                mOnPlanUploadedToParse.uploadCompleted(id);
-            }
-        }
-    }
-
-    protected final class CallbackEditPlan implements GetCallback<ParseObject> {
-        private final Plan plan;
-
-        public CallbackEditPlan(Plan plan) {
-            this.plan = plan;
-        }
-
-        @Override
-        public void done(ParseObject parseObject, ParseException e) {
-            if (e == null) {
-                parseObject.put("title", plan.getTitle());
-                parseObject.put("timeStamp", plan.getTimeStamp());
-                if (ValidData.isTextValid(plan.getAudioPath())) {
-                    parseObject.put("audioPath", plan.getAudioPath());
-                }
-                if (ValidData.isTextValid(plan.getImagePath())) {
-                    parseObject.put("imagePath", plan.getImagePath());
-                }
-                parseObject.put("audioDuration", plan.getAudioDuration());
-                parseObject.put("details", plan.getDetails());
-                parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
-                parseObject.saveInBackground();
-
-
-            } else {
-                showToast(e.getMessage());
-            }
-        }
-    }
-
     protected class Clicker implements View.OnClickListener {
 
         @Override
@@ -467,7 +416,8 @@ public abstract class TaskActivity extends ToolbarActivity {
                     if (!mSwitchRepeating.isChecked()) {
                         setEnabledCheckBoxes(false);
                         mTvDate.setVisibility(View.VISIBLE);
-                    } else {
+                    }
+                    else {
                         setEnabledCheckBoxes(true);
                         mTvDate.setVisibility(View.INVISIBLE);
                     }
@@ -514,7 +464,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
     }
 
-    protected boolean checkWithRegExp(String userNameString, String regularExpr) {
+    public static boolean checkWithRegExp(String userNameString, String regularExpr){
         Pattern p = Pattern.compile(regularExpr);
         Matcher m = p.matcher(userNameString);
         return m.matches();

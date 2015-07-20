@@ -21,7 +21,6 @@ import java.util.Map;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
-import chisw.com.dayit.core.callback.OnPlanUploadedToParse;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
@@ -52,7 +51,6 @@ public class RemoteTaskActivity extends TaskActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mOnPlanUploadedToParse = new CallbackPlanAdded();
         initViews();
         if (getIntent().hasExtra(BUNDLE_KEY)) {   // this if is to edit remote plan // delete if it cause any problems
             mIsEdit = true;
@@ -164,6 +162,19 @@ public class RemoteTaskActivity extends TaskActivity {
         Plan p = new Plan();
         p.setIsRemote(1);
         super.writePlanToDB(calendar, p);
+        if(p.getIsRemote() == 1)
+        {
+            netManager.addPlan(p, new OnSaveCallback() {
+                @Override
+                public void getId(String id, long updatedAtParseTime) {
+                    try {
+                        sendRemotePlan(id);
+                    } catch (Exception ex) {
+                        return;
+                    }
+                }
+            });
+        }
     }
 
     private final class RClicker extends TaskActivity.Clicker {
@@ -216,17 +227,6 @@ public class RemoteTaskActivity extends TaskActivity {
                 return;
             }
             showToast(e.getMessage());
-        }
-    }
-
-    private final class CallbackPlanAdded implements OnPlanUploadedToParse {
-        @Override
-        public void uploadCompleted(String id) {
-            try {
-                sendRemotePlan(id);
-            } catch (Exception ex) {
-                return;
-            }
         }
     }
 }

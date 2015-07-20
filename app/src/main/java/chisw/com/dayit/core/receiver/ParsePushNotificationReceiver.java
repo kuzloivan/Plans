@@ -1,6 +1,5 @@
 package chisw.com.dayit.core.receiver;
 
-
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -56,10 +55,9 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             mDetails = jObj.getString(context.getString(R.string.json_title));
             mTime = jObj.getLong(context.getString(R.string.json_time));
             mFrom = jObj.getString(context.getString(R.string.json_from));
-            ERROR NULL
-            mParseID = jObj.getString(context.getString(R.string.json_parseId));
-
-            if (dbManager.getPlanByTitleAndSender(jObj.getString(context.getString(R.string.json_alert)), jObj.getString(context.getString(R.string.json_from))) == null) {
+            if (jObj.getString(context.getString(R.string.json_parseId)) != null)
+                mParseID = jObj.getString(context.getString(R.string.json_parseId));
+            if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
                 sendNotification(context);
                 setPlanToDB(context);
                 setPlanToExecute(context);
@@ -108,28 +106,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         p.setDaysToAlarm("0000000");
         p.setIsDeleted(0);
         p.setSender(mFrom);
-        if (mParseID != null) {
-            p.setImagePath(netManager.downloadImage(mTitle, mTime, mParseID, new ImageDownload(p, context)));
-        }
-        //wtf
-        if (!pSynchronization || !SystemUtils.checkNetworkStatus(context)) {
-            p.setIsSynchronized(0);
-            pDBManager.saveNewPlan(p);
-            return;
-        }
-        p.setIsSynchronized(1);
-        pDBManager.saveNewPlan(p);
-        pNetManager.addPlan(p, new OnSaveCallback() {
-            @Override
-            public void getId(String id) {
-                if (ValidData.isTextValid(id)) {
-                    p.setParseId(id);
-                    int planId = pDBManager.getPlanById(pDBManager.getLastPlanID()).getLocalId();
-                    p.setLocalId(planId);
-                    pDBManager.editPlan(p, planId);
-                }
-            }
-        });
+        p.setImagePath(netManager.downloadImage(mTitle, mTime, mParseID, new ImageDownload(p, context)));
     }
 
     private void setPlanToExecute(Context pContext) {
@@ -138,16 +115,19 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         ((AlarmManager) pContext.getSystemService(pContext.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, mTime, pendingIntent);
     }
 
-    final private class ImageDownload implements OnImageDownloadCompletedCallback{
+    final private class ImageDownload implements OnImageDownloadCompletedCallback {
         private Plan p;
         private Context context;
-        public ImageDownload(Plan plan, Context context){
+
+        public ImageDownload(Plan plan, Context context) {
             this.p = plan;
             this.context = context;
         }
+
         @Override
         public void downloadSuccessful() {
-            if (!sharedHelper.getVibrationOn() || !SystemUtils.checkNetworkStatus(context)) {
+
+            if (!sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(context)) {
                 p.setIsSynchronized(0);
                 dbManager.saveNewPlan(p);
                 return;
@@ -156,9 +136,10 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
             dbManager.saveNewPlan(p);
             netManager.addPlan(p, new OnSaveCallback() {
                 @Override
-                public void getId(String id) {
+                public void getId(String id, long updatedAtParseTime) {
                     if (ValidData.isTextValid(id)) {
                         p.setParseId(id);
+                        p.setUpdatedAtParseTime(updatedAtParseTime);
                         int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
                         p.setLocalId(planId);
                         dbManager.editPlan(p, planId);
