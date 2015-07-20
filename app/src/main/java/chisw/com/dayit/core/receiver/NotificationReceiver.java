@@ -29,10 +29,15 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context pContext, Intent intent) {
         int id = Integer.parseInt(intent.getAction());
+
         String daysOfWeekStr = (((PApplication) pContext.getApplicationContext()).getDbManager().getDaysToAlarmById(id));
+
+        if(daysOfWeekStr == null){   // kostil
+            daysOfWeekStr = "0000000";
+        }
+
         if ((((PApplication) pContext.getApplicationContext()).getSharedHelper().getNotificationOn())
-                && ValidData.isDayToAlarmValid(daysOfWeekStr)) {            
-            
+                && ValidData.isDayToAlarmValid(daysOfWeekStr)) {
             sendNotification(id, pContext);
         }
     }
