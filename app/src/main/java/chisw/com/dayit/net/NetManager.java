@@ -1,29 +1,45 @@
 package chisw.com.dayit.net;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import chisw.com.dayit.core.bridge.NetBridge;
 
 import chisw.com.dayit.core.callback.CheckPhoneCallback;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
 import chisw.com.dayit.core.callback.OnGetPlansCallback;
+import chisw.com.dayit.core.callback.OnImageDownloadCompletedCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.utils.DataUtils;
+import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
-
 
 public class NetManager implements NetBridge {
     public static final String PLANS_TABLE_NAME = "Plans";
@@ -42,6 +58,7 @@ public class NetManager implements NetBridge {
 
     public static final String USERNAME = "username";
     public static final String PHONE = "phone";
+    public static final String IMAGE_FILE = "imageFile";
 
     @Override
     public void registerUser(String pName, String pPassword, String pPhone, SignUpCallback pSignUpCallback) {
@@ -75,6 +92,7 @@ public class NetManager implements NetBridge {
         query.whereContainedIn(USERNAME, pUsernames);
         query.findInBackground(new CallbackGetNumbers(pOnGetNumbersCallback));
     }
+
     @Override
     public void addPlan(Plan pPlan, OnSaveCallback pOnSaveCallback) {
         ParseObject parsePlan = new ParseObject(PLANS_TABLE_NAME);
@@ -84,6 +102,12 @@ public class NetManager implements NetBridge {
         if (ValidData.isTextValid(pPlan.getImagePath())) {
             parsePlan.put(IMAGE_PATH, pPlan.getImagePath());
         }
+        if (ValidData.isTextValid(plan.getImagePath())) {
+            pPlan.put(IMAGE_PATH, plan.getImagePath());
+            //if plan is remote image will be upload to parse
+            if (plan.getIsRemote() == 1) {
+                pPlan.put(IMAGE_FILE, uploadImage(plan.getImagePath()));
+            }
         if (ValidData.isTextValid(pPlan.getAudioPath())) {
             parsePlan.put(AUDIO_PATH, pPlan.getAudioPath());
         }
@@ -145,6 +169,80 @@ public class NetManager implements NetBridge {
             }
         });
     }
+
+        @Override
+        public ParseFile uploadImage(String path) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+            byte[] image = stream.toByteArray();
+            ParseFile file = new ParseFile(image);
+            file.saveInBackground();
+            return file;
+        }
+
+        @Override
+        public String downloadImage(String pTaskTitle, long pTimeStamp, String pParseID, final OnImageDownloadCompletedCallback object) {
+
+            //String fname = "Image" + pTaskTitle + DataUtils.getDateStringFromTimeStamp(pTimeStamp) + ".jpg";
+            String fname = "Image" + pTaskTitle + ".jpg";
+            //String fname = "Image" + ".jpg";
+
+            final File file = new File(SystemUtils.createDirectory(), fname);
+            if (file.exists())
+                file.delete();
+
+            final ParseQuery<ParseObject> query = ParseQuery.getQuery(TABLE_NAME);
+            query.whereEqualTo(IMAGE_FILE, pParseID);
+            query.getInBackground(pParseID, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject pParseObject, ParseException e) {
+                    ParseFile fileObject = (ParseFile) pParseObject.get(IMAGE_FILE);
+                    fileObject.getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] pBytes, ParseException e) {
+                            if (e == null) {
+                                Bitmap bmp = BitmapFactory.decodeByteArray(pBytes, 0, pBytes.length);
+                                saveImageToExternalStorage(bmp, file.getAbsolutePath(), object);
+                            }
+                        }
+                    });
+                }
+            });
+            return file.getAbsolutePath();
+        }
+
+        private void saveImageToExternalStorage(Bitmap finalBitmap, String
+        path, OnImageDownloadCompletedCallback object) {
+            OnImageDownloadCompletedCallback obj = object;
+            try {
+                File file = new File(path);
+                file.createNewFile();
+                FileOutputStream out = new FileOutputStream(file);
+                finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                out.flush();
+                out.close();
+                obj.downloadSuccessful();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            // Tell the media scanner about the new file so that it is
+            // immediately available to the user.
+/*
+        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+*/
+
+        }
+
+        private fi
 
     public final class CallbackGetNumbers implements FindCallback<ParseUser> {
 
@@ -209,8 +307,22 @@ public class NetManager implements NetBridge {
 
     }
 
-    public final class CallbackGetPlans implements FindCallback<ParseObject> {
+        private final class CallbackGetPlan implements GetCallback<ParseObject> {
+            private final GetPlanCallback getPlanCallback;
 
+            public CallbackGetPlan(GetPlanCallback callback) {
+                this.getPlanCallback = callback;
+            }
+
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null) {
+                    getPlanCallback.getPlan(parseObject);
+                }
+            }
+        }
+
+    private final class CallbackGetPlans implements FindCallback<ParseObject> {
         private final ArrayList<Plan> plans;
         private final OnGetPlansCallback onGetPlansCallback;
 

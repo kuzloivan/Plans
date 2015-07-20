@@ -5,8 +5,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Environment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import java.io.File;
 
 public class SystemUtils {
 
@@ -58,4 +61,12 @@ public class SystemUtils {
         return Build.VERSION.SDK_INT >= JELLY_BEAN_VERSION;
     }
 
+    public static File createDirectory(){
+        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        File dayItDir = new File(root + "/DayIt");
+        if(!dayItDir.exists()){
+            dayItDir.mkdirs();
+        }
+        return dayItDir;
+    }
 }

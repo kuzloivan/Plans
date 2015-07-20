@@ -32,4 +32,13 @@ public interface NetBridge {
     void deletePlan(String pId);
     void getNumbersByUsers(List<String> pUsernames, OnGetNumbersCallback pOnGetNumbersCallback);
     void editUser(String pParseId, GetCallback<ParseUser> pGetCallback);
+
+    void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback);
+    void editUser(ParseUser pParseUser, GetCallback<ParseUser> callBackEditUser);
+    ParseFile uploadImage(String path);
+    String downloadImage(String taskTitle, long timeStamp, String pImagePath, OnImageDownloadCompletedCallback object);
+    void getNumbersByUsers(List<String> userNames, OnGetNumbersCallback onGetNumbersCallback);
+    void editUser(ParseUser pParseUser, GetCallback<ParseUser> callBackEditUser);
+    ParseFile uploadImage(String path);
+    String downloadImage(String taskTitle, long timeStamp, String pImagePath, OnImageDownloadCompletedCallback object);
 }

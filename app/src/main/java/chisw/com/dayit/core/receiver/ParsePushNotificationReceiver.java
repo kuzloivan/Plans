@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import chisw.com.dayit.R;
 import chisw.com.dayit.core.PApplication;
 import chisw.com.dayit.core.SharedHelper;
+import chisw.com.dayit.core.callback.OnImageDownloadCompletedCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.db.DBManager;
 import chisw.com.dayit.model.Plan;
@@ -32,28 +33,36 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     private String mDetails;
     private Long mTime;
     private String mFrom;
+    private String mParseID;
+    private DBManager dbManager;
+    private SharedHelper sharedHelper;
+    private NetManager netManager;
+    private chisw.com.dayit.others.AlarmManager alarmManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        DBManager dbManager = ((PApplication) context.getApplicationContext()).getDbManager();
-        SharedHelper sharedHelper = ((PApplication) context.getApplicationContext()).getSharedHelper();
-        NetManager netManager = ((PApplication) context.getApplicationContext()).getNetManager();
-        chisw.com.dayit.others.AlarmManager alarmManager = ((PApplication) context.getApplicationContext()).getAlarmManager();
+        dbManager = ((PApplication) context.getApplicationContext()).getDbManager();
+        sharedHelper = ((PApplication) context.getApplicationContext()).getSharedHelper();
+        netManager = ((PApplication) context.getApplicationContext()).getNetManager();
+        alarmManager = ((PApplication) context.getApplicationContext()).getAlarmManager();
 
         try {
             Bundle extras = intent.getExtras();
             String jsonData = extras.getString("com.parse.Data");
             JSONObject jObj = new JSONObject(jsonData);
-            mTitle = jObj.getString("alert");
-            mDetails = jObj.getString("title");
-            mTime = jObj.getLong("time");
-            mFrom = jObj.getString("from");
-            if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
-                sendNotification(context, sharedHelper.getVibrationOn());
-                setPlanToDB(context, dbManager, netManager, sharedHelper.getSynchronization());
-                setPlanToExecute(dbManager, alarmManager, context);
+            mTitle = jObj.getString(context.getString(R.string.json_alert));
+            mDetails = jObj.getString(context.getString(R.string.json_title));
+            mTime = jObj.getLong(context.getString(R.string.json_time));
+            mFrom = jObj.getString(context.getString(R.string.json_from));
+            ERROR NULL
+            mParseID = jObj.getString(context.getString(R.string.json_parseId));
+
+            if (dbManager.getPlanByTitleAndSender(jObj.getString(context.getString(R.string.json_alert)), jObj.getString(context.getString(R.string.json_from))) == null) {
+                sendNotification(context);
+                setPlanToDB(context);
+                setPlanToExecute(context);
                 return;
             }
         } catch (JSONException ex) {
@@ -61,7 +70,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         }
     }
 
-    private void sendNotification(Context pContext, boolean pVibration) {
+    private void sendNotification(Context pContext) {
         RemoteViews remoteViews = new RemoteViews(pContext.getPackageName(), R.layout.notification_remote_plan);
         Notification notification;
         Notification.Builder builder = new Notification.Builder(pContext);
@@ -85,13 +94,13 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager notificationManager = (NotificationManager) pContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (pVibration) {
+        if (sharedHelper.getVibrationOn()) {
             notification.vibrate = new long[]{1000, 1000, 1000, 1000, 1000};
         }
         notificationManager.notify(101 + (int) System.currentTimeMillis(), notification);
     }
 
-    private void setPlanToDB(Context context, final DBManager pDBManager, NetManager pNetManager, boolean pSynchronization) {
+    private void setPlanToDB(Context context) {
         final Plan p = new Plan();
         p.setTitle(mTitle);
         p.setDetails(mDetails);
@@ -99,6 +108,10 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         p.setDaysToAlarm("0000000");
         p.setIsDeleted(0);
         p.setSender(mFrom);
+        if (mParseID != null) {
+            p.setImagePath(netManager.downloadImage(mTitle, mTime, mParseID, new ImageDownload(p, context)));
+        }
+        //wtf
         if (!pSynchronization || !SystemUtils.checkNetworkStatus(context)) {
             p.setIsSynchronized(0);
             pDBManager.saveNewPlan(p);
@@ -108,10 +121,9 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         pDBManager.saveNewPlan(p);
         pNetManager.addPlan(p, new OnSaveCallback() {
             @Override
-            public void getId(String id, long updatedAtParseTime) {
+            public void getId(String id) {
                 if (ValidData.isTextValid(id)) {
                     p.setParseId(id);
-                    p.setUpdatedAtParseTime(updatedAtParseTime);
                     int planId = pDBManager.getPlanById(pDBManager.getLastPlanID()).getLocalId();
                     p.setLocalId(planId);
                     pDBManager.editPlan(p, planId);
@@ -120,9 +132,39 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         });
     }
 
-    private void setPlanToExecute(DBManager pDBManager, chisw.com.dayit.others.AlarmManager pAlarmManager, Context pContext) {
-        int pendingId = pDBManager.getLastPlanID();
-        PendingIntent pendingIntent = pAlarmManager.createPendingIntent(Integer.toString(pendingId));
+    private void setPlanToExecute(Context pContext) {
+        int pendingId = dbManager.getLastPlanID();
+        PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
         ((AlarmManager) pContext.getSystemService(pContext.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, mTime, pendingIntent);
+    }
+
+    final private class ImageDownload implements OnImageDownloadCompletedCallback{
+        private Plan p;
+        private Context context;
+        public ImageDownload(Plan plan, Context context){
+            this.p = plan;
+            this.context = context;
+        }
+        @Override
+        public void downloadSuccessful() {
+            if (!sharedHelper.getVibrationOn() || !SystemUtils.checkNetworkStatus(context)) {
+                p.setIsSynchronized(0);
+                dbManager.saveNewPlan(p);
+                return;
+            }
+            p.setIsSynchronized(1);
+            dbManager.saveNewPlan(p);
+            netManager.addPlan(p, new OnSaveCallback() {
+                @Override
+                public void getId(String id) {
+                    if (ValidData.isTextValid(id)) {
+                        p.setParseId(id);
+                        int planId = dbManager.getPlanById(dbManager.getLastPlanID()).getLocalId();
+                        p.setLocalId(planId);
+                        dbManager.editPlan(p, planId);
+                    }
+                }
+            });
+        }
     }
 }

@@ -2,13 +2,11 @@
 
     <!-- Common -->
     <string name="app_name">DayIt</string>
-    <string name="title_activity_settings">Settings Activity</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!-- Alarm activity -->
-    <string name="wakeUp">Wake up !!!</string>
     <string name="set_date">Date</string>
     <string name="set_time">Time</string>
-    <string name="bt_notif">Show Notification</string>
     <string name="title_activity_alarm">Alarm</string>
     <string name="alarm_title_hint">Plan title</string>
     <string name="alarm_details_hint">Details</string>
@@ -16,11 +14,11 @@
     <string name="ok">Ok</string>
     <string name="days_of_week_choose">Choose days of week</string>
     <string name="cancel">Cancel</string>
-    <string name="alarmTitle_hint">Alarm title</string>
 
     <!--Local activity-->
     <string name="local_plan_title">Local plan</string>
-    <string name="alarm_sound_duration">Sound duration</string>
+    <string name="la_alarmSoundDuration">Sound duration</string>
+    <string name="la_chooseSound">Set sound</string>
 
     <!--Remote activity-->
     <string name="remote_plan_title">Remote plan</string>
@@ -33,7 +31,7 @@
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
     <string name="Sign_up">Sign up</string>
-    <string name="go_to_sph">Go to Splash</string>
+
     <!-- Regex patterns -->
     <string name="login_pttrn">^[a-zA-Z][a-zA-Z0-9]{3,14}$</string>
     <string name="pass_pttrn">[a-zA-Z0-9]{6,15}</string>
@@ -42,13 +40,9 @@
 
     <string name="back">Back</string>
     <string name="sa_vibration">Vibration</string>
-    <string name="sa_notification_enable">Notification enable</string>
-    <string name="sa_notification_volume">Notification volume</string>
-    <string name="sa_set_user_sound">Set user sound</string>
 
     <!-- Planner activity -->
     <string name="pa_start_sync">Start synchronization</string>
-    //<string name="pa_add_new_reminder">Add reminder</string>
     <string name="pa_settings">Settings</string>
     <string name="pa_log_out">Log out</string>
     <string name="pa_context_edit">Edit</string>
@@ -68,15 +62,6 @@
     <string name="s_alarm_act">Alarm</string>
     <string name="s_settings_act">Settings Activity</string>
 
-    <!-- Audio -->
-    <string name="stop_playing">Stop</string>
-    <string name="start_playing">Play</string>
-    <string name="choose_audio">Choose audio</string>
-    <string name="set_audio">Set audio</string>
-    <string name="save_alarm">Save alarm</string>
-    <string name="temp_date">2015.06.12</string>
-    <string name="set_sound">Set sound</string>
-
     <!-- TaskTypeDialog -->
     <string name="plan_type_title">Choose plan type</string>
 
@@ -92,5 +77,12 @@
     <string name="ua_password_hint">Password</string>
     <string name="ua_login_hint">Login</string>
     <string name="ua_phone_hint">Phone number</string>
+
+    <!--JSON Push-->
+    <string name="json_alert">alert</string>
+    <string name="json_title">title</string>
+    <string name="json_time">time</string>
+    <string name="json_from">from</string>
+    <string name="json_parseId">parseId</string>
 
 </resources>

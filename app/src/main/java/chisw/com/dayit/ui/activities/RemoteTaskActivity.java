@@ -21,6 +21,8 @@ import java.util.Map;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.core.callback.OnGetNumbersCallback;
+import chisw.com.dayit.core.callback.OnPlanUploadedToParse;
+import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.ui.dialogs.ContactListDialog;
 import chisw.com.dayit.utils.ValidData;
@@ -28,7 +30,6 @@ import chisw.com.dayit.utils.ValidData;
 public class RemoteTaskActivity extends TaskActivity {
     private static final String BUNDLE_ID_KEY = "chisw.com.DayIt.ui.activities.remoteTask_activity.id";
     private static final String BUNDLE_KEY = "chisw.com.DayIt.ui.activities.remoteTask_activity.bundle";
-
     private boolean mIsContactDialogExist;
     private EditText mTextContact;
     private ContactListDialog mContactListDialog;
@@ -51,6 +52,7 @@ public class RemoteTaskActivity extends TaskActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mOnPlanUploadedToParse = new CallbackPlanAdded();
         initViews();
         if (getIntent().hasExtra(BUNDLE_KEY)) {   // this if is to edit remote plan // delete if it cause any problems
             mIsEdit = true;
@@ -62,10 +64,8 @@ public class RemoteTaskActivity extends TaskActivity {
     @Override
     protected void initViews() {
         super.initViews();
-
         mRClicker = new RClicker();
         findViewById(R.id.rta_contactList_btn).setOnClickListener(mRClicker);
-
         mTvDate.setOnClickListener(mRClicker);
         mTvTime.setOnClickListener(mRClicker);
         mSwitchRepeating.setOnClickListener(mRClicker);
@@ -75,15 +75,14 @@ public class RemoteTaskActivity extends TaskActivity {
 
     @Override
     protected void startAlarm() {
-        if(ValidData.isTextValid(mTextContact.getText().toString()) && checkFields()) {
+        if (ValidData.isTextValid(mTextContact.getText().toString()) && checkFields()) {
             try {
-                sendRemotePlan();
                 writePlanToDB(mMyLovelyCalendar);
             } catch (Exception ex) {
                 return;
             }
             super.startAlarm();
-        } else if(!ValidData.isTextValid(mTextContact.getText().toString())) {
+        } else if (!ValidData.isTextValid(mTextContact.getText().toString())) {
             showToast("Please, choose a contact person");
         }
     }
@@ -133,8 +132,8 @@ public class RemoteTaskActivity extends TaskActivity {
         return list;
     }
 
-    private void sendRemotePlan() throws Exception {
-        long interval = (mMyLovelyCalendar.getTimeInMillis() - System.currentTimeMillis())/1000;
+    private void sendRemotePlan(String id) throws Exception {
+        long interval = (mMyLovelyCalendar.getTimeInMillis() - System.currentTimeMillis()) / 1000;
         if (interval < 0) {
             showToast("Time is wrong");
             throw new Exception();
@@ -143,10 +142,13 @@ public class RemoteTaskActivity extends TaskActivity {
         ParsePush push = new ParsePush();
         JSONObject data = new JSONObject();
         try {
-            data.put("alert", mEtTitle.getText().toString());
-            data.put("title", mTvSetDetails.getText().toString());
-            data.put("time", Long.toString(mMyLovelyCalendar.getTimeInMillis()));
-            data.put("from", sharedHelper.getDefaultLogin());
+            data.put(getString(R.string.json_alert), mEtTitle.getText().toString());
+            data.put(getString(R.string.json_title), mTvSetDetails.getText().toString());
+            data.put(getString(R.string.json_time), Long.toString(mMyLovelyCalendar.getTimeInMillis()));
+            data.put(getString(R.string.json_from), sharedHelper.getDefaultLogin());
+            if (mSelectedImagePath != null) {
+                data.put(getString(R.string.json_parseId), id);
+            }
         } catch (JSONException ex) {
             return;
         }
@@ -215,6 +217,17 @@ public class RemoteTaskActivity extends TaskActivity {
                 return;
             }
             showToast(e.getMessage());
+        }
+    }
+
+    private final class CallbackPlanAdded implements OnPlanUploadedToParse {
+        @Override
+        public void uploadCompleted(String id) {
+            try {
+                sendRemotePlan(id);
+            } catch (Exception ex) {
+                return;
+            }
         }
     }
 }
