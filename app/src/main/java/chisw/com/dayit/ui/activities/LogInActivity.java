@@ -84,6 +84,7 @@ public class LogInActivity extends AuthorizationActivity {
                 switch (v.getId()) {
                     case R.id.la_signUp_btn:
                         SignUpActivity.start(LogInActivity.this);
+                        finish();
                         break;
                     case R.id.la_logIn_btn:
                         if (isValidFields()) {

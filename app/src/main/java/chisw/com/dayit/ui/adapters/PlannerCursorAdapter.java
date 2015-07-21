@@ -68,33 +68,22 @@ public class PlannerCursorAdapter extends CursorAdapter {
         int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
         int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
 
-
-
-
         if (cursor.getInt(isRemoteIndex)==1){
             viewHolder.tvRemote.setText("remote");
         }
         else{
             viewHolder.tvRemote.setText("local");
         }
-
-        if (cursor.getString(senderIndex)!=null || cursor.getString(senderIndex)!="" ){
-            viewHolder.tvSender.setText(cursor.getString(senderIndex));
-        }
-        else{
-            viewHolder.tvSender.setVisibility(View.GONE);
-            viewHolder.tvFromForHide.setVisibility(View.GONE);
-        }
-
+        viewHolder.tvSender.setText(cursor.getString(senderIndex));
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
         viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
-
         if(cursor.getString(daysIndex).charAt(0) == '1'){
             viewHolder.tvDate.setText(DataUtils.getDaysForRepeatingFromString(cursor.getString(daysIndex)));
         }
         else {
             viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
         }
+        //logMemory(context);
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
         int targetW = viewHolder.ivPicture.getWidth();
         int targetH = viewHolder.ivPicture.getHeight();
@@ -123,7 +112,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //                int averageColor = Color.rgb((int)redBucket / (int)pixelCount, (int)greenBucket / (int)pixelCount, (int)blueBucket / (int)pixelCount);
 //                viewHolder.mCardView.setCardBackgroundColor(averageColor);
 //            }
-
             Uri imageUri;
             imageUri = Uri.fromFile(new File(mSelectedImagePath));
             String imageUriString = imageUri.toString();
@@ -139,6 +127,10 @@ public class PlannerCursorAdapter extends CursorAdapter {
         }
     }
 
+    private void logMemory(Context context) {
+        Toast.makeText(context, "Total memory = " + (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
+    }
+
     private static class ViewHolder {
         public TextView tvTitle;
         public TextView tvTime;
@@ -149,7 +141,6 @@ public class PlannerCursorAdapter extends CursorAdapter {
         public CardView mCardView;
         public TextView tvSender;
         public TextView tvFromForHide;
-
         public ViewHolder(View view) {
             tvFromForHide = (TextView) view.findViewById(R.id.pa_from_tv);
             tvSender = (TextView) view.findViewById(R.id.pa_sender_tv);
