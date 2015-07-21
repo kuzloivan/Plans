@@ -26,6 +26,7 @@ public class Mapper {
         CV.put(PlansEntity.UPDATED_AT_PARSE_TIME, model.getUpdatedAtParseTime());
         CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
         CV.put(PlansEntity.SENDER, model.getSender());
+        CV.put(PlansEntity.PLAN_STATE, model.getPlanState());
         return CV;
     }
 
@@ -71,6 +72,9 @@ public class Mapper {
         if(model.getSender() != null)
             CV.put(PlansEntity.SENDER, model.getSender());
 
+        if(model.getPlanState() != null)
+            CV.put(PlansEntity.PLAN_STATE, model.getPlanState());
+
         return CV;
     }
 
@@ -91,6 +95,7 @@ public class Mapper {
         int changedAtParseTimeIndex = cursor.getColumnIndex(PlansEntity.UPDATED_AT_PARSE_TIME);
         int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
         int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
+        int planStateIndex = cursor.getColumnIndex(PlansEntity.PLAN_STATE);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -108,6 +113,7 @@ public class Mapper {
         plan.setUpdatedAtParseTime(cursor.getLong(changedAtParseTimeIndex));
         plan.setIsRemote(cursor.getInt(isRemoteIndex));
         plan.setSender(cursor.getString(senderIndex));
+        plan.setPlanState(cursor.getString(planStateIndex));
         return plan;
     }
 

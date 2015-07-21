@@ -129,6 +129,7 @@ public class LocalTaskActivity extends TaskActivity {
         p.setAudioPath(mAudioPath);
         p.setAudioDuration((int) mAudioDuration);
         p.setIsRemote(0);
+        p.setPlanState(Plan.PLAN_STATE_LOCAL);
         super.writePlanToDB(calendar, p);
     }
 

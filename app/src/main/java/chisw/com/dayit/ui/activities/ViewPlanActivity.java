@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.net.PushManager;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
@@ -154,8 +155,13 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
         mBtnAccept = (Button) findViewById(R.id.vp_btn_accept);
         mBtnReject = (Button) findViewById(R.id.vp_btn_reject);
-        mBtnAccept.setOnClickListener(clicker);
-        mBtnReject.setOnClickListener(clicker);
+        if(mPlan.getPlanState().equals(Plan.PLAN_STATE_REMOTE_NOT_ACCEPTED)) {
+            mBtnAccept.setOnClickListener(clicker);
+            mBtnReject.setOnClickListener(clicker);
+        } else {
+            mBtnAccept.setVisibility(View.GONE);
+            mBtnReject.setVisibility(View.GONE);
+        }
 
        // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
 
@@ -178,12 +184,16 @@ public class ViewPlanActivity extends ToolbarActivity {
                     mBtnAccept.setVisibility(View.INVISIBLE);
                     mBtnReject.setVisibility(View.INVISIBLE);
                     pushManager.sendAcceptAnswer(mPlan, sharedHelper.getDefaultLogin());
+                    mPlan.setPlanState(Plan.PLAN_STATE_REMOTE_ACCEPTED);
+                    dbManager.editPlan(mPlan, mPlanId);
                     showToast("Plan has been accepted");
                     break;
                 case R.id.vp_btn_reject:
                     mBtnAccept.setVisibility(View.INVISIBLE);
                     mBtnReject.setVisibility(View.INVISIBLE);
                     pushManager.sendRejectAnswer(mPlan, sharedHelper.getDefaultLogin());
+                    mPlan.setPlanState(Plan.PLAN_STATE_REMOTE_REJECTED);
+                    dbManager.editPlan(mPlan, mPlanId);
                     showToast("Plan has been rejected");
                     break;
             }

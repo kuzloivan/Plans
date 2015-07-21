@@ -152,6 +152,7 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         p.setIsDeleted(0);
         p.setSender(mFrom);
         p.setIsRemote(1);
+        p.setPlanState(Plan.PLAN_STATE_REMOTE_NOT_ACCEPTED);
         if (mParseID != null) {
             p.setImagePath(netManager.downloadImage(mTitle, mTime, mParseID, new ImageDownload(p, context)));
 

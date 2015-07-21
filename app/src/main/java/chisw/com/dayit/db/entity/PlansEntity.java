@@ -16,6 +16,7 @@ public class PlansEntity {
     public static final String UPDATED_AT_PARSE_TIME = "updatedAt";
     public static final String IS_REMOTE = "isRemote";
     public static final String SENDER = "sender";
+    public static final String PLAN_STATE = "planState";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -32,6 +33,7 @@ public class PlansEntity {
             IS_SYNCHRONIZED + " INTEGER, " +
             UPDATED_AT_PARSE_TIME + " DATE, " +
             IS_REMOTE + " INTEGER, " +
-            SENDER + " TEXT " +
+            SENDER + " TEXT, " +
+            PLAN_STATE + " TEXT " +
             ")";
 }

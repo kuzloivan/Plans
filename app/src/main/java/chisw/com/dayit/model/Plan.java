@@ -5,6 +5,12 @@ import com.parse.ParseObject;
 import chisw.com.dayit.db.entity.PlansEntity;
 
 public class Plan {
+    public static final String PLAN_STATE_LOCAL = "localPlan";
+    public static final String PLAN_STATE_REMOTE = "remotePlan";
+    public static final String PLAN_STATE_REMOTE_NOT_ACCEPTED = "remotePlanNotAnswered";
+    public static final String PLAN_STATE_REMOTE_ACCEPTED = "remotePlanAccepted";
+    public static final String PLAN_STATE_REMOTE_REJECTED = "remotePlanRejected";
+
     private String parseId;
     private String title;
     private String details;
@@ -19,6 +25,7 @@ public class Plan {
     private long updatedAtParseTime;
     private int isRemote;
     private String sender;
+    private String planState;
 
     public int getLocalId() {
         return localId;
@@ -129,6 +136,14 @@ public class Plan {
     public String getSender() { return sender; }
 
     public void setSender(String pSender) { sender = pSender; }
+
+    public String getPlanState() {
+        return planState;
+    }
+
+    public void setPlanState(String pPlanState) {
+        planState = pPlanState;
+    }
 
     public Plan setPlanFromParse(ParseObject pParsePlan) {
 

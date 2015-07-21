@@ -152,6 +152,7 @@ public class RemoteTaskActivity extends TaskActivity {
         }
         final Plan p = new Plan();
         p.setIsRemote(1);
+        p.setPlanState(Plan.PLAN_STATE_REMOTE);
         super.writePlanToDB(calendar, p);
         if (p.getIsRemote() == 1) {
             netManager.addPlan(p, new OnSaveCallback() {
