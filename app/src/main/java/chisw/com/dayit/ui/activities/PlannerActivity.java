@@ -292,6 +292,11 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         return R.layout.activity_planner;
     }
 
+    @Override
+    public void update(Observable pObservable, Object pData) {
+        updateListView();
+    }
+
     private final class CallbackLogOut implements LogOutCallback {
         @Override
         public void done(ParseException e) {
@@ -302,8 +307,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             }
             dbManager.eraseMe(sharedHelper.getDefaultLogin());
             ParsePush.unsubscribeInBackground(sharedHelper.getDefaultLogin());
-            sharedHelper.clearData();
-
+            sharedHelper.clearUserData();
             hideProgressDialog();
             showToast("Logged out");
         }
@@ -321,11 +325,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
             ViewPlanActivity.start(PlannerActivity.this, plan.getLocalId());
         }
-    }
-
-    @Override
-    public void update(Observable pObservable, Object pData) {
-        updateListView();
     }
 
     private final class Clicker implements View.OnClickListener {

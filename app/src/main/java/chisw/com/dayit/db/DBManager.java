@@ -41,7 +41,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
 
     //clears all writings in plans_database SQL
     @Override
-    public void clearPlans() {
+    public void deletePlans() {
         sqLiteDatabase.delete(PlansEntity.TABLE_NAME, null, null);
         dbChanged();
     }

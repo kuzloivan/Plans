@@ -52,21 +52,23 @@ public abstract class AuthorizationActivity extends ToolbarActivity {
                 return;
             }
             sharedHelper.setDefaultLogin(mLogin.getText().toString().toLowerCase());
+            if(!sharedHelper.getDefaultLogin().equals(sharedHelper.getLastLogin())) {
+                dbManager.deletePlans();
+            }
+            sharedHelper.setDefaultPass(mPassword.getText().toString());
+            sharedHelper.setLastLogin(sharedHelper.getDefaultLogin());
             ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(mLogin.getText().toString().toLowerCase());
 
             netManager.getNumbersByUsers(arrayList, new OnGetNumbersCallback() {
                 @Override
                 public void getNumbers(Map<String, String> phones) {
-                    hideProgressDialog();
                     for (Map.Entry<String, String> nums : phones.entrySet()) {
                         sharedHelper.setDefaultPhone(nums.getKey());
                     }
                 }
             });
 
-            sharedHelper.setDefaultPass(mPassword.getText().toString());
-            //Testing parse's pushes
             ParsePush.subscribeInBackground(sharedHelper.getDefaultLogin(), new SaveCallback() {
                 @Override
                 public void done(ParseException e) {

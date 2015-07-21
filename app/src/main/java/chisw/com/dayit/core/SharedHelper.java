@@ -10,6 +10,7 @@ public class SharedHelper {
     public static final String APP_PREFERENCE_MEDIA_WAY = "path";
     public static final String APP_PREFERENCE_LOGIN = "login";
     public static final String APP_PREFERENCE_PASSWORD = "pass";
+    public static final String APP_PREFERENCE_LAST_LOGIN = "lastLogin";
     public static final String APP_PREFERENCES_VIBRATION_ON = "vibration_on";
     public static final String APP_PREFERENCES_NOTIFICATION_ON = "notification_on";
     public static final String APP_PREFERENCES_DURATION_SONG = "duration_song";
@@ -39,6 +40,14 @@ public class SharedHelper {
         sharedPreferences.edit().putString(APP_PREFERENCE_LOGIN, appPreferencesLogin).apply();
     }
 
+    public String getLastLogin() {
+        return sharedPreferences.getString(APP_PREFERENCE_LAST_LOGIN, "");
+    }
+
+    public void setLastLogin(String appPreferencesLastLogin) {
+        sharedPreferences.edit().putString(APP_PREFERENCE_LAST_LOGIN, appPreferencesLastLogin).apply();
+    }
+
     public String getDefaultPhone(){
         return sharedPreferences.getString(APP_PREFERENCE_USER_PHONE, "");
     }
@@ -58,6 +67,12 @@ public class SharedHelper {
 
     public void clearData() {
         sharedPreferences.edit().clear().apply();
+    }
+
+    public void clearUserData() {
+        sharedPreferences.edit().putString(APP_PREFERENCE_LOGIN, "").apply();
+        sharedPreferences.edit().putString(APP_PREFERENCE_PASSWORD, "").apply();
+        sharedPreferences.edit().putString(APP_PREFERENCE_USER_PHONE, "").apply();
     }
 
     // ******   Save Settings   *******

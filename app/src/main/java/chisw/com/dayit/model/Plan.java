@@ -141,6 +141,11 @@ public class Plan {
         audioDuration = pParsePlan.getInt(PlansEntity.AUDIO_DURATION);
         daysToAlarm = pParsePlan.getString(PlansEntity.DAYS_TO_ALARM);
         updatedAtParseTime = pParsePlan.getUpdatedAt().getTime();
+        if(pParsePlan.getBoolean(PlansEntity.IS_REMOTE) == false) {
+            isRemote = 0;
+        } else {
+            isRemote = 1;
+        }
         return this;
     }
 }

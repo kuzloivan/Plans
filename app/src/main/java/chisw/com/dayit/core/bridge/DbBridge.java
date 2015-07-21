@@ -12,7 +12,7 @@ public interface DbBridge {
     void editPlan(Plan pPlan, int id);
     Cursor getPlans();
     Cursor getNotDeletedPlans();
-    void clearPlans();
+    void deletePlans();
     Plan getPlanById(int id);
     Plan getPlanByTitleAndSender(String pTitle, String pSender, long pTime);
     Plan getPlanByParseId(String pParseId);

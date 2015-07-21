@@ -21,6 +21,7 @@ import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
+import chisw.com.dayit.utils.ValidData;
 
 public class ViewPlanActivity extends ToolbarActivity {
 
@@ -73,8 +74,8 @@ public class ViewPlanActivity extends ToolbarActivity {
                 TwoButtonsAlertDialog dialDelPlan = new TwoButtonsAlertDialog();
                 dialDelPlan.setIAlertDialog(new DeletePlanDialogClicker());
                 dialDelPlan.setDialogTitle("Are you sure you want to delete this plan?");
-                dialDelPlan.setPositiveBtnText("Yes, I'm sure");
-                dialDelPlan.setNegativeBtnText("No, I'm not");
+                dialDelPlan.setPositiveBtnText("Yes");
+                dialDelPlan.setNegativeBtnText("Cancel");
                 dialDelPlan.show(getFragmentManager(), getString(R.string.pa_delete_plan));
                 break;
             case R.id.vp_menu_edit:
@@ -151,13 +152,12 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_details = (TextView) findViewById(R.id.pv_tv_details);
         mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
-
         mBtnAccept = (Button) findViewById(R.id.vp_btn_accept);
         mBtnReject = (Button) findViewById(R.id.vp_btn_reject);
-
-       // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
         mBtnAccept.setOnClickListener(clicker);
         mBtnReject.setOnClickListener(clicker);
+
+       // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
 
         if(mPlan.getDaysToAlarm().charAt(0) == '1'){
             mTv_date.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));

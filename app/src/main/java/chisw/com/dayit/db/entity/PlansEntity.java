@@ -14,7 +14,7 @@ public class PlansEntity {
     public static final String IS_DELETED = "isDeleted";
     public static final String IS_SYNCHRONIZED = "isSynchronized";
     public static final String UPDATED_AT_PARSE_TIME = "updatedAt";
-    public static final String IS_REMOTE = "type";
+    public static final String IS_REMOTE = "isRemote";
     public static final String SENDER = "sender";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +

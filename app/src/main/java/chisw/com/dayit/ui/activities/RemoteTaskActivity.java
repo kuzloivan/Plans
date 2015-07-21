@@ -150,7 +150,7 @@ public class RemoteTaskActivity extends TaskActivity {
         if (!super.checkFields()) {
             throw new Exception();
         }
-        Plan p = new Plan();
+        final Plan p = new Plan();
         p.setIsRemote(1);
         super.writePlanToDB(calendar, p);
         if (p.getIsRemote() == 1) {
@@ -158,6 +158,13 @@ public class RemoteTaskActivity extends TaskActivity {
                 @Override
                 public void getId(String id, long updatedAtParseTime) {
                     try {
+                        if (ValidData.isTextValid(id)) {
+                            p.setParseId(id);
+                            p.setUpdatedAtParseTime(updatedAtParseTime);
+                            int planId = dbManager.getLastPlanID();
+                            p.setIsSynchronized(1);
+                            dbManager.editPlan(p, planId);
+                        }
                         sendRemotePlan(id);
                     } catch (Exception ex) {
                         return;
