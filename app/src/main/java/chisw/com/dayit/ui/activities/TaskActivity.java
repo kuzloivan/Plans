@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -40,7 +42,9 @@ import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.net.NetManager;
 import chisw.com.dayit.ui.dialogs.DatePickDialog;
 import chisw.com.dayit.ui.dialogs.DaysOfWeekDialog;
+import chisw.com.dayit.ui.dialogs.PasswordCheckDialog;
 import chisw.com.dayit.ui.dialogs.TimePickDialog;
+import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
@@ -81,6 +85,19 @@ public abstract class TaskActivity extends ToolbarActivity {
         mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
         mIvImage = (ImageView) findViewById(R.id.ta_planImage_imageView);
         mSwitchRepeating = (Switch) findViewById(R.id.ta_repeatingTrig_switch);
+        mSwitchRepeating.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!mSwitchRepeating.isChecked()) {
+                    setEnabledCheckBoxes(false);
+                    mTvDate.setVisibility(View.VISIBLE);
+                }
+                else {
+                    setEnabledCheckBoxes(true);
+                    mTvDate.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mTvSetDetails = (EditText) findViewById(R.id.ta_details_textView);
 
@@ -116,7 +133,6 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBackButton();
-
     }
 
     protected void dateFillIn() {
@@ -412,14 +428,7 @@ public abstract class TaskActivity extends ToolbarActivity {
                     mTimeDialog.setListener(new DialogClicker());
                     break;
                 case R.id.ta_repeatingTrig_switch:
-                    if (!mSwitchRepeating.isChecked()) {
-                        setEnabledCheckBoxes(false);
-                        mTvDate.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        setEnabledCheckBoxes(true);
-                        mTvDate.setVisibility(View.INVISIBLE);
-                    }
+                    // delete it later
                     break;
                 case R.id.ta_planImage_imageView:
                     chooseImage();
@@ -467,5 +476,31 @@ public abstract class TaskActivity extends ToolbarActivity {
         Pattern p = Pattern.compile(regularExpr);
         Matcher m = p.matcher(userNameString);
         return m.matches();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog{
+
+        @Override
+        public void onAcceptClick() {
+            TaskActivity.super.onBackPressed();
+        }
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        TwoButtonsAlertDialog dialDelPlan = new TwoButtonsAlertDialog();
+        dialDelPlan.setIAlertDialog(new DeletePlanDialogClicker());
+        dialDelPlan.setDialogTitle("All unsaved data will be lost. Continue?");
+        dialDelPlan.setPositiveBtnText("Yes");
+        dialDelPlan.setNegativeBtnText("Cancel");
+        dialDelPlan.show(getFragmentManager(), getString(R.string.pa_delete_plan));
     }
 }

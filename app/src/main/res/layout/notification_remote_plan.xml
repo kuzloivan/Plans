@@ -54,14 +54,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_check_circle_white_48dp"
-            style="@style/style_aa_btns"/>
+            style="@style/style_aa_btns"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/ntf_imgbtn_reject_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_dismiss_48dp"
-            style="@style/style_aa_btns"/>
+            style="@style/style_aa_btns"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

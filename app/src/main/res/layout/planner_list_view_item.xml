@@ -45,7 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="-"
+                    android:paddingRight="7dp"
+                    android:text="remote/local"
                     android:textColor="@color/color_pa_list_item_text_view_text"
                     android:textSize="@dimen/abc_text_size_small_material"
                     android:textStyle="italic"/>

@@ -36,7 +36,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
     @Override
     public Cursor getNotDeletedPlans() {
         return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.IS_DELETED + "=?",
-                new String[]{String.valueOf(0)}, null, null, null);
+                new String[]{String.valueOf(0)}, null, null, "timeStamp ASC"); // has been changed
     }
 
     //clears all writings in plans_database SQL

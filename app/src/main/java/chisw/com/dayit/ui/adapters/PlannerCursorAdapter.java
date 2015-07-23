@@ -112,6 +112,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //                int averageColor = Color.rgb((int)redBucket / (int)pixelCount, (int)greenBucket / (int)pixelCount, (int)blueBucket / (int)pixelCount);
 //                viewHolder.mCardView.setCardBackgroundColor(averageColor);
 //            }
+
             Uri imageUri;
             imageUri = Uri.fromFile(new File(mSelectedImagePath));
             String imageUriString = imageUri.toString();

@@ -76,17 +76,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         mAdapter = new PlannerCursorAdapter(this);
         mLvPlanner.setAdapter(mAdapter);
         mLvPlanner.setOnItemClickListener(itemClicker);
-
         registerForContextMenu(mLvPlanner);
         dbManager.addObserver(this);
-        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
-                .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
-                .withButtonColor(getResources().getColor(R.color.color_floating_action_button))
-                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 15, 15)
-                .create();
-        fabButton.setId(R.id.fab);
-        fabButton.setOnClickListener(clicker);
+        initFAB(clicker);
     }
 
     private void updateListView() {
@@ -461,6 +453,17 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 dbManager.deletePlanById(localPlan.getLocalId());
             }
         }
+    }
+
+    private void initFAB(Clicker clicker){
+        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
+                .withButtonColor(getResources().getColor(R.color.color_floating_action_button))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 15, 15)
+                .create();
+        fabButton.setId(R.id.fab);
+        fabButton.setOnClickListener(clicker);
     }
 
     private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog, PasswordCheckDialog.IPasswordCheckDialog{

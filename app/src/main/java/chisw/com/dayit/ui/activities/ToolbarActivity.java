@@ -44,4 +44,6 @@ public abstract class ToolbarActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
+
+
 }
