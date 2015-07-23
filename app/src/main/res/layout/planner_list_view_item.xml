@@ -144,9 +144,9 @@
 
                 <ImageView
                     android:id="@+id/image_view_in_list_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/toolbar_background_color"
+                    android:layout_width="90dp"
+                    android:layout_height="140dp"
+                   android:background="@color/toolbar_background_color"
                     android:scaleType="centerCrop"
                     />
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -57,7 +58,14 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
-        initView();
+           initView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateListView();
+        showToast("start");
     }
 
     @Override
@@ -66,7 +74,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
             startSynchronization();
         }
-        updateListView();
     }
 
     private void initView() {
@@ -126,7 +133,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     }
                     if (p.getIsRemote() == 1) {
                         showToast("You can't edit remote plan");
-                        // RemoteTaskActivity.start(this, p.getLocalId());
                     }
                     break;
                 case R.id.pa_context_delete:
@@ -182,6 +188,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     dial.setNegativeBtnText("Cancel");
                     dial.show(getFragmentManager(), getString(R.string.pa_authorization));
                 }
+                updateListView();
                 break;
 
             case R.id.pa_menu_settings:

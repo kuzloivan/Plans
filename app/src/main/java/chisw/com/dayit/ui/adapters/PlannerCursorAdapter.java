@@ -45,6 +45,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
         super(context, null, false);
         layoutInflater = LayoutInflater.from(context);
         mPicasso = Picasso.with(context);
+        mPicasso.setDebugging(true);
     }
 
     @Override
@@ -76,13 +77,20 @@ public class PlannerCursorAdapter extends CursorAdapter {
         }
         viewHolder.tvSender.setText(cursor.getString(senderIndex));
         viewHolder.tvTitle.setText(cursor.getString(titleIndex));
-        viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
-        if(cursor.getString(daysIndex).charAt(0) == '1'){
-            viewHolder.tvDate.setText(DataUtils.getDaysForRepeatingFromString(cursor.getString(daysIndex)));
+
+        if (timeStamp < System.currentTimeMillis()){
+            viewHolder.tvTime.setText("Done");
+            viewHolder.tvDate.setVisibility(View.INVISIBLE);
         }
         else {
-            viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
+            viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
+            if (cursor.getString(daysIndex).charAt(0) == '1') {
+                viewHolder.tvDate.setText(DataUtils.getDaysForRepeatingFromString(cursor.getString(daysIndex)));
+            } else {
+                viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
+            }
         }
+
         //logMemory(context);
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
         int targetW = viewHolder.ivPicture.getWidth();
@@ -116,8 +124,9 @@ public class PlannerCursorAdapter extends CursorAdapter {
             Uri imageUri;
             imageUri = Uri.fromFile(new File(mSelectedImagePath));
             String imageUriString = imageUri.toString();
-            mPicasso.load(imageUriString).resize(targetW, targetH).centerCrop().into(viewHolder.ivPicture);
+            mPicasso.load(imageUriString).into(viewHolder.ivPicture);
         } catch (Exception e) {
+            e.printStackTrace();
 //            Don't delete
 //            Random rnd = new Random();
 //            int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
