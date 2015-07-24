@@ -65,7 +65,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     protected void onStart() {
         super.onStart();
         updateListView();
-        showToast("start");
     }
 
     @Override

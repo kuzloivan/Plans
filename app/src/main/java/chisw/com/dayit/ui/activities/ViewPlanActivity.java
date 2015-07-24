@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import chisw.com.dayit.R;
 import chisw.com.dayit.model.Plan;
 import chisw.com.dayit.net.PushManager;
@@ -34,6 +36,8 @@ public class ViewPlanActivity extends ToolbarActivity {
     private TextView mTv_time;
     private TextView mTv_date;
     private TextView mTv_details;
+    private TextView mTv_sound;
+    private TextView mTv_days_of_week;
     public ImageView mIvPicture;
     private Plan mPlan;
     private int mPlanId;
@@ -55,12 +59,10 @@ public class ViewPlanActivity extends ToolbarActivity {
         super.onCreate(pSavedInstanceState);
         initView();
         initBackButton();
-        mPicasso = Picasso.with(this);
     }
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
         initPicture();
     }
 
@@ -112,8 +114,6 @@ public class ViewPlanActivity extends ToolbarActivity {
     private void initPicture() {
         int targetW = mIvPicture.getWidth();
         int targetH = mIvPicture.getHeight();
-
-
         if (mSelectedImagePath!=null){
             Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
             mIvPicture.setImageBitmap(bitmap);
@@ -121,7 +121,6 @@ public class ViewPlanActivity extends ToolbarActivity {
             int color = Color.argb(255,63,81,181);
             mIvPicture.setBackgroundColor(color);
         }
-
 // Don't delete
 //        try {
 //            Uri imageUri;
@@ -155,8 +154,9 @@ public class ViewPlanActivity extends ToolbarActivity {
         mSelectedImagePath = mPlan.getImagePath();
         setTitle(mPlan.getTitle());
         mTv_time = (TextView) findViewById(R.id.pv_tv_time);
-        mTv_date = (TextView) findViewById(R.id.pv_tv_date);
         mTv_details = (TextView) findViewById(R.id.pv_tv_details);
+        mTv_sound = (TextView) findViewById(R.id.pv_tv_sound);
+        mTv_days_of_week = (TextView) findViewById(R.id.pv_tv_days_of_week);
         mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
         mBtnAccept = (Button) findViewById(R.id.vp_btn_accept);
@@ -172,14 +172,14 @@ public class ViewPlanActivity extends ToolbarActivity {
        // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
 
         if(mPlan.getDaysToAlarm().charAt(0) == '1'){
-            mTv_date.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
+            mTv_days_of_week.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
         }
         else {
-            mTv_date.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
+            mTv_days_of_week.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         }
 
         mTv_details.setText(mPlan.getDetails());
-
+        //mTv_days_of_week.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
         //logMemory(this);
     }
 

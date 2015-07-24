@@ -90,14 +90,14 @@ public class PlannerCursorAdapter extends CursorAdapter {
                 viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
             }
         }
-
-        //logMemory(context);
         viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
-        int targetW = viewHolder.ivPicture.getWidth();
-        int targetH = viewHolder.ivPicture.getHeight();
+//        int targetW = viewHolder.ivPicture.getWidth();
+//        int targetH = viewHolder.ivPicture.getHeight();
+        int targetW = 135;
+        int targetH = 204;
         mSelectedImagePath = cursor.getString(imageIndex);
         try {
-//             don't delete
+//            don't delete
 //            if (mSelectedImagePath != null){
 //                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
 //                long redBucket = 0;
@@ -120,11 +120,10 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //                int averageColor = Color.rgb((int)redBucket / (int)pixelCount, (int)greenBucket / (int)pixelCount, (int)blueBucket / (int)pixelCount);
 //                viewHolder.mCardView.setCardBackgroundColor(averageColor);
 //            }
-
             Uri imageUri;
             imageUri = Uri.fromFile(new File(mSelectedImagePath));
             String imageUriString = imageUri.toString();
-            mPicasso.load(imageUriString).into(viewHolder.ivPicture);
+            mPicasso.load(imageUriString).resize(targetW,targetH).centerCrop().into(viewHolder.ivPicture);
         } catch (Exception e) {
             e.printStackTrace();
 //            Don't delete
@@ -135,6 +134,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //            viewHolder.ivPicture.setBackgroundColor(color);
             viewHolder.ivPicture.setImageResource(R.drawable.default_example_material);
         }
+        logMemory(context);
     }
 
     private void logMemory(Context context) {

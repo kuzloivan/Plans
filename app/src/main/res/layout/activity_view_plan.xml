@@ -5,80 +5,90 @@
                 android:orientation="vertical">
 
     <include layout="@layout/plan_view_toolbar"
-             android:id="@+id/plan_toolbar"
-        />
-
-    <RelativeLayout
-        android:id="@+id/pv_bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/color_pa_list_item_normal"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/pv_tv_time_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Due time: "
-            android:textColor="#95ffffff"
-            android:textSize="16sp"
-            android:textStyle="italic"/>
-
-        <TextView
-            android:id="@+id/pv_tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/pv_tv_time_info"
-            android:text="15:40"
-            android:textColor="@color/color_pv_text_view_date_time"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/pv_tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="26.06.2015"
-            android:textColor="@color/color_pv_text_view_date_time"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/pv_tv_date_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/pv_tv_date"
-            android:text="Due date: "
-            android:textColor="#95ffffff"
-            android:textSize="16sp"
-            android:textStyle="italic"/>
-
-    </RelativeLayout>
-
+             android:id="@+id/plan_toolbar"/>
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/pv_bottom_layout"
         android:layout_below="@id/plan_toolbar">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="35dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Details:"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/toolbar_background_color"/>
 
             <TextView
                 android:id="@+id/pv_tv_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:text="Details"
-                android:textSize="16sp"
+                android:paddingRight="15dp"
+                android:textSize="20sp"
                 />
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time:"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/toolbar_background_color"/>
+
+            <TextView
+                android:id="@+id/pv_tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textSize="20sp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Days:"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/toolbar_background_color"/>
+
+            <TextView
+                android:id="@+id/pv_tv_days_of_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Days"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound:"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/toolbar_background_color"/>
+
+            <TextView
+                android:id="@+id/pv_tv_sound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name of sound"
+                android:textSize="20sp"
+                />
+
+
+
+
+        </LinearLayout>
 
 
 
@@ -88,9 +98,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_above="@+id/pv_bottom_layout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <Button
             android:id="@+id/vp_btn_accept"
