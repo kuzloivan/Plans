@@ -36,6 +36,7 @@
     <EditText
         android:id="@+id/ua_password_et"
         android:hint="@string/ua_password_hint"
+        android:inputType="textPassword"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
@@ -45,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Password"/>
+
 
         <Button
             android:id="@+id/ua_save_bt"

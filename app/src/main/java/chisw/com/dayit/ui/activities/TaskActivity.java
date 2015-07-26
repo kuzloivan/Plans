@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,23 +25,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import chisw.com.dayit.R;
-import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
-import chisw.com.dayit.net.NetManager;
+import chisw.com.dayit.ui.dialogs.ChooseImageDialog;
 import chisw.com.dayit.ui.dialogs.DatePickDialog;
 import chisw.com.dayit.ui.dialogs.DaysOfWeekDialog;
-import chisw.com.dayit.ui.dialogs.PasswordCheckDialog;
 import chisw.com.dayit.ui.dialogs.TimePickDialog;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
@@ -72,6 +64,7 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected long mUpdatedAtParseTime;
     protected Calendar mMyLovelyCalendar;
     protected ArrayList<CheckBox> mCheckBoxesArr;
+    final int CAMERA_ID = 0;
 
     protected void initViews() {
         initBackButton();
@@ -402,7 +395,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         mTvTime.setText(DataUtils.getTimeStrFromCalendar(mMyLovelyCalendar));
         mUpdatedAtParseTime = p.getUpdatedAtParseTime();
 
-        mDaysToAlarm = p.getDaysToAlarm().substring(1); // test
+        mDaysToAlarm = p.getDaysToAlarm().substring(1);
         initializeCheckBoxes();
         mSelectedImagePath = p.getImagePath();
         Bitmap bitmap = BitmapFactory.decodeFile(mSelectedImagePath);
@@ -427,17 +420,27 @@ public abstract class TaskActivity extends ToolbarActivity {
                     mTimeDialog.show(getSupportFragmentManager(), "timePicker");
                     mTimeDialog.setListener(new DialogClicker());
                     break;
-                case R.id.ta_repeatingTrig_switch:
-                    // delete it later
-                    break;
                 case R.id.ta_planImage_imageView:
-                    chooseImage();
+                    ChooseImageDialog dialog = new ChooseImageDialog();
+                    dialog.setListener(new ChooseImageDialogClicker());
+                    dialog.show(getSupportFragmentManager(), "imagePicker");
                     break;
 
             }
         }
     }
+    protected final class ChooseImageDialogClicker implements ChooseImageDialog.ChooseImageDialogListener{
 
+        @Override
+        public void onChooseFromGalleryClick(){
+            chooseImage();
+        }
+
+        @Override
+        public void onTakePictureClick(){
+           showToast("Take picture");
+        }
+    }
     protected final class DialogClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener,
             DatePickDialog.DatePickListener, TimePickDialog.TimePickListener {
 

@@ -87,4 +87,10 @@
     <string name="json_from">from</string>
     <string name="json_parseId">parseId</string>
 
+    <!-- ChooseImageDialoge -->
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="take_picture">Take a picture</string>
+    <string name="choose_image_dialog_title">Image</string>
+
+    <string name="take">Take</string>
 </resources>
