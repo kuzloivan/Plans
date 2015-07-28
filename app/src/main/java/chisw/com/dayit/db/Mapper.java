@@ -27,6 +27,7 @@ public class Mapper {
         CV.put(PlansEntity.IS_REMOTE, model.getIsRemote());
         CV.put(PlansEntity.SENDER, model.getSender());
         CV.put(PlansEntity.PLAN_STATE, model.getPlanState());
+        CV.put(PlansEntity.SOURCE_PLAN_ID, model.getSourcePlanID());
         return CV;
     }
 
@@ -75,6 +76,9 @@ public class Mapper {
         if(model.getPlanState() != null)
             CV.put(PlansEntity.PLAN_STATE, model.getPlanState());
 
+        if(model.getPlanState() != null)
+            CV.put(PlansEntity.SOURCE_PLAN_ID, model.getSourcePlanID());
+
         return CV;
     }
 
@@ -96,6 +100,7 @@ public class Mapper {
         int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
         int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
         int planStateIndex = cursor.getColumnIndex(PlansEntity.PLAN_STATE);
+        int sourcePlanIdIndex = cursor.getColumnIndex(PlansEntity.SOURCE_PLAN_ID);
 
         long timeStamp = cursor.getLong(timeStampIndex);
 
@@ -114,6 +119,7 @@ public class Mapper {
         plan.setIsRemote(cursor.getInt(isRemoteIndex));
         plan.setSender(cursor.getString(senderIndex));
         plan.setPlanState(cursor.getString(planStateIndex));
+        plan.setSourcePlanID(cursor.getString(sourcePlanIdIndex));
         return plan;
     }
 

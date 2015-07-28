@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item type="id" name="fab" />
+    <item type="id" name="pa_floatingActionButton" />
 
 </resources>

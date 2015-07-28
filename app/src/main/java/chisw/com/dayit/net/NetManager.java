@@ -49,6 +49,8 @@ public class NetManager implements NetBridge {
     public static final String DAYS_TO_ALARM = "daysToAlarm";
     public static final String IS_REMOTE = "isRemote";
     public static final String IMAGE_FILE = "imageFile";
+    public static final String PLAN_STATE = "planState";
+    public static final String SOURCE_PLAN_ID = "sourcePlan";
 
     public static final String USERNAME = "username";
     public static final String PHONE = "phone";
@@ -101,18 +103,21 @@ public class NetManager implements NetBridge {
         }
         if (ValidData.isTextValid(pPlan.getAudioPath())) {
             parsePlan.put(AUDIO_PATH, pPlan.getAudioPath());
+            parsePlan.put(AUDIO_DURATION, pPlan.getAudioDuration());
         }
-        parsePlan.put(AUDIO_DURATION, pPlan.getAudioDuration());
         parsePlan.put(DAYS_TO_ALARM, pPlan.getDaysToAlarm());
 
         if (pPlan.getIsRemote() == 1) {
             parsePlan.put(IS_REMOTE, true);
+            /*parsePlan.put(PLAN_STATE, Plan.PLAN_STATE_REMOTE_NOT_ANSWERED);*/
+            parsePlan.put(PLAN_STATE, pPlan.getPlanState());
+            if (pPlan.getSourcePlanID() != null)
+                parsePlan.put(SOURCE_PLAN_ID, pPlan.getSourcePlanID());
         } else {
             parsePlan.put(IS_REMOTE, false);
         }
         parsePlan.put(USER_ID, ParseUser.getCurrentUser().getObjectId());
         parsePlan.saveInBackground(new CallbackAddPlan(parsePlan, pOnSaveCallback));
-
     }
 
     @Override
@@ -161,6 +166,77 @@ public class NetManager implements NetBridge {
                 }
             }
         });
+    }
+
+    @Override
+    public ParseFile uploadImage(String path) {
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        byte[] image = stream.toByteArray();
+        ParseFile file = new ParseFile(image);
+        file.saveInBackground();
+        return file;
+    }
+
+    @Override
+    public String downloadImage(String pTaskTitle, long pTimeStamp, String pParseID, final OnImageDownloadCompletedCallback object) {
+
+        //String fname = "Image" + pTaskTitle + DataUtils.getDateStringFromTimeStamp(pTimeStamp) + ".jpg";
+        String fname = "Image" + pTaskTitle + ".jpg";
+        //String fname = "Image" + ".jpg"; todo change file name creating
+
+        final File file = new File(SystemUtils.createDirectory(), fname);
+        /*if (file.exists())
+            file.delete();*/
+
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
+        query.whereEqualTo(IMAGE_FILE, pParseID);
+        query.getInBackground(pParseID, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject pParseObject, ParseException e) {
+                ParseFile fileObject = (ParseFile) pParseObject.get(IMAGE_FILE);
+                fileObject.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] pBytes, ParseException e) {
+                        if (e == null) {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(pBytes, 0, pBytes.length);
+                            saveImageToExternalStorage(bmp, file.getAbsolutePath(), object);
+                        }
+                    }
+                });
+            }
+        });
+        return file.getAbsolutePath();
+    }
+
+    private void saveImageToExternalStorage(Bitmap finalBitmap, String
+            path, OnImageDownloadCompletedCallback object) {
+        try {
+            File file = new File(path);
+            file.createNewFile();
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            object.downloadSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        // Tell the media scanner about the new file so that it is
+        // immediately available to the user.
+        /*todo scan
+        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                    }
+                });
+        */
+
     }
 
     private final class CallbackGetNumbers implements FindCallback<ParseUser> {
@@ -248,78 +324,6 @@ public class NetManager implements NetBridge {
             }
             onGetPlansCallback.getPlans(null);
         }
-    }
-
-    @Override
-    public ParseFile uploadImage(String path) {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-        byte[] image = stream.toByteArray();
-        ParseFile file = new ParseFile(image);
-        file.saveInBackground();
-        return file;
-    }
-
-    @Override
-    public String downloadImage(String pTaskTitle, long pTimeStamp, String pParseID, final OnImageDownloadCompletedCallback object) {
-
-        //String fname = "Image" + pTaskTitle + DataUtils.getDateStringFromTimeStamp(pTimeStamp) + ".jpg";
-        String fname = "Image" + pTaskTitle + ".jpg";
-        //String fname = "Image" + ".jpg";
-
-        final File file = new File(SystemUtils.createDirectory(), fname);
-        if (file.exists())
-            file.delete();
-
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
-        query.whereEqualTo(IMAGE_FILE, pParseID);
-        query.getInBackground(pParseID, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject pParseObject, ParseException e) {
-                ParseFile fileObject = (ParseFile) pParseObject.get(IMAGE_FILE);
-                fileObject.getDataInBackground(new GetDataCallback() {
-                    @Override
-                    public void done(byte[] pBytes, ParseException e) {
-                        if (e == null) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(pBytes, 0, pBytes.length);
-                            saveImageToExternalStorage(bmp, file.getAbsolutePath(), object);
-                        }
-                    }
-                });
-            }
-        });
-        return file.getAbsolutePath();
-    }
-
-    private void saveImageToExternalStorage(Bitmap finalBitmap, String
-            path, OnImageDownloadCompletedCallback object) {
-        OnImageDownloadCompletedCallback obj = object;
-        try {
-            File file = new File(path);
-            file.createNewFile();
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-            obj.downloadSuccessful();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        // Tell the media scanner about the new file so that it is
-        // immediately available to the user.
-        /*
-        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
-                new MediaScannerConnection.OnScanCompletedListener() {
-                    public void onScanCompleted(String path, Uri uri) {
-                        Log.i("ExternalStorage", "Scanned " + path + ":");
-                        Log.i("ExternalStorage", "-> uri=" + uri);
-                    }
-                });
-        */
-
     }
 }
 

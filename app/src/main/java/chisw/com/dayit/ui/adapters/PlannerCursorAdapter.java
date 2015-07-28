@@ -62,12 +62,13 @@ public class PlannerCursorAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         int titleIndex = cursor.getColumnIndex(PlansEntity.TITLE);
-        int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);
+        int detailsIndex = cursor.getColumnIndex(PlansEntity.DETAILS);//todo dont forget!
         int imageIndex = cursor.getColumnIndex(PlansEntity.IMAGE_PATH);
         long timeStamp = cursor.getLong(cursor.getColumnIndex(PlansEntity.TIMESTAMP));
         int daysIndex = cursor.getColumnIndex(PlansEntity.DAYS_TO_ALARM);
         int isRemoteIndex = cursor.getColumnIndex(PlansEntity.IS_REMOTE);
         int senderIndex = cursor.getColumnIndex(PlansEntity.SENDER);
+        int planStateIndex = cursor.getColumnIndex(PlansEntity.PLAN_STATE);
 
         if (cursor.getInt(isRemoteIndex)==1){
             viewHolder.tvRemote.setText("remote");
@@ -90,7 +91,8 @@ public class PlannerCursorAdapter extends CursorAdapter {
                 viewHolder.tvDate.setText(DataUtils.getDateStringFromTimeStamp(timeStamp));
             }
         }
-        viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+        //viewHolder.tvDetails.setText(cursor.getString(detailsIndex));
+        viewHolder.tvDetails.setText(cursor.getString(planStateIndex));
 //        int targetW = viewHolder.ivPicture.getWidth();
 //        int targetH = viewHolder.ivPicture.getHeight();
         int targetW = 135;

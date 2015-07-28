@@ -9,11 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.parse.ParseException;
-import com.parse.ParsePush;
 import com.parse.SendCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -143,6 +139,7 @@ public class RemoteTaskActivity extends TaskActivity {
         plan.setSender(sharedHelper.getDefaultLogin());
         plan.setParseId(id);
         plan.setImagePath(mSelectedImagePath);
+        plan.setPlanState(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED);
         pushManager.sendRemotePlan(getApplicationContext(), plan, interval, splitted[0], new CallbackRemotePlan());
     }
 
@@ -152,7 +149,7 @@ public class RemoteTaskActivity extends TaskActivity {
         }
         final Plan p = new Plan();
         p.setIsRemote(1);
-        p.setPlanState(Plan.PLAN_STATE_REMOTE);
+        p.setPlanState(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED);
         super.writePlanToDB(calendar, p);
         if (p.getIsRemote() == 1) {
             netManager.addPlan(p, new OnSaveCallback() {

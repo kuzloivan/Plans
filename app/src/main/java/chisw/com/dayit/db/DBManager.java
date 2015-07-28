@@ -37,6 +37,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
     public Cursor getNotDeletedPlans() {
         return sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.IS_DELETED + "=?",
                 new String[]{String.valueOf(0)}, null, null, "timeStamp ASC"); // has been changed
+        //new String[]{String.valueOf(0)}, null, null, null); // has been changed
     }
 
     //clears all writings in plans_database SQL
@@ -63,7 +64,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
         Plan plan = null;
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.TITLE + "=? AND " + PlansEntity.SENDER + "=? AND " + PlansEntity.TIMESTAMP + "=?",
                 new String[]{pTitle, pSender, Long.toString(pTime)}, null, null, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             plan = Mapper.parseCursor(cursor);
             cursor.close();
         }
@@ -75,7 +76,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
         Plan plan = null;
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.PARSE_ID + "=?",
                 new String[]{pParseId}, null, null, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             plan = Mapper.parseCursor(cursor);
             cursor.close();
         }
@@ -186,7 +187,7 @@ public class DBManager extends java.util.Observable implements DbBridge {
         return duration;
     }
 
-    public String getDaysToAlarmById(int id){ //DOW
+    public String getDaysToAlarmById(int id) { //DOW
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
         cursor.moveToFirst();
@@ -194,8 +195,9 @@ public class DBManager extends java.util.Observable implements DbBridge {
         cursor.close();
         return daysOfWeek;
     }
+
     @Override
-    public String getPicturePathByID(int id){
+    public String getPicturePathByID(int id) {
         Cursor cursor = sqLiteDatabase.query(PlansEntity.TABLE_NAME, null, PlansEntity.LOCAL_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
         cursor.moveToFirst();
@@ -203,9 +205,9 @@ public class DBManager extends java.util.Observable implements DbBridge {
         return path;
     }
 
-    public Cursor getAllContacts(Context ctx){
+    public Cursor getAllContacts(Context ctx) {
         Cursor cursor = ctx.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
                         ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
 
         return cursor;

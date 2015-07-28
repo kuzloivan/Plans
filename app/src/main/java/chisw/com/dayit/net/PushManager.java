@@ -26,8 +26,9 @@ public class PushManager {
             data.put(context.getString(R.string.json_title), pPlan.getDetails());
             data.put(context.getString(R.string.json_time), Long.toString(pPlan.getTimeStamp()));
             data.put(context.getString(R.string.json_from), pPlan.getSender());
+            data.put(context.getString(R.string.json_parseId), pPlan.getParseId());
             if (pPlan.getImagePath() != null) {
-                data.put(context.getString(R.string.json_parseId), pPlan.getParseId());
+                data.put("image", 1);//todo fix kostil'
             }
 
         } catch (JSONException ex) {

@@ -17,6 +17,7 @@ public class PlansEntity {
     public static final String IS_REMOTE = "isRemote";
     public static final String SENDER = "sender";
     public static final String PLAN_STATE = "planState";
+    public static final String SOURCE_PLAN_ID = "sourcePlan";
 
     public static final String CREATE_SCRIPT = "Create table " + TABLE_NAME +
             " ( " +
@@ -34,6 +35,7 @@ public class PlansEntity {
             UPDATED_AT_PARSE_TIME + " DATE, " +
             IS_REMOTE + " INTEGER, " +
             SENDER + " TEXT, " +
-            PLAN_STATE + " TEXT " +
+            PLAN_STATE + " TEXT, " +
+            SOURCE_PLAN_ID + " TEXT " +
             ")";
 }

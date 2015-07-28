@@ -7,7 +7,7 @@ import chisw.com.dayit.db.entity.PlansEntity;
 public class Plan {
     public static final String PLAN_STATE_LOCAL = "localPlan";
     public static final String PLAN_STATE_REMOTE = "remotePlan";
-    public static final String PLAN_STATE_REMOTE_NOT_ACCEPTED = "remotePlanNotAnswered";
+    public static final String PLAN_STATE_REMOTE_NOT_ANSWERED = "remotePlanNotAnswered";
     public static final String PLAN_STATE_REMOTE_ACCEPTED = "remotePlanAccepted";
     public static final String PLAN_STATE_REMOTE_REJECTED = "remotePlanRejected";
 
@@ -26,6 +26,7 @@ public class Plan {
     private int isRemote;
     private String sender;
     private String planState;
+    private String sourcePlanID;
 
     public int getLocalId() {
         return localId;
@@ -85,19 +86,19 @@ public class Plan {
         this.audioDuration = audioDuration;
     }
 
-    public void setDaysToAlarm(String pDaysToAlarm){ //DOW
+    public void setDaysToAlarm(String pDaysToAlarm) { //DOW
         this.daysToAlarm = pDaysToAlarm;
     }
 
-    public String getDaysToAlarm(){   //DOW
+    public String getDaysToAlarm() {   //DOW
         return daysToAlarm;
     }
 
-    public String getImagePath(){
+    public String getImagePath() {
         return imagePath;
     }
 
-    public void setImagePath(String imagePath){
+    public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
@@ -133,9 +134,13 @@ public class Plan {
         isRemote = pIsRemote;
     }
 
-    public String getSender() { return sender; }
+    public String getSender() {
+        return sender;
+    }
 
-    public void setSender(String pSender) { sender = pSender; }
+    public void setSender(String pSender) {
+        sender = pSender;
+    }
 
     public String getPlanState() {
         return planState;
@@ -143,6 +148,14 @@ public class Plan {
 
     public void setPlanState(String pPlanState) {
         planState = pPlanState;
+    }
+
+    public String getSourcePlanID() {
+        return sourcePlanID;
+    }
+
+    public void setSourcePlanID(String pSourcePlanID) {
+        sourcePlanID = pSourcePlanID;
     }
 
     public Plan setPlanFromParse(ParseObject pParsePlan) {
@@ -156,10 +169,16 @@ public class Plan {
         audioDuration = pParsePlan.getInt(PlansEntity.AUDIO_DURATION);
         daysToAlarm = pParsePlan.getString(PlansEntity.DAYS_TO_ALARM);
         updatedAtParseTime = pParsePlan.getUpdatedAt().getTime();
-        if(pParsePlan.getBoolean(PlansEntity.IS_REMOTE) == false) {
+
+        /*planState = pParsePlan.getString(PlansEntity.PLAN_STATE);*/
+
+        if (pParsePlan.getBoolean(PlansEntity.IS_REMOTE) == false) {
             isRemote = 0;
         } else {
             isRemote = 1;
+            planState = pParsePlan.getString(PlansEntity.PLAN_STATE);
+            if (pParsePlan.getString(PlansEntity.SOURCE_PLAN_ID) != null)
+                sourcePlanID = pParsePlan.getString(PlansEntity.SOURCE_PLAN_ID);
         }
         return this;
     }

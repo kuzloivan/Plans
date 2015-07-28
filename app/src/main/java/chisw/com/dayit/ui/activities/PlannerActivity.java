@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -58,7 +57,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
-           initView();
+        initView();
     }
 
     @Override
@@ -196,8 +195,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             case R.id.pa_menu_contacts:
                 if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
                     showToast("You aren't log in");
-                }
-                else {
+                } else {
                     ArrayList<String> contactsArrayList = initializeList();
                     mContactArrayList = new ArrayList<String>();
                     showProgressDialog("Contacts", "Getting numbers...");
@@ -235,6 +233,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                         alarmManager.cancelAlarm(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
                     }
                     cursor.close();
+                    dbManager.deletePlans();
                 }
                 break;
             case R.id.pa_menu_user_activity:
@@ -255,6 +254,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         @Override
         public void getPhone(String pPhoneNumber) {
         }
+
         @Override
         public void onDismiss() {
         }
@@ -295,6 +295,17 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         updateListView();
     }
 
+    private void initFAB(Clicker clicker) {
+        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
+                .withButtonColor(getResources().getColor(R.color.color_floating_action_button))
+                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 15, 15)
+                .create();
+        fabButton.setId(R.id.pa_floatingActionButton);
+        fabButton.setOnClickListener(clicker);
+    }
+
     private final class CallbackLogOut implements LogOutCallback {
         @Override
         public void done(ParseException e) {
@@ -329,7 +340,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.fab:
+                case R.id.pa_floatingActionButton:
                     if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
                         new TaskTypeDialog().show(getFragmentManager(), "TaskType");
                     } else {
@@ -350,17 +361,18 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         @Override
         public void done(ParseObject parseObject, ParseException e) {
             if (e == null) {
-                parseObject.put("title", plan.getTitle());
-                parseObject.put("timeStamp", plan.getTimeStamp());
+                parseObject.put(PlansEntity.TITLE, plan.getTitle());
+                parseObject.put(PlansEntity.TIMESTAMP, plan.getTimeStamp());
                 if (ValidData.isTextValid(plan.getAudioPath())) {
-                    parseObject.put("audioPath", plan.getAudioPath());
+                    parseObject.put(PlansEntity.AUDIO_PATH, plan.getAudioPath());
                 }
                 if (ValidData.isTextValid(plan.getImagePath())) {
-                    parseObject.put("imagePath", plan.getImagePath());
+                    parseObject.put(PlansEntity.IMAGE_PATH, plan.getImagePath());
                 }
-                parseObject.put("audioDuration", plan.getAudioDuration());
-                parseObject.put("details", plan.getDetails());
-                parseObject.put("userId", ParseUser.getCurrentUser().getObjectId());
+                parseObject.put(PlansEntity.AUDIO_DURATION, plan.getAudioDuration());
+                parseObject.put(PlansEntity.DETAILS, plan.getDetails());
+                parseObject.put(PlansEntity.PARSE_ID, ParseUser.getCurrentUser().getObjectId());
+                parseObject.put(PlansEntity.PLAN_STATE, plan.getPlanState());
                 parseObject.saveInBackground();
             } else if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
                 dbManager.deletePlanById(plan.getLocalId());
@@ -396,7 +408,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         public void getPlans(ArrayList<Plan> pListPlans) {
             if (pListPlans != null) {
                 for (Plan parsePlan : pListPlans) {
-                    if(dbManager.getPlanByParseId(parsePlan.getParseId()) == null) {
+                    if (dbManager.getPlanByParseId(parsePlan.getParseId()) == null) {
                         dbManager.saveNewPlan(parsePlan);
                     }
                 }
@@ -448,31 +460,20 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void done(ParseObject parsePlan, ParseException e) {
-            if(e == null) {
-                if(parsePlan.getUpdatedAt().getTime() > localPlan.getUpdatedAtParseTime()) {
+            if (e == null) {
+                if (parsePlan.getUpdatedAt().getTime() > localPlan.getUpdatedAtParseTime()) {
                     Plan plan = new Plan();
                     plan.setPlanFromParse(parsePlan);
                     plan.setIsSynchronized(1);
                     dbManager.editPlan(plan, localPlan.getLocalId());
                 }
-            } else if(e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+            } else if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
                 dbManager.deletePlanById(localPlan.getLocalId());
             }
         }
     }
 
-    private void initFAB(Clicker clicker){
-        FloatingActionButton fabButton = new FloatingActionButton.Builder(this)
-                .withDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp))
-                .withButtonColor(getResources().getColor(R.color.color_floating_action_button))
-                .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
-                .withMargins(0, 0, 15, 15)
-                .create();
-        fabButton.setId(R.id.fab);
-        fabButton.setOnClickListener(clicker);
-    }
-
-    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog, PasswordCheckDialog.IPasswordCheckDialog{
+    private final class DeletePlanDialogClicker implements TwoButtonsAlertDialog.IAlertDialog, PasswordCheckDialog.IPasswordCheckDialog {
 
         @Override
         public void onAcceptClick() {
@@ -480,17 +481,16 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         }
 
         @Override
-        public void onDialogPositiveClick(String pPass){
-            if(pPass.equals(sharedHelper.getDefaultPass())) {
+        public void onDialogPositiveClick(String pPass) {
+            if (pPass.equals(sharedHelper.getDefaultPass())) {
                 Intent intent = new Intent(PlannerActivity.this, EditUserActivity.class);
                 startActivity(intent);
-            }
-            else
+            } else
                 showToast("Password is incorrect");
         }
 
         @Override
-        public void onDialogNegativeClick(){
+        public void onDialogNegativeClick() {
 
         }
     }

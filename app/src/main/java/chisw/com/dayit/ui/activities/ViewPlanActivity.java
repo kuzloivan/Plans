@@ -10,23 +10,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import chisw.com.dayit.R;
 import chisw.com.dayit.model.Plan;
-import chisw.com.dayit.net.PushManager;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
-import chisw.com.dayit.utils.ValidData;
 
 public class ViewPlanActivity extends ToolbarActivity {
 
@@ -161,7 +161,7 @@ public class ViewPlanActivity extends ToolbarActivity {
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
         mBtnAccept = (Button) findViewById(R.id.vp_btn_accept);
         mBtnReject = (Button) findViewById(R.id.vp_btn_reject);
-        if(mPlan.getPlanState().equals(Plan.PLAN_STATE_REMOTE_NOT_ACCEPTED)) {
+        if(mPlan.getPlanState() != null && mPlan.getIsRemote() == 1 && mPlan.getPlanState().equals(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED)) {
             mBtnAccept.setOnClickListener(clicker);
             mBtnReject.setOnClickListener(clicker);
         } else {
@@ -187,24 +187,32 @@ public class ViewPlanActivity extends ToolbarActivity {
 
         @Override
         public void onClick(View pView) {
+            final StringBuilder result = new StringBuilder();
             switch(pView.getId()) {
                 case R.id.vp_btn_accept:
-                    mBtnAccept.setVisibility(View.INVISIBLE);
-                    mBtnReject.setVisibility(View.INVISIBLE);
                     pushManager.sendAcceptAnswer(mPlan, sharedHelper.getDefaultLogin());
-                    mPlan.setPlanState(Plan.PLAN_STATE_REMOTE_ACCEPTED);
-                    dbManager.editPlan(mPlan, mPlanId);
+                    result.append(Plan.PLAN_STATE_REMOTE_ACCEPTED);
                     showToast("Plan has been accepted");
                     break;
                 case R.id.vp_btn_reject:
-                    mBtnAccept.setVisibility(View.INVISIBLE);
                     mBtnReject.setVisibility(View.INVISIBLE);
                     pushManager.sendRejectAnswer(mPlan, sharedHelper.getDefaultLogin());
-                    mPlan.setPlanState(Plan.PLAN_STATE_REMOTE_REJECTED);
-                    dbManager.editPlan(mPlan, mPlanId);
+                    result.append(Plan.PLAN_STATE_REMOTE_REJECTED);
                     showToast("Plan has been rejected");
                     break;
             }
+            mPlan.setIsSynchronized(0);
+            mPlan.setPlanState(result.toString());
+            mBtnAccept.setVisibility(View.INVISIBLE);
+            mBtnReject.setVisibility(View.INVISIBLE);
+            dbManager.editPlan(mPlan, mPlanId);
+            netManager.editPlan(mPlan.getSourcePlanID(), new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject pParseObject, ParseException e) {
+                    pParseObject.put(netManager.PLAN_STATE,result.toString());
+                    pParseObject.saveInBackground();
+                }
+            });
         }
     }
 
