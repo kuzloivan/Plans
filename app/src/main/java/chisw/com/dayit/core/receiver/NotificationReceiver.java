@@ -32,8 +32,8 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         String daysOfWeekStr = (((PApplication) pContext.getApplicationContext()).getDbManager().getDaysToAlarmById(id));
 
-        if(daysOfWeekStr == null){   // kostil
-            daysOfWeekStr = "0000000";
+        if(daysOfWeekStr.indexOf('1') == -1){  // if there are no days to alarm - > return
+           return;
         }
 
         if ((((PApplication) pContext.getApplicationContext()).getSharedHelper().getNotificationOn())

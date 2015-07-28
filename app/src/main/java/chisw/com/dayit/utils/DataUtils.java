@@ -9,7 +9,7 @@ import java.util.Formatter;
 public class DataUtils {
 
     public static String getDateStringFromTimeStamp(long timeStamp){
-        return new SimpleDateFormat("dd/MM/yyyy").format(timeStamp);
+        return new SimpleDateFormat("dd.MM.yyyy").format(timeStamp);
     }
 
     public static String getTimeStringFromTimeStamp(long timeStamp){
@@ -42,7 +42,7 @@ public class DataUtils {
     {
         Formatter formatter = new Formatter();
 
-        formatter.format("Date: %td/%tm/%tY", pCalendar, pCalendar, pCalendar);
+        formatter.format("Date: %td.%tm.%tY", pCalendar, pCalendar, pCalendar);
 
         return formatter.toString();
     }

@@ -10,5 +10,11 @@
     <dimen name="text_size_changed_text">18sp</dimen>
     <dimen name="text_size_names">20sp</dimen>
 
+    <dimen name="plv_image_view_width">90dp</dimen>
+    <dimen name="plv_image_view_high">140dp</dimen>
+
+    <dimen name="pvt_image_view_width">390dp</dimen>
+    <dimen name="pvt_image_view_height">220dp</dimen>
+
 
 </resources>

@@ -125,6 +125,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             }
         });
         mEtTitle = (EditText) findViewById(R.id.ta_title_textView);
+
     }
 
     @Override
@@ -193,6 +194,12 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected void initializeCheckBoxes(){
         for(int i = 0; i < 7; i++){
             mCheckBoxesArr.get(i).setChecked(mDaysToAlarm.charAt(i) == '1');
+        }
+    }
+
+    protected void setVisibilityCheckBoxes(int pVisibilityCheckBoxes){
+        for(int i = 0; i < 7; i++){
+            mCheckBoxesArr.get(i).setVisibility(pVisibilityCheckBoxes);
         }
     }
 
@@ -464,6 +471,7 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
     }
 
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -494,6 +502,7 @@ public abstract class TaskActivity extends ToolbarActivity {
             dispatchTakePictureIntent();
         }
     }
+
     protected final class DialogClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener,
             DatePickDialog.DatePickListener, TimePickDialog.TimePickListener {
 

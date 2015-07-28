@@ -1,34 +1,24 @@
 package chisw.com.dayit.ui.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Request;
-import com.squareup.picasso.RequestBuilder;
 
 import java.io.File;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import chisw.com.dayit.R;
-import chisw.com.dayit.core.PApplication;
 import chisw.com.dayit.db.entity.PlansEntity;
-import chisw.com.dayit.model.Plan;
-import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 
 
@@ -40,13 +30,43 @@ public class PlannerCursorAdapter extends CursorAdapter {
     private LayoutInflater layoutInflater;
     private String mSelectedImagePath;
     private Picasso mPicasso;
+    private static final String TAG = "DayIt";
+    //private MyTask mt;
 
     public PlannerCursorAdapter(Context context) {
         super(context, null, false);
         layoutInflater = LayoutInflater.from(context);
         mPicasso = Picasso.with(context);
-        mPicasso.setDebugging(true);
     }
+
+//    class MyTask extends AsyncTask<ViewHolder, Void, Void> {
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            Log.i(TAG, "Start asyncTask");
+//        }
+//
+//        @Override
+//        protected Void doInBackground(ViewHolder... params) {
+//
+//
+//            if (mSelectedImagePath!=null){
+//                Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, 135, 204);
+//                viewHolder.ivPicture.setImageBitmap(bitmap);
+//            }else{
+//                int color = Color.argb(255,63,81,181);
+//                mIvPicture.setBackgroundColor(color);
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void result) {
+//            super.onPostExecute(result);
+//            Log.i(TAG, "Stop asyncTask");
+//        }
+//    }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -81,7 +101,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
 
         if (timeStamp < System.currentTimeMillis()){
             viewHolder.tvTime.setText("Done");
-            viewHolder.tvDate.setVisibility(View.INVISIBLE);
+            //viewHolder.tvDate.setVisibility(View.INVISIBLE);
         }
         else {
             viewHolder.tvTime.setText(DataUtils.getTimeStringFromTimeStamp(timeStamp));
@@ -95,9 +115,13 @@ public class PlannerCursorAdapter extends CursorAdapter {
         viewHolder.tvDetails.setText(cursor.getString(planStateIndex));
 //        int targetW = viewHolder.ivPicture.getWidth();
 //        int targetH = viewHolder.ivPicture.getHeight();
-        int targetW = 135;
-        int targetH = 204;
+//        int targetW = 135;
+//        int targetH = 204;
         mSelectedImagePath = cursor.getString(imageIndex);
+
+//        mt = new MyTask();
+//        mt.execute();
+
         try {
 //            don't delete
 //            if (mSelectedImagePath != null){
@@ -125,7 +149,7 @@ public class PlannerCursorAdapter extends CursorAdapter {
             Uri imageUri;
             imageUri = Uri.fromFile(new File(mSelectedImagePath));
             String imageUriString = imageUri.toString();
-            mPicasso.load(imageUriString).resize(targetW,targetH).centerCrop().into(viewHolder.ivPicture);
+            mPicasso.load(imageUriString).resizeDimen(R.dimen.plv_image_view_width, R.dimen.plv_image_view_high).centerCrop().into(viewHolder.ivPicture);
         } catch (Exception e) {
             e.printStackTrace();
 //            Don't delete
@@ -136,11 +160,8 @@ public class PlannerCursorAdapter extends CursorAdapter {
 //            viewHolder.ivPicture.setBackgroundColor(color);
             viewHolder.ivPicture.setImageResource(R.drawable.default_example_material);
         }
-        logMemory(context);
-    }
-
-    private void logMemory(Context context) {
-        Toast.makeText(context, "Total memory = " + (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "total memory = " + Runtime.getRuntime().totalMemory() / 1024);
+        Log.i(TAG, "free  memory = "+Runtime.getRuntime().freeMemory()/1024);
     }
 
     private static class ViewHolder {

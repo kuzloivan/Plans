@@ -37,10 +37,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:clickable="false"
-                    android:enabled="false"
                     android:hint="@string/contact_info_hint"
                     android:maxLines="1"
+                    android:enabled="true"
                     />
+
 
                 <Button
                     android:id="@+id/rta_contactList_btn"

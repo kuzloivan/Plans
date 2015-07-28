@@ -44,7 +44,7 @@
     <color name="color_ma_btn_text">#ffffff</color>
 
     <color name="color_for_planer_cursor_adapter_title">#ff000000</color>
-    <color name="color_for_planner_list_view_title">#ff000000</color>
+    <color name="color_for_planner_list_view_text">#ff000000</color>
 
     <color name="color_on_plan_view_toolbar">#11010101</color>
 

@@ -5,8 +5,8 @@
 
     <com.parse.ParseImageView
         android:id="@+id/image_view_on_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_width="@dimen/pvt_image_view_width"
+        android:layout_height="@dimen/pvt_image_view_height"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
         />

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import chisw.com.dayit.R;
 import chisw.com.dayit.core.bridge.NetBridge;
 
 import chisw.com.dayit.core.callback.CheckPhoneCallback;
@@ -31,6 +32,7 @@ import chisw.com.dayit.core.callback.OnGetPlansCallback;
 import chisw.com.dayit.core.callback.OnImageDownloadCompletedCallback;
 import chisw.com.dayit.core.callback.OnSaveCallback;
 import chisw.com.dayit.model.Plan;
+import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
 
@@ -170,7 +172,7 @@ public class NetManager implements NetBridge {
 
     @Override
     public ParseFile uploadImage(String path) {
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(path, R.dimen.pvt_image_view_width,R.dimen.pvt_image_view_height);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
         byte[] image = stream.toByteArray();
@@ -325,5 +327,78 @@ public class NetManager implements NetBridge {
             onGetPlansCallback.getPlans(null);
         }
     }
+
+//    @Override
+//    public ParseFile uploadImage(String path) {
+//        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(path, R.dimen.pvt_image_view_width,R.dimen.pvt_image_view_height);
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        //todo make image size some small
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+//        byte[] image = stream.toByteArray();
+//        ParseFile file = new ParseFile(image);
+//        file.saveInBackground();
+//        return file;
+//    }
+//
+//    @Override
+//    public String downloadImage(String pTaskTitle, long pTimeStamp, String pParseID, final OnImageDownloadCompletedCallback object) {
+//
+//        //String fname = "Image" + pTaskTitle + DataUtils.getDateStringFromTimeStamp(pTimeStamp) + ".jpg";
+//        String fname = "Image" + pTaskTitle + ".jpg";
+//        //String fname = "Image" + ".jpg";
+//
+//        final File file = new File(SystemUtils.createDirectory(), fname);
+//        if (file.exists())
+//            file.delete();
+//
+//        final ParseQuery<ParseObject> query = ParseQuery.getQuery(PLANS_TABLE_NAME);
+//        query.whereEqualTo(IMAGE_FILE, pParseID);
+//        query.getInBackground(pParseID, new GetCallback<ParseObject>() {
+//            @Override
+//            public void done(ParseObject pParseObject, ParseException e) {
+//                ParseFile fileObject = (ParseFile) pParseObject.get(IMAGE_FILE);
+//                fileObject.getDataInBackground(new GetDataCallback() {
+//                    @Override
+//                    public void done(byte[] pBytes, ParseException e) {
+//                        if (e == null) {
+//                            Bitmap bmp = BitmapFactory.decodeByteArray(pBytes, 0, pBytes.length);
+//                            saveImageToExternalStorage(bmp, file.getAbsolutePath(), object);
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//        return file.getAbsolutePath();
+//    }
+//
+//    private void saveImageToExternalStorage(Bitmap finalBitmap, String
+//            path, OnImageDownloadCompletedCallback object) {
+//        OnImageDownloadCompletedCallback obj = object;
+//        try {
+//            File file = new File(path);
+//            file.createNewFile();
+//            FileOutputStream out = new FileOutputStream(file);
+//            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+//            out.flush();
+//            out.close();
+//            obj.downloadSuccessful();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        // Tell the media scanner about the new file so that it is
+//        // immediately available to the user.
+//        /*
+//        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null,
+//                new MediaScannerConnection.OnScanCompletedListener() {
+//                    public void onScanCompleted(String path, Uri uri) {
+//                        Log.i("ExternalStorage", "Scanned " + path + ":");
+//                        Log.i("ExternalStorage", "-> uri=" + uri);
+//                    }
+//                });
+//        */
+//
+//    }
 }
 

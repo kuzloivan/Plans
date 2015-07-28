@@ -3,6 +3,7 @@ package chisw.com.dayit.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -39,7 +40,6 @@ import chisw.com.dayit.ui.dialogs.TaskTypeDialog;
 import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.SystemUtils;
 import chisw.com.dayit.utils.ValidData;
-
 
 public class PlannerActivity extends ToolbarActivity implements Observer {
 

@@ -65,6 +65,9 @@ public class RemoteTaskActivity extends TaskActivity {
         mSwitchRepeating.setOnClickListener(mRClicker);
         mIvImage.setOnClickListener(mRClicker);
         mTextContact = (EditText) findViewById(R.id.rta_contactInfo_editText);
+
+        mSwitchRepeating.setVisibility(View.GONE);
+        setVisibilityCheckBoxes(View.GONE);
     }
 
     @Override

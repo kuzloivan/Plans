@@ -36,6 +36,7 @@ public class ViewPlanActivity extends ToolbarActivity {
     private TextView mTv_time;
     private TextView mTv_date;
     private TextView mTv_details;
+    private TextView mTv_details_title;
     private TextView mTv_sound;
     private TextView mTv_days_of_week;
     public ImageView mIvPicture;
@@ -86,11 +87,11 @@ public class ViewPlanActivity extends ToolbarActivity {
             case R.id.vp_menu_edit:
                 if (mPlan.getIsRemote() == 0) {
                     LocalTaskActivity.start(this, mPlanId);
+                    finish();
                 }
                 if (mPlan.getIsRemote() == 1) {
-                    RemoteTaskActivity.start(this, mPlanId);
+                    showToast("You can't edit remote plan.");
                 }
-                finish();
                 break;
         }
         return super.onOptionsItemSelected(pMenuItem);
@@ -136,25 +137,20 @@ public class ViewPlanActivity extends ToolbarActivity {
 //        }
     }
 
-    private void logMemory(Context context) {
-        Toast.makeText(context, "Total memory = " + (Runtime.getRuntime().totalMemory() / 1024), Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     protected int contentViewResId() {
         return R.layout.activity_view_plan;
     }
 
     private void initView() {
-
         Clicker clicker = new Clicker();
-
         mPlanId = getIntent().getBundleExtra(BUNDLE_KEY).getInt(BUNDLE_ID_KEY);
         mPlan = dbManager.getPlanById(mPlanId);
         mSelectedImagePath = mPlan.getImagePath();
         setTitle(mPlan.getTitle());
         mTv_time = (TextView) findViewById(R.id.pv_tv_time);
         mTv_details = (TextView) findViewById(R.id.pv_tv_details);
+        mTv_details_title = (TextView) findViewById(R.id.pv_tv_details_title);
         mTv_sound = (TextView) findViewById(R.id.pv_tv_sound);
         mTv_days_of_week = (TextView) findViewById(R.id.pv_tv_days_of_week);
         mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
@@ -168,19 +164,19 @@ public class ViewPlanActivity extends ToolbarActivity {
             mBtnAccept.setVisibility(View.GONE);
             mBtnReject.setVisibility(View.GONE);
         }
-
        // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
 
         if(mPlan.getDaysToAlarm().charAt(0) == '1'){
             mTv_days_of_week.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
-        }
-        else {
+        } else {
             mTv_days_of_week.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
         }
-
         mTv_details.setText(mPlan.getDetails());
-        //mTv_days_of_week.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
-        //logMemory(this);
+        String str = mPlan.getDetails();
+        if (str.length()==0) {
+            mTv_details.setVisibility(View.GONE);
+            mTv_details_title.setVisibility(View.GONE);
+        }
     }
 
     private final class Clicker implements View.OnClickListener {
