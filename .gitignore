@@ -1,32 +1,21 @@
-#built application files
-*.apk
-*.ap_
-
-# files for the dex VM
-*.dex
-
-# Java class files
 *.class
+Android/out
+*.apk
 
-# generated files
-bin/
-gen/
+.idea
+build
+.gradle
 
-# Local configuration file (sdk path, etc)
+app/.idea/workspace.xml
+
+app/.idea
+app/.gradle
+app/build
+
+Android/*.iml
+
 local.properties
 
-# Windows thumbnail db
-Thumbs.db
-
-# OSX files
-.DS_Store
-
-# Eclipse project files
-.classpath
-.project
-
-# Android Studio
 *.iml
-.idea
-.gradle
-build/
+*.log
+app/src/main/res/values/com_crashlytics_export_strings.xml
