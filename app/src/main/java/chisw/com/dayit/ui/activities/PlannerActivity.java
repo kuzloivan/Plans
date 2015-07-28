@@ -69,7 +69,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
+        if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext()) && sharedHelper.getSynchronization()) {
             startSynchronization();
         }
     }
@@ -104,7 +104,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             plan.setIsDeleted(1);
             dbManager.editPlan(plan, id);
         } while (cursor.moveToNext());
-        if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
+        if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
             startSynchronization();
         }
     }
@@ -161,7 +161,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         plan.setIsSynchronized(0);
         plan.setIsDeleted(1);
         dbManager.editPlan(plan, id);
-        if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
+        if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
             startSynchronization();
         }
     }
@@ -176,9 +176,9 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
         switch (pMenuItem.getItemId()) {
             case R.id.pa_menu_sync:
-                if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
                     startSynchronization();
-                } else if (sharedHelper.getDefaultLogin().isEmpty()) {
+                } else if (sharedHelper.getCurrentLogin().isEmpty()) {
                     TwoButtonsAlertDialog dial = new TwoButtonsAlertDialog();
                     dial.setIAlertDialog(new AuthorizationDialogClicker());
                     dial.setDialogTitle("To synchronize the plans you should log in. Continue?");
@@ -193,7 +193,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 SettingsActivity.start(PlannerActivity.this);
                 break;
             case R.id.pa_menu_contacts:
-                if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
+                if (!ValidData.isTextValid(sharedHelper.getCurrentLogin(), sharedHelper.getUserPass())) {
                     showToast("You aren't log in");
                 } else {
                     ArrayList<String> contactsArrayList = initializeList();
@@ -223,7 +223,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 }
                 break;
             case R.id.pa_menu_log_off:
-                if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
+                if (!ValidData.isTextValid(sharedHelper.getCurrentLogin(), sharedHelper.getUserPass())) {
                     showToast("You aren't log in");
                 } else {
                     showProgressDialog("Logging Off", "Please, wait...");
@@ -237,7 +237,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 }
                 break;
             case R.id.pa_menu_user_activity:
-                if (!ValidData.isTextValid(sharedHelper.getDefaultLogin(), sharedHelper.getDefaultPass())) {
+                if (!ValidData.isTextValid(sharedHelper.getCurrentLogin(), sharedHelper.getUserPass())) {
                     showToast("You aren't log in");
                 } else {
                     PasswordCheckDialog passwordCheckDialog = new PasswordCheckDialog();
@@ -314,8 +314,8 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 hideProgressDialog();
                 return;
             }
-            dbManager.eraseMe(sharedHelper.getDefaultLogin());
-            ParsePush.unsubscribeInBackground(sharedHelper.getDefaultLogin());
+            dbManager.eraseMe(sharedHelper.getCurrentLogin());
+            ParsePush.unsubscribeInBackground(sharedHelper.getCurrentLogin());
             sharedHelper.clearUserData();
             hideProgressDialog();
             showToast("Logged out");
@@ -341,7 +341,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.pa_floatingActionButton:
-                    if (!sharedHelper.getDefaultLogin().isEmpty() && SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
+                    if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(PlannerActivity.this)) {
                         new TaskTypeDialog().show(getFragmentManager(), "TaskType");
                     } else {
                         LocalTaskActivity.start(PlannerActivity.this);
@@ -482,7 +482,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void onDialogPositiveClick(String pPass) {
-            if (pPass.equals(sharedHelper.getDefaultPass())) {
+            if (pPass.equals(sharedHelper.getUserPass())) {
                 Intent intent = new Intent(PlannerActivity.this, EditUserActivity.class);
                 startActivity(intent);
             } else

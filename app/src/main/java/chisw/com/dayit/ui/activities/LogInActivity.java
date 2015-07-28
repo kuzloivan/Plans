@@ -31,8 +31,8 @@ public class LogInActivity extends AuthorizationActivity {
         mPassword.setSingleLine();
         mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         mPassword.setFilters(new InputFilter[]{mInputFilter});
-        if (ValidData.isTextValid(sharedHelper.getDefaultLogin())) {
-            if (ValidData.isTextValid(sharedHelper.getDefaultPass())) {
+        if (ValidData.isTextValid(sharedHelper.getCurrentLogin())) {
+            if (ValidData.isTextValid(sharedHelper.getUserPass())) {
                 PlannerActivity.start(LogInActivity.this);
                 LogInActivity.this.finish();
             }

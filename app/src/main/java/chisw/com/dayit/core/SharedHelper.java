@@ -32,11 +32,11 @@ public class SharedHelper {
         sharedPreferences.edit().putString(APP_PREFERENCE_MEDIA_WAY, appPreferencesMediaWay).apply();
     }
 
-    public String getDefaultLogin() {
+    public String getCurrentLogin() {
         return sharedPreferences.getString(APP_PREFERENCE_LOGIN, "");
     }
 
-    public void setDefaultLogin(String appPreferencesLogin) {
+    public void setCurrentLogin(String appPreferencesLogin) {
         sharedPreferences.edit().putString(APP_PREFERENCE_LOGIN, appPreferencesLogin).apply();
     }
 
@@ -48,25 +48,21 @@ public class SharedHelper {
         sharedPreferences.edit().putString(APP_PREFERENCE_LAST_LOGIN, appPreferencesLastLogin).apply();
     }
 
-    public String getDefaultPhone(){
+    public String getUserPhone(){
         return sharedPreferences.getString(APP_PREFERENCE_USER_PHONE, "");
     }
 
-    public void setDefaultPhone(String appPreferencesPhone){
+    public void setUserPhone(String appPreferencesPhone){
         sharedPreferences.edit().putString(APP_PREFERENCE_USER_PHONE, appPreferencesPhone).apply();
     }
 
     //pass
-    public String getDefaultPass() {
+    public String getUserPass() {
         return sharedPreferences.getString(APP_PREFERENCE_PASSWORD, "");
     }
 
-    public void setDefaultPass(String appPreferencesPassword) {
+    public void setUserPass(String appPreferencesPassword) {
         sharedPreferences.edit().putString(APP_PREFERENCE_PASSWORD, appPreferencesPassword).apply();
-    }
-
-    public void clearData() {
-        sharedPreferences.edit().clear().apply();
     }
 
     public void clearUserData() {

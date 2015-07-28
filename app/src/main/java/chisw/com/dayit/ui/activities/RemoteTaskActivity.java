@@ -140,7 +140,7 @@ public class RemoteTaskActivity extends TaskActivity {
         plan.setTitle(mEtTitle.getText().toString());
         plan.setDetails(mTvSetDetails.getText().toString());
         plan.setTimeStamp(mMyLovelyCalendar.getTimeInMillis());
-        plan.setSender(sharedHelper.getDefaultLogin());
+        plan.setSender(sharedHelper.getCurrentLogin());
         plan.setParseId(id);
         plan.setImagePath(mSelectedImagePath);
         plan.setPlanState(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED);
@@ -154,6 +154,7 @@ public class RemoteTaskActivity extends TaskActivity {
         final Plan p = new Plan();
         p.setIsRemote(1);
         p.setPlanState(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED);
+        p.setSender(sharedHelper.getCurrentLogin());
         super.writePlanToDB(calendar, p);
         if (p.getIsRemote() == 1) {
             netManager.addPlan(p, new OnSaveCallback() {

@@ -2,7 +2,6 @@ package chisw.com.dayit.ui.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.parse.GetCallback;
@@ -53,9 +52,9 @@ public class EditUserActivity extends ToolbarActivity {
 
         });
 
-        mLoginET.setText(sharedHelper.getDefaultLogin());
-        mPhoneET.setText(sharedHelper.getDefaultPhone());
-        mPasswordET.setText(sharedHelper.getDefaultPass());
+        mLoginET.setText(sharedHelper.getCurrentLogin());
+        mPhoneET.setText(sharedHelper.getUserPhone());
+        mPasswordET.setText(sharedHelper.getUserPass());
 
     }
 
@@ -76,9 +75,9 @@ public class EditUserActivity extends ToolbarActivity {
                 }
             });
 
-            sharedHelper.setDefaultLogin(mLoginET.getText().toString().toLowerCase());
-            sharedHelper.setDefaultPhone(mPhoneET.getText().toString());
-            sharedHelper.setDefaultPass(mPasswordET.getText().toString());
+            sharedHelper.setCurrentLogin(mLoginET.getText().toString().toLowerCase());
+            sharedHelper.setUserPhone(mPhoneET.getText().toString());
+            sharedHelper.setUserPass(mPasswordET.getText().toString());
             //hideProgressDialog();
             showToast("User has been updated");
             finish();

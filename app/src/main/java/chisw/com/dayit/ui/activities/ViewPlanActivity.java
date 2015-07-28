@@ -1,6 +1,8 @@
 package chisw.com.dayit.ui.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +29,7 @@ import chisw.com.dayit.ui.dialogs.TwoButtonsAlertDialog;
 import chisw.com.dayit.utils.BitmapUtils;
 import chisw.com.dayit.utils.DataUtils;
 import chisw.com.dayit.utils.SystemUtils;
+import chisw.com.dayit.utils.ValidData;
 
 public class ViewPlanActivity extends ToolbarActivity {
 
@@ -100,7 +103,7 @@ public class ViewPlanActivity extends ToolbarActivity {
     public void deleteEntirely() {
         alarmManager.cancelAlarm(mPlanId);
         Plan plan = dbManager.getPlanById(mPlanId);
-        if (sharedHelper.getDefaultLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
+        if (sharedHelper.getCurrentLogin().isEmpty() || !sharedHelper.getSynchronization() || !SystemUtils.checkNetworkStatus(getApplicationContext())) {
             plan.setIsSynchronized(0);
             plan.setIsDeleted(1);
             dbManager.editPlan(plan, mPlanId);
@@ -115,11 +118,11 @@ public class ViewPlanActivity extends ToolbarActivity {
     private void initPicture() {
         int targetW = mIvPicture.getWidth();
         int targetH = mIvPicture.getHeight();
-        if (mSelectedImagePath!=null){
+        if (mSelectedImagePath != null) {
             Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
             mIvPicture.setImageBitmap(bitmap);
-        }else{
-            int color = Color.argb(255,63,81,181);
+        } else {
+            int color = Color.argb(255, 63, 81, 181);
             mIvPicture.setBackgroundColor(color);
         }
 // Don't delete
@@ -148,34 +151,37 @@ public class ViewPlanActivity extends ToolbarActivity {
         mPlan = dbManager.getPlanById(mPlanId);
         mSelectedImagePath = mPlan.getImagePath();
         setTitle(mPlan.getTitle());
-        mTv_time = (TextView) findViewById(R.id.pv_tv_time);
-        mTv_details = (TextView) findViewById(R.id.pv_tv_details);
-        mTv_details_title = (TextView) findViewById(R.id.pv_tv_details_title);
-        mTv_sound = (TextView) findViewById(R.id.pv_tv_sound);
+
         mTv_days_of_week = (TextView) findViewById(R.id.pv_tv_days_of_week);
-        mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
+        mTv_days_of_week.setVisibility(View.VISIBLE);
+        if (mPlan.getDaysToAlarm().charAt(0) == '1') {
+            mTv_days_of_week.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
+        } else {
+            mTv_days_of_week.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
+        }
+
+        mTv_time = (TextView) findViewById(R.id.pv_tv_time);
         mTv_time.setText(DataUtils.getTimeStringFromTimeStamp(mPlan.getTimeStamp()));
+
+        if(ValidData.isTextValid(mPlan.getDetails())){
+            findViewById(R.id.vpa_details_layout).setVisibility(View.VISIBLE);
+            mTv_details = (TextView) findViewById(R.id.pv_tv_details);
+            mTv_details.setVisibility(View.VISIBLE);
+            mTv_details.setText(mPlan.getDetails());
+        }
+
+        mTv_sound = (TextView) findViewById(R.id.pv_tv_sound);
+
+        mIvPicture = (ImageView) findViewById(R.id.image_view_on_toolbar);
+
         mBtnAccept = (Button) findViewById(R.id.vp_btn_accept);
         mBtnReject = (Button) findViewById(R.id.vp_btn_reject);
-        if(mPlan.getPlanState() != null && mPlan.getIsRemote() == 1 && mPlan.getPlanState().equals(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED)) {
+        if (mPlan.getIsRemote() == 1 && mPlan.getPlanState().equals(Plan.PLAN_STATE_REMOTE_NOT_ANSWERED) && !mPlan.getSender().equalsIgnoreCase(sharedHelper.getCurrentLogin())) {
             mBtnAccept.setOnClickListener(clicker);
             mBtnReject.setOnClickListener(clicker);
         } else {
             mBtnAccept.setVisibility(View.GONE);
             mBtnReject.setVisibility(View.GONE);
-        }
-       // mAcceptBT.setVisibility((mPlan.getIsRemote() == 1) ? View.VISIBLE : View.INVISIBLE); // todo: set condition for visibility
-
-        if(mPlan.getDaysToAlarm().charAt(0) == '1'){
-            mTv_days_of_week.setText(DataUtils.getDaysForRepeatingFromString(mPlan.getDaysToAlarm()));
-        } else {
-            mTv_days_of_week.setText(DataUtils.getDateStringFromTimeStamp(mPlan.getTimeStamp()));
-        }
-        mTv_details.setText(mPlan.getDetails());
-        String str = mPlan.getDetails();
-        if (str.length()==0) {
-            mTv_details.setVisibility(View.GONE);
-            mTv_details_title.setVisibility(View.GONE);
         }
     }
 
@@ -184,15 +190,17 @@ public class ViewPlanActivity extends ToolbarActivity {
         @Override
         public void onClick(View pView) {
             final StringBuilder result = new StringBuilder();
-            switch(pView.getId()) {
+            switch (pView.getId()) {
                 case R.id.vp_btn_accept:
-                    pushManager.sendAcceptAnswer(mPlan, sharedHelper.getDefaultLogin());
+                    pushManager.sendAcceptAnswer(mPlan, sharedHelper.getCurrentLogin());
                     result.append(Plan.PLAN_STATE_REMOTE_ACCEPTED);
+                    PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(mPlanId));
+                    ((AlarmManager) ViewPlanActivity.this.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, mPlan.getTimeStamp(), pendingIntent);
                     showToast("Plan has been accepted");
                     break;
                 case R.id.vp_btn_reject:
                     mBtnReject.setVisibility(View.INVISIBLE);
-                    pushManager.sendRejectAnswer(mPlan, sharedHelper.getDefaultLogin());
+                    pushManager.sendRejectAnswer(mPlan, sharedHelper.getCurrentLogin());
                     result.append(Plan.PLAN_STATE_REMOTE_REJECTED);
                     showToast("Plan has been rejected");
                     break;
@@ -205,7 +213,7 @@ public class ViewPlanActivity extends ToolbarActivity {
             netManager.editPlan(mPlan.getSourcePlanID(), new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject pParseObject, ParseException e) {
-                    pParseObject.put(netManager.PLAN_STATE,result.toString());
+                    pParseObject.put(netManager.PLAN_STATE, result.toString());
                     pParseObject.saveInBackground();
                 }
             });

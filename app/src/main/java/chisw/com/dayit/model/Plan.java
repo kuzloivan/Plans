@@ -6,7 +6,6 @@ import chisw.com.dayit.db.entity.PlansEntity;
 
 public class Plan {
     public static final String PLAN_STATE_LOCAL = "localPlan";
-    public static final String PLAN_STATE_REMOTE = "remotePlan";
     public static final String PLAN_STATE_REMOTE_NOT_ANSWERED = "remotePlanNotAnswered";
     public static final String PLAN_STATE_REMOTE_ACCEPTED = "remotePlanAccepted";
     public static final String PLAN_STATE_REMOTE_REJECTED = "remotePlanRejected";
@@ -35,7 +34,6 @@ public class Plan {
     public void setLocalId(int localId) {
         this.localId = localId;
     }
-    // todo: add field for plan status.
     // todo: add field for plan repeating info (Example: Sun/Mon/Tue instead of 18/03/10)
 
     public String getDetails() {
@@ -159,7 +157,6 @@ public class Plan {
     }
 
     public Plan setPlanFromParse(ParseObject pParsePlan) {
-
         parseId = pParsePlan.getObjectId();
         title = pParsePlan.getString(PlansEntity.TITLE);
         details = pParsePlan.getString(PlansEntity.DETAILS);
@@ -169,16 +166,15 @@ public class Plan {
         audioDuration = pParsePlan.getInt(PlansEntity.AUDIO_DURATION);
         daysToAlarm = pParsePlan.getString(PlansEntity.DAYS_TO_ALARM);
         updatedAtParseTime = pParsePlan.getUpdatedAt().getTime();
-
-        /*planState = pParsePlan.getString(PlansEntity.PLAN_STATE);*/
+        planState = pParsePlan.getString(PlansEntity.PLAN_STATE);
+        sender = pParsePlan.getString(PlansEntity.SENDER);
 
         if (pParsePlan.getBoolean(PlansEntity.IS_REMOTE) == false) {
             isRemote = 0;
+
         } else {
             isRemote = 1;
-            planState = pParsePlan.getString(PlansEntity.PLAN_STATE);
-            if (pParsePlan.getString(PlansEntity.SOURCE_PLAN_ID) != null)
-                sourcePlanID = pParsePlan.getString(PlansEntity.SOURCE_PLAN_ID);
+            sourcePlanID = pParsePlan.getString(PlansEntity.SOURCE_PLAN_ID);
         }
         return this;
     }

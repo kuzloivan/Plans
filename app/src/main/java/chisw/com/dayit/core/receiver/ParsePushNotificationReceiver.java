@@ -1,7 +1,5 @@
 package chisw.com.dayit.core.receiver;
 
-
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -66,7 +64,6 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
                     if (dbManager.getPlanByTitleAndSender(mTitle, mFrom, mTime) == null) {
                         sendNotification(context, PushManager.REMOTE_PLAN);
                         setPlanToDB(context);
-                        setPlanToExecute(context);
                         return;
                     }
                     break;
@@ -88,7 +85,6 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
     }
 
     private void sendNotification(Context pContext, String pType) {
-
         Notification notification;
         Notification.Builder builder = new Notification.Builder(pContext);
 
@@ -140,12 +136,6 @@ public class ParsePushNotificationReceiver extends ParseBroadcastReceiver {
         } else {
             uploadPlan(p, context);
         }
-    }
-
-    private void setPlanToExecute(Context pContext) {
-        int pendingId = dbManager.getLastPlanID();
-        PendingIntent pendingIntent = alarmManager.createPendingIntent(Integer.toString(pendingId));
-        ((AlarmManager) pContext.getSystemService(pContext.ALARM_SERVICE)).set(AlarmManager.RTC_WAKEUP, mTime, pendingIntent);
     }
 
     private void uploadPlan(final Plan p, Context context) {
