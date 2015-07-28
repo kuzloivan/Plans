@@ -25,8 +25,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +49,7 @@ import chisw.com.dayit.utils.ValidData;
 public abstract class TaskActivity extends ToolbarActivity {
 
     protected final int GALLERY_REQUEST = 2;
+    protected final int REQUEST_TAKE_PHOTO = 5;
 
     protected boolean mIsDialogExist;
     protected EditText mEtTitle;
@@ -64,7 +69,7 @@ public abstract class TaskActivity extends ToolbarActivity {
     protected long mUpdatedAtParseTime;
     protected Calendar mMyLovelyCalendar;
     protected ArrayList<CheckBox> mCheckBoxesArr;
-    final int CAMERA_ID = 0;
+
 
     protected void initViews() {
         initBackButton();
@@ -240,7 +245,36 @@ public abstract class TaskActivity extends ToolbarActivity {
             case GALLERY_REQUEST:
                 setImageFromGallery(returnedIntent);
                 break;
+            case REQUEST_TAKE_PHOTO:
+                setImageFromPhoto(returnedIntent);
+                break;
         }
+    }
+
+    protected void setImageFromPhoto(Intent imageIntent){
+//        Bundle extras = imageIntent.getExtras();
+//        Bitmap imageBitmap = (Bitmap) extras.get("data");
+//        mIvImage.setImageBitmap(imageBitmap);
+        int targetW = mIvImage.getWidth();
+        int targetH = mIvImage.getHeight();
+        Bitmap bitmap = BitmapUtils.decodeSampledBitmapFromResource(mSelectedImagePath, targetW, targetH);
+        mIvImage.setImageBitmap(bitmap);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        mSelectedImagePath = image.getAbsolutePath();
+        return image;
     }
 
     protected void setImageFromGallery(Intent imageIntent) {
@@ -429,6 +463,25 @@ public abstract class TaskActivity extends ToolbarActivity {
             }
         }
     }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+              showToast("The file hasn't been created");
+            }
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+
+    }
+
     protected final class ChooseImageDialogClicker implements ChooseImageDialog.ChooseImageDialogListener{
 
         @Override
@@ -438,7 +491,7 @@ public abstract class TaskActivity extends ToolbarActivity {
 
         @Override
         public void onTakePictureClick(){
-           showToast("Take picture");
+            dispatchTakePictureIntent();
         }
     }
     protected final class DialogClicker implements DaysOfWeekDialog.DaysOfWeekDialogListener,
