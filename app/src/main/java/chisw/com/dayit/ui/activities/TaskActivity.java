@@ -197,11 +197,6 @@ public abstract class TaskActivity extends ToolbarActivity {
         }
     }
 
-    protected void setVisibilityCheckBoxes(int pVisibilityCheckBoxes){
-        for(int i = 0; i < 7; i++){
-            mCheckBoxesArr.get(i).setVisibility(pVisibilityCheckBoxes);
-        }
-    }
 
     protected void writePlanToDB(Calendar calendar, Plan pPlan) {
 

@@ -59,6 +59,7 @@ public class RemoteTaskActivity extends TaskActivity {
     protected void initViews() {
         super.initViews();
         mRClicker = new RClicker();
+
         findViewById(R.id.rta_contactList_btn).setOnClickListener(mRClicker);
         mTvDate.setOnClickListener(mRClicker);
         mTvTime.setOnClickListener(mRClicker);
@@ -66,8 +67,8 @@ public class RemoteTaskActivity extends TaskActivity {
         mIvImage.setOnClickListener(mRClicker);
         mTextContact = (EditText) findViewById(R.id.rta_contactInfo_editText);
 
-        mSwitchRepeating.setVisibility(View.GONE);
-        setVisibilityCheckBoxes(View.GONE);
+
+        findViewById(R.id.ll_repeating).setVisibility(View.GONE);
     }
 
     @Override
