@@ -17,9 +17,11 @@ import chisw.com.dayit.utils.ValidData;
 public class SignUpActivity extends AuthorizationActivity {
 
     private Clicker mClicker;
+    private EditText mEmailEditText;
     private EditText mPhone;
     private EditText mPasswordConfirm;
     private String phone;
+    private String mEmail;
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, SignUpActivity.class);
@@ -45,8 +47,9 @@ public class SignUpActivity extends AuthorizationActivity {
     private void initView() {
         mClicker = new Clicker();
         mLogin = (EditText) findViewById(R.id.sua_userName_editText);
-        mPassword = (EditText) findViewById(R.id.sua_userPassword_editText);
+        mEmailEditText = (EditText) findViewById(R.id.sua_userEmail_editText);
         mPhone = (EditText) findViewById(R.id.sua_userPhone_editText);
+        mPassword = (EditText) findViewById(R.id.sua_userPassword_editText);
         mPasswordConfirm = (EditText) findViewById(R.id.sua_userPasswordConfirm_editText);
         findViewById(R.id.sua_signUp_btn).setOnClickListener(mClicker);
         findViewById(R.id.sua_back_btn).setOnClickListener(mClicker);
@@ -54,6 +57,7 @@ public class SignUpActivity extends AuthorizationActivity {
 
     @Override
     protected boolean prepareForClick() {
+        mEmail = mEmailEditText.getText().toString();
         phone = mPhone.getText().toString();
         return super.prepareForClick();
     }
@@ -95,8 +99,9 @@ public class SignUpActivity extends AuthorizationActivity {
 
             /* Save user credentials and then Log In */
             sharedHelper.setCurrentLogin(mLogin.getText().toString().toLowerCase());
-            sharedHelper.setUserPhone(mPhone.getText().toString());
             sharedHelper.setUserPass(mPassword.getText().toString());
+            sharedHelper.setEmailAddress(mEmail);
+            sharedHelper.setUserPhone(mPhone.getText().toString());
             netManager.loginUser(sharedHelper.getCurrentLogin(), sharedHelper.getUserPass(), new CallbackLogIn());
             showToast("SignUp was successful");
             hideProgressDialog();
@@ -114,12 +119,16 @@ public class SignUpActivity extends AuthorizationActivity {
             }
             if (isValidFields()) {
                 showProgressDialog("Signing Up", "Please, wait...");
-                netManager.registerUser(login, password, phone, new CallbackSignUp());
+                netManager.registerUser(login, password, mEmail, phone, new CallbackSignUp());
             }
         }
     }
 
     private boolean isValidFields() {
+        if(!ValidData.isEmailAddressValid(mEmail)) {
+            Toast.makeText(getApplicationContext(),"Wrong email address. Example: aaaaa@mail.com",Toast.LENGTH_LONG).show();
+            return false;
+        }
         if (!ValidData.isPhoneNumberValid(phone, getString(R.string.phone_pttrn))) {
             Toast.makeText(getApplicationContext(),"Wrong phone number. Example: +380123456789",Toast.LENGTH_LONG).show();
             Toast.makeText(getApplicationContext(),"Phone number must be: + [any digit 10-12 times]",Toast.LENGTH_LONG).show();

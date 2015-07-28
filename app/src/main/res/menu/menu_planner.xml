@@ -4,13 +4,6 @@
     tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
     <item
-        android:id="@+id/pa_menu_sync"
-        android:title="@string/pa_start_sync"
-        android:icon="@drawable/ic_autorenew_white_18dp"
-        app:showAsAction="always">
-    </item>
-
-    <item
         android:id="@+id/pa_menu_settings"
         app:showAsAction="never"
         android:title="@string/pa_settings">

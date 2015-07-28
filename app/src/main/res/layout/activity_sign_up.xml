@@ -18,6 +18,15 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Email address"
+            android:id="@+id/sua_userEmail_editText"
+            android:inputType="textEmailAddress"
+            android:layout_margin="8dp"
+            android:textColorHint="#bbbbbb"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Phone number"
             android:id="@+id/sua_userPhone_editText"
             android:inputType="phone"

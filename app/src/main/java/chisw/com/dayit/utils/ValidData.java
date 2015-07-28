@@ -21,6 +21,10 @@ public class ValidData
         return true;
     }
 
+    public static boolean isEmailAddressValid(String pArg) {
+        return Pattern.matches(Patterns.EMAIL_ADDRESS.toString(), pArg);
+    }
+
     public static boolean isPhoneNumberValid(String arg, String pattern){
         return Pattern.matches(pattern, arg);
     }

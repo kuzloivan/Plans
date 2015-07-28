@@ -17,6 +17,7 @@ public class SharedHelper {
     public static final String APP_PREFERENCES_USER_SONG = "user_song";
     public static final String APP_PREFERENCE_SYNCHRONIZATION = "sync_on";
     public static final String APP_PREFERENCE_USER_PHONE = "user_phone";
+    public static final String APP_PREFERENCE_USER_EMAIL = "user_email";
 
     private SharedPreferences sharedPreferences;
 
@@ -110,5 +111,13 @@ public class SharedHelper {
 
     public boolean getUserSong() {
         return sharedPreferences.getBoolean(APP_PREFERENCES_USER_SONG, false);
+    }
+
+    public String getEmailAddress() {
+        return sharedPreferences.getString(APP_PREFERENCE_USER_EMAIL, "");
+    }
+
+    public void setEmailAddress(String appPreferenceEmailAddress) {
+        sharedPreferences.edit().putString(APP_PREFERENCE_USER_EMAIL, appPreferenceEmailAddress).apply();
     }
 }

@@ -60,11 +60,12 @@ public class NetManager implements NetBridge {
     public static final String PHONE = "phone";
 
     @Override
-    public void registerUser(String pName, String pPassword, String pPhone, SignUpCallback pSignUpCallback) {
+    public void registerUser(String pName, String pPassword, String pEmail, String pPhone, SignUpCallback pSignUpCallback) {
         ParseUser user = new ParseUser();
         user.setUsername(pName);
         user.setPassword(pPassword);
         user.put(PHONE, pPhone);
+        user.setEmail(pEmail);
         user.signUpInBackground(pSignUpCallback);
     }
 

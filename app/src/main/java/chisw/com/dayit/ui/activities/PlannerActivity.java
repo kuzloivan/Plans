@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -48,6 +49,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     private int mWantToDelete;
     private ArrayList<String> mContactArrayList;
     private ContactListDialog mContactListDialog;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static void start(Activity pActivity) {
         Intent intent = new Intent(pActivity, PlannerActivity.class);
@@ -84,6 +86,27 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
         registerForContextMenu(mLvPlanner);
         dbManager.addObserver(this);
         initFAB(clicker);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.pa_swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
+                    startSynchronization();
+                } else if (sharedHelper.getCurrentLogin().isEmpty()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    TwoButtonsAlertDialog dial = new TwoButtonsAlertDialog();
+                    dial.setIAlertDialog(new AuthorizationDialogClicker());
+                    dial.setDialogTitle("To synchronize the plans you should log in. Continue?");
+                    dial.setPositiveBtnText("Yes");
+                    dial.setNegativeBtnText("Cancel");
+                    dial.show(getFragmentManager(), getString(R.string.pa_authorization));
+                } else {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    showToast("There is no internet connection!");
+                }
+                updateListView();
+            }
+        });
     }
 
     private void updateListView() {
@@ -175,20 +198,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     @Override
     public boolean onOptionsItemSelected(MenuItem pMenuItem) {
         switch (pMenuItem.getItemId()) {
-            case R.id.pa_menu_sync:
-                if (!sharedHelper.getCurrentLogin().isEmpty() && SystemUtils.checkNetworkStatus(getApplicationContext())) {
-                    startSynchronization();
-                } else if (sharedHelper.getCurrentLogin().isEmpty()) {
-                    TwoButtonsAlertDialog dial = new TwoButtonsAlertDialog();
-                    dial.setIAlertDialog(new AuthorizationDialogClicker());
-                    dial.setDialogTitle("To synchronize the plans you should log in. Continue?");
-                    dial.setPositiveBtnText("Yes");
-                    dial.setNegativeBtnText("Cancel");
-                    dial.show(getFragmentManager(), getString(R.string.pa_authorization));
-                }
-                updateListView();
-                break;
-
             case R.id.pa_menu_settings:
                 SettingsActivity.start(PlannerActivity.this);
                 break;
@@ -233,7 +242,6 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                         alarmManager.cancelAlarm(cursor.getInt(cursor.getColumnIndex(PlansEntity.LOCAL_ID)));
                     }
                     cursor.close();
-                    dbManager.deletePlans();
                 }
                 break;
             case R.id.pa_menu_user_activity:
@@ -282,6 +290,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
     }
 
     private void startSynchronization() {
+        mSwipeRefreshLayout.setRefreshing(true);
         netManager.getAllPlans(new CallbackGetAllPlans());
     }
 
@@ -379,6 +388,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             } else {
                 showToast(e.getMessage());
             }
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -392,6 +402,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void getId(String id, long updatedAtParseTime) {
+            mSwipeRefreshLayout.setRefreshing(true);
             if (ValidData.isTextValid(id)) {
                 mPlan.setParseId(id);
                 mPlan.setUpdatedAtParseTime(updatedAtParseTime);
@@ -399,6 +410,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                 mPlan.setIsSynchronized(1);
                 dbManager.editPlan(mPlan, planId);
             }
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -409,6 +421,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             if (pListPlans != null) {
                 for (Plan parsePlan : pListPlans) {
                     if (dbManager.getPlanByParseId(parsePlan.getParseId()) == null) {
+                        parsePlan.setIsSynchronized(1);
                         dbManager.saveNewPlan(parsePlan);
                     }
                 }
@@ -447,6 +460,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
                     cursor.moveToNext();
                 }
             }
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -460,6 +474,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
 
         @Override
         public void done(ParseObject parsePlan, ParseException e) {
+            mSwipeRefreshLayout.setRefreshing(true);
             if (e == null) {
                 if (parsePlan.getUpdatedAt().getTime() > localPlan.getUpdatedAtParseTime()) {
                     Plan plan = new Plan();
@@ -470,6 +485,7 @@ public class PlannerActivity extends ToolbarActivity implements Observer {
             } else if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
                 dbManager.deletePlanById(localPlan.getLocalId());
             }
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 

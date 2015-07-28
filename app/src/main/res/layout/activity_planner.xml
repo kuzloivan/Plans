@@ -1,17 +1,23 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="chisw.com.plans.ui.activities.PlannerActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context="chisw.com.plans.ui.activities.PlannerActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
-
-    <ListView
-        android:id="@+id/pa_planner_listView"
-        style="@style/AppTheme.PlannerTheme.ListView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/pa_swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"></ListView>
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <ListView
+            android:id="@+id/pa_planner_listView"
+            style="@style/AppTheme.PlannerTheme.ListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>
